@@ -1,0 +1,2 @@
+?package(editra):needs="X11" section="Applications/Editors"\
+  title="editra" command="/usr/bin/Editra"

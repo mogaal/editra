@@ -1,0 +1,271 @@
+Format-Specification:
+    http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=196
+Upstream-Name: Editra
+Upstream-Maintainer: Cody Precord <cprecord@editra.org>
+Upstream-Source: http://editra.org
+
+Files: *
+Copyright: 2007, Cody Precord <cprecord@editra.org>
+License: wxwindows 
+
+Files: src/extern/pubsub.py
+Copyright: 2004, Oliver Schoenborn
+License: wxwindows
+
+Files: src/extern/embeddedimage.py
+Copyright: 2007, Anthony Tuininga
+License: wxwindows
+
+Files: src/extern/events.py
+Copyright: 2004, Kevin Ollivier
+License: wxwindows
+
+Files: src/plugin.py
+Copyright: 2003-2006, Edgewall Software
+License: BSD
+
+Files: src/autocomp/simplecomp.py
+Copyright: 2009, Giuseppe "Cowo" Corbelli
+License: wxwindows
+
+Files: src/syntax/dot.py
+Copyright: 2007, Rob McMullen <robm@users.sourceforge.net>
+License: wxwindows
+
+Files: src/syntax/groovy.py
+Copyright: 2009, Omar Gomez <omar.gomez@gmail.com>
+License: wxwindows
+
+Files: src/syntax/xtext.py
+Copyright: 2009, Igor Dejanovic <igor.dejanovic@gmail.com>
+License: wxwindows
+
+Files: tests/syntax/pl_sql.plsql
+Copyright: 2007, Thomas G. Keul <tgkeul@web.de>
+License: wxwindows
+
+Files: scripts/i18n/*
+Copyright: 2008, Rosetta Contributors and Canonical Ltd 2008
+License: wxwindows
+
+Files: src/extern/pygments/filter.py,
+       src/extern/pygments/plugin.py,
+       src/extern/pygments/scanner.py,
+       src/extern/pygments/styles/perldoc.py,
+       src/extern/pygments/styles/borland.py,
+       src/extern/pygments/styles/autumn.py,
+       src/extern/pygments/styles/pastie.py,
+       src/extern/pygments/styles/native.py,
+       src/extern/pygments/formatters/rtf.py,
+       src/extern/pygments/lexers/_phpbuiltins.py,
+Copyright: 2006,2007 Armin Ronacher
+License: BSD
+
+Files: src/extern/pygments/styles/fruity.py
+Copyright: 2007, Armin Ronacher
+License: BSD
+
+Files: src/extern/pygments/styles/vim.py
+Copyright: 2006-2007, Tim Hatch
+License: BSD
+
+Files: src/extern/pygments/lexers/other.py
+Copyright: 2006-2008, Georg Brandl, Tim Hatch <tim@timhatch.com>
+License: BSD
+
+Files: src/extern/pygments/lexers/agile.py,
+       src/extern/pygments/lexers/text.py,
+       src/extern/pygments/lexers/web.py
+Copyright: 2006-2008, Georg Brandl, Armin Ronacher
+License: BSD
+
+Files: src/extern/pygments/lexers/templates.py
+Copyright: 2006-2008, Armin Ronacher, Georg Brandl, Matt Good
+License: BSD
+
+Files: src/extern/pygments/lexers/math.py
+Copyright: 2007-2008, Christopher Creutzig, Ken Schutte, Stou Sandalski
+License: BSD
+
+Files: src/extern/pygments/console.py,
+       src/extern/pygments/formatter.py,
+       src/extern/pygments/styles/friendly.py,
+       src/extern/pygments/formatters/html.py,
+       src/extern/pygments/formatters/__init__.py,
+       src/extern/pygments/formatters/other.py,
+       src/extern/pygments/formatters/_mapping.py,
+       src/extern/pygments/lexers/dotnet.py,
+       src/extern/pygments/lexers/_mapping.py,
+Copyright: 2006-2007, Georg Brandl, Armin Ronacher
+License: BSD
+
+Files: src/extern/pygments/lexers/compiled.py
+Copyright: 2006-2008, Georg Brandl, Armin Ronacher, Christoph Hack
+License: BSD
+
+Files: src/extern/pygments/lexers/asm.py
+Copyright: 2007, Frits van Bommel
+License: BSD
+
+Files: src/extern/pygments/formatters/img.py
+Copyright: 2007, Ali Afshar
+License: BSD
+
+Files: src/extern/pygments/formatters/terminal256.py
+Coyright: 2007, Artem Egorkine
+License: BSD
+
+Files: src/extern/pygments/formatters/svg.py
+Copyright: 2007, Matthew Harrison, Georg Brandl
+License: BSD
+
+Files: src/extern/pygments/unistring.py
+Copyright: 2007, Georg Brandl
+License: BSD
+
+Files: src/extern/pygments/styles/tango.py
+Copyright: 2008, André Roberge
+License: BSD
+
+Files: src/extern/pygments/styles/default.py
+Copyright: 2006-2007, Georg Brandl, Tiberius Teng 
+License: BSD
+
+Files: src/extern/pygments/token.py,
+       src/extern/pygments/lexer.py,
+       src/extern/pygments/style.py,
+       src/extern/pygments/styles/emacs.py,
+       src/extern/pygments/styles/colorful.py,
+       src/extern/pygments/styles/murphy.py,
+       src/extern/pygments/formatters/terminal.py,
+       src/extern/pygments/lexers/__init__.py,
+       src/extern/pygments/lexers/special.py
+Copyright: 2006-2007, Georg Brandl
+License: BSD
+
+Files: src/extern/pygments/formatters/bbcode.py,
+       src/extern/pygments/lexers/_luabuiltins.py
+Copyright: 2006-2007, Lukas Meuser
+License: BSD
+
+Files: src/extern/pygments/styles/trac.py
+Copyright: 2006-2007, Edgewall, Armin Ronacher
+License: BSD
+
+Files: src/extern/pygments/util.py,
+       src/extern/pygments/cmdline.py,
+       src/extern/pygments/styles/__init__.py,
+       src/extern/pygments/formatters/latex.py,
+Copyright: 2006-2008, Georg Brandl
+License: BSD
+
+Files: src/extern/pygments/lexers/functional.py
+Copyright: 2006-2008, Georg Brandl, Marek Kubica
+License: BSD
+
+Files: src/extern/pygments/lexers/_clbuiltins.py
+Copyright: 2006-2007, Matteo Sasso
+License: BSD
+
+Files: src/extern/pygments/styles/vs.py,
+       src/extern/pygments/styles/bw.py
+Copyright: 2008, Georg Brandl
+License: BSD
+
+Files: src/extern/pygments/__init__.py
+Copyright: 2006-2008, Georg Brandl, Armin Ronacher and others
+License: BSD
+
+Files: debian/*
+Copyright: 2009, Alejandro Garrido Mota <garridomota@gmail.com>
+License: GPL-3+
+
+License: wxwindows
+                wxWindows Library Licence, Version 3.1
+                ======================================
+  .
+  Copyright (C) 1998-2005 Julian Smart, Robert Roebling et al
+  .
+  Everyone is permitted to copy and distribute verbatim copies
+  of this licence document, but changing it is not allowed.
+  .
+                       WXWINDOWS LIBRARY LICENCE
+     TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+  .
+  This library is free software; you can redistribute it and/or modify it
+  under the terms of the GNU Library General Public Licence as published by
+  the Free Software Foundation; either version 2 of the Licence, or (at
+  your option) any later version.
+  .
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library
+  General Public Licence for more details.
+  .
+  You should have received a copy of the GNU Library General Public Licence
+  along with this software, usually in a file named COPYING.LIB.  If not,
+  write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+  Boston, MA 02110-1301, USA.
+  . 
+  EXCEPTION NOTICE
+  .
+  1. As a special exception, the copyright holders of this library give
+  permission for additional uses of the text contained in this release of
+  the library as licenced under the wxWindows Library Licence, applying
+  either version 3.1 of the Licence, or (at your option) any later version of
+  the Licence as published by the copyright holders of version
+  3.1 of the Licence document.
+  .
+  2. The exception is that you may use, copy, link, modify and distribute
+  under your own terms, binary object code versions of works based
+  on the Library.
+  .
+  3. If you copy code from files distributed under the terms of the GNU
+  General Public Licence or the GNU Library General Public Licence into a
+  copy of this library, as this licence permits, the exception does not
+  apply to the code that you add in this way.  To avoid misleading anyone as
+  to the status of such modified files, you must delete this exception
+  notice from such code and/or adjust the licensing conditions notice
+  accordingly.
+  .
+  4. If you write modifications of your own for this library, it is your
+  choice whether to permit this exception to apply to your modifications. 
+  If you do not wish that, you must delete the exception notice from such
+  code and/or adjust the licensing conditions notice accordingly.
+
+License: GPL-3+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    On Debian systems, the complete text of the GNU General
+    Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
+
+License: BSD
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are 
+    met:
+    .
+      * Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+    .
+      * Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials provided
+        with the distribution.
+    .
+      * The names of the contributors may not be used to endorse or
+        promote products derived from this software without specific
+        prior written permission.
+    .
+     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
