@@ -1,0 +1,59 @@
+Metadata-Version: 1.0
+Name: Editra
+Version: 0.5.15
+Summary: Developer's Text Editor
+Home-page: http://editra.org
+Author: Cody Precord
+Author-email: staff@editra.org
+License: wxWindows
+Download-URL: http://editra.org/?page=download
+Description: 
+        ========
+        Overview
+        ========
+        Editra is a multi-platform text editor with an implementation that focuses on
+        creating an easy to use interface and features that aid in code development.
+        Currently it supports syntax highlighting and variety of other useful features
+        for over 60 programing languages. For a more complete list of features and
+        screenshots visit the projects homepage at `Editra.org
+        <http://www.editra.org/>`_.
+        
+        ============
+        Dependancies
+        ============
+        * Python 2.4+
+        * wxPython 2.8.3+ (Unicode build suggested)
+        * setuptools 0.6+
+        
+        
+Platform: Many
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: MacOS X
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Environment :: X11 Applications :: GTK
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved
+Classifier: Natural Language :: English
+Classifier: Natural Language :: Chinese (Simplified)
+Classifier: Natural Language :: Chinese (Traditional)
+Classifier: Natural Language :: Czech
+Classifier: Natural Language :: Dutch
+Classifier: Natural Language :: French
+Classifier: Natural Language :: German
+Classifier: Natural Language :: Italian
+Classifier: Natural Language :: Japanese
+Classifier: Natural Language :: Norwegian
+Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Natural Language :: Russian
+Classifier: Natural Language :: Serbian
+Classifier: Natural Language :: Spanish
+Classifier: Natural Language :: Turkish
+Classifier: Natural Language :: Ukranian
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+Classifier: Topic :: Text Editors

@@ -1,0 +1,2845 @@
+# Traditional Chinese translation for editra
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the editra package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: editra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-31 18:47-0500\n"
+"PO-Revision-Date: 2008-08-17 15:01+0000\n"
+"Last-Translator: 狄力尼克 <mymagadsl@gmail.com>\n"
+"Language-Team: Traditional Chinese <zh_TW@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2009-10-31 22:56+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+#: ../../src/ed_search.py:429
+#, python-format
+msgid "\"%s\" was not found"
+msgstr ""
+
+#: ../../src/ed_search.py:627
+#, python-format
+msgid "%d matches were replaced."
+msgstr ""
+
+#: ../../src/util.py:361
+#, python-format
+msgid "%s Source File"
+msgstr "%s 原始碼檔案"
+
+#: ../../src/ed_main.py:584
+#, python-format
+msgid ""
+"%s could not be found.\n"
+"Perhaps it's been moved or deleted."
+msgstr ""
+
+#: ../../src/ed_stc.py:1658
+#, python-format
+msgid "%s does not exist"
+msgstr ""
+
+#: ../../src/ed_editv.py:426
+#, python-format
+msgid ""
+"%s has been deleted since its last save point.\n"
+"\n"
+"Would you like to save it again?"
+msgstr ""
+"自上次儲存後, %s 已被刪除.\n"
+"\n"
+"要再儲存嗎?"
+
+#: ../../src/ed_editv.py:446
+#, python-format
+msgid ""
+"%s has been modified by another application.\n"
+"\n"
+"Would you like to reload it?"
+msgstr ""
+
+#: ../../src/ed_menu.py:794
+msgid "&About..."
+msgstr ""
+
+#: ../../src/ed_menu.py:490
+msgid "&Close Tab"
+msgstr ""
+
+#: ../../src/ed_menu.py:550
+msgid "&Copy"
+msgstr "複製(&C)"
+
+#: ../../src/ed_menu.py:614
+msgid "&Edit"
+msgstr "&編輯"
+
+#: ../../src/ed_menu.py:536
+msgid "&File"
+msgstr "檔案(&F)"
+
+#: ../../src/ed_menu.py:598
+msgid "&Find"
+msgstr "搜尋(&F)"
+
+#: ../../src/ed_menu.py:688
+msgid "&Font"
+msgstr "字型(&F)"
+
+#: ../../src/ed_menu.py:658
+msgid "&Goto Line"
+msgstr "移至指定行數(&G)"
+
+#: ../../src/ed_main.py:152 ../../src/ed_menu.py:807
+msgid "&Help"
+msgstr "說明(&H)"
+
+#: ../../src/ed_menu.py:480
+msgid "&New Tab"
+msgstr "新增分頁(&N)"
+
+#: ../../src/ed_menu.py:485
+msgid "&Open"
+msgstr "開啟(&O)"
+
+#: ../../src/ed_menu.py:552
+msgid "&Paste"
+msgstr "貼上(&P)"
+
+#: ../../src/ed_menu.py:531
+msgid "&Print"
+msgstr "列印(&P)"
+
+#: ../../src/ed_menu.py:601
+msgid "&Quick Find"
+msgstr "快速尋找(&Q)"
+
+#: ../../src/ed_menu.py:497
+msgid "&Save"
+msgstr "儲存(&S)"
+
+#: ../../src/ed_menu.py:760
+msgid "&Settings"
+msgstr "設定(&S)"
+
+#: ../../src/ed_menu.py:675
+msgid "&Toolbar"
+msgstr "工具列(&T)"
+
+#: ../../src/ed_menu.py:785
+msgid "&Tools"
+msgstr "工具(&T)"
+
+#: ../../src/ed_menu.py:545
+msgid "&Undo"
+msgstr "復原(&U)"
+
+#: ../../src/ed_menu.py:679
+msgid "&View"
+msgstr "檢視(&V)"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:304
+msgid "**Alias**"
+msgstr "**別名**"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:304
+msgid "**New Value**"
+msgstr "**新的值**"
+
+#: ../../src/eclib/errdlg.py:321 ../../plugins/Launch/Launch/launch.py:533
+msgid "Abort"
+msgstr "中斷"
+
+#: ../../src/ed_menu.py:795
+msgid "About"
+msgstr "關於"
+
+#: ../../src/ed_cmdbar.py:761
+#, python-format
+msgid "Access Denied: %s"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:240
+msgid "Add a new executable"
+msgstr "加入新的執行檔"
+
+#: ../../src/ed_menu.py:566
+msgid "Add a new line after the current line"
+msgstr "在此行後新增一行"
+
+#: ../../src/ed_menu.py:568
+msgid "Add a new line before the current line"
+msgstr "在此行前新增一行"
+
+#: ../../src/ed_menu.py:596
+msgid "Add and remove bookmarks"
+msgstr "新增/刪除書籤"
+
+#: ../../src/prefdlg.py:194
+msgid "Advanced"
+msgstr "進階"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:519
+msgid "Alias"
+msgstr "別名"
+
+#: ../../src/ed_log.py:170 ../../src/ed_log.py:247
+msgid "All"
+msgstr "全部"
+
+#: ../../src/Editra.py:570
+#, python-format
+msgid ""
+"An updated version of Editra is available\n"
+"Would you like to download Editra %s now?"
+msgstr ""
+"Editra 已有新的版本\n"
+"要立即下載 Editra %s 嗎?"
+
+#: ../../src/prefdlg.py:699
+msgid "AntiAliasing"
+msgstr "反鋸齒"
+
+#: ../../src/prefdlg.py:188
+msgid "Appearance"
+msgstr "外觀"
+
+#: ../../src/prefdlg.py:1715
+msgid "Apply"
+msgstr "套用"
+
+#: ../../src/plugdlg.py:1058
+#, python-format
+msgid ""
+"Are you sure you want to uninstall %s?\n"
+"This cannot be undone."
+msgstr ""
+
+#: ../../src/style_editor.py:665
+msgid "Attributes"
+msgstr "屬性"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:414
+msgid "Audible feedback when errors are detected"
+msgstr ""
+
+#: ../../src/ed_main.py:1225
+msgid "Aui Pane Navigator"
+msgstr ""
+
+#: ../../src/plugdlg.py:948 ../../src/plugdlg.py:1127
+#, python-format
+msgid "Author: %s"
+msgstr ""
+
+#: ../../src/ed_menu.py:747 ../../src/prefdlg.py:874
+msgid "Auto-Completion"
+msgstr "自動完成"
+
+#: ../../src/ed_menu.py:749 ../../src/prefdlg.py:884
+msgid "Auto-Indent"
+msgstr "自動縮排"
+
+#: ../../src/prefdlg.py:489
+msgid "Automatically Backup Files"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:411
+msgid "Automatically clear buffer between runs"
+msgstr "運行間自動清除緩衝區"
+
+#: ../../src/prefdlg.py:504
+msgid "Automatically reload files when changes are detected on disk"
+msgstr ""
+
+#: ../../src/perspective.py:74
+msgid "Automatically save/use window state from last session"
+msgstr "自動儲存/回復前次視窗狀態"
+
+#: ../../src/prefdlg.py:676
+msgid "Automatically trim whitespace on save"
+msgstr ""
+
+#: ../../src/style_editor.py:654 ../../plugins/Launch/Launch/cfgdlg.py:431
+msgid "Background"
+msgstr "背景"
+
+#: ../../src/prefdlg.py:682
+msgid "Backspace Unindents"
+msgstr "使用 Backspace 鍵取消縮排"
+
+#: ../../src/prefdlg.py:491
+msgid "Backup buffer to file periodically"
+msgstr ""
+
+#: ../../src/style_editor.py:196
+msgid "Base new theme on existing one"
+msgstr "基於當前佈景主題來建立新佈景"
+
+#: ../../src/prefdlg.py:1689
+msgid "Binding"
+msgstr ""
+
+#: ../../src/prefdlg.py:2103
+msgid "Black/White"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:417
+msgid "Bookmark Selected Path(s)"
+msgstr "標注選擇的路徑"
+
+#: ../../src/ed_menu.py:595
+msgid "Bookmarks"
+msgstr "書籤"
+
+#: ../../src/ed_menu.py:752 ../../src/prefdlg.py:854
+msgid "Bracket Highlighting"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:538
+msgid "Browse"
+msgstr ""
+
+#: ../../src/ed_cmdbar.py:559
+#, python-format
+msgid "Can't change directory to: %s"
+msgstr ""
+
+#: ../../src/ed_search.py:1237 ../../src/style_editor.py:139
+#: ../../src/updater.py:567
+msgid "Cancel"
+msgstr "取消"
+
+#: ../../src/updater.py:644
+msgid "Canceled"
+msgstr "已取消"
+
+#: ../../src/ed_menu.py:689
+msgid "Change Font Settings"
+msgstr "改變字型設定"
+
+#: ../../src/ed_statbar.py:60 ../../src/ed_statbar.py:62
+#: ../../src/ed_statbar.py:64
+#, python-format
+msgid "Change line endings to %s"
+msgstr ""
+
+#: ../../src/perspective.py:129
+#, python-format
+msgid "Change view to \"%s\""
+msgstr "改變環境設定成 \"%s\""
+
+#: ../../src/style_editor.py:749
+#, python-format
+msgid "Changed color scheme to %s"
+msgstr "改變色彩配置為 %s"
+
+#: ../../src/prefdlg.py:279
+msgid "Changes made in this dialog are saved in your current profile. Some Items such as Language require the program to be restarted before taking effect."
+msgstr "對話框中的修改已儲存至你的設定檔中。其中一些項目(如語言設定)需要重新啟動程式後才能生效"
+
+#: ../../src/plugdlg.py:232
+msgid "Changes will take affect once the program has been restarted"
+msgstr "程式需要重新啟動才會套用所更動的設定"
+
+#: ../../src/prefdlg.py:1474
+msgid "Check"
+msgstr "檢查"
+
+#: ../../src/prefdlg.py:410
+msgid "Check for updates on startup"
+msgstr "程式啟動時檢查是否有更新檔"
+
+#: ../../src/prefdlg.py:499
+msgid "Check if on disk file has been modified by others"
+msgstr "檢查檔案是否已被其它程式更動"
+
+#: ../../src/prefdlg.py:532
+msgid "Check spelling while typing"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:788
+msgid "Choose Folder"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:1116
+msgid "Choose Search Folder"
+msgstr ""
+
+#: ../../src/ed_main.py:446
+msgid "Choose a File"
+msgstr "選擇檔案"
+
+#: ../../src/ed_main.py:676
+msgid "Choose a Save Location"
+msgstr "選擇儲存位置"
+
+#: ../../src/ed_pages.py:160
+msgid "Choose an Encoding"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:547
+msgid "Choose and executable"
+msgstr ""
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:49
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:265
+msgid "Class Definitions"
+msgstr "類別定義"
+
+#: ../../src/ed_log.py:140 ../../src/ed_search.py:1246
+#: ../../plugins/Launch/Launch/launch.py:187
+#: ../../plugins/PyShell/PyShell/__init__.py:114
+msgid "Clear"
+msgstr "清除"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:516
+msgid "Click on an item to edit"
+msgstr "點選要編輯的項目"
+
+#: ../../src/ed_editv.py:275
+#, python-format
+msgid "Close \"%s\""
+msgstr ""
+
+#: ../../src/ed_editv.py:276
+msgid "Close All"
+msgstr ""
+
+#: ../../src/ed_menu.py:494
+msgid "Close All Tabs"
+msgstr ""
+
+#: ../../src/ed_menu.py:491
+msgid "Close Current Tab"
+msgstr ""
+
+#: ../../src/ed_menu.py:493
+msgid "Close Window"
+msgstr "關閉視窗"
+
+#: ../../src/ed_menu.py:495
+msgid "Close all open tabs"
+msgstr "關閉所有分頁"
+
+#: ../../src/ed_menu.py:493
+msgid "Close the current window"
+msgstr "關閉目前的視窗"
+
+#: ../../src/prefdlg.py:612
+msgid "Code"
+msgstr "程式碼"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:89
+msgid "Code Browser"
+msgstr "程式碼瀏覽器"
+
+#: ../../src/ed_menu.py:649 ../../src/ed_menu.py:754 ../../src/prefdlg.py:856
+msgid "Code Folding"
+msgstr "程式碼摺疊"
+
+#: ../../src/ed_menu.py:650
+msgid "Code folding toggle actions"
+msgstr ""
+
+#: ../../plugins/codebrowser/codebrowser/__init__.py:48
+msgid "CodeBrowser"
+msgstr "程式碼瀏覽器"
+
+#: ../../src/style_editor.py:638
+msgid "Color"
+msgstr "色彩"
+
+#: ../../src/ed_menu.py:757
+msgid "Color Highlight Code Syntax"
+msgstr "高亮度源碼"
+
+#: ../../src/prefdlg.py:1029 ../../plugins/PyShell/PyShell/__init__.py:109
+msgid "Color Scheme"
+msgstr "色彩配置"
+
+#: ../../src/prefdlg.py:2105
+msgid "Colour/Default"
+msgstr ""
+
+#: ../../src/prefdlg.py:2104
+msgid "Colour/White"
+msgstr ""
+
+#: ../../src/ed_menu.py:561
+msgid "Column Mode"
+msgstr ""
+
+#: ../../src/ed_cmdbar.py:407
+msgid "Command"
+msgstr "指令"
+
+#: ../../src/ed_menu.py:589
+msgid "Commands that affect an entire line"
+msgstr "影響整行的命令"
+
+#: ../../src/prefdlg.py:1284
+msgid "Configuration"
+msgstr "配置"
+
+#: ../../src/plugdlg.py:192
+msgid "Configuration Changes Made"
+msgstr ""
+
+#: ../../src/plugdlg.py:119 ../../src/plugdlg.py:956
+msgid "Configure"
+msgstr "配置"
+
+#: ../../src/ed_menu.py:528
+msgid "Configure Printer"
+msgstr "設定印表機"
+
+#: ../../src/ed_menu.py:703
+msgid "Convert selected text to all lowercase letters"
+msgstr "將所選的文字轉小寫"
+
+#: ../../src/ed_menu.py:701
+msgid "Convert selected text to all uppercase letters"
+msgstr "將所選的文字轉大寫"
+
+#: ../../src/ed_menu.py:715
+msgid "Convert spaces to tabs in selected/all text"
+msgstr "將所選或全部文字的空白轉成 Tab"
+
+#: ../../src/ed_menu.py:717
+msgid "Convert tabs to spaces in selected/all text"
+msgstr "將所選或全部文字的 Tab 轉成空白"
+
+#: ../../src/ed_editv.py:122 ../../src/ed_toolbar.py:85
+msgid "Copy"
+msgstr "複製"
+
+#: ../../src/ed_menu.py:575
+msgid "Copy Current Line"
+msgstr "複製本行"
+
+#: ../../src/ed_editv.py:278
+msgid "Copy Full Path"
+msgstr ""
+
+#: ../../src/ed_menu.py:574
+msgid "Copy Line"
+msgstr "複製行"
+
+#: ../../src/ed_menu.py:551 ../../src/ed_toolbar.py:86
+msgid "Copy Selected Text to Clipboard"
+msgstr "複製所選的文字"
+
+#: ../../src/ed_main.py:1532
+msgid "Copyright"
+msgstr "版權所有"
+
+#: ../../src/eclib/finddlg.py:843
+msgid "Count"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:429
+#: ../../plugins/filebrowser/filebrowser/browser.py:548
+#, python-format
+msgid "Create Archive of \"%s\""
+msgstr "產生 \"%s\" 文件包"
+
+#: ../../src/eclib/infodlg.py:193
+msgid "Created"
+msgstr "已建立"
+
+#: ../../src/ed_menu.py:548
+msgid "Cu&t"
+msgstr "剪下(&T)"
+
+#: ../../src/eclib/finddlg.py:710
+msgid "Current Document"
+msgstr ""
+
+#: ../../src/ed_cmdbar.py:116
+msgid "Customize"
+msgstr ""
+
+#: ../../src/ed_editv.py:121 ../../src/ed_toolbar.py:83
+msgid "Cut"
+msgstr "剪下"
+
+#: ../../src/ed_menu.py:571
+msgid "Cut Current Line"
+msgstr "剪下目前行"
+
+#: ../../src/ed_menu.py:570
+msgid "Cut Line"
+msgstr "剪下行"
+
+#: ../../src/ed_menu.py:549 ../../src/ed_toolbar.py:84
+msgid "Cut Selected Text from File"
+msgstr "從檔案中剪下所選文字"
+
+#: ../../src/ed_menu.py:556
+msgid "Cycle Clipboard"
+msgstr ""
+
+#: ../../src/ed_menu.py:557
+msgid "Cycle through recent clipboard text"
+msgstr ""
+
+#: ../../src/ed_search.py:62 ../../src/ed_search.py:66
+msgid "DECODING ERROR"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:226
+msgid "Default"
+msgstr "預設"
+
+#: ../../src/prefdlg.py:694
+msgid "Default EOL Mode"
+msgstr "預設EOL模式"
+
+#: ../../src/prefdlg.py:847
+msgid "Default Lexer"
+msgstr "預設程式語言分析器"
+
+#: ../../src/prefdlg.py:1142
+msgid "Default Perspective"
+msgstr "預設環境設定"
+
+#: ../../src/prefdlg.py:845
+msgid "Default highlighing for new documents"
+msgstr "新文件預設使用高亮度模式"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:49
+msgid "Defines"
+msgstr "定義"
+
+#: ../../src/prefdlg.py:1658
+msgid "Delete"
+msgstr "刪除"
+
+#: ../../src/ed_menu.py:572
+msgid "Delete Line"
+msgstr ""
+
+#: ../../src/perspective.py:237
+msgid "Delete Perspective"
+msgstr "刪除環境設定"
+
+#: ../../src/perspective.py:71
+msgid "Delete Saved View"
+msgstr ""
+
+#: ../../src/ed_menu.py:573
+msgid "Delete the selected line(s)"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:488
+#: ../../plugins/filebrowser/filebrowser/browser.py:655
+msgid "Desktop"
+msgstr ""
+
+#: ../../src/prefdlg.py:539
+msgid "Dictionary"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:800
+msgid "Direction"
+msgstr ""
+
+#: ../../src/prefdlg.py:397
+msgid "Disable Error Reporter"
+msgstr "關閉錯誤報告"
+
+#: ../../src/prefdlg.py:1184
+msgid "Display Font"
+msgstr "顯示字型"
+
+#: ../../src/plugdlg.py:179
+msgid "Do you wish to exit?"
+msgstr "要結束了嗎?"
+
+#: ../../src/ed_pages.py:930
+#, python-format
+msgid ""
+"Do you wish to open all %d files in this directory?\n"
+"\n"
+"Warning: opening many files at once may cause the editor to temporarily  freeze."
+msgstr ""
+
+#: ../../src/prefdlg.py:190
+msgid "Document"
+msgstr "文件"
+
+#: ../../src/eclib/finddlg.py:804
+msgid "Down"
+msgstr ""
+
+#: ../../src/plugdlg.py:120 ../../src/plugdlg.py:460 ../../src/plugdlg.py:1106
+#: ../../src/prefdlg.py:1469
+msgid "Download"
+msgstr "下載"
+
+#: ../../src/plugdlg.py:483
+msgid "Downloaded"
+msgstr "已下載完畢"
+
+#: ../../src/plugdlg.py:595 ../../src/updater.py:603
+msgid "Downloading"
+msgstr "下載中"
+
+#: ../../src/updater.py:566
+#, python-format
+msgid "Downloading To: %s"
+msgstr "下載為: %s"
+
+#: ../../src/Editra.py:576 ../../src/prefdlg.py:1510
+msgid "Downloading Update"
+msgstr "下載更新中"
+
+#: ../../src/updater.py:564
+#, python-format
+msgid "Downloading: %s"
+msgstr "正在下載: %s"
+
+#: ../../src/plugdlg.py:178
+msgid "Downloads are incomplete"
+msgstr "未下載完成"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:428
+msgid "Duplicate"
+msgstr "製作複本"
+
+#: ../../src/ed_menu.py:576
+msgid "Duplicate Line"
+msgstr "複製行"
+
+#: ../../src/ed_menu.py:577
+msgid "Duplicate the current line"
+msgstr "複製本行"
+
+#: ../../src/ed_menu.py:533
+msgid "E&xit"
+msgstr "結束(&X)"
+
+#: ../../src/ed_menu.py:734
+msgid "EOL Mode"
+msgstr "EOL 模式"
+
+#: ../../src/ed_main.py:649
+#, python-format
+msgid "ERROR: %s"
+msgstr "錯誤: %s"
+
+#: ../../src/ed_main.py:692
+#, python-format
+msgid "ERROR: Failed to save %s"
+msgstr "錯誤: 無法儲存 %s"
+
+#: ../../src/prefdlg.py:858
+msgid "Edge Guide"
+msgstr "邊界設定"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:413
+msgid "Edit"
+msgstr "編輯"
+
+#: ../../src/ed_menu.py:611
+msgid "Edit Preferences / Settings"
+msgstr "編輯偏好設定"
+
+#: ../../src/ed_menu.py:774
+msgid "Edit the way syntax is highlighted"
+msgstr "編輯語法高亮度模式"
+
+#: ../../src/ed_menu.py:642
+msgid "Editor"
+msgstr "編輯器"
+
+#: ../../src/ed_menu.py:769
+msgid "Editor Command"
+msgstr "編輯器命令"
+
+#: ../../src/prefdlg.py:381
+msgid "Editor Mode"
+msgstr "編輯模式"
+
+#: ../../src/ed_log.py:79
+msgid "Editra Log"
+msgstr "Editra 記錄"
+
+#: ../../src/ed_mdlg.py:85
+#, python-format
+msgid ""
+"Editra could not open %(filename)s\n"
+"\n"
+"Error:\n"
+"%(errormsg)s"
+msgstr ""
+"Editra 無法開啟 %(filename)s\n"
+"\n"
+"錯誤:\n"
+"%(errormsg)s"
+
+#: ../../src/ed_main.py:1522
+msgid "Editra is a programmers text editor."
+msgstr "Editra 是一個程式語言編輯器"
+
+#: ../../src/ed_menu.py:802
+msgid "Editra translations project"
+msgstr "Editra 翻譯專案"
+
+#: ../../src/ed_pages.py:360
+msgid "Empty File"
+msgstr ""
+
+#: ../../src/plugdlg.py:949
+msgid "Enable"
+msgstr ""
+
+#: ../../src/prefdlg.py:886
+msgid "Enable Vi Emulation"
+msgstr "開啟 Vi 模擬"
+
+#: ../../src/ed_menu.py:562
+msgid "Enable column edit mode."
+msgstr ""
+
+#: ../../src/prefdlg.py:549
+msgid "Enchant Path"
+msgstr ""
+
+#: ../../src/prefdlg.py:483
+msgid "Encoding to try when auto detection fails"
+msgstr ""
+
+#: ../../src/ed_menu.py:735
+msgid "End of line character formatting"
+msgstr "行尾字元格式"
+
+#: ../../src/eclib/colorsetter.py:82
+msgid "Enter a hex color value"
+msgstr ""
+
+#: ../../src/style_editor.py:292
+msgid "Enter style sheet name"
+msgstr ""
+
+#: ../../src/prefdlg.py:1853
+msgid "Enter the name of the new key profile"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:821
+msgid "Enter wildcard shell patterns for matching files (*.txt)."
+msgstr ""
+
+#: ../../src/ed_editv.py:235 ../../src/plugdlg.py:838
+msgid "Error"
+msgstr "錯誤"
+
+#: ../../src/ed_mdlg.py:87
+msgid "Error Opening File"
+msgstr "開啟檔案時發生錯誤"
+
+#: ../../src/ed_pages.py:310
+msgid "Error Saving Session File"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:441
+msgid "Error Text"
+msgstr ""
+
+#: ../../src/eclib/errdlg.py:317
+msgid "Error Traceback:"
+msgstr "錯誤追蹤："
+
+#: ../../src/ed_search.py:537 ../../src/ed_search.py:694
+#, python-format
+msgid ""
+"Error in regular expression expansion.The replace action cannot be completed.\n"
+"\n"
+"Error Message: %s"
+msgstr ""
+
+#: ../../src/dev_tool.py:240
+msgid ""
+"Error: Something unexpected happend\n"
+"Help improve Editra by clicking on Report Error\n"
+"to send the Error Traceback shown below."
+msgstr ""
+
+#: ../../src/ed_main.py:1446
+#, python-format
+msgid "Error: Unable to open %s"
+msgstr "錯誤: 無法開啟 %s"
+
+#: ../../src/plugdlg.py:129
+msgid "Errors"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:520
+msgid "Executable Commands"
+msgstr "可執行命令"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:211
+msgid "Executables"
+msgstr "可執行"
+
+#: ../../plugins/Launch/Launch/launch.py:664
+msgid "Exit Code"
+msgstr ""
+
+#: ../../src/ed_menu.py:533
+msgid "Exit the Program"
+msgstr "關閉程式"
+
+#: ../../src/eclib/errdlg.py:322
+msgid "Exit the application"
+msgstr ""
+
+#: ../../src/style_editor.py:141
+msgid "Export"
+msgstr "匯出"
+
+#: ../../src/style_editor.py:293
+msgid "Export Style Sheet"
+msgstr "匯出樣式表"
+
+#: ../../src/prefdlg.py:877
+msgid "Extended Auto-Comp"
+msgstr ""
+
+#: ../../src/prefdlg.py:1992
+msgid "Extensions (space separated, no dots)"
+msgstr "插件 (以空格分隔, 不允許.號)"
+
+#: ../../src/ed_menu.py:738
+msgid "F&ormat"
+msgstr "格式(&O)"
+
+#: ../../src/updater.py:682
+msgid "Failed"
+msgstr "失敗"
+
+#: ../../src/ed_print.py:112
+msgid "Failed to create print preview"
+msgstr ""
+
+#: ../../src/plugdlg.py:840
+#, python-format
+msgid "Failed to install %d plugins"
+msgstr "安裝 %d 套件失敗"
+
+#: ../../src/prefdlg.py:583
+msgid "Failed to load Enchant"
+msgstr ""
+
+#: ../../src/ed_editv.py:233
+#, python-format
+msgid ""
+"Failed to reload %(filename)s:\n"
+"Error: %(errmsg)s"
+msgstr ""
+"無法重新載入 %(filename)s:\n"
+"錯誤: %(errmsg)s"
+
+#: ../../src/ed_main.py:1206
+#, python-format
+msgid "Failed to reload the file with: %(encoding)s"
+msgstr ""
+
+#: ../../src/ed_mdlg.py:104
+#, python-format
+msgid ""
+"Failed to save file: %(filename)s\n"
+"\n"
+"Error:\n"
+"%(errormsg)s"
+msgstr ""
+"無法儲存檔案: %(filename)s\n"
+"錯誤:\n"
+"%(errormsg)s"
+
+#: ../../src/ed_menu.py:803
+msgid "Feedback"
+msgstr "反饋"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:232
+msgid "File Browser"
+msgstr "檔案瀏覽器"
+
+#: ../../src/eclib/finddlg.py:714
+msgid "File Filters:"
+msgstr ""
+
+#: ../../src/prefdlg.py:464
+msgid "File History Length"
+msgstr "檔案歷史"
+
+#: ../../src/ed_main.py:586
+msgid "File Not Found"
+msgstr "找不到檔案"
+
+#: ../../src/prefdlg.py:515
+msgid "File Settings"
+msgstr "檔案設定"
+
+#: ../../src/eclib/infodlg.py:115
+msgid "File Stat Failed"
+msgstr "檔案狀態失敗"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:206
+msgid "File Type"
+msgstr "檔案類型"
+
+#: ../../src/ed_stc.py:557
+#, python-format
+msgid "File backup performed: %s"
+msgstr ""
+
+#: ../../src/ed_stc.py:1705
+msgid "File is Read Only and cannot be saved"
+msgstr ""
+
+#: ../../src/ed_pages.py:199
+msgid ""
+"File is already open in an existing page.\n"
+"Do you wish to open it again?"
+msgstr ""
+"檔案已經開啟.\n"
+"要重新開啟嗎?"
+
+#: ../../src/prefdlg.py:302
+#, fuzzy
+msgid "Files"
+msgstr "檔案(&F)"
+
+#: ../../src/ed_search.py:1291
+#, python-format
+msgid "Files Searched: %d"
+msgstr ""
+
+#: ../../src/prefdlg.py:1023
+msgid "Filetype Associations"
+msgstr "檔案類型關連"
+
+#: ../../src/eclib/finddlg.py:630 ../../src/eclib/finddlg.py:765
+#: ../../src/eclib/finddlg.py:841 ../../src/ed_cmdbar.py:261
+#: ../../src/ed_search.py:147 ../../src/ed_search.py:151
+#: ../../src/ed_toolbar.py:90
+msgid "Find"
+msgstr "尋找"
+
+#: ../../src/eclib/finddlg.py:844 ../../src/ed_cmdbar.py:277
+msgid "Find All"
+msgstr ""
+
+#: ../../src/ed_search.py:309
+msgid "Find Count"
+msgstr ""
+
+#: ../../src/ed_menu.py:605
+msgid "Find Next"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:810
+msgid "Find Options"
+msgstr ""
+
+#: ../../src/ed_menu.py:603
+msgid "Find Previous"
+msgstr ""
+
+#: ../../src/ed_menu.py:607
+msgid "Find Selected"
+msgstr ""
+
+#: ../../src/ed_menu.py:598 ../../src/ed_toolbar.py:90
+msgid "Find Text"
+msgstr "尋找文字"
+
+#: ../../src/ed_menu.py:600 ../../src/ed_toolbar.py:92
+msgid "Find and Replace Text"
+msgstr "尋找並取代文字"
+
+#: ../../src/eclib/finddlg.py:763
+msgid "Find what"
+msgstr ""
+
+#: ../../src/ed_menu.py:599
+msgid "Find/R&eplace"
+msgstr "尋找/取代(&e)"
+
+#: ../../src/ed_search.py:147 ../../src/ed_search.py:151
+#: ../../src/ed_toolbar.py:91
+msgid "Find/Replace"
+msgstr "尋找/取代"
+
+#: ../../src/updater.py:679
+msgid "Finished"
+msgstr "已完成"
+
+#: ../../src/plugdlg.py:486
+msgid "Finshed downloading plugins"
+msgstr "已完成套件下載"
+
+#: ../../src/eclib/infodlg.py:292 ../../src/util.py:349
+msgid "Folder"
+msgstr "資料夾"
+
+#: ../../src/style_editor.py:686
+msgid "Font"
+msgstr "字型"
+
+#: ../../src/style_editor.py:681
+msgid "Font Settings"
+msgstr "字型設定"
+
+#: ../../src/style_editor.py:642 ../../plugins/Launch/Launch/cfgdlg.py:428
+msgid "Foreground"
+msgstr "前景"
+
+#: ../../src/prefdlg.py:728
+msgid "Format"
+msgstr "格式"
+
+#: ../../src/ed_stc.py:1088
+msgid "Format EOL?"
+msgstr ""
+
+#: ../../src/ed_menu.py:726 ../../src/ed_menu.py:729 ../../src/ed_menu.py:732
+#, python-format
+msgid "Format all EOL characters to %s Mode"
+msgstr "將所有行尾符號轉成 %s 模式"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:49
+msgid "Function Definitions"
+msgstr "函式定義"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+msgid "Functions"
+msgstr ""
+
+#: ../../src/prefdlg.py:186 ../../src/prefdlg.py:611 ../../src/prefdlg.py:898
+#: ../../plugins/Launch/Launch/cfgdlg.py:171
+msgid "General"
+msgstr "一般"
+
+#: ../../src/generator.py:289 ../../src/generator.py:676
+#: ../../src/generator.py:879
+#, python-format
+msgid "Generate %s"
+msgstr "產生 %s"
+
+#: ../../src/generator.py:116
+msgid "Generate Code and Documents"
+msgstr "產生原始碼與文件"
+
+#: ../../src/generator.py:290 ../../src/generator.py:880
+#, python-format
+msgid "Generate a %s version of the current document"
+msgstr "產生當前文件的 %s 版本"
+
+#: ../../src/generator.py:677
+#, python-format
+msgid "Generate an %s version of the current document"
+msgstr "產生當前文件的 %s 版本"
+
+#: ../../src/generator.py:115
+msgid "Generator"
+msgstr "產生器"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:422
+msgid "Get Info"
+msgstr "取得資訊"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+msgid "Global Variables"
+msgstr "全域變數"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:378
+#, python-format
+msgid "Goto \"%s\""
+msgstr "跳轉到 \"%s\""
+
+#: ../../src/ed_cmdbar.py:437
+msgid "Goto Line"
+msgstr "到指定行"
+
+#: ../../src/ed_menu.py:659
+msgid "Goto Line Number"
+msgstr "跳至指定行數"
+
+#: ../../src/ed_menu.py:660
+msgid "Goto Matching Brace"
+msgstr "跳到對應的括號"
+
+#: ../../src/ed_menu.py:770
+msgid "Goto command buffer"
+msgstr "跳到命令緩衝"
+
+#: ../../src/ed_menu.py:664
+msgid "Goto next position in history."
+msgstr ""
+
+#: ../../src/ed_menu.py:604
+msgid "Goto previous match"
+msgstr ""
+
+#: ../../src/ed_menu.py:666
+msgid "Goto previous position in history."
+msgstr ""
+
+#: ../../src/ed_menu.py:606
+msgid "Goto the next match"
+msgstr ""
+
+#: ../../src/prefdlg.py:862
+msgid "Guide Column"
+msgstr "指示欄"
+
+#: ../../src/ed_menu.py:753
+msgid "Highlight Brackets/Braces"
+msgstr "括弧高亮度"
+
+#: ../../src/ed_menu.py:629 ../../src/prefdlg.py:867
+msgid "Highlight Caret Line"
+msgstr "高亮度顯示光標所在行"
+
+#: ../../src/ed_menu.py:630
+msgid "Highlight the background of the current line"
+msgstr "高亮度顯示當前行背景"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:486
+msgid "Home directory"
+msgstr ""
+
+#: ../../src/ed_main.py:1524
+msgid "Homepage"
+msgstr "首頁"
+
+#: ../../src/prefdlg.py:1120
+msgid "Icon Theme"
+msgstr "圖示佈景主題"
+
+#: ../../src/prefdlg.py:1165
+msgid "Icons"
+msgstr "圖示"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+msgid "Identities"
+msgstr "身份"
+
+#: ../../src/ed_menu.py:695
+msgid "Indent Lines"
+msgstr "縮排"
+
+#: ../../src/prefdlg.py:668
+msgid "Indent Width"
+msgstr "縮排寬度"
+
+#: ../../src/ed_menu.py:696
+msgid "Indent the selected lines"
+msgstr "縮排選擇行"
+
+#: ../../src/ed_menu.py:632 ../../src/prefdlg.py:870
+msgid "Indentation Guides"
+msgstr "縮排指示"
+
+#: ../../src/eclib/infodlg.py:58
+msgid "Info"
+msgstr "資訊"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:448
+msgid "Info Text"
+msgstr "訊息文字"
+
+#: ../../src/prefdlg.py:907
+msgid "Input Helpers"
+msgstr "輸入幫手"
+
+#: ../../src/ed_menu.py:706
+msgid "Insert spaces instead of tab characters with tab key"
+msgstr "按下 tab 鍵時使用空格代替 tab"
+
+#: ../../src/plugdlg.py:121 ../../src/plugdlg.py:763
+msgid "Install"
+msgstr "安裝"
+
+#: ../../src/plugdlg.py:770
+msgid ""
+"Install the plugins for all users\n"
+" **requires administrative privileges**"
+msgstr ""
+"為所有使用者安裝插件\n"
+"**需要管理員權限**"
+
+#: ../../src/plugdlg.py:767
+msgid "Install the plugins only for the current user"
+msgstr "只為目前使用者安裝插件"
+
+#: ../../src/plugdlg.py:842
+msgid "Installation Error"
+msgstr "安裝錯誤"
+
+#: ../../src/prefdlg.py:1450
+msgid "Installed Version"
+msgstr "已安裝版本"
+
+#: ../../src/ed_pages.py:339
+msgid "Invalid File"
+msgstr ""
+
+#: ../../src/ed_search.py:349
+#, python-format
+msgid "Invalid expression \"%s\""
+msgstr ""
+
+#: ../../src/ed_pages.py:353
+msgid "Invalid file"
+msgstr ""
+
+#: ../../src/ed_pages.py:914
+#, python-format
+msgid "Invalid file: %s"
+msgstr "無效檔案: %s"
+
+#: ../../src/prefdlg.py:2106
+msgid "Inverse"
+msgstr ""
+
+#: ../../src/ed_menu.py:579
+msgid "Join Lines"
+msgstr "連接行"
+
+#: ../../src/ed_menu.py:580
+msgid "Join the Selected Lines"
+msgstr "連接選定行"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:101
+msgid "Jump to Saved Path"
+msgstr "跳至儲存路徑"
+
+#: ../../src/prefdlg.py:1685
+msgid "Key"
+msgstr "按鍵"
+
+#: ../../src/prefdlg.py:1654
+msgid "Key Profile"
+msgstr "按鍵配置"
+
+#: ../../src/prefdlg.py:1562
+msgid "Keybindings"
+msgstr "按鍵對應"
+
+#: ../../src/eclib/infodlg.py:182
+msgid "Kind"
+msgstr "種類"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+msgid "Labels"
+msgstr "標籤"
+
+#: ../../src/prefdlg.py:415
+msgid "Language"
+msgstr "語言："
+
+#: ../../src/prefdlg.py:1456
+msgid "Latest Version"
+msgstr "最新版本"
+
+#: ../../plugins/Launch/Launch/__init__.py:140
+msgid "Launch"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:111
+msgid "Launch Configuration"
+msgstr "啟動設定"
+
+#: ../../src/prefdlg.py:1170
+msgid "Layout"
+msgstr "佈置"
+
+#: ../../src/prefdlg.py:1990
+msgid "Lexer"
+msgstr "解析器"
+
+#: ../../src/ed_main.py:144
+msgid "Lexers"
+msgstr "解析器"
+
+#: ../../src/prefdlg.py:584
+#, fuzzy
+msgid "Library Error"
+msgstr "儲存時發生錯誤"
+
+#: ../../src/ed_main.py:1526
+msgid "License: wxWindows (see COPYING.txt for full license)"
+msgstr "授權證書: wxWindows (可至 COPYING.txt 查看完整授權)"
+
+#: ../../src/ed_menu.py:588
+msgid "Line Edit"
+msgstr "行編輯"
+
+#: ../../src/ed_stc.py:690
+#, python-format
+msgid "Line: %(lnum)d  Column: %(cnum)d"
+msgstr ""
+
+#: ../../src/prefdlg.py:399
+msgid "Load Last Session"
+msgstr "載入最近一次的狀態"
+
+#: ../../src/ed_menu.py:512
+msgid "Load Profile"
+msgstr "載入設定檔"
+
+#: ../../src/ed_menu.py:521
+msgid "Load Session"
+msgstr ""
+
+#: ../../src/ed_main.py:732 ../../src/ed_menu.py:513
+msgid "Load a Custom Profile"
+msgstr "載入自訂設定檔"
+
+#: ../../src/ed_main.py:783
+msgid "Load a Session file"
+msgstr ""
+
+#: ../../src/ed_menu.py:522
+msgid "Load a saved session."
+msgstr ""
+
+#: ../../src/ed_menu.py:515
+msgid "Load and save custom Profiles"
+msgstr "載入並儲存自訂設定檔"
+
+#: ../../src/ed_menu.py:524
+msgid "Load and save custom sessions."
+msgstr ""
+
+#: ../../src/prefdlg.py:401
+msgid "Load files from last session on startup"
+msgstr "啟動時載入上次使用的檔案"
+
+#: ../../src/ed_main.py:739
+#, python-format
+msgid "Loaded Profile: %s"
+msgstr "載入設定檔: %s"
+
+#: ../../src/ed_main.py:797
+#, python-format
+msgid "Loaded Session: %s"
+msgstr ""
+
+#: ../../src/prefdlg.py:436
+msgid "Locale Settings"
+msgstr "本地化設定"
+
+#: ../../src/eclib/finddlg.py:791
+msgid "Look in"
+msgstr ""
+
+#: ../../src/ed_menu.py:702
+msgid "Lowercase"
+msgstr "小寫字母"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
+msgid "Macro Definitions"
+msgstr "巨集定義"
+
+#: ../../src/ed_script.py:201 ../../src/ed_script.py:211
+msgid "Macro Manager"
+msgstr ""
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+msgid "Macros"
+msgstr "巨集"
+
+#: ../../src/prefdlg.py:1160
+msgid "Main display font for various UI components"
+msgstr "用於顯示各種使用者介面組件的字體"
+
+#: ../../src/ed_menu.py:772
+msgid "Manage, Download, and Install plugins"
+msgstr "管理, 下載, 和安裝插件"
+
+#: ../../src/ed_main.py:146
+msgid "Manually Set a Lexer/Syntax"
+msgstr "手動設定解析器/語法"
+
+#: ../../src/ed_cmdbar.py:283
+msgid "Match Case"
+msgstr "符合大小寫"
+
+#: ../../src/eclib/finddlg.py:812
+msgid "Match case"
+msgstr ""
+
+#: ../../src/ed_main.py:1399 ../../src/ed_menu.py:655
+msgid "Maximize Editor"
+msgstr ""
+
+#: ../../src/prefdlg.py:1667
+msgid "Menu"
+msgstr "功能表"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:172
+msgid "Misc"
+msgstr "其他"
+
+#: ../../src/ed_pages.py:376
+msgid "Missing session files"
+msgstr ""
+
+#: ../../src/ed_stc.py:1085
+msgid ""
+"Mixed EOL characters detected.\n"
+"\n"
+"Would you like to format them to all be the same?"
+msgstr ""
+
+#: ../../src/eclib/infodlg.py:163 ../../src/eclib/infodlg.py:195
+msgid "Modified"
+msgstr "已經修改"
+
+#: ../../src/prefdlg.py:1677
+msgid "Modifier 1"
+msgstr "修改器 1"
+
+#: ../../src/prefdlg.py:1681
+msgid "Modifier 2"
+msgstr "修改器 2"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+msgid "Modules"
+msgstr "模組"
+
+#: ../../src/ed_menu.py:586
+msgid "Move Current Line Down"
+msgstr ""
+
+#: ../../src/ed_menu.py:583
+msgid "Move Current Line Up"
+msgstr ""
+
+#: ../../src/ed_editv.py:272
+msgid "Move Tab to New Window"
+msgstr ""
+
+#: ../../src/ed_menu.py:661
+msgid "Move caret matching brace"
+msgstr "移到游標對應括弧"
+
+#: ../../src/ed_menu.py:587
+msgid "Move the current line down"
+msgstr ""
+
+#: ../../src/ed_menu.py:584
+msgid "Move the current line up"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:62
+msgid "Move to Recycle Bin"
+msgstr "移至資源回收桶"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:64
+msgid "Move to Trash"
+msgstr "移至資源回收桶"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
+msgid "Namespaces"
+msgstr "名稱空間"
+
+#: ../../src/prefdlg.py:192
+msgid "Network"
+msgstr "網際網路"
+
+#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1657
+#: ../../src/style_editor.py:198
+msgid "New"
+msgstr "開啟新檔"
+
+#: ../../src/ed_menu.py:482
+msgid "New &Window"
+msgstr "新增視窗(&W)"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:426
+msgid "New File"
+msgstr "新增檔案"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:425
+msgid "New Folder"
+msgstr "建立資料夾"
+
+#: ../../src/ed_menu.py:565
+msgid "New Line After"
+msgstr "在後面新增一行"
+
+#: ../../src/ed_menu.py:567
+msgid "New Line Before"
+msgstr "在前面新增一行"
+
+#: ../../src/prefdlg.py:1852
+msgid "New Profile"
+msgstr "新增設定檔"
+
+#: ../../src/ed_editv.py:271
+msgid "New Tab"
+msgstr ""
+
+#: ../../src/ed_cmdbar.py:263
+msgid "Next"
+msgstr "下一個"
+
+#: ../../src/ed_menu.py:668
+msgid "Next Bookmark"
+msgstr "下一個書籤"
+
+#: ../../src/ed_menu.py:663
+msgid "Next Position"
+msgstr ""
+
+#: ../../src/plugdlg.py:370 ../../src/plugin.py:721
+msgid "No Description Available"
+msgstr "沒有描述"
+
+#: ../../src/ed_editv.py:150
+#, fuzzy
+msgid "No Suggestions"
+msgstr "區段"
+
+#: ../../src/ed_pages.py:924
+msgid "No Valid Files to Open"
+msgstr "沒有合法的檔案可開啟"
+
+#: ../../src/prefdlg.py:1751
+msgid "None"
+msgstr "無"
+
+#: ../../src/prefdlg.py:2107
+msgid "Normal"
+msgstr ""
+
+#: ../../src/ed_search.py:607
+msgid "Not implemented"
+msgstr ""
+
+#: ../../src/style_editor.py:137
+msgid "Ok"
+msgstr "確定"
+
+#: ../../src/ed_glob.py:378 ../../src/ed_mdlg.py:137
+msgid "Old Machintosh (\\r)"
+msgstr ""
+
+#: ../../src/ed_menu.py:725 ../../src/ed_menu.py:727 ../../src/prefdlg.py:689
+msgid "Old Macintosh (\\r)"
+msgstr ""
+
+#: ../../src/ed_menu.py:799
+msgid "Online Documentation..."
+msgstr ""
+
+#: ../../src/ed_menu.py:800
+msgid "Online project documentation and help guides"
+msgstr "線上專案文件與說明導覽"
+
+#: ../../src/ed_menu.py:485 ../../src/ed_toolbar.py:75
+msgid "Open"
+msgstr "開啟"
+
+#: ../../src/ed_menu.py:487
+msgid "Open &Recent"
+msgstr ""
+
+#: ../../plugins/PyShell/PyShell/__init__.py:66
+msgid "Open A Python Shell"
+msgstr "開啟 Python 命令行"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:90
+msgid "Open Code Browser Sidepanel"
+msgstr "開啟原始碼瀏覽器面板"
+
+#: ../../src/ed_pages.py:935
+msgid "Open Directory?"
+msgstr "開啟目錄?"
+
+#: ../../src/eclib/finddlg.py:711
+msgid "Open Documents"
+msgstr ""
+
+#: ../../src/ed_pages.py:201
+msgid "Open File"
+msgstr "開啟檔案"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:233
+msgid "Open File Browser Sidepanel"
+msgstr "開啟檔案瀏覽器面板"
+
+#: ../../src/prefdlg.py:493
+msgid "Open files in new windows by default"
+msgstr "預設在新視窗開啟檔案"
+
+#: ../../src/ed_menu.py:602
+msgid "Open the Quick Find Bar"
+msgstr "開啟快速搜尋欄"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:414
+msgid "Open with "
+msgstr "打開用 "
+
+#: ../../src/ed_pages.py:955
+#, python-format
+msgid "Opened file: %s"
+msgstr "打開檔案: %s"
+
+#: ../../src/ed_main.py:1443
+#, python-format
+msgid "Opening %s"
+msgstr "正在開啟 %s"
+
+#: ../../src/ed_menu.py:554
+msgid "P&aste After"
+msgstr ""
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
+msgid "Packages"
+msgstr "套件"
+
+#: ../../src/ed_menu.py:527
+msgid "Page Set&up"
+msgstr "頁面設定(&u)"
+
+#: ../../src/ed_print.py:229
+#, python-format
+msgid "Page: %d"
+msgstr "頁面: %d"
+
+#: ../../src/ed_menu.py:653
+msgid "Pane Navigator"
+msgstr ""
+
+#: ../../src/prefdlg.py:1350
+msgid "Password"
+msgstr "密碼"
+
+#: ../../src/ed_editv.py:123 ../../src/ed_toolbar.py:87
+msgid "Paste"
+msgstr "貼上"
+
+#: ../../src/ed_menu.py:553 ../../src/ed_toolbar.py:88
+msgid "Paste Text from Clipboard to File"
+msgstr "從剪貼簿貼到檔案"
+
+#: ../../src/ed_menu.py:555
+msgid "Paste Text from Clipboard to File after the cursor"
+msgstr ""
+
+#: ../../src/prefdlg.py:554 ../../src/prefdlg.py:555
+msgid "Path to libenchant"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:109
+msgid "Pathmarks"
+msgstr "路徑標記"
+
+#: ../../src/eclib/infodlg.py:197
+msgid "Permissions"
+msgstr "權限"
+
+#: ../../src/perspective.py:219
+msgid "Perspective Name"
+msgstr ""
+
+#: ../../src/perspective.py:236
+msgid "Perspective to Delete"
+msgstr "要刪除顯示配置"
+
+#: ../../src/ed_main.py:140
+msgid "Perspectives"
+msgstr "顯示配置"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:434
+msgid "Plain Text"
+msgstr "純文字"
+
+#: ../../src/ed_main.py:1525
+msgid "Platform Info"
+msgstr "平台訊息"
+
+#: ../../src/Editra.py:853
+msgid "Please check the preferences dialog to check your preferences"
+msgstr ""
+
+#: ../../src/Editra.py:1062
+msgid "Please check the preferences dialog to verify your preferences"
+msgstr ""
+
+#: ../../src/ed_main.py:1057 ../../src/ed_menu.py:771
+msgid "Plugin Manager"
+msgstr "插件管理程式"
+
+#: ../../src/prefdlg.py:1335
+msgid "Port Number"
+msgstr "通訊埠"
+
+#: ../../src/ed_menu.py:610
+msgid "Pr&eferences"
+msgstr "偏好設定(&e)"
+
+#: ../../src/prefdlg.py:485
+msgid "Prefered Encoding"
+msgstr ""
+
+#: ../../src/prefdlg.py:104
+msgid "Preferences - Editra"
+msgstr "偏好設定 - Editra"
+
+#: ../../src/style_editor.py:130
+msgid "Preview"
+msgstr "預覽"
+
+#: ../../src/ed_menu.py:530
+msgid "Preview Printout"
+msgstr "預覽列印"
+
+#: ../../src/ed_cmdbar.py:271
+msgid "Previous"
+msgstr "上一個"
+
+#: ../../src/ed_menu.py:670
+msgid "Previous Bookmark"
+msgstr "上一個書籤"
+
+#: ../../src/ed_menu.py:665
+msgid "Previous Position"
+msgstr ""
+
+#: ../../src/prefdlg.py:743
+msgid "Primary Font"
+msgstr "主要字型"
+
+#: ../../src/ed_toolbar.py:77
+msgid "Print"
+msgstr "列印"
+
+#: ../../src/ed_menu.py:531 ../../src/ed_toolbar.py:78
+msgid "Print Current File"
+msgstr "列印目前檔案"
+
+#: ../../src/ed_print.py:113
+msgid "Print Error"
+msgstr ""
+
+#: ../../src/ed_menu.py:529
+msgid "Print Pre&view"
+msgstr "預覽列印(&v)"
+
+#: ../../src/ed_print.py:105
+msgid "Print Preview"
+msgstr "預覽列印"
+
+#: ../../src/ed_print.py:131
+msgid "Printer Error"
+msgstr ""
+
+#: ../../src/prefdlg.py:389
+msgid "Printer Mode"
+msgstr "列印模式"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+msgid "Procedure Definitions"
+msgstr "定義程序"
+
+#: ../../src/ed_main.py:713 ../../src/ed_main.py:734 ../../src/ed_menu.py:514
+msgid "Profile"
+msgstr "設定檔"
+
+#: ../../src/ed_main.py:718
+#, python-format
+msgid "Profile Saved as: %s"
+msgstr "設定檔儲存在： %s"
+
+#: ../../src/Editra.py:855 ../../src/Editra.py:1064
+msgid "Profile Updated"
+msgstr "設定檔已上載"
+
+#: ../../plugins/Launch/Launch/launch.py:156
+msgid "Program Executable Command"
+msgstr "程式執行指令"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+msgid "Programs"
+msgstr "程式"
+
+#: ../../src/ed_menu.py:796
+msgid "Project Homepage..."
+msgstr ""
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+msgid "Protocols"
+msgstr "通訊協定"
+
+#: ../../src/prefdlg.py:1321
+msgid "Proxy Settings"
+msgstr "代理伺服器設定"
+
+#: ../../src/prefdlg.py:1331
+msgid "Proxy URL"
+msgstr "代理伺服器網址"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+msgid "Public Functions"
+msgstr ""
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
+msgid "Public Subroutines"
+msgstr ""
+
+#: ../../src/ed_shelf.py:116
+msgid "Put an item on the Shelf"
+msgstr "放一個項目在架上"
+
+#: ../../src/updater.py:672
+#, python-format
+msgid "Rate: %.2f Kb/s"
+msgstr "比例：%.2f Kb/s"
+
+#: ../../plugins/Launch/Launch/__init__.py:100
+msgid "Re-run the last run program"
+msgstr ""
+
+#: ../../src/ed_stc.py:1706
+msgid "Read Only"
+msgstr ""
+
+#: ../../src/ed_search.py:790
+msgid "Recent Searches"
+msgstr "最近的搜尋"
+
+#: ../../src/ed_menu.py:488
+msgid "Recently Opened Files"
+msgstr "最近開啟的檔案"
+
+#: ../../src/ed_stc.py:1356
+msgid "Recording Finished"
+msgstr "錄製完成"
+
+#: ../../src/ed_stc.py:1343
+msgid "Recording Macro"
+msgstr "錄製巨集"
+
+#: ../../src/ed_editv.py:119 ../../src/ed_menu.py:546
+#: ../../src/ed_toolbar.py:81
+msgid "Redo"
+msgstr "重做"
+
+#: ../../src/ed_menu.py:546 ../../src/ed_toolbar.py:81
+msgid "Redo Last Undo"
+msgstr "重作最後復原的步驟"
+
+#: ../../src/ed_search.py:350
+msgid "Regex Compile Error"
+msgstr ""
+
+#: ../../src/ed_cmdbar.py:294
+msgid "Regular Expression"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:814
+msgid "Regular expression"
+msgstr ""
+
+#: ../../src/ed_editv.py:449
+msgid "Reload File?"
+msgstr "重新讀取檔案?"
+
+#: ../../src/ed_menu.py:505
+msgid "Reload the file with a specified encoding"
+msgstr ""
+
+#: ../../src/ed_main.py:1194
+msgid "Reload with Encoding"
+msgstr ""
+
+#: ../../src/ed_menu.py:504
+msgid "Reload with Encoding..."
+msgstr ""
+
+#: ../../src/prefdlg.py:496
+msgid "Remember File Position"
+msgstr "記住檔案位置"
+
+#: ../../src/prefdlg.py:1150
+msgid "Remember Window Position on Exit"
+msgstr "記住視窗位置並且結束"
+
+#: ../../src/prefdlg.py:1147
+msgid "Remember Window Size on Exit"
+msgstr "記住視窗大小並且結束"
+
+#: ../../src/ed_menu.py:593
+msgid "Remove All Bookmarks"
+msgstr "移除所有書籤"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:103
+msgid "Remove Saved Path"
+msgstr "移除儲存路徑"
+
+#: ../../src/ed_menu.py:594
+msgid "Remove all bookmarks from the current document"
+msgstr "移除目前的文件中所有書籤"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:242
+msgid "Remove selection from list"
+msgstr "參考清單選擇的項目移除"
+
+#: ../../src/ed_menu.py:719
+msgid "Remove trailing whitespace"
+msgstr "刪除結尾空格"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:423
+msgid "Rename"
+msgstr "重新命名"
+
+#: ../../src/eclib/finddlg.py:633 ../../src/eclib/finddlg.py:842
+msgid "Replace"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:845
+msgid "Replace All"
+msgstr ""
+
+#: ../../src/ed_search.py:540 ../../src/ed_search.py:697
+msgid "Replace Error"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:776
+msgid "Replace with"
+msgstr ""
+
+#: ../../src/eclib/errdlg.py:323
+msgid "Report Error"
+msgstr "回報錯誤"
+
+#: ../../src/ed_editv.py:429
+msgid "Resave File?"
+msgstr "重新儲存檔案?"
+
+#: ../../src/ed_main.py:1401
+msgid "Restore Editor"
+msgstr ""
+
+#: ../../src/plugdlg.py:673
+msgid "Retrieving Plugin List"
+msgstr "回傳插件清單"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:415
+msgid "Reveal in "
+msgstr "顯示在 "
+
+#: ../../src/ed_menu.py:503
+msgid "Revert file to last save point"
+msgstr ""
+
+#: ../../src/prefdlg.py:1040 ../../src/prefdlg.py:1713
+msgid "Revert to Default"
+msgstr "回復到預設值"
+
+#: ../../src/ed_menu.py:502
+msgid "Revert to Saved"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/__init__.py:93
+#: ../../plugins/Launch/Launch/launch.py:179
+#: ../../plugins/Launch/Launch/launch.py:539
+msgid "Run"
+msgstr "執行"
+
+#: ../../plugins/Launch/Launch/__init__.py:98
+msgid "Run last executed"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/__init__.py:76
+msgid "Run script from current buffer"
+msgstr "從目前的緩衝區執行腳本"
+
+#: ../../plugins/Launch/Launch/__init__.py:95
+msgid "Run the file associated with the current buffer in Launch"
+msgstr "從目前緩衝區開始執行相關檔案"
+
+#: ../../src/ed_toolbar.py:76
+msgid "Save"
+msgstr "儲存"
+
+#: ../../src/ed_editv.py:274
+#, python-format
+msgid "Save \"%s\""
+msgstr ""
+
+#: ../../src/ed_menu.py:498
+msgid "Save &As"
+msgstr "另存新檔(&A)"
+
+#: ../../src/ed_menu.py:499
+msgid "Save All"
+msgstr "全部儲存"
+
+#: ../../src/ed_menu.py:498
+msgid "Save As"
+msgstr "另存新檔"
+
+#: ../../src/ed_main.py:1463
+msgid "Save Changes?"
+msgstr "儲存變更嗎？"
+
+#: ../../src/ed_menu.py:497 ../../src/ed_toolbar.py:76
+msgid "Save Current File"
+msgstr "儲存目前檔案"
+
+#: ../../src/ed_menu.py:511
+msgid "Save Current Settings to a New Profile"
+msgstr "儲存目前設定至新的設定檔"
+
+#: ../../src/perspective.py:69
+msgid "Save Current View"
+msgstr "儲存目前檢視"
+
+#: ../../src/ed_mdlg.py:106
+msgid "Save Error"
+msgstr "儲存時發生錯誤"
+
+#: ../../src/perspective.py:220
+msgid "Save Perspective"
+msgstr "儲存角度"
+
+#: ../../src/ed_menu.py:510
+msgid "Save Profile"
+msgstr "儲存設定檔"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:100
+msgid "Save Selected Paths"
+msgstr "儲存選擇的路徑"
+
+#: ../../src/ed_menu.py:519
+msgid "Save Session"
+msgstr ""
+
+#: ../../src/style_editor.py:252
+msgid "Save Styles"
+msgstr "儲存樣式"
+
+#: ../../src/ed_menu.py:500
+msgid "Save all open pages"
+msgstr "儲存所有開啟的頁面"
+
+#: ../../src/ed_menu.py:520
+msgid "Save the current session."
+msgstr ""
+
+#: ../../src/perspective.py:70
+msgid "Save the current window layout"
+msgstr "儲存目前視窗布局"
+
+#: ../../src/ed_main.py:695
+#, python-format
+msgid "Saved File As: %s"
+msgstr "檔案已另存：%s"
+
+#: ../../src/ed_main.py:646
+#, python-format
+msgid "Saved File: %s"
+msgstr "檔案已儲存：%s"
+
+#: ../../plugins/Launch/Launch/launch.py:169
+msgid "Script Arguments"
+msgstr "Script 參數"
+
+#: ../../src/ed_search.py:1290
+#, python-format
+msgid "Search Complete: %d matching lines where found."
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:815
+msgid "Search Recursively"
+msgstr ""
+
+#: ../../src/ed_search.py:1264
+msgid "Search Started"
+msgstr ""
+
+#: ../../src/ed_search.py:1283
+msgid "Search complete"
+msgstr ""
+
+#: ../../src/ed_menu.py:608
+msgid "Search for the currently selected phrase"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:420
+msgid "Search in directory"
+msgstr ""
+
+#: ../../src/ed_search.py:408
+msgid "Search wrapped to bottom"
+msgstr ""
+
+#: ../../src/ed_search.py:403
+msgid "Search wrapped to top"
+msgstr ""
+
+#: ../../src/ed_search.py:1374
+#, python-format
+msgid "Searching in: %s"
+msgstr ""
+
+#: ../../src/prefdlg.py:746
+msgid "Secondary Font"
+msgstr "次要字型"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Sections"
+msgstr "區段"
+
+#: ../../src/ed_menu.py:559
+msgid "Select &All"
+msgstr "全選(&A)"
+
+#: ../../src/ed_editv.py:128
+msgid "Select All"
+msgstr "全選"
+
+#: ../../src/ed_menu.py:560
+msgid "Select All Text in Document"
+msgstr "選擇文件中全部文字"
+
+#: ../../src/ed_main.py:1193
+msgid "Select an encoding to reload the file with"
+msgstr ""
+
+#: ../../src/plugdlg.py:501
+msgid "Select plugins to download"
+msgstr "選擇插件並下載"
+
+#: ../../src/eclib/finddlg.py:710
+msgid "Selected Text"
+msgstr ""
+
+#: ../../src/ed_pages.py:354
+msgid "Selected file is not a valid session file"
+msgstr ""
+
+#: ../../src/ed_menu.py:804
+msgid "Send bug reports and suggestions"
+msgstr "發送錯誤報告及建議"
+
+#: ../../src/ed_main.py:758 ../../src/ed_main.py:785
+msgid "Session"
+msgstr ""
+
+#: ../../src/ed_main.py:773
+#, python-format
+msgid "Session Saved as: %s"
+msgstr ""
+
+#: ../../src/ed_pages.py:339
+msgid "Session file doesn't exist."
+msgstr ""
+
+#: ../../src/ed_pages.py:360
+msgid "Session file is empty."
+msgstr ""
+
+#: ../../src/ed_menu.py:523
+msgid "Sessions"
+msgstr ""
+
+#: ../../src/eclib/ecpickers.py:80
+msgid "Set Font"
+msgstr "設定字型"
+
+#: ../../src/style_editor.py:177
+msgid "Set the preview file type"
+msgstr "設置預覽的文件類型"
+
+#: ../../src/prefdlg.py:721
+msgid "Sets a secondary font used for special regions when syntax highlighting is in use"
+msgstr ""
+
+#: ../../src/prefdlg.py:716
+msgid "Sets the main/default font of the document"
+msgstr "設定文件的 主要/預設 字型"
+
+#: ../../plugins/Launch/Launch/launch.py:149
+msgid "Settings"
+msgstr "設定"
+
+#: ../../src/ed_shelf.py:115
+msgid "Shelf"
+msgstr "架子"
+
+#: ../../src/ed_menu.py:636 ../../src/ed_menu.py:637 ../../src/prefdlg.py:701
+msgid "Show EOL Markers"
+msgstr "顯示EOL 標記"
+
+#: ../../src/ed_menu.py:634
+msgid "Show Edge Guide"
+msgstr "顯示引導邊緣"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:218
+msgid "Show Hidden Files"
+msgstr "顯示隱藏檔案"
+
+#: ../../src/prefdlg.py:1131
+msgid "Show Icons on Tabs"
+msgstr ""
+
+#: ../../src/ed_menu.py:633
+msgid "Show Indentation Guides"
+msgstr "顯示引導壓痕"
+
+#: ../../src/ed_menu.py:639
+msgid "Show Line Number Margin"
+msgstr "顯示行號邊緣"
+
+#: ../../src/ed_menu.py:638 ../../src/prefdlg.py:703
+msgid "Show Line Numbers"
+msgstr "顯示行號"
+
+#: ../../src/ed_shelf.py:338
+msgid "Show Shelf"
+msgstr "顯示架"
+
+#: ../../src/prefdlg.py:403
+msgid "Show Splash Screen"
+msgstr "顯示啟動畫面"
+
+#: ../../src/ed_menu.py:674 ../../src/prefdlg.py:1152
+msgid "Show Status Bar"
+msgstr "顯示狀態列"
+
+#: ../../src/ed_menu.py:676 ../../src/prefdlg.py:1154
+msgid "Show Toolbar"
+msgstr "顯示工具列"
+
+#: ../../src/ed_menu.py:640 ../../src/prefdlg.py:705
+msgid "Show Whitespace"
+msgstr "顯示空白"
+
+#: ../../src/ed_menu.py:641
+msgid "Show Whitespace Markers"
+msgstr "顯示空白標記"
+
+#: ../../src/ed_log.py:132
+msgid "Show output from"
+msgstr ""
+
+#: ../../src/ed_shelf.py:340
+msgid "Show the Shelf"
+msgstr "顯示架"
+
+#: ../../src/ed_menu.py:635
+msgid "Show the edge column guide"
+msgstr "顯示欄位引導邊緣"
+
+#: ../../src/eclib/infodlg.py:189 ../../src/style_editor.py:698
+msgid "Size"
+msgstr "大小"
+
+#: ../../src/ed_pages.py:377
+msgid "Some files in saved session could not be found on disk:\n"
+msgstr ""
+
+#: ../../src/style_editor.py:250
+msgid "Some styles have been changed would you like to save before exiting?"
+msgstr "有些許樣是已經修改，你是否要再退出之前儲存？"
+
+#: ../../src/ed_search.py:606
+msgid "Sorry will be ready for next version"
+msgstr ""
+
+#: ../../src/ed_menu.py:714
+msgid "Spaces to Tabs"
+msgstr ""
+
+#: ../../src/prefdlg.py:528
+msgid "Spell Checking"
+msgstr ""
+
+#: ../../src/ed_toolbar.py:74
+msgid "Start a New File"
+msgstr "開始一個新檔案"
+
+#: ../../src/style_editor.py:199
+msgid "Start a blank new style"
+msgstr "開始一個新的空白樣式"
+
+#: ../../src/ed_menu.py:481
+msgid "Start a new file in a new tab"
+msgstr "開始一個新的檔案於新的標籤"
+
+#: ../../src/ed_menu.py:483
+msgid "Start a new file in a new window"
+msgstr "開始一個新的檔案於新視窗"
+
+#: ../../src/prefdlg.py:889
+msgid "Start in Normal Mode"
+msgstr ""
+
+#: ../../src/prefdlg.py:301
+#, fuzzy
+msgid "Startup"
+msgstr "啟動時設定"
+
+#: ../../src/prefdlg.py:425
+msgid "Startup Settings"
+msgstr "啟動時設定"
+
+#: ../../src/updater.py:289
+msgid "Status Unknown"
+msgstr "未知狀態"
+
+#: ../../src/ed_menu.py:773 ../../src/style_editor.py:63
+msgid "Style Editor"
+msgstr "樣式編輯"
+
+#: ../../src/style_editor.py:216
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Style Tags"
+msgstr "樣式標籤"
+
+#: ../../src/style_editor.py:192
+msgid "Style Theme"
+msgstr "樣式佈景"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+msgid "Subroutine Declarations"
+msgstr "子函式宣告"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Subroutines"
+msgstr "函式呼叫"
+
+#: ../../src/plugdlg.py:831
+msgid "Successfully Installed Plugins"
+msgstr "安裝插件完成"
+
+#: ../../src/syntax/syntax.py:313
+#, python-format
+msgid "Switch Lexer to %s"
+msgstr "切換分析器至 %s"
+
+#: ../../src/style_editor.py:174
+msgid "Syntax Files"
+msgstr "語法檔案"
+
+#: ../../src/ed_menu.py:756 ../../src/prefdlg.py:613 ../../src/prefdlg.py:1014
+msgid "Syntax Highlighting"
+msgstr "語法高亮度顯示"
+
+#: ../../src/plugdlg.py:769
+msgid "System Directory"
+msgstr "語法目錄"
+
+#: ../../src/prefdlg.py:660
+msgid "Tab Width"
+msgstr "Tab 字元寬度"
+
+#: ../../src/ed_menu.py:716
+msgid "Tabs to Spaces"
+msgstr "Tab 字元轉換成空白"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+msgid "Task Definitions"
+msgstr "任務定義"
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:403
+msgid "Text Colors"
+msgstr "文字顏色"
+
+#: ../../src/util.py:353
+msgid "Text Document"
+msgstr "文字檔"
+
+#: ../../src/ed_pages.py:150
+#, python-format
+msgid ""
+"The correct encoding of '%s' could not be determined.\n"
+"\n"
+"Choose an encoding and select Ok to open the file with the chosen encoding.\n"
+"Click Cancel to abort opening the file"
+msgstr ""
+
+#: ../../src/ed_main.py:1460
+#, python-format
+msgid ""
+"The file: \"%s\" has been modified since the last save point.\n"
+"\n"
+"Would you like to save the changes?"
+msgstr ""
+"檔案： \"%s\" 已被修改，自上次儲存點。\n"
+"\n"
+"你是否想儲存變更？"
+
+#: ../../src/ed_search.py:308
+#, python-format
+msgid "The search term '%(term)s' was found %(count)d times."
+msgstr ""
+
+#: ../../src/ed_pages.py:922
+#, python-format
+msgid "There are no files that Editra can open in %s"
+msgstr "沒有檔案可以開啟，因為 Editra 可以開啟在 %s"
+
+#: ../../src/ed_print.py:129
+msgid ""
+"There was an error when printing.\n"
+"Check that your printer is properly connected."
+msgstr ""
+
+#: ../../src/plugdlg.py:408
+msgid "This plugin requires a newer version of Editra."
+msgstr ""
+
+#: ../../src/plugdlg.py:1064
+msgid "This plugin will be uninstalled on next program launch."
+msgstr ""
+
+#: ../../src/ed_editv.py:126
+msgid "To Lowercase"
+msgstr ""
+
+#: ../../src/ed_editv.py:125
+msgid "To Uppercase"
+msgstr ""
+
+#: ../../src/plugdlg.py:752
+msgid ""
+"To add a new item drag and drop the plugin file into the list.\n"
+"\n"
+"To remove an item select it and hit Delete or Backspace."
+msgstr ""
+"添加一個新的項目拖放插件文件到清單中。\n"
+"\n"
+"要刪除一個項目選中它並按下刪除或倒退健。"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:93
+#, python-format
+msgid "To open multiple files at once %s+Click to select the desired files/folders then hit Enter to open them all at once"
+msgstr "要開啟多個檔案 請 %s+點擊 來選取多個檔案及資料夾，然後按下 Enter 鍵一次開啟"
+
+#: ../../src/ed_menu.py:750
+msgid "Toggle Auto-Indentation functionality"
+msgstr "切換自動縮排功能"
+
+#: ../../src/ed_menu.py:591
+msgid "Toggle Bookmark"
+msgstr "切換書籤"
+
+#: ../../src/ed_menu.py:755
+msgid "Toggle Code Folding"
+msgstr "切換代碼摺疊"
+
+#: ../../src/ed_menu.py:691
+msgid "Toggle Comment"
+msgstr ""
+
+#: ../../src/ed_menu.py:656
+msgid "Toggle Editor Maximization"
+msgstr ""
+
+#: ../../src/ed_menu.py:643
+msgid "Toggle Editor View Options"
+msgstr "切換編輯器查看選項"
+
+#: ../../src/ed_menu.py:647 ../../src/ed_menu.py:648
+msgid "Toggle all folds"
+msgstr ""
+
+#: ../../src/ed_menu.py:592
+msgid "Toggle bookmark of the current line"
+msgstr "切換書籤的當前行"
+
+#: ../../src/ed_menu.py:692
+msgid "Toggle comment on the selected line(s)"
+msgstr ""
+
+#: ../../src/ed_menu.py:646
+msgid "Toggle current fold"
+msgstr ""
+
+#: ../../src/ed_menu.py:645
+msgid "Toggle fold"
+msgstr ""
+
+#: ../../src/prefdlg.py:1125
+msgid "Toolbar Icon Size"
+msgstr "工具列圖示大小"
+
+#: ../../src/ed_menu.py:801
+msgid "Translate Editra..."
+msgstr ""
+
+#: ../../src/prefdlg.py:1178
+msgid "Transparency"
+msgstr "透明"
+
+#: ../../src/ed_menu.py:581
+msgid "Transpose Line"
+msgstr "對調行"
+
+#: ../../src/ed_menu.py:582
+msgid "Transpose the current line with the previous one"
+msgstr "對調目前這行與上一行"
+
+#: ../../src/ed_menu.py:718
+msgid "Trim Trailing Whitespace"
+msgstr "修剪結尾空格"
+
+#: ../../src/prefdlg.py:709
+msgid "Turn off for better performance"
+msgstr "關閉更好的表現"
+
+#: ../../src/util.py:176
+msgid "Unable to accept dropped file or text"
+msgstr ""
+
+#: ../../src/plugdlg.py:506
+msgid "Unable to retrieve plugin list"
+msgstr "無法擷取插件名單"
+
+#: ../../src/updater.py:144
+msgid "Unable to retrieve version info"
+msgstr "無法檢索版本信息"
+
+#: ../../src/ed_editv.py:118 ../../src/ed_toolbar.py:80
+msgid "Undo"
+msgstr "復原"
+
+#: ../../src/ed_menu.py:545 ../../src/ed_toolbar.py:80
+msgid "Undo Last Action"
+msgstr "復原最後一個動作"
+
+#: ../../src/ed_menu.py:697
+msgid "Unindent Lines"
+msgstr "取消這行縮排"
+
+#: ../../src/ed_menu.py:698
+msgid "Unindent the selected lines"
+msgstr "取消選擇行縮排"
+
+#: ../../src/plugdlg.py:952
+#, fuzzy
+msgid "Uninstall"
+msgstr "安裝"
+
+#: ../../src/plugdlg.py:1060
+msgid "Uninstall Plugin"
+msgstr ""
+
+#: ../../src/ed_glob.py:379 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:728
+#: ../../src/ed_menu.py:730 ../../src/prefdlg.py:689
+msgid "Unix (\\n)"
+msgstr ""
+
+#: ../../src/eclib/infodlg.py:298 ../../src/plugdlg.py:366
+#: ../../src/plugdlg.py:372 ../../src/plugdlg.py:419 ../../src/plugdlg.py:423
+#: ../../src/plugin.py:722 ../../src/util.py:359
+msgid "Unknown"
+msgstr "未知"
+
+#: ../../src/ed_pages.py:219
+#, python-format
+msgid "Untitled - %d"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:596
+msgid "Untitled_File"
+msgstr ""
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:594
+msgid "Untitled_Folder"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:802
+msgid "Up"
+msgstr ""
+
+#: ../../src/prefdlg.py:1288
+msgid "Update"
+msgstr "更新"
+
+#: ../../src/Editra.py:572
+msgid "Update Available"
+msgstr "已有更新版"
+
+#: ../../src/ed_menu.py:700
+msgid "Uppercase"
+msgstr "大寫字母"
+
+#: ../../src/ed_menu.py:748
+msgid "Use Auto Completion when available"
+msgstr "在可使用的狀態使用自動完成"
+
+#: ../../src/prefdlg.py:1326
+msgid "Use Proxy"
+msgstr ""
+
+#: ../../src/ed_menu.py:705
+msgid "Use Soft Tabs"
+msgstr "使用軟體 Tabs"
+
+#: ../../src/prefdlg.py:679
+msgid "Use Tabs Instead of Spaces"
+msgstr "使用 Tabs 而不使用空格"
+
+#: ../../src/plugdlg.py:765
+msgid "User Directory"
+msgstr "使用者目錄"
+
+#: ../../src/prefdlg.py:1343
+msgid "Username"
+msgstr "使用者名稱"
+
+#: ../../src/ed_log.py:80
+msgid "View Editra's console log"
+msgstr "檢視 Editra's 控制台日誌"
+
+#: ../../src/ed_menu.py:669
+msgid "View Line of Next Bookmark"
+msgstr "檢視下一個書籤這行"
+
+#: ../../src/ed_menu.py:671
+msgid "View Line of Previous Bookmark"
+msgstr "檢視上一個書籤這行"
+
+#: ../../src/prefdlg.py:736
+msgid "View Options"
+msgstr "檢視選項"
+
+#: ../../src/ed_script.py:202
+msgid "View and Edit Macros"
+msgstr ""
+
+#: ../../src/ed_menu.py:654
+msgid "View pane selection list"
+msgstr ""
+
+#: ../../src/ed_menu.py:797
+#, python-format
+msgid "Visit the project homepage %s"
+msgstr "連線至專案首頁 %s"
+
+#: ../../src/prefdlg.py:852
+msgid "Visual Helpers"
+msgstr "視覺助理"
+
+#: ../../src/prefdlg.py:509
+msgid "Warn when mixed eol characters are detected"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/cfgdlg.py:455
+msgid "Warning Text"
+msgstr "警告文字"
+
+#: ../../src/prefdlg.py:880
+msgid "Warning suggestions will include context insensitive results"
+msgstr ""
+
+#: ../../src/eclib/infodlg.py:191
+msgid "Where"
+msgstr "哪裡"
+
+#: ../../src/ed_main.py:711
+msgid "Where to Save Profile?"
+msgstr "儲存設定檔到哪？"
+
+#: ../../src/ed_main.py:756
+msgid "Where to Save Session?"
+msgstr ""
+
+#: ../../src/ed_menu.py:720
+msgid "Whitespace"
+msgstr "空白"
+
+#: ../../src/ed_menu.py:721
+msgid "Whitespace formating commands"
+msgstr "空白格是指令"
+
+#: ../../src/ed_cmdbar.py:290
+msgid "Whole Word"
+msgstr ""
+
+#: ../../src/eclib/finddlg.py:813
+msgid "Whole word"
+msgstr ""
+
+#: ../../src/ed_glob.py:380 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:731
+#: ../../src/ed_menu.py:733 ../../src/prefdlg.py:690
+msgid "Windows (\\r\\n)"
+msgstr "視窗 (\\r\\n)"
+
+#: ../../src/ed_menu.py:708 ../../src/prefdlg.py:707
+msgid "Word Wrap"
+msgstr "自動換行"
+
+#: ../../src/ed_menu.py:709
+msgid "Wrap Text Horizontally"
+msgstr "文字水平換行"
+
+#: ../../src/ed_main.py:1523
+#, python-format
+msgid "Written in 100%% Python."
+msgstr "寫入 100% %Python."
+
+#: ../../src/plugdlg.py:190
+msgid "You must restart Editra before your changes will take full affect."
+msgstr ""
+
+#: ../../src/Editra.py:851 ../../src/Editra.py:1060
+msgid "Your profile has been updated to the latest version"
+msgstr "你的設定檔案已經更新到最新版本"
+
+#: ../../src/ed_menu.py:625 ../../src/ed_menu.py:626
+msgid "Zoom Default"
+msgstr "預設縮放"
+
+#: ../../src/ed_menu.py:624
+msgid "Zoom In"
+msgstr "放大"
+
+#: ../../src/ed_menu.py:623
+msgid "Zoom Out"
+msgstr "縮小"
+
+#: ../../plugins/Launch/Launch/launch.py:166
+msgid "args"
+msgstr "平均"
+
+#: ../../src/style_editor.py:669
+msgid "bold"
+msgstr "粗體"
+
+#: ../../src/ed_cmdbar.py:866
+msgid "cwd: "
+msgstr ""
+
+#: ../../src/style_editor.py:670
+msgid "eol"
+msgstr ""
+
+#: ../../plugins/Launch/Launch/launch.py:153
+msgid "exec"
+msgstr ""
+
+#: ../../src/style_editor.py:671
+msgid "italic"
+msgstr "斜體"
+
+#: ../../src/style_editor.py:672
+msgid "underline"
+msgstr "底線"
