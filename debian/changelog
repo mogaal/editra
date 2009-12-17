@@ -1,6 +1,7 @@
 editra (0.5.25-1) unstable; urgency=low
 
   * New upstream release 
+  * Add XS-Python-Version field in d/control
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Thu, 17 Dec 2009 12:12:16 -0430
 
