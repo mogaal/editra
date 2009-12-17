@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: Editra
-Version: 0.5.15
+Version: 0.5.25
 Summary: Developer's Text Editor
 Home-page: http://editra.org
 Author: Cody Precord
@@ -38,19 +38,27 @@ Classifier: License :: OSI Approved
 Classifier: Natural Language :: English
 Classifier: Natural Language :: Chinese (Simplified)
 Classifier: Natural Language :: Chinese (Traditional)
+Classifier: Natural Language :: Croatian
 Classifier: Natural Language :: Czech
+Classifier: Natural Language :: Danish
 Classifier: Natural Language :: Dutch
 Classifier: Natural Language :: French
+Classifier: Natural Language :: Hungarian
 Classifier: Natural Language :: German
 Classifier: Natural Language :: Italian
+Classifier: Natural Language :: Latvian
 Classifier: Natural Language :: Japanese
 Classifier: Natural Language :: Norwegian
+Classifier: Natural Language :: Polish
 Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Natural Language :: Romanian
 Classifier: Natural Language :: Russian
 Classifier: Natural Language :: Serbian
+Classifier: Natural Language :: Slovak
+Classifier: Natural Language :: Slovenian
 Classifier: Natural Language :: Spanish
+Classifier: Natural Language :: Swedish
 Classifier: Natural Language :: Turkish
-Classifier: Natural Language :: Ukranian
 Classifier: Operating System :: MacOS :: MacOS X
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Operating System :: POSIX

@@ -9,8 +9,8 @@
 """Unittest cases for testing the StyleManager"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testStyleMgr.py 59010 2009-02-19 03:53:56Z CJP $"
-__revision__ = "$Revision: 59010 $"
+__svnid__ = "$Id: testStyleMgr.py 62714 2009-11-25 22:53:32Z CJP $"
+__revision__ = "$Revision: 62714 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -30,7 +30,7 @@ class StyleMgrTest(unittest.TestCase):
     def setUp(self):
         self.app = common.EdApp(False)
         self.mgr = ed_style.StyleMgr()
-        self.dd = ed_style.DEF_STYLE_DICT
+        self.dd = dict(ed_style.DEF_STYLE_DICT)
         self.bstr = ["fore:#000000", "back:#FFFFFF",
                      "face:%(primary)s", "size:%(size)d"]
 

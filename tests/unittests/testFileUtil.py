@@ -9,8 +9,8 @@
 """Unittest cases for testing the fileutil functions"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileUtil.py 61040 2009-06-13 08:16:04Z CJP $"
-__revision__ = "$Revision: 61040 $"
+__svnid__ = "$Id: testFileUtil.py 62860 2009-12-12 03:11:23Z CJP $"
+__revision__ = "$Revision: 62860 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -23,6 +23,10 @@ import common
 
 # Module to test
 import ebmlib
+
+#-----------------------------------------------------------------------------#
+
+ISWINDOWS = platform.system().lower() in ('windows', 'microsoft')
 
 #-----------------------------------------------------------------------------#
 # Test Class
@@ -38,6 +42,17 @@ class FileUtilTest(unittest.TestCase):
         common.CleanTempDir()
 
     #---- Tests ----#
+
+    def testGetAbsPath(self):
+        """Test getting a files absolute path"""
+        path = os.path.join(u'.', u'data')
+        self.assertEquals(self.ddir, ebmlib.GetAbsPath(path))
+
+        # Test short path to long name transform on windows
+        if ISWINDOWS:
+            path = "c:\\documents and settings"
+            spath = "C:\\DOCUME~1"
+            self.assertEquals(path, ebmlib.GetAbsPath(spath).lower())
 
     def testGetFileExtension(self):
         """Test getting a files extension"""
@@ -90,7 +105,7 @@ class FileUtilTest(unittest.TestCase):
 
     def testGetPathFromURI(self):
         """Test getting a real file path from a file:// uri"""
-        if platform.system().lower() in ('windows', 'microsoft'):
+        if ISWINDOWS:
             path = ebmlib.GetPathFromURI(u"file://C:/Users/test/test.txt")
             self.assertEquals(path, u"C:\\Users\\test\\test.txt")
         else:

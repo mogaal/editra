@@ -20,8 +20,8 @@ similar services for manipulating and transforming text.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: generator.py 60508 2009-05-03 21:54:15Z CJP $"
-__revision__ = "$Revision: 60508 $"
+__svnid__ = "$Id: generator.py 62774 2009-12-03 21:01:45Z CJP $"
+__revision__ = "$Revision: 62774 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -132,7 +132,7 @@ class Generator(plugin.Plugin):
         for observer in self.observers:
             if observer.GetId() == e_id:
                 gentext = observer.Generate(txt_ctrl)
-        util.Log("[generator][info] Generation time %f" % (time.time() - start))
+                util.Log("[generator][info] Generation time %f" % (time.time() - start))
         return gentext
 
 #-----------------------------------------------------------------------------#

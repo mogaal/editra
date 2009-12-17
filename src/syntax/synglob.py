@@ -18,8 +18,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synglob.py 62513 2009-10-31 04:48:39Z CJP $"
-__revision__ = "$Revision: 62513 $"
+__svnid__ = "$Id: synglob.py 62572 2009-11-08 19:16:11Z CJP $"
+__revision__ = "$Revision: 62572 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -120,6 +120,9 @@ LANG_MAP = {LANG_4GL    : (ID_LANG_4GL,       '_progress'),
             LANG_XTEXT  : (ID_LANG_XTEXT,   '_xtext')
             }
 
+
+### TODO: Profiling on the following methods to see if caching is necessary ###
+
 # Dynamically finds the language description string that matches the given
 # language id.
 # Used when manually setting lexer from a menu/dialog
@@ -135,6 +138,22 @@ def GetDescriptionFromId(lang_id):
     rval = LANG_TXT
     for key, val in globals().iteritems():
         if val == lang_id and key.startswith('ID_LANG'):
-            rval = globals().get(key[3:], globals()['LANG_TXT'])
+            rval = globals().get(key[3:], LANG_TXT)
+            break
+    return rval
+
+def GetIdFromDescription(desc):
+    """Get the language identifier for the given file type string. The search
+    is case insensitive.
+    @param desc: string (i.e "Python")
+    @note: if lookup fails ID_LANG_TXT is returned
+
+    """
+    rval = ID_LANG_TXT
+    desc = desc.lower()
+    for key, val in globals().iteritems():
+        if isinstance(val, basestring) and \
+           val.lower() == desc and key.startswith('LANG_'):
+            rval = globals().get(u"ID_" + key, ID_LANG_TXT)
             break
     return rval

@@ -9,8 +9,8 @@
 """Unittest cases for testing syntax.synglob utilities and functions"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testSynGlob.py 62331 2009-10-08 13:42:12Z CJP $"
-__revision__ = "$Revision: 62331 $"
+__svnid__ = "$Id: testSynGlob.py 62572 2009-11-08 19:16:11Z CJP $"
+__revision__ = "$Revision: 62572 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -45,3 +45,18 @@ class SynGlobTest(unittest.TestCase):
 
         desc = synglob.GetDescriptionFromId(100)
         self.assertEquals(desc, synglob.LANG_TXT)
+
+    def testGetIdFromDescription(self):
+        """Get getting a language id from its description string"""
+        id_ = synglob.GetIdFromDescription(u"Python")
+        self.assertEquals(id_, synglob.ID_LANG_PYTHON)
+
+        id_ = synglob.GetIdFromDescription(u"python")
+        self.assertEquals(id_, synglob.ID_LANG_PYTHON)
+
+        id_ = synglob.GetIdFromDescription(u"C")
+        self.assertEquals(id_, synglob.ID_LANG_C)
+
+        id_ = synglob.GetIdFromDescription(u"SomeFakeLang")
+        self.assertEquals(id_, synglob.ID_LANG_TXT)
+

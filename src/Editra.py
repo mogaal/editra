@@ -16,16 +16,16 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 62452 2009-10-18 19:22:00Z CJP $"
-__revision__ = "$Revision: 62452 $"
+__svnid__ = "$Id: Editra.py 62872 2009-12-13 17:14:56Z CJP $"
+__revision__ = "$Revision: 62872 $"
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Dependencies
 import os
 import sys
 
 # Due to some methods that were added in 2.8.3 being used in a large number
-# of places Editra has become incompatable with wxPython 2.8.1.1 and earlier.
+# of places Editra has become incompatible with wxPython 2.8.1.1 and earlier.
 # So ensure correct version of wxPython can be loaded
 if not hasattr(sys, 'frozen'):
     import wxversion
@@ -67,13 +67,11 @@ import updater
 import plugin
 import ed_ipc
 import ed_msg
+import ebmlib
 
 #--------------------------------------------------------------------------#
 # Global Variables
 ID_UPDATE_CHECK = wx.NewId()
-
-# Commands (here temporarly)
-APP_CMD_OPEN_WINDOW = u"Editra.OpenWindow"
 
 _ = wx.GetTranslation
 #--------------------------------------------------------------------------#
@@ -105,16 +103,27 @@ class Editra(wx.App, events.AppEventHandlerMixin):
             self._instance = wx.SingleInstanceChecker(instance_name)
             if self._instance.IsAnotherRunning():
                 try:
-                    opts, args = getopt.getopt(sys.argv[1:], "dhv",
-                                               ['debug', 'help', 'version'])
+                    opts, args = ProcessCommandLine()
                 except getopt.GetoptError, msg:
                     self._log("[app][err] %s" % str(msg))
                     args = list()
+                    opts = dict()
 
-                if not len(args):
-                    args.append(APP_CMD_OPEN_WINDOW)
+                exml = ed_ipc.IPCCommand()
+                if len(args):
+                    # TODO: move to serialize all args as xml
+                    nargs = list()
+                    for p in args:
+                        try:
+                            p = ebmlib.GetAbsPath(p)
+                        except:
+                            pass
+                        nargs.append(p)
+                    exml.SetFiles(nargs)
+                exml.SetArgs(opts.items())
 
-                rval = ed_ipc.SendCommands(args, profiler.Profile_Get('SESSION_KEY'))
+                # TODO: need to process other command line options as well i.e) -g
+                rval = ed_ipc.SendCommands(exml, profiler.Profile_Get('SESSION_KEY'))
                 # If sending the command failed then let the editor startup
                 # a new instance
                 if not rval:
@@ -389,6 +398,28 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         """
         self._lock = True
 
+    def OpenFile(self, filename, line=-1):
+        """Open a file in the currently active window
+        @param filename: file path
+        @keyword line: int
+
+        """
+        window = self.GetTopWindow()
+        if isinstance(window, ed_main.MainWindow):
+            try:
+                encoding = sys.getfilesystemencoding()
+                window.DoOpen(ed_glob.ID_COMMAND_LINE_OPEN,
+                              ed_txt.DecodeString(filename, encoding),
+                              line)
+
+                # Make sure the window is brought to the front
+                if window.IsIconized():
+                    window.Iconize(False)
+                window.Raise()
+            except Exception, msg:
+                self._log("[app][err] Failed to open drop file: %s" % str(msg))
+                pass
+
     def MacNewFile(self):
         """Stub for future use"""
         pass
@@ -401,24 +432,8 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         @postcondition: if L{MainWindow} is open file will be opened in notebook
 
         """
-        window = self.GetTopWindow()
-        if getattr(window, '__name__', '') == "MainWindow":
-            try:
-                self._log("[app][info] MacOpenFile Fired")
-                encoding = sys.getfilesystemencoding()
-                window.DoOpen(ed_glob.ID_COMMAND_LINE_OPEN,
-                              ed_txt.DecodeString(filename, encoding))
-
-                # Make sure the window is brought to the front
-                if window.IsIconized():
-                    window.Iconize(False)
-                window.Raise()
-
-            except Exception, msg:
-                self._log("[app][err] Failed to open drop file: %s" % str(msg))
-                pass
-        else:
-            pass
+        self._log("[app][info] MacOpenFile Fired")
+        self.OpenFile(filename, line=-1)
 
     def MacPrintFile(self, filename):
         """Stub for future use
@@ -500,23 +515,23 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
         """
         cmds = evt.GetCommands()
-        for cmdstr in cmds:
-            if u"::" in cmdstr:
-                target, cmd = cmdstr.split(u"::")
-                if target == u"Cmd.EditraStc":
-                    cbuf = self.GetCurrentBuffer()
-                    if cbuf is not None and hasattr(cbuf, cmd):
-                        try:
-                            getattr(cbuf, cmd)()
-                        except:
-                            self._log("[app][err] Invalid Command %s" % cmdstr)
+        if isinstance(cmds, ed_ipc.IPCCommand):
+            if not len(cmds.GetFiles()):
+                self.OpenNewWindow()
             else:
-                if cmdstr == APP_CMD_OPEN_WINDOW:
-                    self.OpenNewWindow()
-                elif len(cmdstr):
-                    self.MacOpenFile(cmdstr)
-                else:
-                    self._log("[app][warn] Unknown Command %s" % cmdstr)
+                # TODO: change goto line handling to require one
+                #       arg per file specified on the comand line
+                #       i.e) -g 23,44,100
+                line = -1
+                for arg, val in cmds.GetArgs():
+                    if arg == '-g':
+                        line = val
+                        if line > 0:
+                            line -= 1
+                        break
+
+                for fname in cmds.GetFiles():
+                    self.OpenFile(fname, line)
 
     def OnCloseWindow(self, evt):
         """Close the currently active window
@@ -976,7 +991,7 @@ def _Main(opts, args):
     @param args: Commandline arguments
 
     """
-    # Put extern subpackage on path so that bundled external dependancies
+    # Put extern subpackage on path so that bundled external dependencies
     # can be found if needed.
     if not hasattr(sys, 'frozen'):
         epath = os.path.join(os.path.dirname(__file__), 'extern')
@@ -1046,7 +1061,7 @@ def _Main(opts, args):
         #       currently apply to all.
         for arg in args:
             try:
-                arg = os.path.abspath(arg)
+                arg = ebmlib.GetAbsPath(arg)
                 fname = ed_txt.DecodeString(arg, sys.getfilesystemencoding())
                 frame.DoOpen(ed_glob.ID_COMMAND_LINE_OPEN, fname, line)
             except IndexError:

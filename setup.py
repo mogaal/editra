@@ -28,8 +28,8 @@
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 62466 2009-10-21 23:35:41Z CJP $"
-__revision__ = "$Revision: 62466 $"
+__svnid__ = "$Id: setup.py 62855 2009-12-11 01:21:54Z CJP $"
+__revision__ = "$Revision: 62855 $"
 
 #---- Imports ----#
 import os
@@ -40,6 +40,21 @@ import zipfile
 import time
 import src.info as info
 import src.syntax.synextreg as synextreg # So we can get file extensions
+
+# Version Check(s)
+if sys.version_info < (2, 5):
+    sys.stderr.write("[ERROR] Not a supported Python version. Need 2.5+\n")
+    sys.exit(1)
+
+try:
+    import wx
+except ImportError:
+    sys.stderr.write("[ERROR] wxPython2.8 is required.\n")
+    sys.exit(1)
+else:
+    if wx.VERSION < (2, 8, 3):
+        sys.stderr.write("[ERROR] wxPython 2.8.3+ is required.\n")
+        sys.exit(1)
 
 #---- System Platform ----#
 __platform__ = os.sys.platform
@@ -62,19 +77,27 @@ CLASSIFIERS = [
             'Natural Language :: English',
             'Natural Language :: Chinese (Simplified)',
             'Natural Language :: Chinese (Traditional)',
+            'Natural Language :: Croatian',
             'Natural Language :: Czech',
+            'Natural Language :: Danish',
             'Natural Language :: Dutch',
             'Natural Language :: French',
+            'Natural Language :: Hungarian',
             'Natural Language :: German',
             'Natural Language :: Italian',
+            'Natural Language :: Latvian',
             'Natural Language :: Japanese',
             'Natural Language :: Norwegian',
+            'Natural Language :: Polish',
             'Natural Language :: Portuguese (Brazilian)',
+            'Natural Language :: Romanian',
             'Natural Language :: Russian',
             'Natural Language :: Serbian',
+            'Natural Language :: Slovak',
+            'Natural Language :: Slovenian',
             'Natural Language :: Spanish',
+            'Natural Language :: Swedish',
             'Natural Language :: Turkish',
-            'Natural Language :: Ukranian',
             'Operating System :: MacOS :: MacOS X',
             'Operating System :: Microsoft :: Windows',
             'Operating System :: POSIX',
@@ -260,13 +283,23 @@ def BuildPy2Exe():
     sys.path.append(os.path.abspath('src/'))
     sys.path.append(os.path.abspath('src/extern'))
 
+    DATA_FILES = GenerateBinPackageFiles()
+    try:
+        import enchant
+    except ImportError:
+        pass
+    else:
+        from enchant import utils as enutil
+        DATA_FILES += enutil.win32_data_files()
+
     setup(
         name = NAME,
         version = VERSION,
         options = {"py2exe" : {"compressed" : 1,
                                "optimize" : 1,
                                "bundle_files" : 2,
-                               "includes" : INCLUDES }},
+                               "includes" : INCLUDES,
+                               "excludes" : ["Tkinter",] }},
         windows = [{"script": "src/Editra.py",
                     "icon_resources": [(0, ICON['Win'])],
                     "other_resources" : [(RT_MANIFEST, 1,
@@ -279,7 +312,7 @@ def BuildPy2Exe():
         maintainer_email = AUTHOR_EMAIL,
         license = LICENSE,
         url = URL,
-        data_files = GenerateBinPackageFiles(),
+        data_files = DATA_FILES,
         )
 
 def BuildOSXApp():
@@ -449,6 +482,20 @@ def DoSourcePackage():
     else:
         from distutils.core import setup
 
+    # Try to remove possibly conflicting files from an old install
+    try:
+        import Editra
+        path = Editra.__file__
+        if '__init__' in path:
+            path = os.path.dirname(path)
+            path = os.path.join(path, 'src')
+            del sys.modules['Editra']
+            shutil.rmtree(path)
+    except (ImportError, OSError):
+        pass
+    except:
+        sys.stderr.write("[ERROR] Failed to remove old source files")
+
     # Make sure to delete any existing MANIFEST file beforehand to
     # prevent stale file lists
     if os.path.exists('MANIFEST'):
@@ -475,6 +522,7 @@ def DoSourcePackage():
         package_dir = { NAME : '.' },
         package_data = { NAME : DATA },
         classifiers= CLASSIFIERS,
+        install_requires = ['wxPython',]
         )
 
 def BuildECLibDemo():

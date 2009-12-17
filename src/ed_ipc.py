@@ -2,7 +2,7 @@
 # Name: ed_ipc.py                                                             #
 # Purpose: Editra IPC client/server                                           #
 # Author: Cody Precord <cprecord@editra.org>                                  #
-# Copyright: (c) 2008 Cody Precord <staff@editra.org>                         #
+# Copyright: (c) 2008-2009 Cody Precord <staff@editra.org>                    #
 # License: wxWindows License                                                  #
 ###############################################################################
 
@@ -17,7 +17,7 @@ This server and its relationship with the main application object allows for
 some limited remote control of Editra. The server's basic message protocol
 requirements are as follows.
 
-SESSION_KEY;message1;message2;...;MSGEND
+SESSION_KEY;xml;MSGEND
 
 Where the SESSION_KEY is the unique authentication key created by the app that
 started the server. This key is stored in the user profile and only valid for
@@ -28,27 +28,23 @@ between to the app.
 
 Message Format:
 
-Currently the types of messages that the app will process come in the following
-two formats.
+<edipc>
+   <filelist>
+      <file name="absolute_filepath"/>
+   </filelist>
+   <arglist>
+      <arg name="g" value="2"/>
+   </arglist>
+</edipc>
 
-  1) Send a file path or name to open the file. If the file is already open
-     then that tab will be set as the current tab.
-
-  2) To control the currently selected buffer commands must be formatted as
-     follows. Cmd.EditraStc::MethodName the first part of the string is used
-     to identify this is a command being issued from the server, the second part
-     identifies what object the command is to be called on. The identification
-     string is separated from the command by :: and finally the command is the
-     string representation of the actual method to call on the buffer.
-
-@example: SESSION_KEY;Cmd.EditraStc::Revert;/usr/home/foo/test.py;MSGEND
+@example: SESSION_KEY;xml;MSGEND
 @summary: Editra's IPC Library
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_ipc.py 61684 2009-08-17 20:45:12Z CJP $"
-__revision__ = "$Revision: 61684 $"
+__svnid__ = "$Id: ed_ipc.py 62872 2009-12-13 17:14:56Z CJP $"
+__revision__ = "$Revision: 62872 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -58,12 +54,22 @@ import socket
 import time
 #import select
 
+# Editra Libs
+import syntax
+
 #-----------------------------------------------------------------------------#
 # Globals
 
 # Port choosing algorithm ;)
 EDPORT = 10 * int('ed', 16) + sum(ord(x) for x in "itr") + int('a', 16) 
 MSGEND = u"*EDEND*"
+
+# Xml Implementation
+EDXML_IPC       = u"edipc"
+EDXML_FILELIST  = u"filelist"
+EDXML_FILE      = u"file"
+EDXML_ARGLIST   = u"arglist"
+EDXML_ARG       = u"arg"
 
 #-----------------------------------------------------------------------------#
 
@@ -152,7 +158,7 @@ class EdIpcServer(threading.Thread):
                 if self._exit:
                     break
 
-                # Block for upto 2 seconds while reading
+                # Block for up to 2 seconds while reading
                 start = time.time()
                 recieved = u''
                 while time.time() < start + 2:
@@ -164,12 +170,17 @@ class EdIpcServer(threading.Thread):
                 # the input and dispatch to the app.
                 if recieved.startswith(self.__key) and recieved.endswith(MSGEND):
                     recieved = recieved.replace(self.__key, u'', 1)
-                    # Get the separate commands
-                    cmds = [ cmd
-                             for cmd in recieved.rstrip(MSGEND).split(u";")
-                             if len(cmd) ]
 
-                    evt = IpcServerEvent(edEVT_COMMAND_RECV, wx.ID_ANY, cmds)
+                    # Parse the xml
+                    exml = IPCCommand()
+                    try:
+                        xmlstr = recieved.rstrip(MSGEND).strip(u";")
+                        exml.LoadFromString(xmlstr)
+                    except Exception, msg:
+                        # ignore parsing errors
+                        continue
+
+                    evt = IpcServerEvent(edEVT_COMMAND_RECV, wx.ID_ANY, exml)
                     wx.CallAfter(wx.PostEvent, self.app, evt)
             except socket.error:
                 # TODO: Better error handling
@@ -185,20 +196,19 @@ class EdIpcServer(threading.Thread):
 
 #-----------------------------------------------------------------------------#
 
-def SendCommands(cmds, key):
+def SendCommands(xmlobj, key):
     """Send commands to the running instance of Editra
-    @param cmds: List of command strings
+    @param xmlobj: EditraXml Object
     @param key: Server session authentication key
     @return: bool
 
     """
-    if not len(cmds):
-        return
+    assert isinstance(xmlobj, syntax.EditraXml), "SendCommands expects an xml object"
 
-    # Add the authentication key
+    # Build the edipc protocol msg
+    cmds = list()
     cmds.insert(0, key)
-
-    # Append the message end clause
+    cmds.append(xmlobj.GetXml())
     cmds.append(MSGEND)
 
     try:
@@ -207,57 +217,168 @@ def SendCommands(cmds, key):
         client.connect(('127.0.0.1', EDPORT))
 
         # Server expects commands delimited by ;
-        client.send(u";".join(cmds))
+        message = u";".join(cmds)
+        client.send(message)
         client.shutdown(socket.SHUT_RDWR)
         client.close()
-    except:
+    except Exception, msg:
         return False
     else:
         return True
 
 #-----------------------------------------------------------------------------#
-# Test
-if __name__ == '__main__':
-    ID_GO = wx.NewId()
-    ID_STOP = wx.NewId()
-    KEY = 'mykey'
+# Command Serialization
 
-    def OnMessage(evt):
-        """Test message reciever"""
-        print "MSG RECIEVED: %s" % str(evt.GetValue())
+class IPCCommand(syntax.EditraXml):
+    """Xml packet used for sending data to remote process through ipc"""
+    def __init__(self):
+        syntax.EditraXml.__init__(self)
 
-    class TestFrame(wx.Frame):
-        """Test application frame"""  
-        def __init__(self, parent, title="Server Test"):
-            wx.Frame.__init__(self, parent, wx.ID_ANY, title)
-            sizer = wx.BoxSizer(wx.HORIZONTAL)
-            sizer.AddMany([(wx.Button(self, ID_GO, "GO"), 0, wx.ALIGN_LEFT),
-                           ((20, 20), 0),
-                           (wx.Button(self, ID_STOP, "STOP"), 0, wx.ALIGN_RIGHT),
-                          ])
-            self.SetSizer(sizer)
-            self.SetInitialSize()
-            self.Bind(wx.EVT_BUTTON, self.Go, id=ID_GO)
-            self.Bind(wx.EVT_BUTTON, self.Exit, id=ID_STOP)
-            self.Show()
+        # Attributes
+        self._files = IPCFileList()
+        self._args = IPCArgList()
 
-        def Go(self, evt):
-            """Send some commands to the server"""
-            for msg in ('Japan', 'United States', 'Spain', 'Greece'):
-                SendCommands(["I'm in %s" % msg], KEY)
+        # Setup
+        self.SetName(EDXML_IPC)
+        self.RegisterHandler(self._files)
+        self.RegisterHandler(self._args)
 
-        def Exit(self, evt):
-            """Shutdown the server and the app"""
-            SERVER.Shutdown()
-            self.Close()
+    #---- Public Api ----#
 
-    APP = wx.App(False)
-    print "Starting server..."
-    SERVER = EdIpcServer(APP, KEY)
-    SERVER.start()
-    APP.Bind(EVT_COMMAND_RECV, OnMessage)
-    TestFrame(None)
-    print "Starting application loop..."
-    APP.MainLoop()
+    def GetArgs(self):
+        """Get the list of paths
+        @return: list of tuples
 
+        """
+        return self._args.GetArgs()
+
+    def SetArgs(self, args):
+        """Set the files
+        @param flist: list of strings
+
+        """
+        self._args.SetArgs(args)
+
+    def GetFiles(self):
+        """Get the list of paths
+        @return: list of strings
+
+        """
+        return self._files.GetFiles()
+
+    def SetFiles(self, flist):
+        """Set the files
+        @param flist: list of strings
+
+        """
+        self._files.SetFiles(flist)
+
+class IPCFileList(syntax.EditraXml):
+    """Xml object for holding the list of files
+
+    <filelist>
+       <file value="/path/to/file"/>
+    </filelist>
+
+    """
+    def __init__(self):
+        syntax.EditraXml.__init__(self)
+
+        # Attributes
+        self._files = list()
+
+        # Setup
+        self.SetName(EDXML_FILELIST)
+
+    #---- Xml Implementation ----#
+
+    def startElement(self, name, attrs):
+        """Collect all the file elements"""
+        if name == EDXML_FILE:
+            fname = attrs.get(syntax.EXML_VALUE, None)
+            if fname is not None:
+                self._files.append(fname)
+
+    def GetSubElements(self):
+        """Get the objects subelements"""
+        xmlstr = u""
+        tmp = u"<%s %s=\"" % (EDXML_FILE, syntax.EXML_VALUE)
+        tmp += u"%s\"/>"
+        for fname in self._files:
+            xmlstr += tmp % fname
+        return xmlstr
+
+    #--- public api ----#
+
+    def GetFiles(self):
+        """Get the list of paths
+        @return: list of strings
+
+        """
+        return self._files
+
+    def SetFiles(self, flist):
+        """Set the list of files
+        @param flist: list of strings
+
+        """
+        self._files = flist
+
+class IPCArgList(syntax.EditraXml):
+    """Xml object for holding the list of args
+
+    <arglist>
+       <arg name="test" value="x"/>
+    </arglist>
+
+    """
+    def __init__(self):
+        syntax.EditraXml.__init__(self)
+
+        # Attributes
+        self._args = list()
+
+        # Setup
+        self.SetName(EDXML_ARGLIST)
+
+    #---- Xml Implementation ----#
+
+    def startElement(self, name, attrs):
+        """Collect all the file elements"""
+        if name == EDXML_ARG:
+            arg = attrs.get(syntax.EXML_NAME, None)
+            val = attrs.get(syntax.EXML_VALUE, u'')
+            if not val.isdigit():
+                val = -1
+            else:
+                val = int(val)
+            if arg is not None:
+                self._args.append((arg, val))
+
+    def GetSubElements(self):
+        """Get the objects sub-elements"""
+        xmlstr = u""
+        tmp = u"<%s %s=\"" % (EDXML_ARG, syntax.EXML_NAME)
+        tmp += u"%s\" "
+        tmp += "%s=\"" % syntax.EXML_VALUE
+        tmp += "%s\"/>"
+        for argval in self._args:
+            xmlstr += tmp % argval
+        return xmlstr
+
+    #--- public api ----#
+
+    def GetArgs(self):
+        """Get the list of arguments (command line switches)
+        @return: list of tuples
+
+        """
+        return self._args
+
+    def SetArgs(self, args):
+        """Set the list of files
+        @param flist: list of tuples
+
+        """
+        self._args = args
     

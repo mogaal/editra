@@ -12,8 +12,8 @@ Text/Unicode handling functions and File wrapper class
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_txt.py 62147 2009-09-26 15:40:14Z CJP $"
-__revision__ = "$Revision: 62147 $"
+__svnid__ = "$Id: ed_txt.py 62538 2009-11-03 00:35:45Z CJP $"
+__revision__ = "$Revision: 62538 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -157,7 +157,7 @@ class EdFile(ebmlib.FileObjectImpl):
                 # Binary data was read
                 Log("[ed_txt][info] Binary bytes where read")
                 ustr = self._HandleRawBytes(bytes)
-        except UnicodeDecodeError, msg:
+        except (UnicodeDecodeError, LookupError), msg:
             Log("[ed_txt][err] Error while reading with %s" % self.encoding)
             Log("[ed_txt][err] %s" % unicode(msg))
             self.SetLastError(unicode(msg))

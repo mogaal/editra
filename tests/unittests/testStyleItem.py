@@ -9,8 +9,8 @@
 """Unittest cases for StyleItems"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testStyleItem.py 59010 2009-02-19 03:53:56Z CJP $"
-__revision__ = "$Revision: 59010 $"
+__svnid__ = "$Id: testStyleItem.py 62714 2009-11-25 22:53:32Z CJP $"
+__revision__ = "$Revision: 62714 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -24,7 +24,7 @@ import ed_style
 
 class StyleItemTest(unittest.TestCase):
     def setUp(self):
-        self.item = ed_style.StyleItem("#FF0000,bold", "#000000", "Times", "10")
+        self.item = ed_style.StyleItem("#FF0000", "#000000", "Times", "10", ex=["bold",])
         self.itemstr = "fore:#FF0000,back:#000000,face:Times,size:10,modifiers:bold"
         self.item2 = ed_style.StyleItem("#FF0000")
         self.itemstr2 = "fore:#FF0000"
@@ -36,7 +36,7 @@ class StyleItemTest(unittest.TestCase):
     #---- Method Tests ----#
     def testEquals(self):
         """Test that the equality operator is functioning correctly"""
-        item2 = ed_style.StyleItem("#FF0000,bold", "#000000", "Times", "10")
+        item2 = ed_style.StyleItem("#FF0000", "#000000", "Times", "10", ex=["bold",])
 
         # Base Test
         self.assertEquals(self.item, item2)
@@ -58,8 +58,7 @@ class StyleItemTest(unittest.TestCase):
         ilen = len(itemlst)
         self.assertTrue(ilen == 5, "Length Was: %d" % ilen)
         itemlst = self.item2.GetAsList()
-        ilen = len(itemlst)
-        self.assertTrue(ilen == 1, "Length Was: %d" % ilen)
+        self.assertTrue(len(itemlst) == 1, "List Was: %s" % repr(itemlst))
         self.assertTrue(len(self.null.GetAsList()) == 0, "Null Item had values")
 
     def testGetBack(self):
