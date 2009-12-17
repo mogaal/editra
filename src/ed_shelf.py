@@ -14,8 +14,8 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 62460 2009-10-21 03:13:18Z CJP $"
-__revision__ = "$Revision: 62460 $"
+__svnid__ = "$Id: ed_shelf.py 62765 2009-12-03 02:32:10Z CJP $"
+__revision__ = "$Revision: 62765 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -199,9 +199,16 @@ class EdShelfBook(FNB.FlatNotebook):
         """
         count = 0
         for page in xrange(self.GetPageCount()):
-            if item_name == re.sub(PGNUM_PAT, u'', self.GetPageText(page), 1):
+            if self.GetPageText(page).startswith(item_name):
                 count = count + 1
         return count
+
+    def GetMainWindow(self):
+        """Get the main window that this shelf instance was created for
+        @return: ed_main.MainWindow
+
+        """
+        return self._parent
 
     def GetOpen(self):
         """Get the list of open shelf items
@@ -365,7 +372,7 @@ class EdShelfDelegate(object):
         @return: reference to ed_main.MainWindow or None
 
         """
-        return self._shelf.GetParent()
+        return self._shelf.GetMainWindow()
 
     def GetWindow(self):
         """Return reference to the Shelfs window component

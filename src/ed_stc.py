@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 62460 2009-10-21 03:13:18Z CJP $"
-__revision__ = "$Revision: 62460 $"
+__svnid__ = "$Id: ed_stc.py 62872 2009-12-13 17:14:56Z CJP $"
+__revision__ = "$Revision: 62872 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -841,7 +841,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
                     elif evt.GetControl() or \
                         (wx.Platform == '__WXMAC__' and evt.GetAlt()):
                         # Contract all subnodes of clicked one
-                        # Note: using Alt as Ctrl can not be recieved for
+                        # Note: using Alt as Ctrl can not be received for
                         # clicks on mac (Scintilla Bug).
                         if self.GetFoldExpanded(line_clicked):
                             self.SetFoldExpanded(line_clicked, False)

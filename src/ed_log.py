@@ -16,8 +16,8 @@ displaying a L{LogViewer} in the Shelf.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_log.py 59442 2009-03-09 01:35:08Z CJP $"
-__revision__ = "$Revision: 59442 $"
+__svnid__ = "$Id: ed_log.py 62723 2009-11-26 18:43:20Z CJP $"
+__revision__ = "$Revision: 62723 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -216,8 +216,6 @@ class LogBuffer(eclib.OutputBuffer):
         if src not in self._srcs:
             self._srcs.append(src)
             self.GetParent().SetSources(self._srcs)
-        else:
-            pass
 
     def ApplyStyles(self, start, txt):
         """Apply coloring to error and warning messages
@@ -261,7 +259,10 @@ class LogBuffer(eclib.OutputBuffer):
 
         # Check filters
         logmsg = msg.GetData()
-        self.AddFilter(logmsg.Origin)
+        org = logmsg.Origin
+        if org not in self._srcs:
+            self.AddFilter(org)
+
         if self._filter == SHOW_ALL_MSG:
             self.AppendUpdate(unicode(logmsg) + os.linesep)
         elif self._filter == logmsg.Origin:

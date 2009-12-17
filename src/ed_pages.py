@@ -13,8 +13,8 @@ This class implements Editra's main notebook control.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_pages.py 61974 2009-09-19 15:41:37Z CJP $"
-__revision__ = "$Revision: 61974 $"
+__svnid__ = "$Id: ed_pages.py 62723 2009-11-26 18:43:20Z CJP $"
+__revision__ = "$Revision: 62723 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -216,7 +216,10 @@ class EdPages(FNB.FlatNotebook):
         """Add a page to the notebook"""
         if not len(text):
             self.pg_num += 1
-            text = _("Untitled - %d") % self.pg_num
+            if self.pg_num != 0:
+                text = _("untitled %d") % self.pg_num
+            else:
+                text = _("untitled")
         page.SetTabLabel(text)
         super(EdPages, self).AddPage(page, text, select, imgId)
         sel = self.GetSelection()
@@ -224,7 +227,7 @@ class EdPages(FNB.FlatNotebook):
         self.UpdateIndexes()
 
     def DocDuplicated(self, path):
-        """Check for if the given path is open elswhere and duplicate the
+        """Check for if the given path is open elsewhere and duplicate the
         docpointer.
         @param path: string
 
@@ -242,10 +245,7 @@ class EdPages(FNB.FlatNotebook):
         @return: window object contained in current page or None
 
         """
-        if hasattr(self, 'control'):
-            return self.control
-        else:
-            return None
+        return self.control
 
     def GetFileNames(self):
         """Gets the name of all open files in the notebook

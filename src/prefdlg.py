@@ -16,8 +16,8 @@ and setting of the program by setting values in the Profile.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: prefdlg.py 62174 2009-09-27 23:05:39Z CJP $"
-__revision__ = "$Revision: 62174 $"
+__svnid__ = "$Id: prefdlg.py 62888 2009-12-15 00:48:33Z CJP $"
+__revision__ = "$Revision: 62888 $"
 
 #----------------------------------------------------------------------------#
 # Dependancies
@@ -95,7 +95,7 @@ class PreferencesDialog(wx.Frame):
 
     def __init__(self, parent, id_=wx.ID_ANY,
                  style=wx.DEFAULT_DIALOG_STYLE | wx.TAB_TRAVERSAL):
-        """Initialises the preference dialog
+        """Initializes the preference dialog
         @param parent: The parent window of this window
         @param id_: The id of this window
 
@@ -105,7 +105,7 @@ class PreferencesDialog(wx.Frame):
         util.SetWindowIcon(self)
 
         # Extra Styles
-        self.SetTransparent(Profile_Get('ALPHA', 'int', 255))
+        self.SetTransparent(Profile_Get('ALPHA', default=255))
 
         # Attributes
         self._accel = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_ESCAPE, wx.ID_CLOSE)])
@@ -547,7 +547,7 @@ class GeneralFilePanel(wx.Panel):
                 ctrl.Enable(False)
 
         liblbl = wx.StaticText(self, label=_("Enchant Path") + u":")
-        libpath = os.environ.get('PYENCHANT_LIBRARY_PATH', u'')
+        libpath = os.environ.get('PYENCHANT_LIBRARY_PATH', '')
         prefpath = sprefs.get('epath', libpath)
         libpicker = wx.FilePickerCtrl(self, ID_PREF_ENCHANT_PATH,
                                       path=libpath,

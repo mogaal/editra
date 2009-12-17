@@ -16,8 +16,8 @@ deduct the requested information.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: pycomp.py 60432 2009-04-29 18:15:57Z CJP $"
-__revision__ = "$Revision: 60432 $"
+__cvsid__ = "$Id: pycomp.py 62658 2009-11-15 04:54:55Z CJP $"
+__revision__ = "$Revision: 62658 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -74,6 +74,8 @@ class Completer(completer.BaseCompleter):
 
         """
         if command is None or (len(command) and command[0].isdigit()):
+            if calltip:
+                return u""
             return list()
 
         try:
@@ -94,7 +96,7 @@ class Completer(completer.BaseCompleter):
             if calltip:
                 return cmpl.get_completions(command + '(', '', calltip)
             else:
-                # Get Autocompletion List
+                # Get Auto-completion List
                 complst = cmpl.get_completions(command)
                 sigs = list()
                 for sig in complst:
@@ -132,12 +134,36 @@ class Completer(completer.BaseCompleter):
         return self._GetCompletionInfo(command)
 
     def GetCallTip(self, command):
-        """Returns the formated calltip string for the command.
+        """Returns the formatted calltip string for the command.
         If the namespace command is unset the locals namespace is used.
         @param command: command to get calltip for
 
         """
-        return self._GetCompletionInfo(command, calltip=True)
+        # get the relevant text
+        alltext = self._GetCompletionInfo(command, calltip=True)
+       
+        # split the text into natural paragraphs (a blank line separated)
+        paratext = alltext.split("\n\n")
+       
+        # add text by paragraph until text limit or all paragraphs
+        textlimit = 800
+        if len(paratext[0]) < textlimit:
+            numpara = len(paratext)
+            calltiptext = paratext[0]
+            ii = 1
+            while ii < numpara and \
+                  (len(calltiptext) + len(paratext[ii])) < textlimit:
+                calltiptext = calltiptext + "\n\n" + paratext[ii]
+                ii = ii + 1
+
+            # if not all texts are added, add "[...]"
+            if ii < numpara:
+                calltiptext = calltiptext + "\n[...]"
+        # present the function signature only (first newline)
+        else:
+            calltiptext = alltext.split("\n")[0]
+           
+        return calltiptext
 
 #-----------------------------------------------------------------------------#
 # This code below is a modified and adapted version of the pythoncomplete 
@@ -255,14 +281,16 @@ class PyCompleter(object):
                 if ctip:
                     # Use introspect for calltips for now until some
                     # issues are sorted out with the main parser
-                    return introspect.getCallTip(_sanitize(stmt), 
-                                                 self.compldict)[2]
+                    tip = introspect.getCallTip(_sanitize(stmt), 
+                                                self.compldict)[2]
+                    if not isinstance(tip, basestring):
+                        tip = u""
+                    return tip
                 else:
                     result = eval(_sanitize(stmt[:-1]), self.compldict)
-
-                doc = max(getattr(result, '__doc__', ''), ' ')
-                return [{'word' : _cleanstr(self.get_arguments(result)), 
-                         'info' : _cleanstr(doc)}]
+                    doc = max(getattr(result, '__doc__', ''), ' ')
+                    return [{'word' : _cleanstr(self.get_arguments(result)), 
+                             'info' : _cleanstr(doc)}]
             elif ridx == -1:
                 match = stmt
                 compdict = self.compldict

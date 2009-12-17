@@ -15,8 +15,8 @@ messages from ed_msg to display progress of different actions.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_statbar.py 62460 2009-10-21 03:13:18Z CJP $"
-__revision__ = "$Revision: 62460 $"
+__svnid__ = "$Id: ed_statbar.py 62723 2009-11-26 18:43:20Z CJP $"
+__revision__ = "$Revision: 62723 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -28,7 +28,7 @@ import ed_glob
 import util
 import ed_msg
 from syntax.synglob import GetDescriptionFromId
-from eclib.pstatbar import ProgressStatusBar
+from eclib import ProgressStatusBar, EncodingDialog
 from extern.decorlib import anythread
 
 #--------------------------------------------------------------------------#
@@ -107,15 +107,15 @@ class EdStatBar(ProgressStatusBar):
             # in GetPartialTextExtents()
             pass
         except TypeError, err:
-            self._log("[estatbar][err] Bad status message: %s" % str(txt))
-            self._log("[estatbar][err] %s" % err)
+            self._log("[edstatbar][err] Bad status message: %s" % str(txt))
+            self._log("[edstatbar][err] %s" % err)
 
     def AdjustFieldWidths(self):
         """Adjust each field width of status bar basing on the field text
         @return: None
 
         """
-        widths = []
+        widths = [-1]
         # Calculate required widths
         # NOTE: Order of fields is important
         for field in [ed_glob.SB_BUFF,
@@ -123,19 +123,16 @@ class EdStatBar(ProgressStatusBar):
                       ed_glob.SB_ENCODING,
                       ed_glob.SB_EOL,
                       ed_glob.SB_ROWCOL]:
-            width = self.GetTextExtent(self.GetStatusText(field))[0]
+            width = self.GetTextExtent(self.GetStatusText(field))[0] + 20
+            if width == 20:
+                width = 0
             widths.append(width)
 
         # Adjust widths
-        widths = [width + 20 for width in widths]
-        widths.insert(0, -1)
-        for idx, width in enumerate(list(widths)):
-            if width == 20:
-                widths[idx] = 0
-
         if widths[-1] < 155:
             widths[-1] = 155
 
+        # Only update if there are changes
         if widths != self._widths:
             self._widths = widths
             self.SetStatusWidths(self._widths)
@@ -178,6 +175,25 @@ class EdStatBar(ProgressStatusBar):
         if self.GetFieldRect(ed_glob.SB_EOL).Contains(pt):
             rect = self.GetFieldRect(ed_glob.SB_EOL)
             self.PopupMenu(self._eolmenu, (rect.x, rect.y))
+        elif self.GetFieldRect(ed_glob.SB_ENCODING).Contains(pt):
+            nb = self.GetTopLevelParent().GetNotebook()
+            buff = nb.GetCurrentCtrl()
+            dlg = EncodingDialog(nb,
+                                 msg=_("Change the encoding of the current document."),
+                                 title=_("Change Encoding"),
+                                 default=buff.GetEncoding())
+            bmp = wx.ArtProvider.GetBitmap(str(ed_glob.ID_DOCPROP),
+                                           wx.ART_OTHER)
+            if bmp.IsOk():
+                dlg.SetBitmap(bmp)
+            dlg.CenterOnParent()
+
+            # TODO: should add EdFile callbacks for modification events instead
+            #       of using explicit statusbar refresh.
+            if dlg.ShowModal() == wx.ID_OK:
+                buff.SetEncoding(dlg.GetEncoding())
+                self.UpdateFields()
+            dlg.Destroy()
         else:
             evt.Skip()
 

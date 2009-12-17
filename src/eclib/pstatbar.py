@@ -22,8 +22,8 @@ after creating the bar to change it.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: pstatbar.py 62146 2009-09-26 15:37:24Z CJP $"
-__revision__ = "$Revision: 62146 $"
+__svnid__ = "$Id: pstatbar.py 62723 2009-11-26 18:43:20Z CJP $"
+__revision__ = "$Revision: 62723 $"
 
 __all__ = ["ProgressStatusBar",]
 
@@ -214,7 +214,7 @@ class ProgressStatusBar(wx.StatusBar):
     def SetStatusText(self, txt, number=0):
         """Override wx.StatusBar method to prevent text from being
         put in when the progress indicator is running. Any text that
-        comes when it is running is buffered to be displayed afterwards.
+        comes when it is running is buffered to be displayed afterwords.
         @param txt: Text to put on status bar
         @keyword number: Section number to put text in
 

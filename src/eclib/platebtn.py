@@ -73,8 +73,8 @@ Requirements:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: platebtn.py 61780 2009-08-29 13:45:18Z CJP $"
-__revision__ = "$Revision: 61780 $"
+__svnid__ = "$Id: platebtn.py 62892 2009-12-15 14:51:07Z CJP $"
+__revision__ = "$Revision: 62892 $"
 
 __all__ = ["PlateButton",
            "PLATE_NORMAL", "PLATE_PRESSED", "PLATE_HIGHLIGHT", 
@@ -239,7 +239,7 @@ class PlateButton(wx.PyControl):
         bevt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
         bevt.SetEventObject(self)
         bevt.SetString(self.GetLabel())
-        wx.PostEvent(self.GetParent(), bevt)
+        self.GetEventHandler().ProcessEvent(bevt)
 
     def __DrawButton(self):
         """Draw the button"""

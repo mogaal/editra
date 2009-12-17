@@ -10,14 +10,14 @@
 Editra Control Library Demo / Test Application
 
 This application is used for running the ui test modules for the Editra
-Control Library. The demo modules loaded by this application are primarly
+Control Library. The demo modules loaded by this application are primarily
 intended as samples for exercising the various control apis.
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: demo.py 62426 2009-10-16 03:20:30Z CJP $"
-__revision__ = "$Revision: 62426 $"
+__svnid__ = "$Id: demo.py 62892 2009-12-15 14:51:07Z CJP $"
+__revision__ = "$Revision: 62892 $"
 
 #-----------------------------------------------------------------------------#
 # Imports

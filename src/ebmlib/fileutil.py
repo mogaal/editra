@@ -14,12 +14,13 @@ Utility functions for managing and working with files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: fileutil.py 61040 2009-06-13 08:16:04Z CJP $"
-__revision__ = "$Revision: 61040 $"
+__svnid__ = "$Id: fileutil.py 62878 2009-12-14 14:59:15Z CJP $"
+__revision__ = "$Revision: 62878 $"
 
-__all__ = [ 'GetFileModTime', 'GetFileSize', 'GetUniqueName', 'MakeNewFile',
-            'MakeNewFolder', 'GetFileExtension', 'GetFileName', 'GetPathName',
-            'ResolveRealPath', 'IsLink', 'GetPathFromURI', 'PathExists']
+__all__ = [ 'GetAbsPath', 'GetFileExtension', 'GetFileModTime', 'GetFileName',
+            'GetFileSize', 'GetPathName', 'GetPathFromURI', 'GetUniqueName', 
+            'IsLink', 'MakeNewFile', 'MakeNewFolder', 'PathExists',
+            'ResolveRealPath']
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -36,6 +37,12 @@ if platform.system().lower() in ['windows', 'microsoft']:
         import win32com.client as win32client
     except ImportError:
         win32client = None
+
+    try:
+        # Check for win32api
+        import win32api
+    except ImportError:
+        win32api = None
 else:
     UNIX = True
 
@@ -56,6 +63,20 @@ def uri2path(func):
     return WrapURI
 
 #-----------------------------------------------------------------------------#
+
+@uri2path
+def GetAbsPath(path):
+    """Get the absolute path of a file of a file.
+    @param path: string
+    @return: string
+    @note: on windows if win32api is available short notation paths will be
+           converted to the proper long name.
+    
+    """
+    rpath = os.path.abspath(path)
+    if WIN and win32api is not None:
+        rpath = win32api.GetLongPathName(rpath)
+    return rpath
 
 def GetFileExtension(file_str):
     """Gets last atom at end of string as extension if

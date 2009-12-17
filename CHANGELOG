@@ -9,11 +9,52 @@ Change Log:
 #-----------------------------------------------------------------------------#
 Changes since last release:
 
+VERSION 0.5.25
+DATE 12/15/2009
+30th Alpha Release
+
+NEWS:
+
+Compatibility with older Editra Style Sheet's modifier syntax has been removed,
+style sheet made for pre 0.4 release version may have trouble properly loading 
+in this version.
+
+NEW: [features/improvements]
++New version of Launch plugin (new handlers can be added via xml interface)
++Clicking on encoding field in statusbar will allow encoding of current document
+ to be converted.
++Some performance improvements
++The -g command line switch now will work when existing instance of Editra is
+ already running.
+
+LIBRARY:
++Xml interface added to Launch plugin
+
+BUG FIXES:
++Fix error in handling of unknown encodings.
++Trim long python calltips to ensure that function signature is visible (patch from appliedmath)
++Fix issue with opening files via relative path from commandline
++Fix error when adding shelf items to an undocked shelf window
++Fix index error in page synchronization of filebrowser plugin
++Fix index error in BackTab functionality
++Fix BackTab at end of line deleting eol characters
++Fix startup errors caused by files that were left over from previous installs.
++Fix issue where Windows binary installer would misplace files that could cause
+subprocess commands to fail.
++Fix issue in handling short form paths on Windows by converting to long name.
+
+#-----------------------------------------------------------------------------#
+
 VERSION 0.5.15
 DATE 10/31/2009
 30th Alpha Release
 
 NEWS:
+
+This release contains a a large number of internal changes. New features include
+the ability to customize syntax highlighting and add new file type support
+through xml files. Spell checking is now also supported through the use of the
+enchant spell checking library.
 
 NEW: [features/improvements]
 +Syntax highlighting can be extended and overridden by user defined extensions.

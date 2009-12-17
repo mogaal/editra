@@ -20,8 +20,8 @@ happen during run time.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: profiler.py 62162 2009-09-26 21:59:23Z CJP $"
-__revision__ = "$Revision: 62162 $"
+__svnid__ = "$Id: profiler.py 62723 2009-11-26 18:43:20Z CJP $"
+__revision__ = "$Revision: 62723 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -324,36 +324,33 @@ def _ToObject(index, val, fmt):
     @todo: exception handling,
 
     """
-    if not isinstance(fmt, basestring):
-        raise TypeError, "_ToObject expects a string for parameter 2"
-    else:
-        tmp = fmt.lower()
-        if tmp == u'font':
-            fnt = val.split(',')
-            rval = wx.FFont(int(fnt[1]), wx.DEFAULT, face=fnt[0])
-        elif tmp == u'bool':
-            if isinstance(val, bool):
-                rval = val
-            else:
-                rval = _DEFAULTS.get(index, False)
-        elif tmp == u'size_tuple':
-            if len(val) == 2 and \
-               isinstance(val[0], int) and isinstance(val[1], int):
-                rval = val
-            else:
-                rval = _DEFAULTS.get(index, wx.DefaultSize)
-        elif tmp == u'str':
-            rval = unicode(val)
-        elif tmp == u'int':
-            if isinstance(val, int):
-                rval = val
-            elif isinstance(val, basestring) and val.isdigit():
-                rval = int(val)
-            else:
-                rval = _DEFAULTS.get(index)
+    tmp = fmt.lower()
+    if tmp == u'font':
+        fnt = val.split(',')
+        rval = wx.FFont(int(fnt[1]), wx.DEFAULT, face=fnt[0])
+    elif tmp == u'bool':
+        if isinstance(val, bool):
+            rval = val
         else:
-            return val
-        return rval
+            rval = _DEFAULTS.get(index, False)
+    elif tmp == u'size_tuple':
+        if len(val) == 2 and \
+           isinstance(val[0], int) and isinstance(val[1], int):
+            rval = val
+        else:
+            rval = _DEFAULTS.get(index, wx.DefaultSize)
+    elif tmp == u'str':
+        rval = unicode(val)
+    elif tmp == u'int':
+        if isinstance(val, int):
+            rval = val
+        elif isinstance(val, basestring) and val.isdigit():
+            rval = int(val)
+        else:
+            rval = _DEFAULTS.get(index)
+    else:
+        return val
+    return rval
 
 #---- Begin Function Definitions ----#
 def AddFileHistoryToProfile(file_history):

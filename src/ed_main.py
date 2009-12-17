@@ -15,8 +15,8 @@ main Ui component of the editor that contains all the other components.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_main.py 62144 2009-09-26 14:28:20Z CJP $"
-__revision__ = "$Revision: 62144 $"
+__svnid__ = "$Id: ed_main.py 62723 2009-11-26 18:43:20Z CJP $"
+__revision__ = "$Revision: 62723 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -324,7 +324,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         if self._loaded and len(app.GetMainWindows()) == 1:
             if active:
                 wx.GetApp().SetTopWindow(self)
-                wx.UpdateUIEvent.SetUpdateInterval(205)
+                wx.UpdateUIEvent.SetUpdateInterval(215)
                 wx.UpdateUIEvent.SetMode(wx.UPDATE_UI_PROCESS_SPECIFIED)
                 self.SetExtraStyle(wx.WS_EX_PROCESS_UI_UPDATES)
             else:
@@ -339,7 +339,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
             self._loaded = True
 
             # Slow the update interval to reduce overhead
-            wx.UpdateUIEvent.SetUpdateInterval(205)
+            wx.UpdateUIEvent.SetUpdateInterval(215)
             wx.UpdateUIEvent.SetMode(wx.UPDATE_UI_PROCESS_SPECIFIED)
             self.SetExtraStyle(wx.WS_EX_PROCESS_UI_UPDATES)
 
@@ -352,7 +352,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
             app.SetTopWindow(self)
 
             # HACK find better way to do this later. It seems that on gtk the
-            #      window doesnt get activated until later than it does on the
+            #      window doesn't get activated until later than it does on the
             #      other platforms. So for panels that depend on updating their
             #      initial state we need to send out a fake update message here.
             if wx.Platform == '__WXGTK__':
@@ -362,7 +362,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         else:
             self.SetExtraStyle(0)
 
-            # HACK set update ui events back to proccess all here in case
+            # HACK set update ui events back to process all here in case
             # opened dialog needs them. Not sure why this is necessary but it
             # is the only solution I could find to fix the external find
             # dialogs so that their buttons become enabled when typing in the
@@ -387,7 +387,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         """Add a file to the windows file history as well as any
         other open windows history.
         @param fname: name of file to add
-        @todo: change the file history to a centrally manaaged object that
+        @todo: change the file history to a centrally managed object that
                all windows pull from to avoid this quick solution.
 
         """
@@ -443,7 +443,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
             elif not hasattr(sys, 'frozen'):
                 fdir = os.curdir
 
-            dlg = wx.FileDialog(self, _("Choose a File"), fdir, "",
+            dlg = wx.FileDialog(self, _("Editra: Open"), fdir, "",
                                 ''.join(syntax.GenFileFilters()),
                                 wx.OPEN | wx.MULTIPLE)
             dlg.SetFilterIndex(_PGET('FFILTER', 'int', 0))

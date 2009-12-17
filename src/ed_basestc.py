@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 62523 2009-10-31 21:03:19Z CJP $"
-__revision__ = "$Revision: 62523 $"
+__svnid__ = "$Id: ed_basestc.py 62767 2009-12-03 05:00:58Z CJP $"
+__revision__ = "$Revision: 62767 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -176,11 +176,13 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
                 # In middle of line somewhere
                 text = self.GetLine(cline)
                 column = max(0, self.GetColumn(cpos) - 1)
-                if text[column].isspace():
+                if len(text) > column and text[column].isspace():
 
                     # Find the end of the whitespace
                     end = column
-                    while end < len(text) and text[end].isspace():
+                    while end < len(text) and \
+                          text[end].isspace() and \
+                          text[end] not in '\r\n':
                         end += 1
 
                     # Find the start of the whitespace
@@ -785,11 +787,18 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         self.file = doc
 
     def SetEncoding(self, enc):
-        """Sets the encoding of the current document
+        """Sets the encoding of the document
         @param enc: encoding to set for document
 
         """
         self.file.SetEncoding(enc)
+
+    def GetEncoding(self):
+        """Get the document objects encoding
+        @return: string
+
+        """ 
+        return self.file.GetEncoding()
 
     def SetFileName(self, path):
         """Set the buffers filename attributes from the given path"""
