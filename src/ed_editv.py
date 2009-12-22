@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 62454 2009-10-18 23:56:59Z CJP $"
-__revision__ = "$Revision: 62454 $"
+__svnid__ = "$Id: ed_editv.py 62918 2009-12-17 20:29:00Z CJP $"
+__revision__ = "$Revision: 62918 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -306,7 +306,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         if self.GetModify():
             # TODO: Move this method down from the frame to here
             result = self.GetTopLevelParent().ModifySave()
-            result = result in (wx.ID_OK, wx.ID_NO)
+            result = result in (wx.ID_YES, wx.ID_OK, wx.ID_NO)
 
         return result
 

@@ -14,11 +14,12 @@ Base class for autocompletion providers to implement the completion interface.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: completer.py 62467 2009-10-22 02:10:51Z CJP $"
-__revision__ = "$Revision: 62467 $"
+__svnid__ = "$Id: completer.py 62937 2009-12-19 05:55:39Z CJP $"
+__revision__ = "$Revision: 62937 $"
 
-__all__ = [ 'IMG_FUNCTION', 'IMG_METHOD', 'IMG_CLASS', 'IMG_ATTRIBUTE',
-            'IMG_VARIABLE', 'IMG_ELEMENT', 'IMG_PROPERTY', 'BaseCompleter' ]
+__all__ = [ 'TYPE_FUNCTION', 'TYPE_METHOD', 'TYPE_CLASS', 'TYPE_ATTRIBUTE',
+            'TYPE_VARIABLE', 'TYPE_ELEMENT', 'TYPE_PROPERTY', 'TYPE_UNKNOWN',
+            'BaseCompleter', 'Symbol' ]
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -27,13 +28,80 @@ import wx
 #--------------------------------------------------------------------------#
 
 # Image Type Ids
-IMG_FUNCTION, \
-IMG_METHOD, \
-IMG_CLASS, \
-IMG_ATTRIBUTE, \
-IMG_PROPERTY, \
-IMG_VARIABLE, \
-IMG_ELEMENT  = range(1, 8)
+TYPE_FUNCTION, \
+TYPE_METHOD, \
+TYPE_CLASS, \
+TYPE_ATTRIBUTE, \
+TYPE_PROPERTY, \
+TYPE_VARIABLE, \
+TYPE_ELEMENT, \
+TYPE_UNKNOWN = range(1, 9)
+
+#--------------------------------------------------------------------------#
+class Symbol(object):
+    """ Defines a symbol as parsed by the autocompleter.
+    Symbols with the same name and different type are EQUAL
+    Symbol hash is based on symbol NAME
+    
+    """
+    def __init__(self, name, type):
+        """ Constructor
+        @param Name: Symbol name
+        @param Type: Symbol type, one of the TYPE_FUNCTION ... TYPE_UNKNOWN range
+        
+        """
+        object.__init__(self)
+
+        # Attributes
+        self.__name = unicode(name)
+        self.__type = type
+    
+    def __eq__(self, other):
+        return (self.__name == other.__name)
+
+    def __lt__(self, other):
+        return (self.__name < other.__name)
+
+    def __le__(self, other):
+        return (self.__name <= other.__name)
+
+    def __ne__(self, other):
+        return (self.__name != other.__name)
+
+    def __gt__(self, other):
+        return (self.__name > other.__name)
+
+    def __ge__(self, other):
+        return (self.__name >= other.__name)
+
+    # TODO: this task should probably be delegated to the ui
+    def __str__(self):
+        if self.__type != TYPE_UNKNOWN:
+            return u'?'.join([self.__name, unicode(self.__type)])
+        else:
+            return self.Name
+
+    def __hash__(self):
+        return self.__name.__hash__()
+    
+    @property
+    def Name(self):
+        return self.__name
+
+    @property
+    def Type(self):
+        return self.__type
+
+#--------------------------------------------------------------------------#
+
+def CreateSymbols(arglst, symtype=TYPE_UNKNOWN):
+    """Convert a list of strings to a list of Symbol objects
+    @param arglst: list of strings
+    @keyword symtype: TYPE_FOO 
+    @return: list of Symbols
+
+    """
+    return [ Symbol(obj, symtype) for obj in arglst ]
 
 #--------------------------------------------------------------------------#
 

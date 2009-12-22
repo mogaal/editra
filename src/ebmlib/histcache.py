@@ -14,8 +14,8 @@ History cache that acts as a stack for managing a history list o
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: histcache.py 61171 2009-06-23 00:41:51Z CJP $"
-__revision__ = "$Revision: 61171 $"
+__cvsid__ = "$Id: histcache.py 62950 2009-12-19 23:56:41Z CJP $"
+__revision__ = "$Revision: 62950 $"
 
 __all__ = [ 'HistoryCache', 'HIST_CACHE_UNLIMITED',
             'CycleCache']
@@ -209,8 +209,10 @@ class CycleCache(object):
         @return: object
 
         """
-        item = self._list[self._cpos]
-        self._cpos = self.NextIndex()
+        item = None
+        if len(self._list): 
+            item = self._list[self._cpos]
+            self._cpos = self.NextIndex()
         return item
 
     def PeekNext(self):
@@ -218,10 +220,9 @@ class CycleCache(object):
         @return: object
 
         """
+        item = None
         if abs(self._cpos) < len(self._list):
             item = self._list[self._cpos]
-        else:
-            item = None
         return item
 
     def PeekPrev(self):

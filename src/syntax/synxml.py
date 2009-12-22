@@ -52,8 +52,8 @@ xml_spec = """
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synxml.py 62523 2009-10-31 21:03:19Z CJP $"
-__revision__ = "$Revision: 62523 $"
+__svnid__ = "$Id: synxml.py 62962 2009-12-22 03:07:52Z CJP $"
+__revision__ = "$Revision: 62962 $"
 
 #----------------------------------------------------------------------------#
 # Imports
@@ -107,6 +107,9 @@ class EditraXml(sax.ContentHandler):
 
     def __eq__(self, other):
         return self.GetXml() == other.GetXml()
+
+    def __str__(self):
+        return self.GetXml()
 
     #---- Internal Parser Api ----#
 

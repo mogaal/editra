@@ -9,6 +9,28 @@ Change Log:
 #-----------------------------------------------------------------------------#
 Changes since last release:
 
+VERSION 0.5.30
+DATE 12/21/2009
+31th Alpha Release
+
+NEWS:
+
+Quick bug fix release for some issues that arose after the last release.
+
+BUG FIXES:
++Fix Unicode handling for file names when opening files from the command line.
++Fix bug in not properly shutting down ipc server on exit app event.
++Fix bug in not automatically continuing with the window closure when a modified
+file action takes place.
++Fix duplicate entries in autocomp lists that could occur when using extended
+autocomp (patch from cowo78)
++Fix replace action not being working when up is selected as the the find direction.
++Fix index error when accessing empty history cache.
++Fix error in returning a list instead of a string when getcalltip fails.
++Fix error handling for when select_style has no background color defined. 
+
+#-----------------------------------------------------------------------------#
+
 VERSION 0.5.25
 DATE 12/15/2009
 30th Alpha Release

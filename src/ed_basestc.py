@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 62767 2009-12-03 05:00:58Z CJP $"
-__revision__ = "$Revision: 62767 $"
+__svnid__ = "$Id: ed_basestc.py 62937 2009-12-19 05:55:39Z CJP $"
+__revision__ = "$Revision: 62937 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -736,13 +736,13 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
     def RegisterImages(self):
         """Register the images for the autocomp popup list"""
-        images = [(autocomp.IMG_FUNCTION, ed_glob.ID_FUNCT_TYPE),
-                  (autocomp.IMG_METHOD, ed_glob.ID_METHOD_TYPE),
-                  (autocomp.IMG_PROPERTY, ed_glob.ID_PROPERTY_TYPE),
-                  (autocomp.IMG_ATTRIBUTE, ed_glob.ID_ATTR_TYPE),
-                  (autocomp.IMG_CLASS, ed_glob.ID_CLASS_TYPE),
-                  (autocomp.IMG_VARIABLE, ed_glob.ID_VARIABLE_TYPE),
-                  (autocomp.IMG_ELEMENT, ed_glob.ID_ELEM_TYPE)]
+        images = [(autocomp.TYPE_FUNCTION, ed_glob.ID_FUNCT_TYPE),
+                  (autocomp.TYPE_METHOD, ed_glob.ID_METHOD_TYPE),
+                  (autocomp.TYPE_PROPERTY, ed_glob.ID_PROPERTY_TYPE),
+                  (autocomp.TYPE_ATTRIBUTE, ed_glob.ID_ATTR_TYPE),
+                  (autocomp.TYPE_CLASS, ed_glob.ID_CLASS_TYPE),
+                  (autocomp.TYPE_VARIABLE, ed_glob.ID_VARIABLE_TYPE),
+                  (autocomp.TYPE_ELEMENT, ed_glob.ID_ELEM_TYPE)]
         for idx, img in images:
             bmp = wx.ArtProvider.GetBitmap(str(img), wx.ART_MENU)
             if bmp.IsOk():
@@ -889,13 +889,16 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
         """
         pos = self.GetCurrentPos()
-        lst = self._code['compsvc'].GetAutoCompList(command)
+        # symList is a list(completer.Symbol)
+        symList = self._code['compsvc'].GetAutoCompList(command)
+        
+        # Build a list that can be feed to Scintilla
+        lst = map(unicode, symList)
         if lst is not None and len(lst):
             self.BeginUndoAction()
             lst = u' '.join(lst)
             if lst.isspace():
                 return
-
             self.AutoCompShow(pos - self.WordStartPosition(pos, True), lst)
 
             if self._code['compsvc'].GetAutoCompAfter():

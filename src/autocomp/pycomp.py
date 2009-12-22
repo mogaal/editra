@@ -16,8 +16,8 @@ deduct the requested information.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: pycomp.py 62658 2009-11-15 04:54:55Z CJP $"
-__revision__ = "$Revision: 62658 $"
+__cvsid__ = "$Id: pycomp.py 62951 2009-12-20 01:10:12Z CJP $"
+__revision__ = "$Revision: 62951 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -85,7 +85,8 @@ class Completer(completer.BaseCompleter):
             # chance of getting the proper completions
             fname = self._buffer.GetFileName()
             if fname:
-                sys.path.insert(0, os.path.dirname(fname))
+                fpath = os.path.dirname(fname)
+                sys.path.insert(0, fpath)
 
             cmpl.evalsource(self._buffer.GetText(),
                             self._buffer.GetCurrentLine())
@@ -99,29 +100,33 @@ class Completer(completer.BaseCompleter):
                 # Get Auto-completion List
                 complst = cmpl.get_completions(command)
                 sigs = list()
+                type = completer.TYPE_UNKNOWN
                 for sig in complst:
                     word = sig['word'].rstrip(u'(.')
                     if sig['type'] == "function":
-                        word += u'?%d' % completer.IMG_FUNCTION
+                        type = completer.TYPE_FUNCTION
                     elif sig['type'] == "method":
-                        word += u'?%d' % completer.IMG_METHOD
+                        type = completer.TYPE_METHOD
                     elif sig['type'] == "class":
-                        word += u'?%d' % completer.IMG_CLASS
+                        type = completer.TYPE_CLASS
                     elif sig['type'] == "attribute":
-                        word += u'?%d' % completer.IMG_ATTRIBUTE
+                        type = completer.TYPE_ATTRIBUTE
                     elif sig['type'] == "property":
-                        word += u'?%d' % completer.IMG_PROPERTY
-
-                    sigs.append(word)
+                        type = completer.TYPE_PROPERTY
+                    
+                    sigs.append(completer.Symbol(word, type))
 
 #                sigs = [ sig['word'].rstrip('(.') for sig in complst ]
-                sigs.sort(lambda x, y: cmp(x.upper(), y.upper()))
+                sigs.sort(lambda x, y: cmp(x.Name.upper(), y.Name.upper()))
                 return sigs
 
         except Exception, msg:
             self._log("[pycomp][err] _GetCompletionInfo: %s, %s" % \
                       (sys.exc_info()[0], sys.exc_info()[1]))
-            return ''
+            if calltip:
+                return u""
+            else:
+                return []
         
     def GetAutoCompList(self, command):
         """Returns the list of possible completions for a 

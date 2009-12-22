@@ -28,8 +28,8 @@
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 62855 2009-12-11 01:21:54Z CJP $"
-__revision__ = "$Revision: 62855 $"
+__svnid__ = "$Id: setup.py 62936 2009-12-19 00:51:23Z CJP $"
+__revision__ = "$Revision: 62936 $"
 
 #---- Imports ----#
 import os

@@ -43,11 +43,12 @@ Message Format:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_ipc.py 62872 2009-12-13 17:14:56Z CJP $"
-__revision__ = "$Revision: 62872 $"
+__svnid__ = "$Id: ed_ipc.py 62953 2009-12-20 02:15:36Z CJP $"
+__revision__ = "$Revision: 62953 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import sys
 import wx
 import threading
 import socket
@@ -56,6 +57,7 @@ import time
 
 # Editra Libs
 import syntax
+import ebmlib
 
 #-----------------------------------------------------------------------------#
 # Globals
@@ -143,7 +145,8 @@ class EdIpcServer(threading.Thread):
         """Tell the server to exit"""
         self._exit = True
         # Wake up the server in case its waiting
-        SendCommands(['quit', ], self.__key)
+        # TODO: should add a specific exit event message
+        SendCommands(IPCCommand(), self.__key)
 
     def run(self):
         """Start the server. The server runs in blocking mode, this
@@ -305,6 +308,8 @@ class IPCFileList(syntax.EditraXml):
         tmp = u"<%s %s=\"" % (EDXML_FILE, syntax.EXML_VALUE)
         tmp += u"%s\"/>"
         for fname in self._files:
+            if not ebmlib.IsUnicode(fname):
+                fname = fname.decode(sys.getfilesystemencoding())
             xmlstr += tmp % fname
         return xmlstr
 

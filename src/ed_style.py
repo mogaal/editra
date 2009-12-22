@@ -20,8 +20,8 @@ U{http://editra.org/?page=docs&doc=ess_spec}.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_style.py 62739 2009-11-28 18:40:50Z CJP $"
-__revision__ = "$Revision: 62739 $"
+__svnid__ = "$Id: ed_style.py 62952 2009-12-20 02:01:47Z CJP $"
+__revision__ = "$Revision: 62952 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -952,7 +952,7 @@ class StyleMgr(object):
         self.CallTipSetForeground(calltip.GetFore())
 
         sback = self.GetItemByName('select_style')
-        if not sback.IsNull():
+        if not sback.IsNull() and len(sback.GetBack()):
             sback = sback.GetBack()
             sback = eclib.HexToRGB(sback)
             sback = wx.Colour(*sback)
