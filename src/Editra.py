@@ -16,8 +16,8 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 62872 2009-12-13 17:14:56Z CJP $"
-__revision__ = "$Revision: 62872 $"
+__svnid__ = "$Id: Editra.py 62963 2009-12-22 03:18:10Z CJP $"
+__revision__ = "$Revision: 62963 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -111,7 +111,6 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
                 exml = ed_ipc.IPCCommand()
                 if len(args):
-                    # TODO: move to serialize all args as xml
                     nargs = list()
                     for p in args:
                         try:
@@ -123,6 +122,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
                 exml.SetArgs(opts.items())
 
                 # TODO: need to process other command line options as well i.e) -g
+                self._log("[app][info] Sending: %s" % exml.GetXml())
                 rval = ed_ipc.SendCommands(exml, profiler.Profile_Get('SESSION_KEY'))
                 # If sending the command failed then let the editor startup
                 # a new instance
@@ -216,7 +216,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         self.Bind(wx.EVT_MENU, self.OnNewWindow, id=ed_glob.ID_NEW_WINDOW)
         self.Bind(wx.EVT_MENU, self.OnCloseWindow)
         self.Bind(ed_event.EVT_NOTIFY, self.OnNotify)
-        self.Bind(ed_ipc.EVT_COMMAND_RECV, self.OnCommandRecieved)
+        self.Bind(ed_ipc.EVT_COMMAND_RECV, self.OnCommandReceived)
 
         # Splash a warning if version is not a final version
         if profiler.Profile_Get('APPSPLASH'):
@@ -254,8 +254,8 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         self._pluginmgr.WritePluginConfig()
         profiler.TheProfile.Write(profiler.Profile_Get('MYPROFILE'))
         if not self._lock or force:
-            if hasattr(self, 'server'):
-                self.server.ShutDown()
+            if hasattr(self, '_server'):
+                self._server.Shutdown()
 
             try:
                 # Cleanup the instance checker
@@ -509,18 +509,20 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         else:
             evt.Skip()
 
-    def OnCommandRecieved(self, evt):
-        """Recieve commands from the IPC server
+    def OnCommandReceived(self, evt):
+        """Receive commands from the IPC server
         @todo: move command processing into own module
 
         """
+        self._log("[app][info] IN OnCommandReceived")
         cmds = evt.GetCommands()
         if isinstance(cmds, ed_ipc.IPCCommand):
+            self._log("[app][info] OnCommandReceived %s" % cmds.GetXml())
             if not len(cmds.GetFiles()):
                 self.OpenNewWindow()
             else:
                 # TODO: change goto line handling to require one
-                #       arg per file specified on the comand line
+                #       arg per file specified on the command line
                 #       i.e) -g 23,44,100
                 line = -1
                 for arg, val in cmds.GetArgs():
@@ -1061,8 +1063,8 @@ def _Main(opts, args):
         #       currently apply to all.
         for arg in args:
             try:
-                arg = ebmlib.GetAbsPath(arg)
                 fname = ed_txt.DecodeString(arg, sys.getfilesystemencoding())
+                fname = ebmlib.GetAbsPath(fname)
                 frame.DoOpen(ed_glob.ID_COMMAND_LINE_OPEN, fname, line)
             except IndexError:
                 dev_tool.DEBUGP("[main][err] IndexError on commandline args")

@@ -15,8 +15,8 @@ text documents and files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_search.py 62512 2009-10-31 00:34:33Z CJP $"
-__revision__ = "$Revision: 62512 $"
+__svnid__ = "$Id: ed_search.py 62949 2009-12-19 18:14:39Z CJP $"
+__revision__ = "$Revision: 62949 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -551,9 +551,13 @@ class SearchController(object):
         self._stc().ReplaceSelection(value)
 
         # Go to the next match
-        # Fake event object for on Find Handler
-        tevt = eclib.FindEvent(eclib.edEVT_FIND_NEXT, ed_glob.ID_FIND_PREVIOUS)
-        self.OnFind(tevt, True)
+        eid = ed_glob.ID_FIND_NEXT
+        if evt.IsUp():
+            eid = ed_glob.ID_FIND_PREVIOUS
+        tevt = eclib.FindEvent(eclib.edEVT_FIND_NEXT, eid)
+        tevt.SetFlags(evt.GetFlags())
+        tevt.SetFindString(evt.GetFindString())
+        self.OnFind(tevt)
 
     def OnReplaceAll(self, evt):
         """Replace all instance of the search string with the given

@@ -20,12 +20,13 @@ makes the calls to the other support objects/functions in this library.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: autocomp.py 62467 2009-10-22 02:10:51Z CJP $"
-__revision__ = "$Revision: 62467 $"
+__svnid__ = "$Id: autocomp.py 62937 2009-12-19 05:55:39Z CJP $"
+__revision__ = "$Revision: 62937 $"
 __all__ = ['AutoCompService',]
 
 #--------------------------------------------------------------------------#
 # Dependencies
+import wx
 import wx.stc as stc
 
 # Local imports
@@ -94,12 +95,12 @@ def GetAutoCompList(self, command):
     'smart' completer.
 
     """
-    data = self.BaseGetAutoCompList(command)
-    exdata = self.scomp.GetAutoCompList(command)
-    data.extend(exdata)
-    data = list(set(data))
-    data.sort()
-    return data
+    baseList = self.BaseGetAutoCompList(command)
+    scompList = self.scomp.GetAutoCompList(command)
+    # Wipeout duplicates by creating a set, then sort data alphabetically
+    rlist = list(set().union(baseList, scompList))
+    rlist.sort()
+    return rlist
 
 class CompleterFactory(object):
     """Factory for creating composite completer objects"""

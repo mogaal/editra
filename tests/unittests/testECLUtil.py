@@ -9,8 +9,8 @@
 """Unittest cases for testing the eclib.eclutil functions"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testECLUtil.py 60507 2009-05-03 21:28:13Z CJP $"
-__revision__ = "$Revision: 60507 $"
+__svnid__ = "$Id: testECLUtil.py 62952 2009-12-20 02:01:47Z CJP $"
+__revision__ = "$Revision: 62952 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -84,4 +84,5 @@ class ECLUtilTest(unittest.TestCase):
         c = eclib.HexToRGB("#FF00FF")
         self.assertEquals(c, [255, 0, 255])
 
+        self.assertRaises(IndexError, eclib.HexToRGB, u"")
         self.assertRaises(ValueError, eclib.HexToRGB, "FF23GG")

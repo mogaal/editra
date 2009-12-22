@@ -12,8 +12,8 @@ Simple autocompletion support for HTML and XML documents.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: htmlcomp.py 60432 2009-04-29 18:15:57Z CJP $"
-__revision__ = "$Revision: 60432 $"
+__cvsid__ = "$Id: htmlcomp.py 62937 2009-12-19 05:55:39Z CJP $"
+__revision__ = "$Revision: 62937 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -94,7 +94,7 @@ class Completer(completer.BaseCompleter):
         self.SetAutoCompKeys([ord('>'), ord('<')])
         self.SetAutoCompStops(' ')
         self.SetAutoCompFillups('')
-        self.SetAutoCompAfter(True) # Insert Text after cursor on completions
+        self.SetAutoCompAfter(False) # Insert Text after cursor on completions
 
     def GetAutoCompList(self, command):
         """Returns the list of possible completions for a
@@ -124,7 +124,7 @@ class Completer(completer.BaseCompleter):
                 taglst = _FindXmlTags(buff.GetText())
             else:
                 taglst = TAGS
-            return WrapTagImages(taglst)
+            return completer.CreateSymbols(taglst, completer.TYPE_ELEMENT)
 
         tmp = tmp.rstrip('>').rstrip()
         if len(tmp) and (tmp[-1] in '"\' \t' or tmp[-1].isalpha()):
@@ -147,7 +147,7 @@ class Completer(completer.BaseCompleter):
 
                             if not parts[-1].endswith('>'):
                                 rtag = u">" + rtag
-                            return [rtag, ]
+                            return [ completer.Symbol(rtag, completer.TYPE_ELEMENT) ]
                     break
 
         return list()
@@ -169,11 +169,3 @@ def _FindXmlTags(text):
     else:
         matches = [u'!--', ]
     return matches
-
-def WrapTagImages(taglst):
-    """Apply image identifiers to completion strings
-    @return: list
-
-    """
-    tagstr = u"?%d" % completer.IMG_ELEMENT
-    return [ tag + tagstr for tag in taglst ]
