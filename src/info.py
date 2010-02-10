@@ -9,13 +9,13 @@
 """Editra Project information module"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: info.py 62964 2009-12-22 03:20:49Z CJP $"
-__revision__ = "$Revision: 62964 $"
+__svnid__ = "$Id: info.py 63010 2009-12-29 00:29:50Z CJP $"
+__revision__ = "$Revision: 63010 $"
 
 #-----------------------------------------------------------------------------#
 
 AUTHOR = 'Cody Precord'
-VERSION = '0.5.30'
+VERSION = '0.5.32'
 PROG_NAME = 'Editra'
 HOME_PAGE = "http://editra.org"
 I18N_PAGE = "https://translations.launchpad.net/editra/trunk/+pots/editra"

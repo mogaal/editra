@@ -14,8 +14,8 @@ Utility functions for managing and working with files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: fileutil.py 62878 2009-12-14 14:59:15Z CJP $"
-__revision__ = "$Revision: 62878 $"
+__svnid__ = "$Id: fileutil.py 63002 2009-12-27 21:19:53Z CJP $"
+__revision__ = "$Revision: 63002 $"
 
 __all__ = [ 'GetAbsPath', 'GetFileExtension', 'GetFileModTime', 'GetFileName',
             'GetFileSize', 'GetPathName', 'GetPathFromURI', 'GetUniqueName', 
@@ -74,8 +74,13 @@ def GetAbsPath(path):
     
     """
     rpath = os.path.abspath(path)
-    if WIN and win32api is not None:
-        rpath = win32api.GetLongPathName(rpath)
+    # Resolve short path notation on Windows when possible
+    if WIN and win32api is not None and u"~" in rpath:
+        try:
+            rpath = win32api.GetLongPathNameW(rpath)
+        except Exception:
+            # Ignore errors from win32api calls
+            pass
     return rpath
 
 def GetFileExtension(file_str):

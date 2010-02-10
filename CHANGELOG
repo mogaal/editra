@@ -9,9 +9,27 @@ Change Log:
 #-----------------------------------------------------------------------------#
 Changes since last release:
 
+VERSION 0.5.32
+DATE 12/28/2009
+32nd Alpha Release
+
+NEWS:
+
+Another quick bug fix release to address some critical issues that were still
+present after the last release.
+
+BUG FIXES:
++Fix error introduced into extended autocomp in previous release.
++Handle win32api errors from calls to GetLongPathName.
++Restore html/xml autocomp behavior to put cursor between tags that are inserted.
++Fix issue with custom key profiles being saved to system directory instead of
+ user config directory.
+
+#-----------------------------------------------------------------------------#
+
 VERSION 0.5.30
 DATE 12/21/2009
-31th Alpha Release
+31st Alpha Release
 
 NEWS:
 

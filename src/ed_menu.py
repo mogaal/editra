@@ -14,8 +14,8 @@ for managing keybindings and profiles is also provided by this module.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_menu.py 61170 2009-06-22 23:52:41Z CJP $"
-__revision__ = "$Revision: 61170 $"
+__svnid__ = "$Id: ed_menu.py 63009 2009-12-28 23:59:09Z CJP $"
+__revision__ = "$Revision: 63009 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -290,6 +290,10 @@ class KeyBinder(object):
         if not os.path.exists(kprof):
             # Must be a system supplied keyprofile
             rname = u"%s%s.ekeys" % (ed_glob.CONFIG['KEYPROF_DIR'], rname)
+            if not os.path.exists(rname):
+                # Doesn't exist at syspath either so instead assume it is a new
+                # custom user defined key profile.
+                rname = kprof
         else:
             rname = kprof
 

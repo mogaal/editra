@@ -20,8 +20,8 @@ makes the calls to the other support objects/functions in this library.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: autocomp.py 62937 2009-12-19 05:55:39Z CJP $"
-__revision__ = "$Revision: 62937 $"
+__svnid__ = "$Id: autocomp.py 62975 2009-12-22 22:41:12Z CJP $"
+__revision__ = "$Revision: 62975 $"
 __all__ = ['AutoCompService',]
 
 #--------------------------------------------------------------------------#
@@ -98,7 +98,8 @@ def GetAutoCompList(self, command):
     baseList = self.BaseGetAutoCompList(command)
     scompList = self.scomp.GetAutoCompList(command)
     # Wipeout duplicates by creating a set, then sort data alphabetically
-    rlist = list(set().union(baseList, scompList))
+    baseList.extend(scompList)
+    rlist = list(set(baseList))
     rlist.sort()
     return rlist
 

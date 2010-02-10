@@ -12,8 +12,8 @@ Simple autocompletion support for HTML and XML documents.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: htmlcomp.py 62937 2009-12-19 05:55:39Z CJP $"
-__revision__ = "$Revision: 62937 $"
+__cvsid__ = "$Id: htmlcomp.py 63004 2009-12-28 04:00:56Z CJP $"
+__revision__ = "$Revision: 63004 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -94,7 +94,7 @@ class Completer(completer.BaseCompleter):
         self.SetAutoCompKeys([ord('>'), ord('<')])
         self.SetAutoCompStops(' ')
         self.SetAutoCompFillups('')
-        self.SetAutoCompAfter(False) # Insert Text after cursor on completions
+        self.SetAutoCompAfter(True) # Insert Text after cursor on completions
 
     def GetAutoCompList(self, command):
         """Returns the list of possible completions for a
