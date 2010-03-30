@@ -12,10 +12,10 @@ override_dh_auto_configure:
 override_dh_auto_install:
 	dh_auto_install
 	rm -f $(TMP)/usr/bin/Editra.pyw
-	rm -f $(TMP)/usr/lib/python2.4/site-packages/Editra/pixmaps/theme/Tango/COPYING
-	rm -f $(TMP)/usr/lib/python2.5/site-packages/Editra/pixmaps/theme/Tango/COPYING
-	rm -f $(TMP)/usr/lib/python2.4/site-packages/Editra/COPYING
-	rm -f $(TMP)/usr/lib/python2.5/site-packages/Editra/COPYING
+	#rm -f $(TMP)/usr/lib/python2.4/site-packages/Editra/pixmaps/theme/Tango/COPYING
+	#rm -f $(TMP)/usr/lib/python2.5/site-packages/Editra/pixmaps/theme/Tango/COPYING
+	#rm -f $(TMP)/usr/lib/python2.4/site-packages/Editra/COPYING
+	#rm -f $(TMP)/usr/lib/python2.5/site-packages/Editra/COPYING
 
 override_dh_fixperms:
 	dh_fixperms
