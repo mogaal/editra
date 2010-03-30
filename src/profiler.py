@@ -20,8 +20,8 @@ happen during run time.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: profiler.py 62723 2009-11-26 18:43:20Z CJP $"
-__revision__ = "$Revision: 62723 $"
+__svnid__ = "$Id: profiler.py 63435 2010-02-09 02:34:25Z CJP $"
+__revision__ = "$Revision: 63435 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -44,6 +44,7 @@ _DEFAULTS = {
            'AALIASING'  : False,            # Use Anti-Aliasing if availble
            'APPSPLASH'  : True,             # Show splash at startup
            'AUTOBACKUP' : False,            # Automatically backup files
+           'AUTOBACKUP_PATH' : '',          # Backup path
            'AUTO_COMP'  : True,             # Use Auto-comp if available
            'AUTO_COMP_EX' : False,          # Use extended autocompletion
            'AUTO_INDENT': True,             # Use Auto Indent
@@ -73,6 +74,7 @@ _DEFAULTS = {
            'KEY_PROFILE': None,             # Keybinding profile
            'LANG'       : 'Default',        # UI language
            'LASTCHECK'  : 0,                # Last time update check was done
+           #'LEXERMENU'  : [lang_name,]     # Created on an as needed basis
            'MAXIMIZED'  : False,            # Was window maximized on exit
            'MODE'       : 'CODE',           # Overall editor mode
            'MYPROFILE'  : 'default.ppb',    # Path to profile file

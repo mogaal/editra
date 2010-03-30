@@ -17,8 +17,8 @@ editor can load to configure the styles of the text.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: style_editor.py 60879 2009-06-02 14:26:44Z CJP $"
-__revision__ = "$Revision: 60879 $"
+__svnid__ = "$Id: style_editor.py 63520 2010-02-19 03:27:26Z CJP $"
+__revision__ = "$Revision: 63520 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -685,7 +685,11 @@ class SettingsPanel(wx.Panel):
         fsizer = wx.BoxSizer(wx.HORIZONTAL)
         flbl = wx.StaticText(self, label=_("Font") + u": ")
         fontenum = wx.FontEnumerator()
-        fontenum.EnumerateFacenames(fixedWidthOnly=True)
+        if wx.Platform == '__WXMAC__':
+            # FixedWidthOnly Asserts on wxMac
+            fontenum.EnumerateFacenames(fixedWidthOnly=False)
+        else:
+            fontenum.EnumerateFacenames(fixedWidthOnly=True)
         font_lst = ["%(primary)s", "%(secondary)s"]
         font_lst.extend(sorted(fontenum.GetFacenames()))
         fchoice = wx.Choice(self, ID_FONT, choices=font_lst)
@@ -742,9 +746,4 @@ def UpdateBufferStyles(sheet):
     # Only update if the sheet has changed
     if sheet is None or sheet == Profile_Get('SYNTHEME'):
         return
-
     Profile_Set('SYNTHEME', sheet)
-    for mainw in wx.GetApp().GetMainWindows():
-        mainw.nb.UpdateTextControls('UpdateAllStyles')
-        mainw.SetStatusText(_("Changed color scheme to %s") % \
-                            sheet, ed_glob.SB_INFO)

@@ -73,13 +73,15 @@ Requirements:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: platebtn.py 62892 2009-12-15 14:51:07Z CJP $"
-__revision__ = "$Revision: 62892 $"
+__svnid__ = "$Id: platebtn.py 63496 2010-02-16 06:47:55Z RD $"
+__revision__ = "$Revision: 63496 $"
 
 __all__ = ["PlateButton",
            "PLATE_NORMAL", "PLATE_PRESSED", "PLATE_HIGHLIGHT", 
+
            "PB_STYLE_DEFAULT", "PB_STYLE_GRADIENT", "PB_STYLE_SQUARE",
-           "PB_STYLE_NOBG", "PB_STYLE_DROPARROW",
+           "PB_STYLE_NOBG", "PB_STYLE_DROPARROW", "PB_STYLE_TOGGLE",
+
            "EVT_PLATEBTN_DROPARROW_PRESSED"]
 
 #-----------------------------------------------------------------------------#
@@ -103,9 +105,12 @@ PB_STYLE_SQUARE   = 4   # Use square corners instead of rounded
 PB_STYLE_NOBG     = 8   # Usefull on Windows to get a transparent appearance
                         # when the control is shown on a non solid background
 PB_STYLE_DROPARROW = 16 # Draw drop arrow and fire EVT_PLATEBTN_DROPRROW_PRESSED event
+PB_STYLE_TOGGLE   = 32  # Stay pressed untill clicked again
 
 #-----------------------------------------------------------------------------#
 
+# EVT_BUTTON used for normal event notification
+# EVT_TOGGLE_BUTTON used for toggle button mode notification
 PlateBtnDropArrowPressed, EVT_PLATEBTN_DROPARROW_PRESSED = wx.lib.newevent.NewEvent()
 
 #-----------------------------------------------------------------------------#
@@ -115,7 +120,7 @@ class PlateButton(wx.PyControl):
     displaying bitmaps and having an attached dropdown menu.
 
     """
-    def __init__(self, parent, id_=wx.ID_ANY, label='', bmp=None, 
+    def __init__(self, parent, id=wx.ID_ANY, label='', bmp=None, 
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=PB_STYLE_DEFAULT, name=wx.ButtonNameStr):
         """Create a PlateButton
@@ -124,7 +129,7 @@ class PlateButton(wx.PyControl):
         @keyword style: Button style
 
         """
-        wx.PyControl.__init__(self, parent, id_, pos, size,
+        wx.PyControl.__init__(self, parent, id, pos, size,
                               wx.BORDER_NONE|wx.TRANSPARENT_WINDOW, name=name)
 
         # Attributes
@@ -142,6 +147,7 @@ class PlateButton(wx.PyControl):
         self._style = style
         self._state = dict(pre=PLATE_NORMAL, cur=PLATE_NORMAL)
         self._color = self.__InitColors()
+        self._pressed = False
 
         # Setup Initial Size
         self.SetInitialSize()
@@ -159,7 +165,7 @@ class PlateButton(wx.PyControl):
         self.Bind(wx.EVT_ENTER_WINDOW,
                   lambda evt: self.SetState(PLATE_HIGHLIGHT))
         self.Bind(wx.EVT_LEAVE_WINDOW,
-                  lambda evt: wx.CallLater(80, self.SetState, PLATE_NORMAL))
+                  lambda evt: wx.CallLater(80, self.__LeaveWindow))
 
         # Other events
         self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
@@ -236,7 +242,11 @@ class PlateButton(wx.PyControl):
 
     def __PostEvent(self):
         """Post a button event to parent of this control"""
-        bevt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
+        if self._style & PB_STYLE_TOGGLE:
+            etype = wx.wxEVT_COMMAND_TOGGLEBUTTON_CLICKED
+        else:
+            etype = wx.wxEVT_COMMAND_BUTTON_CLICKED
+        bevt = wx.CommandEvent(etype, self.GetId())
         bevt.SetEventObject(self)
         bevt.SetString(self.GetLabel())
         self.GetEventHandler().ProcessEvent(bevt)
@@ -310,6 +320,13 @@ class PlateButton(wx.PyControl):
                       press=pcolor,
                       htxt=BestLabelColour(self.GetForegroundColour()))
         return colors
+
+    def __LeaveWindow(self):
+        """Handle updating the buttons state when the mouse cursor leaves"""
+        if (self._style & PB_STYLE_TOGGLE) and self._pressed:
+            self.SetState(PLATE_PRESSED) 
+        else:
+            self.SetState(PLATE_NORMAL)
 
     #---- End Private Member Function ----#
 
@@ -420,9 +437,24 @@ class PlateButton(wx.PyControl):
         """
         return getattr(self, '_menu', None)
 
+    def GetState(self):
+        """Get the current state of the button
+        @return: int
+        @see: PLATE_NORMAL, PLATE_HIGHLIGHT, PLATE_PRESSED
+
+        """
+        return self._state['cur']
+
     def HasTransparentBackground(self):
         """Override setting of background fill"""
         return True
+
+    def IsPressed(self):
+        """Return if button is pressed (PB_STYLE_TOGGLE)
+        @return: bool
+
+        """
+        return self._pressed
 
     @property
     def LabelText(self):
@@ -473,6 +505,9 @@ class PlateButton(wx.PyControl):
         show the popup menu if one has been set.
 
         """
+        if (self._style & PB_STYLE_TOGGLE):
+            self._pressed = not self._pressed
+
         pos = evt.GetPositionTuple()
         self.SetState(PLATE_PRESSED)
         size = self.GetSizeTuple()
@@ -497,7 +532,11 @@ class PlateButton(wx.PyControl):
             size = self.GetSizeTuple()
             if not (self._style & PB_STYLE_DROPARROW and pos[0] >= size[0] - 16):
                 self.__PostEvent()
-        self.SetState(PLATE_HIGHLIGHT)
+
+        if self._pressed:
+            self.SetState(PLATE_PRESSED)
+        else:
+            self.SetState(PLATE_HIGHLIGHT)
 
     def OnMenuClose(self, evt):
         """Refresh the control to a proper state after the menu has been
@@ -557,7 +596,7 @@ class PlateButton(wx.PyControl):
         super(PlateButton, self).SetLabel(label)
         self.InvalidateBestSize()
 
-    def SetLabelColor(self, normal, hlight=wx.NullColor):
+    def SetLabelColor(self, normal, hlight=wx.NullColour):
         """Set the color of the label. The optimal label color is usually
         automatically selected depending on the button color. In some
         cases the colors that are choosen may not be optimal.
@@ -601,7 +640,7 @@ class PlateButton(wx.PyControl):
 
     def SetPressColor(self, color):
         """Set the color used for highlighting the pressed state
-        @param color: wx.Color
+        @param color: wx.Colour
         @note: also resets all text colours as necessary
 
         """

@@ -12,8 +12,8 @@ Editra Control Library
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: __init__.py 61841 2009-09-06 14:11:00Z CJP $"
-__revision__ = "$Revision: 61841 $"
+__cvsid__ = "$Id: __init__.py 63046 2010-01-03 18:40:13Z CJP $"
+__revision__ = "$Revision: 63046 $"
 
 
 __all__ = ['auinavi', 'choicedlg', 'colorsetter', 'ctrlbox', 'eclutil',
@@ -22,6 +22,7 @@ __all__ = ['auinavi', 'choicedlg', 'colorsetter', 'ctrlbox', 'eclutil',
            'txtentry']
 
 #-----------------------------------------------------------------------------#
+from ecbasewin import *
 
 from auinavi import *
 from choicedlg import *
@@ -32,6 +33,7 @@ from ecpickers import *
 from elistmix import *
 from encdlg import *
 from errdlg import *
+from filterdlg import *
 from finddlg import *
 from infodlg import *
 from outbuff import *

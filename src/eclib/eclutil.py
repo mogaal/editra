@@ -14,8 +14,8 @@ Miscellaneous utility functions and gui helpers
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: eclutil.py 62367 2009-10-11 03:19:54Z CJP $"
-__revision__ = "$Revision: 62367 $"
+__svnid__ = "$Id: eclutil.py 63517 2010-02-19 02:44:37Z CJP $"
+__revision__ = "$Revision: 63517 $"
 
 __all__ = ['AdjustAlpha', 'AdjustColour', 'BestLabelColour', 'HexToRGB',
            'GetHighlightColour', 'EmptyBitmapRGBA',
@@ -63,7 +63,7 @@ def AdjustColour(color, percent, alpha=wx.ALPHA_OPAQUE):
     """ Brighten/Darken input colour by percent and adjust alpha
     channel if needed. Returns the modified color.
     @param color: color object to adjust
-    @type color: wx.Color
+    @type color: wx.Colour
     @param percent: percent to adjust +(brighten) or -(darken)
     @type percent: int
     @keyword alpha: amount to adjust alpha channel
@@ -106,14 +106,14 @@ def GetHighlightColour():
     """
     if wx.Platform == '__WXMAC__':
         if CARBON:
-            if wx.VERSION < (2, 9, 0, 0, ''):
+            if hasattr(wx, 'MacThemeColour'):
+                color = wx.MacThemeColour(Carbon.Appearance.kThemeBrushFocusHighlight)
+                return color
+            else:
                 # kThemeBrushButtonPressedLightHighlight
                 brush = wx.Brush(wx.BLACK)
                 brush.MacSetTheme(Carbon.Appearance.kThemeBrushFocusHighlight)
                 return brush.GetColour()
-            else:
-                color = wx.Colour(Carbon.Appearance.kThemeBrushFocusHighlight)
-                return color
 
     # Fallback to text highlight color
     return wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)

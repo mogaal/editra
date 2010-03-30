@@ -16,8 +16,8 @@ choice dialog.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: colorsetter.py 60455 2009-05-01 04:22:51Z CJP $"
-__revision__ = "$Revision: 60455 $"
+__svnid__ = "$Id: colorsetter.py 63185 2010-01-19 03:59:18Z CJP $"
+__revision__ = "$Revision: 63185 $"
 
 __all__ = ["ColorSetter", "ColorSetterEvent",
            "EVT_COLORSETTER", "csEVT_COLORSETTER"]
@@ -60,7 +60,7 @@ class ColorSetter(wx.Panel):
     Color Dialog.
 
     """
-    def __init__(self, parent, id_, color=wx.NullColor):
+    def __init__(self, parent, id_, color=wx.NullColour):
         """Create the control, it is a composite of a colourSelect and
         and a text control.
         @keyword label: the hex string value to go in the text portion

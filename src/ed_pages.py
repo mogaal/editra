@@ -13,11 +13,11 @@ This class implements Editra's main notebook control.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_pages.py 62723 2009-11-26 18:43:20Z CJP $"
-__revision__ = "$Revision: 62723 $"
+__svnid__ = "$Id: ed_pages.py 63568 2010-02-27 18:52:47Z CJP $"
+__revision__ = "$Revision: 63568 $"
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Dependencies
 import os
 import glob
 import cPickle
@@ -36,7 +36,7 @@ import ed_txt
 import ed_mdlg
 import ebmlib
 import eclib
-from extern import flatnotebook as FNB
+from extern import aui
 
 #--------------------------------------------------------------------------#
 # Globals
@@ -45,10 +45,8 @@ ID_IDLE_TIMER = wx.NewId()
 _ = wx.GetTranslation
 #--------------------------------------------------------------------------#
 
-#--------------------------------------------------------------------------#
-
-class EdPages(FNB.FlatNotebook):
-    """Editras editor buffer botebook
+class EdPages(aui.AuiNotebook):
+    """Editra's editor buffer notebook
     @todo: allow for tab styles to be configurable (maybe)
 
     """
@@ -58,13 +56,15 @@ class EdPages(FNB.FlatNotebook):
         @param id_num: this notebooks id
 
         """
-        FNB.FlatNotebook.__init__(self, parent, id_num,
-                                  style=FNB.FNB_FF2 |
-                                        FNB.FNB_X_ON_TAB |
-                                        FNB.FNB_SMART_TABS |
-                                        FNB.FNB_DROPDOWN_TABS_LIST |
-                                        FNB.FNB_ALLOW_FOREIGN_DND
-                            )
+        style = aui.AUI_NB_DEFAULT_STYLE | \
+                aui.AUI_NB_WINDOWLIST_BUTTON | \
+                aui.AUI_NB_SMART_TABS | \
+                aui.AUI_NB_USE_IMAGES_DROPDOWN | \
+                aui.AUI_NB_TAB_EXTERNAL_MOVE # | \
+#                aui.AUI_NB_TAB_FIXED_WIDTH
+        if wx.Platform == '__WXMAC__':
+            style |= aui.AUI_NB_CLOSE_ON_TAB_LEFT
+        aui.AuiNotebook.__init__(self, parent, id_num, style=style)
 
         # Notebook attributes
         self.LOG = wx.GetApp().GetLog()
@@ -76,14 +76,14 @@ class EdPages(FNB.FlatNotebook):
         self._searchctrl.SetFileFilters(Profile_Get('SEARCH_FILTER', default=''))
 
         self.pg_num = -1              # Track new pages (aka untitled docs)
+        self.mdown = -1
         self.control = None
         self.frame = self.GetTopLevelParent() # MainWindow
         self._index = dict()          # image list index
         self._ses_load = False
         self._menu = None
 
-        # Set Additional Style Parameters
-        self.SetNonActiveTabTextColour(wx.Colour(102, 102, 102))
+        # Setup Tab Navigator
         ed_icon = ed_glob.CONFIG['SYSPIX_DIR'] + u"editra.png"
         self.SetNavigatorIcon(wx.Bitmap(ed_icon, wx.BITMAP_TYPE_PNG))
 
@@ -95,16 +95,22 @@ class EdPages(FNB.FlatNotebook):
         self._index[ed_glob.ID_READONLY] = imgl.Add(robmp)
         self.SetImageList(imgl)
 
+        # Set custom options
+        self.SetSashDClickUnsplit(True)
+
         # Notebook Events
-        self.Bind(FNB.EVT_FLATNOTEBOOK_PAGE_CHANGING, self.OnPageChanging)
-        self.Bind(FNB.EVT_FLATNOTEBOOK_PAGE_CHANGED, self.OnPageChanged)
-        self.Bind(FNB.EVT_FLATNOTEBOOK_PAGE_CLOSING, self.OnPageClosing)
-        self.Bind(FNB.EVT_FLATNOTEBOOK_PAGE_CLOSED, self.OnPageClosed)
+        self.Bind(aui.EVT_AUINOTEBOOK_PAGE_CHANGING, self.OnPageChanging)
+        self.Bind(aui.EVT_AUINOTEBOOK_PAGE_CHANGED, self.OnPageChanged)
+        self.Bind(aui.EVT_AUINOTEBOOK_PAGE_CLOSE, self.OnPageClosing)
+        self.Bind(aui.EVT_AUINOTEBOOK_PAGE_CLOSED, self.OnPageClosed)
+        self.Bind(aui.EVT_AUINOTEBOOK_TAB_DCLICK, self.OnTabLeftDClick)
+        self.Bind(aui.EVT_AUINOTEBOOK_BG_DCLICK, self.OnBGLeftDClick)
+        self.Bind(aui.EVT_AUINOTEBOOK_TAB_MIDDLE_DOWN, self.OnMClickDown)
+        self.Bind(aui.EVT_AUINOTEBOOK_TAB_MIDDLE_UP, self.OnMClickUp)
+        self.Bind(aui.EVT_AUINOTEBOOK_TAB_RIGHT_UP, self.OnTabMenu)
+        self.Bind(aui.EVT_AUINOTEBOOK_ALLOW_DND, self.OnAllowDnD)
+
         self.Bind(wx.stc.EVT_STC_CHANGE, self.OnUpdatePageText)
-        self._pages.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-        self._pages.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDClick)
-        self._pages.Bind(wx.EVT_MIDDLE_UP, self.OnMClick)
-        self.Bind(FNB.EVT_FLATNOTEBOOK_PAGE_CONTEXT_MENU, self.OnTabMenu)
         self.Bind(wx.EVT_MENU, self.OnMenu)
         self.Bind(wx.EVT_TIMER, self.OnIdle, id=ID_IDLE_TIMER)
 
@@ -221,9 +227,8 @@ class EdPages(FNB.FlatNotebook):
             else:
                 text = _("untitled")
         page.SetTabLabel(text)
-        super(EdPages, self).AddPage(page, text, select, imgId)
-        sel = self.GetSelection()
-        self.EnsureVisible(sel)
+        super(EdPages, self).AddPage(page, text, select)
+        self.SetPageImage(self.GetPageCount()-1, str(page.GetLangId()))
         self.UpdateIndexes()
 
     def DocDuplicated(self, path):
@@ -292,9 +297,12 @@ class EdPages(FNB.FlatNotebook):
                 (ed_glob.ID_NEXT_POS, self.OnUpdateNaviUI),
                 (ed_glob.ID_PRE_POS, self.OnUpdateNaviUI)]
 
-    def InsertPage(self, index, page, text, select=True, imageId=-1):
+    def InsertPage(self, index, page, text, select=False, 
+                   bitmap=wx.NullBitmap, disabled_bitmap=wx.NullBitmap,
+                   control=None):
         """Insert a page into the notebook"""
-        super(EdPages, self).InsertPage(index, page, text, select, imageId)
+        super(EdPages, self).InsertPage(index, page, text, select,
+                                        bitmap, disabled_bitmap, control)
         self.UpdateIndexes()
 
     def SaveSessionFile(self, session):
@@ -367,8 +375,6 @@ class EdPages(FNB.FlatNotebook):
             if os.path.exists(loadfn) and os.access(loadfn, os.R_OK):
                 self.OpenPage(os.path.dirname(loadfn),
                               os.path.basename(loadfn))
-                # Give feedback as files are loaded
-                self.Update()
             else:
                 missingfns.append(loadfn)
                 
@@ -384,6 +390,7 @@ class EdPages(FNB.FlatNotebook):
         if self.GetPageCount() == 0:
             self.NewPage()
 
+        self.Refresh()
         return None
 
     def NewPage(self):
@@ -394,20 +401,27 @@ class EdPages(FNB.FlatNotebook):
         self.Freeze()
         self.control = ed_editv.EdEditorView(self, wx.ID_ANY)
         self.LOG("[ed_pages][evt] New Page Created ID: %d" % self.control.GetId())
+        self.control.Hide()
         self.AddPage(self.control)
-        self.SetPageImage(self.GetSelection(), str(self.control.GetLangId()))
+        self.control.Show()
+        self.Thaw()
 
         # Set the control up the the preferred default lexer
         dlexer = Profile_Get('DEFAULT_LEX', 'str', 'Plain Text')
         ext_reg = syntax.ExtensionRegister()
         ext_lst = ext_reg.get(dlexer, ['txt', ])
         self.control.FindLexer(ext_lst[0])
+        self.SetPageImage(self.GetSelection(), str(self.control.GetLangId()))
 
         # Set the modified callback notifier
         doc = self.control.GetDocument()
         doc.AddModifiedCallback(self.control.FireModified)
 
-        self.Thaw()
+    def OnAllowDnD(self, evt):
+        """Handle allowing tab drag and drop events"""
+        dsource = evt.GetDragSource()
+        if isinstance(dsource, EdPages):
+            evt.Allow()
 
     def OnMenu(self, evt):
         """Handle context menu events
@@ -415,7 +429,10 @@ class EdPages(FNB.FlatNotebook):
 
         """
         ctab = self.GetCurrentPage()
-        if ctab is not None:
+        handler = self._menu.GetHandler(evt.GetId())
+        if handler is not None:
+            handler(ctab, evt)
+        elif ctab is not None:
             ctab.OnTabMenu(evt)
         else:
             evt.Skip()
@@ -434,33 +451,40 @@ class EdPages(FNB.FlatNotebook):
 
         return ed_msg.NullValue()
 
-    def OnLeftDClick(self, evt):
+    def OnTabLeftDClick(self, evt):
         """Handle left double clicks and open new tab when in empty area.
-        @param evt: wx.EVT_LEFT_DCLICK
+        @param evt: aui.EVT_AUINOTEBOOK_TAB_DCLICK
 
         """
-        where, tabIdx = self._pages.HitTest(evt.GetPosition())
-        if where == FNB.FNB_NOWHERE:
-            self.NewPage()
-        elif where == FNB.FNB_TAB:
-            # Maximize Editor
-            self.GetTopLevelParent().OnMaximizeEditor(None)
-        else:
-            evt.Skip()
+        tlw = self.GetTopLevelParent()
+        if hasattr(tlw, 'OnMaximizeEditor'):
+            tlw.OnMaximizeEditor(None)
 
-    def OnMClick(self, evt):
+    def OnBGLeftDClick(self, evt):
+        """Handle clicks on tab background area
+        @param evt: aui.EVT_AUINOTEBOOK_BG_DCLICK
+
+        """
+        self.NewPage()
+
+    def OnMClickDown(self, evt):
+        """Handle tab middle mouse button down click event
+        @param evt: aui.EVT_AUINOTEBOOK_TAB_MIDDLE_DOWN
+
+        """
+        self.mdown = evt.GetSelection()
+        self.SetSelection(self.mdown)
+        self.LOG("[ed_pages][evt] OnMClickDown: %d" % self.mdown)
+
+    def OnMClickUp(self, evt):
         """Handle tab middle click event
-        @param evt: wx.MouseEvent
+        @param evt: aui.EVT_AUINOTEBOOK_TAB_MIDDLE_UP
 
         """
-        where, tabIdx = self._pages.HitTest(evt.GetPosition())
-        if where in (FNB.FNB_TAB, FNB.FNB_TAB_X):
-            # If the click is on the tab, make sure the tab is selected
-            # then close it.
-            self.SetSelection(tabIdx)
+        sel = evt.GetSelection()
+        if sel == self.mdown:
             self.ClosePage()
-        else:
-            evt.Skip()
+        self.mdown = -1
 
     def OnNavigateToPos(self, evt):
         """Handle buffer position history navigation events"""
@@ -504,18 +528,28 @@ class EdPages(FNB.FlatNotebook):
 
     def OnTabMenu(self, evt):
         """Show the tab context menu"""
-        # Destroy any existing menu
         if self._menu is not None:
-            self._menu.Destroy()
-            self._menu = None
+            self._menu.Clear()
 
         # Construct the menu
+        tab = evt.GetSelection()
+        if tab != self.GetSelection():
+            self.SetSelection(evt.GetSelection())
+
         ctab = self.GetCurrentPage()
         if ctab is not None:
-            self._menu = ctab.GetTabMenu()
+            if self._menu is None:
+                self._menu = ebmlib.ContextMenuManager()
+            menu = ctab.GetTabMenu()
+            self._menu.SetMenu(menu)
+            self._menu.SetUserData("page", ctab)
 
+            # Allow clients to customize the menu prior to showing it
+            ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_TABMENU, self._menu)
+
+        # Show the menu
         if self._menu is not None:
-            self.PopupMenu(self._menu)
+            self.PopupMenu(self._menu.Menu)
 
     def OnThemeChanged(self, msg):
         """Update icons when the theme has changed
@@ -823,9 +857,8 @@ class EdPages(FNB.FlatNotebook):
         @return: the tabs text
 
         """
-        # Often times this raises an index error in the flatnotebook code
-        # even though the pg_num here is one that is obtained by calling
-        # GetSelection which should return a valid index.
+        # Used to be needed with flatnotebook under certain cases
+        # TODO: may not be necessary anymore
         try:
             txt = super(EdPages, self).GetPageText(pg_num)
         except IndexError:
@@ -967,33 +1000,10 @@ class EdPages(FNB.FlatNotebook):
             if page is not None:
                 page.DoOnIdle()
 
-    def OnLeftUp(self, evt):
-        """Traps clicks sent to page close buttons and
-        redirects the action to the ClosePage function
-        @param evt: Event that called this handler
-        @type evt: wx.MouseEvent
-
-        """
-        cord = self._pages.HitTest(evt.GetPosition())[0]
-        if cord == FNB.FNB_X:
-            # Make sure that the button was pressed before
-            if self._pages._nXButtonStatus != FNB.FNB_BTN_PRESSED:
-                return
-            self._pages._nXButtonStatus = FNB.FNB_BTN_HOVER
-            self.ClosePage()
-        elif cord == FNB.FNB_TAB_X:
-            # Make sure that the button was pressed before
-            if self._pages._nTabXButtonStatus != FNB.FNB_BTN_PRESSED:
-                return
-            self._pages._nTabXButtonStatus = FNB.FNB_BTN_HOVER
-            self.ClosePage()
-        else:
-            evt.Skip()
-
     def OnPageChanging(self, evt):
         """Page changing event handler.
         @param evt: event that called this handler
-        @type evt: flatnotebook.EVT_FLATNOTEBOOK_PAGE_CHANGING
+        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CHANGING
 
         """
         evt.Skip()
@@ -1041,7 +1051,7 @@ class EdPages(FNB.FlatNotebook):
     def OnPageChanged(self, evt):
         """Actions to do after a page change
         @param evt: event that called this handler
-        @type evt: wx.lib.flatnotebook.EVT_FLATNOTEBOOK_PAGE_CHANGED
+        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CHANGED
 
         """
         cpage = evt.GetSelection()
@@ -1053,32 +1063,35 @@ class EdPages(FNB.FlatNotebook):
         page = self.GetCurrentPage()
         page.DoTabSelected()
 
-        self.EnsureVisible(cpage)
-
     def OnPageClosing(self, evt):
         """Checks page status to flag warnings before closing
         @param evt: event that called this handler
-        @type evt: wx.lib.flatnotebook.EVT_FLATNOTEBOOK_PAGE_CLOSING
+        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSE
 
         """
-        self.LOG("[ed_pages][evt] Closing Page: #%d" % self.GetSelection())
+        if self.CanClosePage():
+            self.LOG("[ed_pages][evt] Closing Page: #%d" % self.GetSelection())
 
-        # Call the tab specific close handler
-        page = self.GetCurrentPage()
-        if page is not None:
-            page.DoTabClosing()
+            # Call the tab specific close handler
+            page = self.GetCurrentPage()
+            if page is not None:
+                page.DoTabClosing()
 
-        evt.Skip()
-        ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_CLOSING,
-                           (self, self.GetSelection()),
-                           context=self.frame.GetId())
+            evt.Skip()
+            ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_CLOSING,
+                               (self, self.GetSelection()),
+                               context=self.frame.GetId())
+        else:
+            evt.Veto()
 
     def OnPageClosed(self, evt):
         """Handles Paged Closed Event
         @param evt: event that called this handler
-        @type evt: wx.lib.flatnotebook.EVT_FLATNOTEBOOK_PAGE_CLOSED
+        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSED
 
         """
+        frame = self.GetTopLevelParent()
+        frame.Freeze()
         cpage = self.GetSelection()
         evt.Skip()
         self.LOG("[ed_pages][evt] Closed Page: #%d" % cpage)
@@ -1087,38 +1100,75 @@ class EdPages(FNB.FlatNotebook):
                            (self, cpage),
                            context=self.frame.GetId())
 
+        if not self.GetPageCount() and \
+           hasattr(frame, 'IsExiting') and not frame.IsExiting():
+            self.NewPage()
+        frame.Thaw()
+
     #---- End Event Handlers ----#
 
     def CloseAllPages(self):
-        """Closes all open pages
-        @postcondition: all pages in the notebook are closed
-
-        """
+        """Closes all open pages"""
         for page in xrange(self.GetPageCount()):
             if not self.ClosePage():
                 break
 
-    def ClosePage(self):
+    def CloseOtherPages(self):
+        """Close all but the currently selected tab"""
+        cpage = self.GetCurrentPage()
+        to_del = list()
+        for pnum in range(self.GetPageCount()):
+            page = self.GetPage(pnum)
+            if not page:
+                break
+            if not (page == cpage):
+                if page.CanCloseTab():
+                    to_del.append(pnum)
+
+        if len(to_del):
+            to_del.sort()
+            to_del.reverse()
+            for pnum in to_del:
+                self.DeletePage(pnum)
+
+    def ClosePage(self, deletepg=True):
         """Closes Currently Selected Page
+        @keyword deletepg: bool (actually delete the page) internal use only
         @return: bool
 
         """
         frame = self.GetTopLevelParent()
-        frame.Freeze()
-        self.GoCurrentPage()
-        page = self.GetCurrentPage()
-        pg_num = self.GetSelection()
-        result = page.CanCloseTab()
 
-        if result:
+        frame.Freeze()
+        result = self.CanClosePage()
+        pg_num = self.GetSelection()
+
+        if result and deletepg:
+            page = self.GetPage(pg_num)
+            page.DoTabClosing()
             self.DeletePage(pg_num)
             self.GoCurrentPage()
 
-        frame.Thaw()
+        # Calling DeletePage doesn't cause a PageClosed event to fire
+        # So need to handle this here.
         if not self.GetPageCount() and \
            hasattr(frame, 'IsExiting') and not frame.IsExiting():
             self.NewPage()
+
+        frame.Thaw()
+
         return result
+
+    def CanClosePage(self):
+        """Can the current page be closed?
+        @return: bool
+
+        """
+        self.GoCurrentPage()
+        page = self.GetCurrentPage()
+        if page:
+            return page.CanCloseTab()
+        return False
 
     def SetPageImage(self, pg_num, lang_id):
         """Sets the page image by querying the ArtProvider based
@@ -1195,6 +1245,12 @@ class EdPages(FNB.FlatNotebook):
         try:
             e_id = evt.GetId()
             if self.control.GetId() == e_id:
+
+                # Wait till file is completely loaded before updating ui based
+                # on modification events.
+                if self.control.IsLoading():
+                    return
+
                 pg_num = self.GetSelection()
                 title = self.GetPageText(pg_num)
                 if self.control.GetModify():

@@ -13,14 +13,15 @@ they extend. Included below is a list of interfaces available in this module.
 Intefaces:
   - ShelfI: Interface into the L{Shelf}
   - MainWindowI: Interface into L{ed_main.MainWindow}
+  - AutoCompI: Interface for adding autocompletion helpers
 
 @summary: Main Plugin interface defintions
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: iface.py 61935 2009-09-15 01:57:44Z CJP $"
-__revision__ = "$Revision: 61935 $"
+__svnid__ = "$Id: iface.py 63069 2010-01-05 01:24:16Z CJP $"
+__revision__ = "$Revision: 63069 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -28,6 +29,27 @@ import wx
 
 # Local Imports
 import plugin
+
+#--------------------------------------------------------------------------#
+
+class AutoCompI(plugin.Interface):
+    """The Autocompletion interface.
+
+    """
+    def GetCompleter(self, buff):
+        """Get the completer object implemented by this plugin
+        @param: buff EditraStc instance
+        @return: instance of autocomp.BaseCompleter
+
+        """
+        raise NotImplementedError
+
+    def GetFileTypeId(self):
+        """Get the filetype this completer is associated with
+        @return: int
+
+        """
+        return 0
 
 #--------------------------------------------------------------------------#
 

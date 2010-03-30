@@ -12,8 +12,8 @@ Simple autocompletion support for HTML and XML documents.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: htmlcomp.py 63004 2009-12-28 04:00:56Z CJP $"
-__revision__ = "$Revision: 63004 $"
+__cvsid__ = "$Id: htmlcomp.py 63476 2010-02-13 06:20:53Z CJP $"
+__revision__ = "$Revision: 63476 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -27,31 +27,35 @@ import completer
 #--------------------------------------------------------------------------#
 # Standard Html Tags
 TAGS = ['!--', 'a', 'abbr', 'accept', 'accesskey', 'acronym', 'action',
-        'address', 'align', 'alink', 'alt', 'applet', 'archive', 'area', 'axis',
-        'b', 'background', 'base', 'basefont', 'bdo', 'bgcolor', 'big',
-        'blockquote', 'body', 'border', 'bordercolor', 'br', 'button',
-        'caption', 'cellpadding', 'cellspacing', 'center', 'char', 'charoff',
-        'charset', 'checked', 'cite', 'cite', 'class', 'classid', 'clear',
-        'code', 'codebase', 'codetype', 'col', 'colgroup', 'color', 'cols',
-        'colspan', 'compact', 'content', 'coords', 'data', 'datetime', 'dd',
-        'declare', 'defer', 'del', 'dfn', 'dir', 'dir', 'disabled', 'div', 'dl',
-        'dt', 'dtml-call', 'dtml-comment', 'dtml-if', 'dtml-in', 'dtml-let',
-        'dtml-raise', 'dtml-tree', 'dtml-try', 'dtml-unless', 'dtml-var',
-        'dtml-with', 'em', 'enctype', 'face', 'fieldset', 'font', 'for', 'form',
-        'frame', 'gutter', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head',
-        'headers', 'height', 'hr', 'href', 'hreflang', 'hspace', 'html',
-        'http-equiv', 'i', 'id', 'iframe', 'img', 'input', 'ins', 'isindex',
-        'ismap', 'kbd', 'label', 'lang', 'language', 'legend', 'li', 'link',
-        'link', 'longdesc', 'lowsrc', 'map', 'marginheight', 'marginwidth',
-        'maxlength', 'menu', 'meta', 'method', 'multiple', 'name', 'nohref',
-        'noscript', 'nowrap', 'object', 'ol', 'optgroup', 'option', 'p',
-        'param', 'pre', 'profile', 'prompt', 'q', 'readonly', 'rel', 'rev',
-        'rows', 'rowspan', 'rules', 's', 'samp', 'scheme', 'scope', 'script',
-        'scrolling', 'select', 'selected', 'shape', 'size', 'small', 'span',
-        'src', 'standby', 'start', 'strike', 'strong', 'style', 'sub',
-        'summary', 'sup', 'tabindex', 'table', 'target', 'tbody', 'td', 'text',
-        'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'type', 'u',
-        'ul', 'url', 'usemap', 'valign', 'value', 'valuetype', 'var', 'version',
+        'address', 'align', 'alink', 'alt', 'applet', 'archive', 'area',
+        'article', 'aside', 'audio', 'axis', 'b', 'background', 'base',
+        'basefont', 'bdo', 'bgcolor', 'big', 'blockquote', 'body', 'border',
+        'bordercolor', 'br', 'button', 'canvas', 'caption', 'cellpadding',
+        'cellspacing', 'center', 'char', 'charoff', 'charset', 'checked',
+        'cite', 'cite', 'class', 'classid', 'clear', 'code', 'codebase',
+        'codetype', 'col', 'colgroup', 'color', 'cols', 'colspan', 'command',
+        'compact', 'content', 'coords', 'data', 'datetime', 'datalist', 'dd',
+        'declare', 'defer', 'del', 'details', 'dfn', 'dialog', 'dir', 'dir',
+        'disabled', 'div', 'dl', 'dt', 'dtml-call', 'dtml-comment', 'dtml-if',
+        'dtml-in', 'dtml-let', 'dtml-raise', 'dtml-tree', 'dtml-try',
+        'dtml-unless', 'dtml-var', 'dtml-with', 'em', 'embed', 'enctype',
+        'face', 'fieldset', 'figcaption', 'figure', 'font', 'for', 'form',
+        'footer', 'frame', 'gutter', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head',
+        'header', 'headers', 'height', 'hgroup', 'hr', 'href', 'hreflang',
+        'hspace', 'html', 'http-equiv', 'i', 'id', 'iframe', 'img', 'input',
+        'ins', 'isindex', 'ismap', 'kbd', 'keygen', 'label', 'lang', 'language',
+        'legend', 'li', 'link', 'link', 'longdesc', 'lowsrc', 'map',
+        'marginheight', 'marginwidth', 'mark', 'maxlength', 'menu', 'meta',
+        'meter', 'method', 'multiple', 'name', 'nav', 'nohref', 'noscript',
+        'nowrap', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param',
+        'pre', 'profile', 'progress', 'prompt', 'q', 'readonly', 'rel', 'rev',
+        'rows', 'rowspan', 'rp', 'rt', 'ruby', 'rules', 's', 'samp', 'scheme',
+        'scope', 'script', 'scrolling', 'section', 'select', 'selected',
+        'shape', 'size', 'small', 'source', 'span', 'src', 'standby', 'start',
+        'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'tabindex',
+        'table', 'target', 'tbody', 'td', 'text', 'textarea', 'tfoot', 'th',
+        'thead', 'time', 'title', 'tr', 'tt', 'type', 'u', 'ul', 'url',
+        'usemap', 'valign', 'value', 'valuetype', 'var', 'version', 'video',
         'vlink', 'vspace', 'width', 'wrap', 'xmp']
 
 # Tags that usually have a new line inbetween them
@@ -94,7 +98,6 @@ class Completer(completer.BaseCompleter):
         self.SetAutoCompKeys([ord('>'), ord('<')])
         self.SetAutoCompStops(' ')
         self.SetAutoCompFillups('')
-        self.SetAutoCompAfter(True) # Insert Text after cursor on completions
 
     def GetAutoCompList(self, command):
         """Returns the list of possible completions for a
@@ -151,6 +154,18 @@ class Completer(completer.BaseCompleter):
                     break
 
         return list()
+
+    def OnCompletionInserted(self, pos, text):
+        """Handle adjusting caret position after some insertions.
+        @param pos: position caret was at before insertion
+        @param text: text that was inserted
+
+        """
+        buff = self.GetBuffer()
+        if text.startswith(u"</"):
+            buff.SetCurrentPos(pos) # move caret back between the tags
+            # HACK: SetCurrentPos causes text to be selected
+            buff.SetSelection(pos, pos)
 
 #--------------------------------------------------------------------------#
 

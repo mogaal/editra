@@ -18,8 +18,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synglob.py 62572 2009-11-08 19:16:11Z CJP $"
-__revision__ = "$Revision: 62572 $"
+__svnid__ = "$Id: synglob.py 63255 2010-01-25 02:05:22Z CJP $"
+__revision__ = "$Revision: 63255 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -66,6 +66,7 @@ LANG_MAP = {LANG_4GL    : (ID_LANG_4GL,       '_progress'),
             LANG_F95    : (ID_LANG_F95,    '_fortran'),
             LANG_FERITE : (ID_LANG_FERITE, '_ferite'),
             LANG_FLAGSHIP: (ID_LANG_FLAGSHIP, '_flagship'),
+            LANG_FORTH  : (ID_LANG_FORTH, '_forth'),
             LANG_GUI4CLI : (ID_LANG_GUI4CLI,  '_gui4cli'),
             LANG_HASKELL : (ID_LANG_HASKELL,  '_haskell'),
             LANG_HAXE   : (ID_LANG_HAXE,      '_haxe'),

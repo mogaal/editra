@@ -16,8 +16,8 @@ and setting of the program by setting values in the Profile.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: prefdlg.py 62888 2009-12-15 00:48:33Z CJP $"
-__revision__ = "$Revision: 62888 $"
+__svnid__ = "$Id: prefdlg.py 63591 2010-03-01 00:12:30Z CJP $"
+__revision__ = "$Revision: 63591 $"
 
 #----------------------------------------------------------------------------#
 # Dependancies
@@ -48,6 +48,8 @@ ID_CHECK_UPDATE = wx.NewId()
 ID_DOWNLOAD     = wx.NewId()
 ID_UPDATE_MSG   = wx.NewId()
 
+ID_PREF_BKUP_PATH = wx.NewId()
+ID_PREF_BKUP_LBL = wx.NewId()
 ID_PREF_AUTO_SPELL = wx.NewId()
 ID_PREF_SPELL_DICT = wx.NewId()
 ID_PREF_ENCHANT_PATH = wx.NewId()
@@ -326,7 +328,6 @@ class GeneralPanel(wx.Panel, PreferencesPanelBase):
             self.FindWindowById(ed_glob.ID_PREF_AUTO_RELOAD).Enable(val)
         elif e_id == ed_glob.ID_PREF_AUTOBKUP:
             Profile_Set(ed_glob.ID_2_PROF[e_id], val)
-            DoUpdates('EnableAutoBackup', [val,])
         elif e_id == ID_PREF_AUTO_SPELL:
             spref = Profile_Get('SPELLCHECK', default=dict())
             spref['auto'] = val
@@ -453,6 +454,15 @@ class GeneralFilePanel(wx.Panel):
         self._DoLayout()
 
         # Event Handlers
+        self.Bind(wx.EVT_CHECKBOX,
+                  self.OnAutoBkup,
+                  id=ed_glob.ID_PREF_AUTOBKUP)
+        self.Bind(wx.EVT_CHECKBOX,
+                  self.OnCustomBackupPath,
+                  id=ID_PREF_BKUP_LBL)
+        self.Bind(wx.EVT_DIRPICKER_CHANGED,
+                  self.OnDirChange,
+                  id=ID_PREF_BKUP_PATH)
         self.Bind(wx.EVT_FILEPICKER_CHANGED,
                   self.OnFileChange,
                   id=ID_PREF_ENCHANT_PATH)
@@ -487,8 +497,25 @@ class GeneralFilePanel(wx.Panel):
 
         autobk_cb = wx.CheckBox(self, ed_glob.ID_PREF_AUTOBKUP,
                              _("Automatically Backup Files"))
-        autobk_cb.SetValue(Profile_Get('AUTOBACKUP'))
+        bAutoBkup = Profile_Get('AUTOBACKUP', default=False)
+        autobk_cb.SetValue(bAutoBkup)
         autobk_cb.SetToolTipString(_("Backup buffer to file periodically"))
+        bdir = Profile_Get('AUTOBACKUP_PATH', default="")
+        bkup_path_lbl = wx.CheckBox(self, ID_PREF_BKUP_LBL,
+                                    label=_("Backup Path:"))
+        bkup_path_lbl.SetValue(bool(bdir))
+        bkup_path = wx.DirPickerCtrl(self, ID_PREF_BKUP_PATH,
+                                     path=bdir,
+                                     style=wx.DIRP_CHANGE_DIR|wx.DIRP_USE_TEXTCTRL)
+        bkup_path.SetToolTipString(_("Used to set a custom backup path. "
+                                     "If not specified the backup will be "
+                                     "put in the same directory as the file."))
+        bkup_path_lbl.Enable(bAutoBkup)
+        bkup_path.Enable(bAutoBkup)
+        bkup_p_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        bkup_p_sizer.AddMany([(bkup_path_lbl, 0, wx.ALIGN_CENTER_VERTICAL),
+                              ((5, 5), 0),
+                              (bkup_path, 1, wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)])
         win_cb = wx.CheckBox(self, ed_glob.ID_NEW_WINDOW,
                              _("Open files in new windows by default"))
         win_cb.SetValue(Profile_Get('OPEN_NW'))
@@ -510,12 +537,13 @@ class GeneralFilePanel(wx.Panel):
         eolwarn_cb.SetValue(Profile_Get('WARN_EOL', default=True))
 
         # Layout items
-        sizer = wx.FlexGridSizer(9, 2, 5, 5)
+        sizer = wx.FlexGridSizer(11, 2, 5, 5)
         sizer.AddMany([((10, 10), 0), ((10, 10), 0),
                        (wx.StaticText(self, label=_("File Settings") + u": "),
                         0, wx.ALIGN_CENTER_VERTICAL), (enc_sz, 0),
                        ((5, 5),), (fhsizer, 0),
                        ((5, 5),), (autobk_cb, 0),
+                       ((5, 5),), (bkup_p_sizer, 1, wx.EXPAND),
                        ((5, 5),), (win_cb, 0),
                        ((5, 5),), (pos_cb, 0),
                        ((5, 5),), (chkmod_cb, 0),
@@ -567,6 +595,41 @@ class GeneralFilePanel(wx.Panel):
         msizer = wx.BoxSizer(wx.HORIZONTAL)
         msizer.AddMany([((10, 10), 0), (vsizer, 1, wx.EXPAND), ((10, 10), 0)])
         self.SetSizer(msizer)
+
+    def OnAutoBkup(self, evt):
+        """Enable/Disable the backup path controls
+        The profile is updated by L{GeneralPanel} so the event must be skipped
+
+        """
+        blbl = self.FindWindowById(ID_PREF_BKUP_LBL)
+        if blbl:
+            e_obj = evt.GetEventObject()
+            val = e_obj.GetValue()
+            blbl.Enable(val)
+            dpick = self.FindWindowById(ID_PREF_BKUP_PATH)
+            bpath = Profile_Get('AUTOBACKUP_PATH', default="")
+            dpick.SetPath(bpath)
+            if not val:
+                dpick = self.FindWindowById(ID_PREF_BKUP_PATH)
+                dpick.Enable(False)
+        evt.Skip()
+
+    def OnCustomBackupPath(self, evt):
+        """Enable the use of a custom backup path"""
+        e_obj = evt.GetEventObject()
+        eval = e_obj.GetValue()
+        dpick = self.FindWindowById(ID_PREF_BKUP_PATH)
+        if not eval:
+            dpick.SetPath(u"")
+            Profile_Set('AUTOBACKUP_PATH', u"")
+        dpick.Enable(eval)
+
+    def OnDirChange(self, evt):
+        """Update the backup directory path"""
+        path = evt.GetPath().strip()
+        bpath = Profile_Get('AUTOBACKUP_PATH', default="")
+        if bpath != path:
+            Profile_Set('AUTOBACKUP_PATH', path)
 
     def OnFileChange(self, evt):
         """Update enchant path and attempt to reload enchant if necessary"""
@@ -893,7 +956,7 @@ class DocCodePanel(wx.Panel):
         vi_ncb_sz.AddMany([((16, -1), 0), (vi_ncb, 0)])
 
         # Layout the controls
-        sizer = wx.FlexGridSizer(14, 2, 5, 5)
+        sizer = wx.FlexGridSizer(15, 2, 5, 5)
         sizer.AddMany([((10, 10), 0), ((10, 10), 0),
                        (wx.StaticText(self, label=_("General") + u": "),
                         0, wx.ALIGN_CENTER_VERTICAL), (dlex_sz, 0),
@@ -951,7 +1014,7 @@ class DocCodePanel(wx.Panel):
                     cbox.Enable(e_val)
 
             if e_id == ed_glob.ID_PREF_AUTOCOMPEX:
-                meth = 'ConfigureAutoComp'
+                return
 
             # Inform views of preference changes
             wx.CallLater(25, DoUpdates, meth, args)
@@ -1068,19 +1131,8 @@ class DocSyntaxPanel(wx.Panel):
         """
         e_id = evt.GetId()
         e_obj = evt.GetEventObject()
-        if e_id == ed_glob.ID_PREF_SYNTHEME:
+        if e_id in (ed_glob.ID_PREF_SYNTHEME, ed_glob.ID_SYNTAX):
             Profile_Set(ed_glob.ID_2_PROF[e_id], e_obj.GetValue())
-
-            for mainw in wx.GetApp().GetMainWindows():
-                mainw.nb.UpdateTextControls('UpdateAllStyles')
-
-        elif e_id == ed_glob.ID_SYNTAX:
-            val = e_obj.GetValue()
-            Profile_Set(ed_glob.ID_2_PROF[e_id], val)
-
-            for mainw in wx.GetApp().GetMainWindows():
-                mainw.nb.UpdateTextControls('SyntaxOnOff', [val])
-
         else:
             evt.Skip()
 
@@ -1610,19 +1662,12 @@ class KeyBindingPanel(wx.Panel):
         self.menumap = dict()
 
         # Load the Menu Map
-        def _tupSort(tup1, tup2):
-            """Method for sorting the menu tuples"""
-            if tup1[1] > tup2[1]:
-                return 1
-            elif tup1[1] < tup2[1]:
-                return -1
-            else:
-                return 0
         for item in self.menub.GetMenuMap():
             for key, val in item.iteritems():
-                if isinstance(val[0], int):
-                    val = val[1:]
-                self.menumap[key] = sorted(val, _tupSort)
+                if len(val):
+                    if isinstance(val[0], int):
+                        val = val[1:]
+                    self.menumap[key] = sorted(val, key=lambda x: x[1])
 
         # Layout
         self._DoLayout()
@@ -1642,12 +1687,12 @@ class KeyBindingPanel(wx.Panel):
         kprofiles = self.binder.GetKeyProfiles()
         # Add an empty selection for the default profile
         if len(kprofiles):
-            kprofiles.insert(0, '')
+            kprofiles.insert(0, u'')
         cprofile = Profile_Get('KEY_PROFILE', default=None)
         profiles = wx.Choice(self, ed_glob.ID_KEY_PROFILES, choices=kprofiles)
         profiles.Enable(len(kprofiles))
         if cprofile is None:
-            profiles.SetStringSelection('')
+            profiles.SetStringSelection(u'')
         else:
             profiles.SetStringSelection(cprofile)
         profsz.AddMany([spacer,

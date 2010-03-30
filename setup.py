@@ -23,13 +23,14 @@
 
    4) Install as a python package
       - python setup.py install
+            - '--no-clean' can be specified to skip old file cleanup
 
  @summary: Used for building the editra distribution files and installations
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 62936 2009-12-19 00:51:23Z CJP $"
-__revision__ = "$Revision: 62936 $"
+__svnid__ = "$Id: setup.py 63513 2010-02-18 19:32:50Z CJP $"
+__revision__ = "$Revision: 63513 $"
 
 #---- Imports ----#
 import os
@@ -49,11 +50,12 @@ if sys.version_info < (2, 5):
 try:
     import wx
 except ImportError:
-    sys.stderr.write("[ERROR] wxPython2.8 is required.\n")
-    sys.exit(1)
+    if 'bdist_egg' not in sys.argv:
+        sys.stderr.write("[ERROR] wxPython2.8 is required.\n")
+        sys.exit(1)
 else:
-    if wx.VERSION < (2, 8, 3):
-        sys.stderr.write("[ERROR] wxPython 2.8.3+ is required.\n")
+    if wx.VERSION < (2, 8, 8):
+        sys.stderr.write("[ERROR] wxPython 2.8.8+ is required.\n")
         sys.exit(1)
 
 #---- System Platform ----#
@@ -161,8 +163,10 @@ def GenerateSrcPackageFiles():
              "src/eclib/*.py", "docs/*.txt", "pixmaps/*.png", "pixmaps/*.ico",
              "src/ebmlib/*.py",
              "ekeys/*.ekeys",
-             'Editra',
-             "src/extern/*.py", "src/extern/pygments/*.py",
+             "Editra",
+             "src/extern/*.py",
+             "src/extern/aui/*.py",
+             "src/extern/pygments/*.py",
              "src/extern/pygments/formatters/*.py",
              "src/extern/pygments/filters/*.py",
              "src/extern/pygments/lexers/*.py",
@@ -225,7 +229,8 @@ ICON = { 'Win' : "pixmaps/editra.ico",
 # or otherwise not able to be found by py2app/exe
 INCLUDES = ['syntax.*', 'ed_log', 'shutil', 'subprocess', 'zipfile',
             'pygments.*', 'pygments.lexers.*', 'pygments.formatters.*',
-            'pygments.filters.*', 'pygments.styles.*', 'ftplib']
+            'pygments.filters.*', 'pygments.styles.*', 'ftplib',
+            'extern.flatnotebook'] # temporary till all references can be removed
 if sys.platform.startswith('win'):
     INCLUDES.extend(['ctypes'])
 else:
@@ -483,18 +488,21 @@ def DoSourcePackage():
         from distutils.core import setup
 
     # Try to remove possibly conflicting files from an old install
-    try:
-        import Editra
-        path = Editra.__file__
-        if '__init__' in path:
-            path = os.path.dirname(path)
-            path = os.path.join(path, 'src')
-            del sys.modules['Editra']
-            shutil.rmtree(path)
-    except (ImportError, OSError):
-        pass
-    except:
-        sys.stderr.write("[ERROR] Failed to remove old source files")
+    if '--no-clean' not in sys.argv:
+        try:
+            import Editra
+            path = Editra.__file__
+            if '__init__' in path:
+                path = os.path.dirname(path)
+                path = os.path.join(path, 'src')
+                del sys.modules['Editra']
+                shutil.rmtree(path)
+        except (ImportError, OSError):
+            pass
+        except:
+            sys.stderr.write("[ERROR] Failed to remove old source files")
+    else:
+        sys.argv.remove('--no-clean')
 
     # Make sure to delete any existing MANIFEST file beforehand to
     # prevent stale file lists

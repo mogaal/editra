@@ -24,8 +24,8 @@ which can be used to remove a listener from recieving messages.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_msg.py 62162 2009-09-26 21:59:23Z CJP $"
-__revision__ = "$Revision: 62162 $"
+__svnid__ = "$Id: ed_msg.py 63626 2010-03-05 03:54:27Z CJP $"
+__revision__ = "$Revision: 63626 $"
 
 __all__ = ['PostMessage', 'Subscribe', 'Unsubscribe']
 
@@ -139,6 +139,13 @@ EDMSG_UI_NB_CLOSING = EDMSG_UI_NB + ('pgclosing',)
 # context == MainWindow ID
 EDMSG_UI_NB_CLOSED = EDMSG_UI_NB + ('pgclosed',)
 
+# Tab Menu requested
+# msgdata == ContextMenuManager
+# menu = ContextMenuManager.GetMenu()
+# ContextMenuManager.AddHandler(ID_MENU_ID, handler(buffer, event))
+# page = ContextMenuManager.GetUserData("page")
+EDMSG_UI_NB_TABMENU = EDMSG_UI_NB + ('tabmenu',)
+
 # Post message to show the progress indicator of the MainWindow
 # msgdata == (frame id, True / False)
 EDMSG_PROGRESS_SHOW = EDMSG_UI_ALL + ('statbar', 'progbar', 'show')
@@ -161,6 +168,7 @@ EDMSG_UI_SB_TXT = EDMSG_UI_ALL + ('statbar', 'text')
 EDMSG_UI_STC_ALL = EDMSG_UI_ALL + ('stc',)
 
 # msgdata == ((x, y), keycode)
+# context == MainWindows ID
 EDMSG_UI_STC_KEYUP = EDMSG_UI_STC_ALL + ('keyup',)
 
 # msgdata == dict(lnum=line, cnum=column)
@@ -170,7 +178,7 @@ EDMSG_UI_STC_POS_CHANGED = EDMSG_UI_STC_ALL + ('position',)
 # msgdata == dict(fname=fname,
 #                 prepos=pos, preline=line,
 #                 lnum=cline, pos=cpos)
-# context == MainWIndow ID
+# context == MainWindow ID
 EDMSG_UI_STC_POS_JUMPED = EDMSG_UI_STC_ALL + ('jump',)
 
 # Editor control size restored (msgdata == None)
@@ -188,10 +196,11 @@ EDMSG_UI_STC_CHANGED = EDMSG_UI_STC_ALL + ('changed',)
 
 # Customize Context Menu
 # Add custom menu items and handlers to the buffers right click menu
-# msgdata == dict(menu=wxMenu, handlers=[(menu_id, evt_handler(buff, evt))], 
-#                 buff=EdStc, position=int_buff_pos)
-# Usage: append new items to menu, append id, handler tuple to handlers list
-# def handler(buffer)
+# msgdata = ContextMenuManager
+# ContextMenuManager.AddHandler(menu_id, handler)
+# menu = ContextMenuManager.GetMenu()
+# def handler(buffer, event_obj)
+# ContextMenuManager.GetData('buffer')
 EDMSG_UI_STC_CONTEXT_MENU = EDMSG_UI_STC_ALL + ('custommenu',)
 
 # UserList Selection
@@ -209,6 +218,10 @@ EDMSG_MENU_REBIND = EDMSG_MENU + ('rebind',)
 # Message to set key profile
 # msgdata == keyprofile name
 EDMSG_MENU_LOADPROFILE = EDMSG_MENU + ('load',)
+
+# Message to recreate the lexer menu
+# msgdata == None
+EDMSG_CREATE_LEXER_MENU = EDMSG_MENU + ('lexer',)
 
 #---- End Menu Messages ----#
 
@@ -237,6 +250,10 @@ EDMSG_THEME_NOTEBOOK = EDMSG_ALL + ('nb', 'theme')
 
 # Signal that the font preferences for the ui have changed (msgdata == font)
 EDMSG_DSP_FONT = EDMSG_ALL + ('dfont',)
+
+# Add file to file history
+# msgdata == filename
+EDMSG_ADD_FILE_HISTORY = EDMSG_ALL + ('filehistory',)
 
 #---- End Misc Messages ----#
 
@@ -305,6 +322,7 @@ def mwcontext(func):
         context of the main window or no context was specified.
 
         """
+        assert hasattr(self, 'GetMainWindow'), "Must declare a GetMainWindow method"
         mw = self.GetMainWindow()
         context = msg.GetContext()
         if context is None or mw.GetId() == context:
@@ -312,6 +330,23 @@ def mwcontext(func):
 
     ContextWrap.__name__ = func.__name__
     ContextWrap.__doc__ = func.__doc__
+    return ContextWrap
+
+def wincontext(func):
+    """Decorator to filter messages based on a window. Class must declare
+    a GetWindow method that returns the window that the messages context
+    should be filtered on.
+    @param funct: callable(self, msg)
+
+    """
+    def ContextWrap(self, msg):
+        assert hasattr(self, 'GetWindow'), "Must define a GetWindow method"
+        context = msg.GetContext()
+        if isinstance(context, wx.Window) and context is self.GetWindow():
+            funct(self, msg)
+
+    ContextWrap.__name__ = funct.__name__
+    ContextWrap.__doc__ = funct.__doc__
     return ContextWrap
 
 #-----------------------------------------------------------------------------#

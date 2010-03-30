@@ -12,8 +12,8 @@ Editra Buisness Model Library:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: __init__.py 61486 2009-07-21 04:42:08Z CJP $"
-__revision__ = "$Revision: 61486 $"
+__cvsid__ = "$Id: __init__.py 63565 2010-02-27 04:15:45Z CJP $"
+__revision__ = "$Revision: 63565 $"
 
 #-----------------------------------------------------------------------------#
 
@@ -32,3 +32,4 @@ from clipboard import *
 
 # Misc
 from miscutil import *
+from cmenumgr import *

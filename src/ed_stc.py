@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 62872 2009-12-13 17:14:56Z CJP $"
-__revision__ = "$Revision: 62872 $"
+__svnid__ = "$Id: ed_stc.py 63656 2010-03-08 23:58:21Z CJP $"
+__revision__ = "$Revision: 63656 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -547,6 +547,10 @@ class EditraStc(ed_basestc.EditraBaseStc):
 
         # If the file is different than the last save point make the backup.
         bkupmgr = ebmlib.FileBackupMgr(None, u"%s.edbkup")
+        path = _PGET('AUTOBACKUP_PATH', default=u"")
+        if path and os.path.exists(path):
+            bkupmgr.SetBackupDirectory(path)
+
         if not self._backup_done and \
            (not bkupmgr.HasBackup(fname) or bkupmgr.IsBackupNewer(fname)):
             writer = bkupmgr.GetBackupWriter(self.File)
@@ -630,14 +634,12 @@ class EditraStc(ed_basestc.EditraBaseStc):
             return
 
         elif key_code in cmpl.GetAutoCompKeys():
-            if self.AutoCompActive():
-                self.AutoCompCancel()
+            self.HidePopups()
 
-            if self.CallTipActive():
-                self.CallTipCancel()
+            uchr = unichr(key_code)
+            command = self.GetCommandStr() + uchr
+            self.PutText(uchr)
 
-            command = self.GetCommandStr() + unichr(key_code)
-            self.AddText(unichr(key_code))
             if self._config['autocomp']:
                 self.ShowAutoCompOpt(command)
 
@@ -652,8 +654,11 @@ class EditraStc(ed_basestc.EditraBaseStc):
         elif key_code in cmpl.GetCallTipKeys():
             if self.AutoCompActive():
                 self.AutoCompCancel()
+
             command = self.GetCommandStr()
-            self.AddText(unichr(key_code))
+            uchr = unichr(key_code)
+            self.PutText(uchr)
+
             if self._config['autocomp']:
                 self.ShowCallTip(command)
 
@@ -927,6 +932,14 @@ class EditraStc(ed_basestc.EditraBaseStc):
                 line = line + 1
         return line
 
+    def ExpandAll(self):
+        """Expand all folded code blocks"""
+        line_count = self.GetLineCount()
+        for line_num in xrange(line_count):
+            if self.GetFoldLevel(line_num) & wx.stc.STC_FOLDLEVELHEADERFLAG:
+                if not self.GetFoldExpanded(line_num):
+                    self.Expand(line_num, True)
+
     def FindLexer(self, set_ext=u''):
         """Sets Text Controls Lexer Based on File Extension
         @param set_ext: explicit extension to use in search
@@ -995,11 +1008,8 @@ class EditraStc(ed_basestc.EditraBaseStc):
                     ed_glob.ID_ADD_BM    : self.Bookmark,
                     ed_glob.ID_DEL_ALL_BM : self.Bookmark}
 
-        if self.CallTipActive():
-            self.CallTipCancel()
-
-        if self.AutoCompActive():
-            self.AutoCompCancel()
+        # Hide autocomp popups
+        self.HidePopups()
 
         if e_obj.GetClassName() == "wxToolBar" or e_id in e_map:
             if e_id in e_map:
@@ -1430,6 +1440,10 @@ class EditraStc(ed_basestc.EditraBaseStc):
         else:
             self.LOG("[ed_stc][evt] Code Folding Turned Off")
             self._config['folding'] = False
+
+            # Ensure all code blocks have been expanded
+            self.ExpandAll()
+
             self.SetMarginWidth(ed_basestc.FOLD_MARGIN, 0)
 
     def SyntaxOnOff(self, switch=None):

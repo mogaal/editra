@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _html.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _html.py 63476 2010-02-13 06:20:53Z CJP $"
+__revision__ = "$Revision: 63476 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -27,6 +27,7 @@ import wx.stc as stc
 import synglob
 import syndata
 import _javascript
+import _vbscript
 
 #-----------------------------------------------------------------------------#
 
@@ -42,6 +43,11 @@ HTML_TAGS = (0, "address applet area a base basefont big blockquote br caption "
                 # HTML 4.0 Tags
                 "abbr acronym bdo button col label colgroup del fieldset "
                 "iframe ins legend object optgroup q s tbody tfoot thead "
+                # HTML 5 Tags
+                "article aside audio canvas command datalist details dialog "
+                "embed figcaption figure footer header hgroup keygen mark "
+                "meter nav output progress rp rt ruby section source time "
+                "video "
                 # Tag Attributes / Arguments
                 "action align alink alt archive background bgcolor border "
                 "bordercolor cellpadding cellspacing checked class clear "
@@ -56,6 +62,13 @@ HTML_TAGS = (0, "address applet area a base basefont big blockquote br caption "
                 "frame headers hreflang lang language longdesc multiple nohref "
                 "nowrap profile readonly rules scheme scope standby style "
                 "summary tabindex valuetype version "
+                # HTML 5 Tag Attributes / Arguments
+                "async autocomplete contenteditable contextmenu date "
+                "datetime-local draggable email formaction formenctype "
+                "formmethod formnovalidate formtarget hidden list manifest max "
+                "media min month novalidate number pattern ping range required "
+                "reversed role sandbox scoped seamless search sizes spellcheck "
+                "srcdoc step tel week "
                 # DHTML Support
                 "dtml-var dtml-if dtml-unless dtml-in dtml-with dtml-let "
                 "dtml-call dtml-raise dtml-try dtml-comment dtml-tree")
@@ -84,7 +97,7 @@ CF_TAGS = ("cfabort cfapplet cfapplication cfargument cfassociate cfbreak "
 JS_KEYWORDS = (1, _javascript.KeywordString(synglob.ID_LANG_JS))
 
 # VBScript Keywords (currently unsupported)
-VBS_KEYWORDS = (2, "")
+VBS_KEYWORDS = (2, _vbscript.VBS_KW)
 
 # Python Keywords (see python.py)
 PY_KEYWORDS = (3, "")
@@ -141,6 +154,7 @@ SYNTAX_ITEMS = [ ('STC_H_DEFAULT', 'default_style'),
                  ('STC_H_XCCOMMENT', 'comment_style'),
                  ('STC_H_XMLEND', 'scalar_style'),
                  ('STC_H_XMLSTART', 'scalar_style'),
+
                  # Embedded JavaScript
                  ('STC_HJ_COMMENT', 'comment_style'),
                  ('STC_HJ_COMMENTDOC', 'comment_style'),
@@ -155,6 +169,7 @@ SYNTAX_ITEMS = [ ('STC_H_DEFAULT', 'default_style'),
                  ('STC_HJ_STRINGEOL', 'default_style'), # STYLE ME
                  ('STC_HJ_SYMBOLS', 'default_style'), # STYLE ME
                  ('STC_HJ_WORD', 'default_style'), # STYLE ME
+
                  ('STC_HJA_COMMENT', 'comment_style'),
                  ('STC_HJA_COMMENTDOC', 'comment_style'),
                  ('STC_HJA_COMMENTLINE', 'comment_style'),
@@ -167,7 +182,16 @@ SYNTAX_ITEMS = [ ('STC_H_DEFAULT', 'default_style'),
                  ('STC_HJA_START', 'default_style'), # STYLE ME
                  ('STC_HJA_STRINGEOL', 'default_style'), # STYLE ME
                  ('STC_HJA_SYMBOLS', 'default_style'), # STYLE ME
-                 ('STC_HJA_WORD', 'default_style')  ]
+                 ('STC_HJA_WORD', 'default_style'),
+                 
+                 ('STC_HBA_DEFAULT', 'operator_style'), # Styles ( ) ?
+                 ('STC_HBA_COMMENTLINE', 'comment_style'),
+                 ('STC_HBA_IDENTIFIER', 'default_style'), # TODO
+                 ('STC_HBA_NUMBER', 'number_style'),
+                 ('STC_HBA_START', 'default_style'), # TODO
+                 ('STC_HBA_STRING', 'string_style'),
+                 ('STC_HBA_STRINGEOL', 'stringeol_style'),
+                 ('STC_HBA_WORD', 'keyword_style')  ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -188,7 +212,7 @@ class SyntaxData(syndata.SyntaxDataBase):
         if self.LangId == synglob.ID_LANG_COLDFUSION:
             return [(HTML_TAGS[0], HTML_TAGS[1] + " " + CF_TAGS), JS_KEYWORDS]
         else:
-            return [HTML_TAGS, JS_KEYWORDS, SGML_KEYWORDS]
+            return [HTML_TAGS, JS_KEYWORDS, SGML_KEYWORDS, VBS_KEYWORDS]
 
     def GetSyntaxSpec(self):
         """Syntax Specifications"""

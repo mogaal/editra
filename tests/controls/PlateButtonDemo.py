@@ -12,8 +12,8 @@ Test file for testing the PlateButton control
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: PlateButtonDemo.py 61806 2009-09-02 01:31:01Z CJP $"
-__revision__ = "$Revision: 61806 $"
+__svnid__ = "$Id: PlateButtonDemo.py 63348 2010-02-01 22:01:17Z CJP $"
+__revision__ = "$Revision: 63348 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -41,6 +41,7 @@ class TestPanel(scrolled.ScrolledPanel):
 
         # Event Handlers
         self.Bind(wx.EVT_BUTTON, self.OnButton)
+        self.Bind(wx.EVT_TOGGLEBUTTON, self.OnToggleButton)
         self.Bind(wx.EVT_MENU, self.OnMenu)
 
     def __DoLayout(self):
@@ -84,9 +85,12 @@ class TestPanel(scrolled.ScrolledPanel):
         hsizer2.Add((15, 15))
         hsizer3 = wx.BoxSizer(wx.HORIZONTAL)
         hsizer3.Add((15, 15))
+        hsizer4 = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer4.Add((15, 15))
 
         # Button Styles
         default = eclib.PB_STYLE_DEFAULT
+        toggle = default | eclib.PB_STYLE_TOGGLE
         square  = eclib.PB_STYLE_SQUARE
         sqgrad  = eclib.PB_STYLE_SQUARE | eclib.PB_STYLE_GRADIENT
         gradient = eclib.PB_STYLE_GRADIENT
@@ -113,6 +117,12 @@ class TestPanel(scrolled.ScrolledPanel):
                  (devil,  "",                  default, None,    None, None,   True),
                  (bookmark,  "",               default, None,    True, None,   True),
                  (monkey,  "",                 square,  None,    None, None,   True),
+                 # Row 4 Toggle buttons
+                 (None,  "Toggle PlateButton", toggle, None,    None, None,  True),
+                 (devil, "Toggle w/Bitmap",    toggle, None,    None, None,  True),
+                 (devil, "Toggle Disabled",    toggle, None,    None, None,  False),
+                 (None,  "Toggle w/Menu",      toggle, None,    True, None,  True),
+                 (folder, "Toggle Home Folder",       toggle, None,    True, None,  True),
                  ]
 
         # Make and layout three rows of buttons in the panel
@@ -135,8 +145,10 @@ class TestPanel(scrolled.ScrolledPanel):
                 tsizer = hsizer1
             elif btype.index(btn) < 10:
                 tsizer = hsizer2
-            else:
+            elif btype.index(btn) < 16:
                 tsizer = hsizer3
+            else:
+                tsizer = hsizer4
 
             tbtn = eclib.PlateButton(panel, wx.ID_ANY, btn[1], btn[0], style=bstyle)
 
@@ -176,12 +188,18 @@ class TestPanel(scrolled.ScrolledPanel):
                         (txt_sz, 0, wx.ALIGN_LEFT),
                         ((10, 10)), (hsizer1, 0, wx.EXPAND), ((10, 10)), 
                         (hsizer2, 0, wx.EXPAND), ((10, 10)), 
-                        (hsizer3, 0, wx.EXPAND), ((10, 10))])
+                        (hsizer3, 0, wx.EXPAND), ((10, 10)),
+                        (hsizer4, 0, wx.EXPAND), ((10, 10))])
         panel.SetSizer(vsizer)
 
     def OnButton(self, evt):
         self.log.write("BUTTON CLICKED: Id: %d, Label: %s" % \
                        (evt.GetId(), evt.GetEventObject().LabelText))
+
+    def OnToggleButton(self, evt):
+        self.log.write("Toggle TOGGLEBUTTON CLICKED: Id: %d, Label: %s Pressed: %s" % \
+                       (evt.GetId(), evt.GetEventObject().LabelText,
+                        str(evt.GetEventObject().IsPressed())))
 
     def OnChildFocus(self, evt):
         """Override ScrolledPanel.OnChildFocus to prevent erratic

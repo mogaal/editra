@@ -16,8 +16,8 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 62963 2009-12-22 03:18:10Z CJP $"
-__revision__ = "$Revision: 62963 $"
+__svnid__ = "$Id: Editra.py 63054 2010-01-04 02:27:26Z CJP $"
+__revision__ = "$Revision: 63054 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -68,6 +68,7 @@ import plugin
 import ed_ipc
 import ed_msg
 import ebmlib
+from syntax import synglob
 
 #--------------------------------------------------------------------------#
 # Global Variables
@@ -729,6 +730,19 @@ def InitConfig():
             profiler.TheProfile.Update()
 
             #---- Temporary Profile Adaptions ----#
+
+            # Added after 0.5.32
+            mconfig = profiler.Profile_Get('LEXERMENU', default=None)
+            if mconfig is None:
+                mconfig = [ synglob.LANG_C, synglob.LANG_CPP,
+                            synglob.LANG_BASH, synglob.LANG_CSS,
+                            synglob.LANG_HTML, synglob.LANG_JAVA,
+                            synglob.LANG_LISP, synglob.LANG_PERL,
+                            synglob.LANG_PHP, synglob.LANG_PYTHON,
+                            synglob.LANG_RUBY, synglob.LANG_SQL,
+                            synglob.LANG_XML]
+                mconfig.sort()
+                profiler.Profile_Set('LEXERMENU', mconfig)
 
             # GUI_DEBUG mode removed in 0.2.5
             mode = profiler.Profile_Get('MODE')

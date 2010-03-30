@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _vhdl.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _vhdl.py 63014 2009-12-30 05:35:04Z CJP $"
+__revision__ = "$Revision: 63014 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -80,7 +80,7 @@ VHDL_UKW = (6, "")
 
 #---- Syntax Style Specs ----#
 SYNTAX_ITEMS = [ ('STC_VHDL_DEFAULT', 'default_style'),
-                 ('STC_VHDL_STRINGEOL', 'stringeol_style'),
+                 ('STC_VHDL_ATTRIBUTE', 'default_style'), # NEEDS STYLE
                  ('STC_VHDL_COMMENT', 'comment_style'),
                  ('STC_VHDL_COMMENTLINEBANG', 'comment_style'),
                  ('STC_VHDL_IDENTIFIER', 'default_style'),
