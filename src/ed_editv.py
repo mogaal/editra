@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 62918 2009-12-17 20:29:00Z CJP $"
-__revision__ = "$Revision: 62918 $"
+__svnid__ = "$Id: ed_editv.py 63568 2010-02-27 18:52:47Z CJP $"
+__revision__ = "$Revision: 63568 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -31,7 +31,7 @@ import ed_tab
 from doctools import DocPositionMgr
 from profiler import Profile_Get
 from util import Log, SetClipboardText
-from ebmlib import GetFileModTime
+from ebmlib import GetFileModTime, ContextMenuManager
 
 # External libs
 from extern.stcspellcheck import STCSpellCheck
@@ -66,7 +66,6 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
     """Tab editor view for main notebook control."""
     ID_NO_SUGGEST = wx.NewId()
     DOCMGR = DocPositionMgr()
-    RCLICK_MENU = None
 
     def __init__(self, parent, id_=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0, use_dt=True):
@@ -77,8 +76,8 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         # Attributes
         self._ignore_del = False
         self._has_dlg = False
-        self._mdata = dict(menu=None, handlers=list(), buff=self)
         self._lprio = 0     # Idle event priority counter
+        self._menu = ContextMenuManager()
         self._spell = STCSpellCheck(self, check_region=self.IsNonCode)
         spref = Profile_Get('SPELLCHECK', default=dict())
         self._spell_data = dict(choices=list(),
@@ -102,65 +101,22 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         # window to be handled on gtk. Other platforms don't require this.
         self.Bind(wx.EVT_MENU, self.OnMenuEvent)
 
+        # Hide autocomp/calltips when window looses focus
+        # TODO: decide on whether this belongs in base class or not
+        self.Bind(wx.EVT_KILL_FOCUS, lambda evt: self.HidePopups())
+
         ed_msg.Subscribe(self.OnConfigMsg,
                          ed_msg.EDMSG_PROFILE_CHANGE + ('SPELLCHECK',))
+        ed_msg.Subscribe(self.OnConfigMsg,
+                         ed_msg.EDMSG_PROFILE_CHANGE + ('AUTOBACKUP',))
+        ed_msg.Subscribe(self.OnConfigMsg,
+                         ed_msg.EDMSG_PROFILE_CHANGE + ('SYNTHEME',))
+        ed_msg.Subscribe(self.OnConfigMsg,
+                         ed_msg.EDMSG_PROFILE_CHANGE + ('SYNTAX',))
 
     def __del__(self):
         ed_msg.Unsubscribe(self.OnConfigMsg)
         super(EdEditorView, self).__del__()
-
-    def _MakeMenu(self, pos):
-        """Make the buffers context menu,
-        @param pos: mouse click position
-
-        """
-        menu = ed_menu.EdMenu()
-        menu.Append(ed_glob.ID_UNDO, _("Undo"))
-        menu.Append(ed_glob.ID_REDO, _("Redo"))
-        menu.AppendSeparator()
-        menu.Append(ed_glob.ID_CUT, _("Cut"))
-        menu.Append(ed_glob.ID_COPY, _("Copy"))
-        menu.Append(ed_glob.ID_PASTE, _("Paste"))
-        menu.AppendSeparator()
-        menu.Append(ed_glob.ID_TO_UPPER, _("To Uppercase"))
-        menu.Append(ed_glob.ID_TO_LOWER, _("To Lowercase"))
-        menu.AppendSeparator()
-        menu.Append(ed_glob.ID_SELECTALL, _("Select All"))
-
-        # Allow clients to customize the context menu
-        self._mdata['menu'] = menu
-        self._mdata['handlers'] = list()
-        self._mdata['position'] = self.PositionFromPoint(self.ScreenToClient(pos))
-        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_CONTEXT_MENU,
-                           self._mdata,
-                           self.GetId())
-
-        # Spell checking
-        # TODO: de-couple to the forthcoming buffer service interface
-        menu.InsertSeparator(0)
-        words = self.GetWordFromPosition(self._mdata['position'])
-        self._spell_data['word'] = words
-        sugg = self._spell.getSuggestions(words[0])
-
-        # Don't give suggestions if the selected word is in the suggestions list
-        if words[0] in sugg:
-            sugg = list()
-
-        if not len(sugg):
-            item = menu.Insert(0, EdEditorView.ID_NO_SUGGEST, _("No Suggestions"))
-            item.Enable(False)
-        else:
-            sugg = reversed(sugg[:min(len(sugg), 3)])
-            ids = (ID_SPELL_1, ID_SPELL_2, ID_SPELL_3)
-            del self._spell_data['choices']
-            self._spell_data['choices'] = list()
-            for idx, sug in enumerate(sugg):
-                id_ = ids[idx] 
-                self._mdata['handlers'].append((id_, self.OnSpelling))
-                self._spell_data['choices'].append((id_, sug))
-                menu.Insert(0, id_, sug)
-
-        return menu
 
     #---- EdTab Methods ----#
 
@@ -169,11 +125,8 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         the active tab.
 
         """
-        if self.AutoCompActive():
-            self.AutoCompCancel()
-
-        if self.CallTipActive():
-            self.CallTipCancel()
+        self._menu.Clear()
+        self.HidePopups()
 
     def DoOnIdle(self):
         """Check if the file has been modified and prompt a warning"""
@@ -263,6 +216,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         """Get the tab menu
         @return: wx.Menu
         @todo: move logic from notebook to here
+        @todo: generalize generic actions to base class (close, new, etc..)
 
         """
         ptxt = self.GetTabLabel()
@@ -273,6 +227,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         menu.AppendSeparator()
         menu.Append(ed_glob.ID_SAVE, _("Save \"%s\"") % ptxt)
         menu.Append(ed_glob.ID_CLOSE, _("Close \"%s\"") % ptxt)
+        menu.Append(ed_glob.ID_CLOSE_OTHERS, _("Close Other Tabs"))
         menu.Append(ed_glob.ID_CLOSEALL, _("Close All"))
         menu.AppendSeparator()
         menu.Append(ed_glob.ID_COPY_PATH, _("Copy Full Path"))
@@ -304,8 +259,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
 
         result = True
         if self.GetModify():
-            # TODO: Move this method down from the frame to here
-            result = self.GetTopLevelParent().ModifySave()
+            result = self.ModifySave()
             result = result in (wx.ID_YES, wx.ID_OK, wx.ID_NO)
 
         return result
@@ -344,6 +298,10 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
                                  self.GetDocument(), pg_txt)
             self._ignore_del = True
             wx.CallAfter(parent.ClosePage)
+        elif e_id == ed_glob.ID_CLOSE_OTHERS:
+            parent = self.GetParent()
+            if hasattr(parent, 'CloseOtherPages'):
+                parent.CloseOtherPages()
         elif wx.Platform == '__WXGTK__' and \
              e_id in (ed_glob.ID_CLOSE, ed_glob.ID_CLOSEALL):
             # Need to relay events up to toplevel window on GTK for them to
@@ -364,42 +322,87 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
 
     def OnConfigMsg(self, msg):
         """Update config based on profile changes"""
-        mtype = msg.GetType()
+        mtype = msg.GetType()[-1]
         mdata = msg.GetData()
-        if mtype[-1] == 'SPELLCHECK':
+        if mtype == 'SPELLCHECK':
             self._spell_data['enabled'] = mdata.get('auto', False)
             self._spell.setDefaultLanguage(mdata.get('dict', 'en_US'))
             if not self._spell_data['enabled']:
                 self._spell.clearAll()
+        elif mtype == 'AUTOBACKUP':
+            self.EnableAutoBackup(Profile_Get('AUTOBACKUP'))
+        elif mtype == 'SYNTHEME':
+            self.UpdateAllStyles()
+        elif mtype == 'SYNTAX':
+            self.SyntaxOnOff(Profile_Get('SYNTAX'))
+        elif mtype == 'AUTO_COMP_EX':
+            self.ConfigureAutoComp()
 
     def OnContextMenu(self, evt):
         """Handle right click menu events in the buffer"""
-        if EdEditorView.RCLICK_MENU is not None:
-            EdEditorView.RCLICK_MENU.Destroy()
-            EdEditorView.RCLICK_MENU = None
+        self._menu.Clear()
 
-        EdEditorView.RCLICK_MENU = self._MakeMenu(evt.GetPosition())
-        self.PopupMenu(EdEditorView.RCLICK_MENU)
+        menu = ed_menu.EdMenu()
+        menu.Append(ed_glob.ID_UNDO, _("Undo"))
+        menu.Append(ed_glob.ID_REDO, _("Redo"))
+        menu.AppendSeparator()
+        menu.Append(ed_glob.ID_CUT, _("Cut"))
+        menu.Append(ed_glob.ID_COPY, _("Copy"))
+        menu.Append(ed_glob.ID_PASTE, _("Paste"))
+        menu.AppendSeparator()
+        menu.Append(ed_glob.ID_TO_UPPER, _("To Uppercase"))
+        menu.Append(ed_glob.ID_TO_LOWER, _("To Lowercase"))
+        menu.AppendSeparator()
+        menu.Append(ed_glob.ID_SELECTALL, _("Select All"))
+
+        # Allow clients to customize the context menu
+        self._menu.SetMenu(menu)
+        pos = evt.GetPosition()
+        bpos = self.PositionFromPoint(self.ScreenToClient(pos))
+        self._menu.SetPosition(bpos)
+        self._menu.SetUserData('buffer', self)
+        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_CONTEXT_MENU,
+                           self._menu, self.GetId())
+
+        # Spell checking
+        # TODO: de-couple to the forthcoming buffer service interface
+        menu.InsertSeparator(0)
+        words = self.GetWordFromPosition(bpos)
+        self._spell_data['word'] = words
+        sugg = self._spell.getSuggestions(words[0])
+
+        # Don't give suggestions if the selected word is in the suggestions list
+        if words[0] in sugg:
+            sugg = list()
+
+        if not len(sugg):
+            item = menu.Insert(0, EdEditorView.ID_NO_SUGGEST, _("No Suggestions"))
+            item.Enable(False)
+        else:
+            sugg = reversed(sugg[:min(len(sugg), 3)])
+            ids = (ID_SPELL_1, ID_SPELL_2, ID_SPELL_3)
+            del self._spell_data['choices']
+            self._spell_data['choices'] = list()
+            for idx, sug in enumerate(sugg):
+                id_ = ids[idx] 
+                self._menu.AddHandler(id_, self.OnSpelling)
+                self._spell_data['choices'].append((id_, sug))
+                menu.Insert(0, id_, sug)
+
+        self.PopupMenu(self._menu.Menu)
         evt.Skip()
 
     def OnMenuEvent(self, evt):
         """Handle context menu events"""
         e_id = evt.GetId()
-        handler = None
-        for hndlr in self._mdata['handlers']:
-            if e_id == hndlr[0]:
-                handler = hndlr[1]
-                break
+        handler = self._menu.GetHandler(e_id)
 
         # Handle custom menu items
         if handler is not None:
             handler(self, evt)
         else:
-            # Need to relay to tlw on gtk for it to get handled, other
-            # platforms do not require this.
-            if wx.Platform == '__WXGTK__':
-                wx.PostEvent(self.GetTopLevelParent(), evt)
-            else:
+            self.ControlDispatch(evt)
+            if evt.GetSkipped():
                 evt.Skip()
 
     def OnModified(self, evt):
@@ -466,3 +469,33 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
             self._spell.setCheckRegion(self.IsNonCode)
 
 #-----------------------------------------------------------------------------#
+
+    def ModifySave(self):
+        """Called when document has been modified prompting
+        a message dialog asking if the user would like to save
+        the document before closing.
+        @return: Result value of whether the file was saved or not
+
+        """
+        name = self.GetFileName()
+        if name == u"":
+            name = self.GetTabLabel()
+
+        dlg = wx.MessageDialog(self,
+                                _("The file: \"%s\" has been modified since "
+                                  "the last save point.\n\nWould you like to "
+                                  "save the changes?") % name,
+                               _("Save Changes?"),
+                               wx.YES_NO | wx.YES_DEFAULT | wx.CANCEL | \
+                               wx.ICON_INFORMATION)
+        result = dlg.ShowModal()
+        dlg.Destroy()
+
+        # HACK
+        if result == wx.ID_YES:
+            evt = wx.MenuEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ed_glob.ID_SAVE)
+            tlw = self.GetTopLevelParent()
+            if hasattr(tlw, 'OnSave'):
+                tlw.OnSave(evt)
+
+        return result

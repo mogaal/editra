@@ -43,8 +43,8 @@ Message Format:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_ipc.py 62953 2009-12-20 02:15:36Z CJP $"
-__revision__ = "$Revision: 62953 $"
+__svnid__ = "$Id: ed_ipc.py 63657 2010-03-09 01:45:25Z CJP $"
+__revision__ = "$Revision: 63657 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -63,7 +63,7 @@ import ebmlib
 # Globals
 
 # Port choosing algorithm ;)
-EDPORT = 10 * int('ed', 16) + sum(ord(x) for x in "itr") + int('a', 16) 
+EDPORT = (10 * int('ed', 16) + sum(ord(x) for x in "itr") + int('a', 16)) * 10
 MSGEND = u"*EDEND*"
 
 # Xml Implementation

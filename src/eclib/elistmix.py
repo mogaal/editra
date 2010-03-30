@@ -16,8 +16,8 @@ in a ListCtrl.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: elistmix.py 57345 2008-12-14 23:47:52Z CJP $"
-__revision__ = "$Revision: 57345 $"
+__svnid__ = "$Id: elistmix.py 63496 2010-02-16 06:47:55Z RD $"
+__revision__ = "$Revision: 63496 $"
 
 __all__ = ["ListRowHighlighter", "HIGHLIGHT_EVEN", "HIGHLIGHT_ODD"]
 
@@ -79,7 +79,7 @@ class ListRowHighlighter:
     def SetHighlightColor(self, color):
         """Set the color used to highlight the rows. Call L{RefreshRows} after
         this if you wish to update all the rows highlight colors.
-        @param color: wx.Color or None to set default
+        @param color: wx.Colour or None to set default
 
         """
         self._color = color

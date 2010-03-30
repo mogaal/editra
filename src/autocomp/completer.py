@@ -14,12 +14,12 @@ Base class for autocompletion providers to implement the completion interface.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: completer.py 62937 2009-12-19 05:55:39Z CJP $"
-__revision__ = "$Revision: 62937 $"
+__svnid__ = "$Id: completer.py 63531 2010-02-21 15:48:53Z CJP $"
+__revision__ = "$Revision: 63531 $"
 
 __all__ = [ 'TYPE_FUNCTION', 'TYPE_METHOD', 'TYPE_CLASS', 'TYPE_ATTRIBUTE',
             'TYPE_VARIABLE', 'TYPE_ELEMENT', 'TYPE_PROPERTY', 'TYPE_UNKNOWN',
-            'BaseCompleter', 'Symbol' ]
+            'BaseCompleter', 'Symbol', 'CreateSymbols' ]
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -119,6 +119,7 @@ class BaseCompleter(object):
         self._log = wx.GetApp().GetLog()
         self._case_sensitive = False
         self._autocomp_after = False
+        self._choose_single = True
 
         self._autocomp_keys = list()
         self._autocomp_stop = u''
@@ -144,15 +145,16 @@ class BaseCompleter(object):
         """
         return u''
 
-    #--- End override in subclass ----#
-
-    def GetAutoCompAfter(self):
-        """Should text insterted by autocomp be placed after the cursor
-        or before it.
-        @return: bool
+    def OnCompletionInserted(self, pos, text):
+        """Called by the buffer when an autocomp selection has been inserted.
+        The completer can override this method to 
+        @param pos: Position the caret was at before the insertion
+        @param text: text that was inserted at pos
 
         """
-        return self._autocomp_after
+        pass
+
+    #--- End override in subclass ----#
 
     def GetAutoCompKeys(self):
         """Returns the list of key codes for activating the autocompletion.
@@ -250,20 +252,28 @@ class BaseCompleter(object):
         """
         return self._case_sensitive
 
-    def SetAutoCompAfter(self, after=False):
-        """Set if text insterted by autocomp should be placed after the cursor
-        or before it.
-        @keyword after: bool
-
-        """
-        self._autocomp_after = after
-
     def SetCaseSensitive(self, sensitive):
         """Set whether this completer is case sensitive or not
         @param sensitive: bool
 
         """
         self._case_sensitive = sensitive
+
+    def GetChooseSingle(self):
+        """Get whether the completer should automatically choose a selection
+        when there is only one symbol in the completion list.
+        @return: bool
+
+        """
+        return self._choose_single
+
+    def SetChooseSingle(self, single):
+        """Set whether the completer should automatically choose a selection
+        when there is only one symbol in the completion list.
+        @param single: bool
+
+        """
+        self._choose_single = single
 
     def ShouldCheck(self, cpos):
         """Should completions be attempted

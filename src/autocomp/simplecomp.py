@@ -12,8 +12,8 @@ Simple Generic autocompleter for completing words found in the current buffer.
 """
 
 __author__ = "Giuseppe \"Cowo\" Corbelli"
-__cvsid__ = "$Id: simplecomp.py 62937 2009-12-19 05:55:39Z CJP $"
-__revision__ = "$Revision: 62937 $"
+__cvsid__ = "$Id: simplecomp.py 63130 2010-01-10 03:29:46Z CJP $"
+__revision__ = "$Revision: 63130 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -39,7 +39,6 @@ class Completer(completer.BaseCompleter):
         self.SetCallTipKeys([])
         self.SetCallTipCancel([])
         self.SetCaseSensitive(False)
-        self.SetAutoCompAfter(False) # Insert Text after cursor on completions
 
     def _GetCompletionInfo(self, command, calltip=False):
         """Get Completion list or Calltip
@@ -58,7 +57,7 @@ class Completer(completer.BaseCompleter):
 
         fillups = self.GetAutoCompFillups()
         if command[0].isdigit() or (command[-1] in fillups):
-            return kwlst
+            return list()
 
         currentPos = bf.GetCurrentPos()
 

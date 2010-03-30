@@ -14,8 +14,8 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 62765 2009-12-03 02:32:10Z CJP $"
-__revision__ = "$Revision: 62765 $"
+__svnid__ = "$Id: ed_shelf.py 63523 2010-02-19 15:57:32Z CJP $"
+__revision__ = "$Revision: 63523 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -28,7 +28,7 @@ import ed_glob
 from profiler import Profile_Get
 import plugin
 import iface
-import extern.flatnotebook as FNB
+import extern.aui as aui
 
 #--------------------------------------------------------------------------#
 # Globals
@@ -133,17 +133,18 @@ class Shelf(plugin.Plugin):
 
 #--------------------------------------------------------------------------#
 
-class EdShelfBook(FNB.FlatNotebook):
+class EdShelfBook(aui.AuiNotebook):
     """Shelf notebook control"""
     def __init__(self, parent):
-        FNB.FlatNotebook.__init__(self, parent,
-                                  style=FNB.FNB_FF2 |
-                                        FNB.FNB_X_ON_TAB |
-                                        FNB.FNB_BACKGROUND_GRADIENT |
-                                        FNB.FNB_NODRAG |
-                                        FNB.FNB_BOTTOM |
-                                        FNB.FNB_NO_X_BUTTON |
-                                        FNB.FNB_MOUSE_MIDDLE_CLOSES_TABS)
+        style = aui.AUI_NB_BOTTOM | \
+                aui.AUI_NB_TAB_SPLIT | \
+                aui.AUI_NB_SCROLL_BUTTONS | \
+                aui.AUI_NB_CLOSE_ON_ACTIVE_TAB | \
+                aui.AUI_NB_TAB_MOVE | \
+                aui.AUI_NB_DRAW_DND_TAB
+        if wx.Platform == '__WXMAC__':
+            style |= aui.AUI_NB_CLOSE_ON_TAB_LEFT
+        aui.AuiNotebook.__init__(self, parent, style=style)
 
         # Attributes
         self._parent = parent
@@ -153,6 +154,7 @@ class EdShelfBook(FNB.FlatNotebook):
 
         # Setup
         self.SetImageList(self._imglst)
+        self.SetSashDClickUnsplit(True)
 
     @property
     def ImgIdx(self):
@@ -171,7 +173,9 @@ class EdShelfBook(FNB.FlatNotebook):
         @param name: Items name used for page text in notebook
 
         """
-        self.AddPage(item, u"%s - %d" % (name, self._open.get(name, 0)))
+        self.AddPage(item, 
+                     u"%s - %d" % (name, self._open.get(name, 0)),
+                     select=True)
 
         # Set the tab icon
         if imgid >= 0 and Profile_Get('TABICONS', default=True):

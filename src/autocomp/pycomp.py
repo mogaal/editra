@@ -16,8 +16,8 @@ deduct the requested information.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: pycomp.py 62951 2009-12-20 01:10:12Z CJP $"
-__revision__ = "$Revision: 62951 $"
+__cvsid__ = "$Id: pycomp.py 63256 2010-01-25 02:34:08Z CJP $"
+__revision__ = "$Revision: 63256 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -372,6 +372,8 @@ class PyCompleter(object):
             return completions
         except Exception, msg:
             dbg("[pycomp][err] get_completions: %s [stmt='%s']" % (msg, stmt))
+            if ctip:
+                return u""
             return []
 
 #-----------------------------------------------------------------------------#

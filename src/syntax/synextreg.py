@@ -21,8 +21,8 @@ LANGUAGE: Python
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synextreg.py 62513 2009-10-31 04:48:39Z CJP $"
-__revision__ = "$Revision: 62513 $"
+__svnid__ = "$Id: synextreg.py 63255 2010-01-25 02:05:22Z CJP $"
+__revision__ = "$Revision: 63255 $"
 
 #-----------------------------------------------------------------------------#
 import os
@@ -130,6 +130,10 @@ LANG_FLAGSHIP = u'FlagShip'
 # Use LEX_F77
 ID_LANG_F77 = _NewId()
 LANG_F77 = u'Fortran 77'
+
+# Use LEX_FORTH
+ID_LANG_FORTH = _NewId()
+LANG_FORTH = u"Forth"
 
 # Use LEX_FORTRAN
 ID_LANG_F95 = _NewId()
@@ -320,8 +324,9 @@ EXT_MAP = {
            'ess'                : LANG_ESS,
            'f for'              : LANG_F77,
            'f90 f95 f2k fpp'    : LANG_F95,
-           'prg'                : LANG_FLAGSHIP,
            'fe'                 : LANG_FERITE,
+           'fth 4th fs seq'     : LANG_FORTH,
+           'prg'                : LANG_FLAGSHIP,
            'gc gui'             : LANG_GUI4CLI,
            'hs'                 : LANG_HASKELL,
            'hx hxml'            : LANG_HAXE,
@@ -528,6 +533,17 @@ class ExtensionRegister(dict):
                 ftype = tmp[0].strip()
                 exts = tmp[1].split(u':')
                 self.__setitem__(ftype, exts)
+
+    def Remove(self, ftype):
+        """Remove a filetype from the register
+        @param ftype: File tyep description string
+        @return: bool removed or not
+
+        """
+        if ftype in self:
+            del self[ftype]
+            return True
+        return False
 
     def SetAssociation(self, ftype, ext):
         """Like Associate but overrides any current settings instead of

@@ -15,8 +15,8 @@ Provides a dialog for downloading, installing and configuring plugins or Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: plugdlg.py 62528 2009-10-31 23:50:08Z CJP $"
-__revision__ = "$Revision: 62528 $"
+__cvsid__ = "$Id: plugdlg.py 63588 2010-02-28 16:33:16Z CJP $"
+__revision__ = "$Revision: 63588 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -966,6 +966,8 @@ class PBPluginItem(eclib.PanelBoxItemBase):
             if not os.access(ipath, os.R_OK|os.W_OK):
                 self._uninstall.Show(False)
         else:
+            util.Log("[pluginmgr][warn] cant find plugin path for %s" % \
+                     self._pdata.GetName())
             self._uninstall.Show(False) # Should not happen
 
         font = self._title.GetFont()

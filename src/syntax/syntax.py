@@ -34,8 +34,8 @@ objects such as the Extension Register.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: syntax.py 62523 2009-10-31 21:03:19Z CJP $"
-__revision__ = "$Revision: 62523 $"
+__svnid__ = "$Id: syntax.py 63290 2010-01-28 03:19:54Z CJP $"
+__revision__ = "$Revision: 63290 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -189,7 +189,11 @@ class SyntaxMgr(object):
             syn_data = self._extensions[lang]
             return syn_data
 
-        lex_cfg = synglob.LANG_MAP[lang]
+        # Check for extensions that may have been removed
+        if lang not in synglob.LANG_MAP:
+            self._extreg.Remove(lang)
+
+        lex_cfg = synglob.LANG_MAP.get(lang, synglob.LANG_MAP[synglob.LANG_TXT])
 
         if lex_cfg[LANG_ID] == synglob.ID_LANG_TXT:
             syn_data = syndata.SyntaxDataBase()
@@ -362,16 +366,24 @@ def SyntaxIds():
     syn_ids = list()
     for item in dir(synglob):
         if item.startswith("ID_LANG"):
-            syn_ids.append(item)
-    
-    # Fetch actual values
-    ret_ids = list()
-    for syn_id in syn_ids:
-        ret_ids.append(getattr(synglob, syn_id))
+            syn_ids.append(getattr(synglob, item))
 
-    return ret_ids
+    return syn_ids
 
 SYNTAX_IDS = SyntaxIds()
+
+def SyntaxNames():
+    """Gets a list of all Syntax Labels
+    @return: list of strings
+
+    """
+    syn_list = list()
+    for item in dir(synglob):
+        if item.startswith("LANG_"):
+            val = getattr(synglob, item)
+            if isinstance(val, basestring):
+                syn_list.append(val)
+    return syn_list
 
 #---- End Syntax ids ----#
 
@@ -384,7 +396,10 @@ def GetExtFromId(ext_id):
     """
     extreg = ExtensionRegister()
     ftype = synglob.GetDescriptionFromId(ext_id)
-    return extreg[ftype][0]
+    rval = u''
+    if len(extreg[ftype]):
+        rval = extreg[ftype][0]
+    return rval
 
 def GetIdFromExt(ext):
     """Get the language id from the given file extension

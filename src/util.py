@@ -12,8 +12,8 @@ This file contains various helper functions and utilities that the program uses.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: util.py 61722 2009-08-20 23:53:01Z CJP $"
-__revision__ = "$Revision: 61722 $"
+__svnid__ = "$Id: util.py 63289 2010-01-28 03:10:42Z CJP $"
+__revision__ = "$Revision: 63289 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -49,11 +49,15 @@ class DropTargetFT(wx.PyDropTarget):
 
         """
         wx.PyDropTarget.__init__(self)
+
+        # Attributes
         self.window = window
         self._data = dict(data=None, fdata=None, tdata=None,
                           tcallb=textcallback, fcallb=filecallback)
         self._tmp = None
         self._lastp = None
+
+        # Setup
         self.InitObjects()
 
     def CreateDragString(self, txt):

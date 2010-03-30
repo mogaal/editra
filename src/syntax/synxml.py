@@ -52,14 +52,19 @@ xml_spec = """
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synxml.py 62962 2009-12-22 03:07:52Z CJP $"
-__revision__ = "$Revision: 62962 $"
+__svnid__ = "$Id: synxml.py 63408 2010-02-05 21:50:18Z CJP $"
+__revision__ = "$Revision: 63408 $"
 
 #----------------------------------------------------------------------------#
 # Imports
 import os
 from xml import sax
-import wx.stc as stc
+
+# Workaround for building packages when wx is not available
+try:
+    import wx.stc as stc
+except ImportError:
+    pass
 
 #----------------------------------------------------------------------------#
 # Tag Definitions
@@ -189,11 +194,7 @@ class EditraXml(sax.ContentHandler):
         """
         assert self.path is not None, "Must SetPath before calling Load"
         try:
-            handle = open(self.path, "rb")
-            txt = handle.read()
-            handle.close()
-            txt = txt.decode('utf-8') # xml is utf-8 by specification
-            self.LoadFromString(txt)
+            sax.parse(self.path, self)
         except (sax.SAXException, OSError, IOError, UnicodeDecodeError):
             self._ok = False
             return False
@@ -495,7 +496,14 @@ class Syntax(EditraXml):
     def startElement(self, name, attrs):
         """Parse the Syntax Xml"""
         if name == EXML_COMMENTPAT:
-            self.comment = attrs.get(EXML_VALUE, '').split()
+            val = attrs.get(EXML_VALUE, '')
+            tmp = val.split()
+            # Trailing space may be significant for some comments
+            if len(tmp) == 1:
+                comment = [val,]
+            else:
+                comment = tmp
+            self.comment = comment
         elif name == EXML_ASSOCIATIONS:
             self.file_ext = attrs.get(EXML_VALUE, '').split()
         elif name == self.Name:

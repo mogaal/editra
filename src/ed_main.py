@@ -15,8 +15,8 @@ main Ui component of the editor that contains all the other components.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_main.py 62723 2009-11-26 18:43:20Z CJP $"
-__revision__ = "$Revision: 62723 $"
+__svnid__ = "$Id: ed_main.py 63651 2010-03-07 16:36:26Z CJP $"
+__revision__ = "$Revision: 63651 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -100,7 +100,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         self._handlers = dict(menu=list(), ui=list())
 
         #---- Setup File History ----#
-        self.filehistory = wx.FileHistory(_PGET('FHIST_LVL', 'int', 5))
+        self.filehistory = wx.FileHistory(_PGET('FHIST_LVL', 'int', 9))
 
         #---- Status bar on bottom of window ----#
         self.SetStatusBar(ed_statbar.EdStatBar(self))
@@ -141,9 +141,6 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
 
         ## Setup additional menu items
         self.filehistory.UseMenu(menbar.GetMenuByName("filehistory"))
-        menbar.GetMenuByName("settings").AppendMenu(ID_LEXER, _("Lexers"),
-                                                    syntax.GenLexerMenu(),
-                                              _("Manually Set a Lexer/Syntax"))
 
         # On mac, do this to make help menu appear in correct location
         # Note it must be done before setting the menu bar and after the
@@ -196,6 +193,9 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
                                        # Format Menu
                                        (ID_FONT, self.OnFont),
 
+                                       # Settings menu
+                                       (ID_LEXER_CUSTOM, self.OnCustomizeLangMenu),
+
                                        # Tool Menu
                                        (ID_COMMAND, self.OnCommandBar),
                                        (ID_STYLE_EDIT, self.OnStyleEdit),
@@ -206,7 +206,8 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
                                        (ID_HOMEPAGE, self.OnHelp),
                                        (ID_DOCUMENTATION, self.OnHelp),
                                        (ID_TRANSLATE, self.OnHelp),
-                                       (ID_CONTACT, self.OnHelp)])
+                                       (ID_CONTACT, self.OnHelp),
+                                       (ID_BUG_TRACKER, self.OnHelp)])
 
         self._handlers['menu'].extend([(l_id, self.DispatchToControl)
                                        for l_id in syntax.SYNTAX_IDS])
@@ -302,6 +303,9 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         ed_msg.PostMessage(ed_msg.EDMSG_DSP_FONT,
                            _PGET('FONT3', 'font', wx.NORMAL_FONT))
 
+        # Message Handlers
+        ed_msg.Subscribe(self.OnUpdateFileHistory, ed_msg.EDMSG_ADD_FILE_HISTORY)
+
         # HACK: for gtk as most linux window managers manage the windows alpha
         #       and set it when its created.
         wx.CallAfter(self.InitWindowAlpha)
@@ -335,7 +339,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
 
         # Add or remove handlers from the event stack
         if active:
-            wx.GetApp().SetTopWindow(self)
+            app.SetTopWindow(self)
             self._loaded = True
 
             # Slow the update interval to reduce overhead
@@ -348,8 +352,6 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
 
             for handler in self._handlers['ui']:
                 app.AddUIHandlerForID(*handler)
-
-            app.SetTopWindow(self)
 
             # HACK find better way to do this later. It seems that on gtk the
             #      window doesn't get activated until later than it does on the
@@ -383,6 +385,13 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
 
         evt.Skip()
 
+    def OnUpdateFileHistory(self, msg):
+        """Update filehistory menu for new files that were opened
+        @param msg: Message object (data == filename)
+
+        """
+        self.filehistory.AddFileToHistory(msg.GetData())
+
     def AddFileToHistory(self, fname):
         """Add a file to the windows file history as well as any
         other open windows history.
@@ -391,9 +400,8 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
                all windows pull from to avoid this quick solution.
 
         """
-        for win in wx.GetApp().GetMainWindows():
-            if hasattr(win, 'filehistory'):
-                win.filehistory.AddFileToHistory(fname)
+        if _PGET('FHIST_LVL', 'int', 9) > 0:
+            ed_msg.PostMessage(ed_msg.EDMSG_ADD_FILE_HISTORY, fname)
 
     def AddMenuHandler(self, menu_id, handler):
         """Add a menu event handler to the handler stack
@@ -650,10 +658,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
                     ed_mdlg.SaveErrorDlg(self, fname, err)
                     ctrl[1].GetDocument().ResetAll()
             else:
-                ret_val = self.OnSaveAs(ID_SAVEAS, ctrl[0], ctrl[1])
-                if ret_val:
-                    self._last_save = ctrl[1].GetFileName()
-                    self.AddFileToHistory(self._last_save)
+                self.OnSaveAs(ID_SAVEAS, ctrl[0], ctrl[1])
 
     def OnSaveAs(self, evt, title=u'', page=None):
         """Save File Using a new/different name
@@ -697,7 +702,7 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
                 self.nb.SetPageText(self.nb.GetSelection(), fname)
                 self.nb.GetCurrentCtrl().FindLexer()
                 self.nb.UpdatePageImage()
-            return result
+                self.AddFileToHistory(ctrl.GetFileName())
         else:
             dlg.Destroy()
 
@@ -1415,6 +1420,31 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         else:
             evt.Skip()
 
+    def OnCustomizeLangMenu(self, evt):
+        """Show the lexer menu customization dialog"""
+        if evt.GetId() == ID_LEXER_CUSTOM:
+            dlg = eclib.FilterDialog(self, title=_("Customize Menu"),
+                                     style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+            mconfig = _PGET("LEXERMENU", default=list())
+            flters = dict()
+            for item in syntax.SyntaxNames():
+                if item in mconfig:
+                    flters[item] = True
+                else:
+                    flters[item] = False
+            dlg.SetListValues(flters)
+            dlg.SetInitialSize()
+            dlg.CenterOnParent()
+
+            if dlg.ShowModal() == wx.ID_OK:
+                includes = dlg.GetIncludes()
+                includes.sort()
+                _PSET("LEXERMENU", includes)
+                ed_msg.PostMessage(ed_msg.EDMSG_CREATE_LEXER_MENU)
+            dlg.Destroy()
+        else:
+            evt.Skip()
+
     def OnHelp(self, evt):
         """Handles help related menu events
         @param evt: Event fired that called this handler
@@ -1426,12 +1456,14 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         if e_id == ID_HOMEPAGE:
             page = HOME_PAGE
         elif e_id == ID_DOCUMENTATION:
-            page = HOME_PAGE + "/?page=doc"
+            page = HOME_PAGE + "/documentation"
         elif e_id == ID_TRANSLATE:
             page = I18N_PAGE
         elif e_id == ID_CONTACT:
             webbrowser.open("mailto:%s" % CONTACT_MAIL)
             return
+        elif e_id == ID_BUG_TRACKER:
+            page = "http://code.google.com/p/editra/issues/list"
         else:
             evt.Skip()
             return
@@ -1444,32 +1476,6 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
             webbrowser.open(page, 1)
         except:
             self.PushStatusText(_("Error: Unable to open %s") % page, SB_INFO)
-
-    def ModifySave(self):
-        """Called when document has been modified prompting
-        a message dialog asking if the user would like to save
-        the document before closing.
-        @return: Result value of whether the file was saved or not
-
-        """
-        name = self.nb.GetCurrentCtrl().GetFileName()
-        if name == u"":
-            name = self.nb.GetPageText(self.nb.GetSelection())
-
-        dlg = wx.MessageDialog(self,
-                                _("The file: \"%s\" has been modified since "
-                                  "the last save point.\n\nWould you like to "
-                                  "save the changes?") % name,
-                               _("Save Changes?"),
-                               wx.YES_NO | wx.YES_DEFAULT | wx.CANCEL | \
-                               wx.ICON_INFORMATION)
-        result = dlg.ShowModal()
-        dlg.Destroy()
-
-        if result == wx.ID_YES:
-            self.OnSave(wx.MenuEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_SAVE))
-
-        return result
 
     def PushStatusText(self, txt, field):
         """Override so that our custom status bar's method gets called

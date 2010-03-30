@@ -15,8 +15,8 @@ notebook and command bar.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_mpane.py 62452 2009-10-18 19:22:00Z CJP $"
-__revision__ = "$Revision: 62452 $"
+__svnid__ = "$Id: ed_mpane.py 63387 2010-02-04 15:14:46Z CJP $"
+__revision__ = "$Revision: 63387 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -47,6 +47,12 @@ class MainPanel(eclib.ControlBox):
 
         # Layout
         self.SetWindow(self.nb)
+
+        self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEB)
+
+    def OnEB(self, evt):
+        """Empty method to fix notebook flashing issue on MSW"""
+        pass
 
     def GetNotebook(self):
         """Get the main notebook control

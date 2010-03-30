@@ -18,8 +18,8 @@ METHODS:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_i18n.py 60169 2009-04-15 18:55:37Z CJP $"
-__revision__ = "$Revision: 60169 $"
+__svnid__ = "$Id: ed_i18n.py 63388 2010-02-04 23:07:36Z CJP $"
+__revision__ = "$Revision: 63388 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -83,6 +83,9 @@ def GetLangId(lang_n):
     @return: wx.LANGUAGE_*** id of language
 
     """
+    if lang_n == "Default":
+        # No language set, default to English
+        return wx.LANGUAGE_ENGLISH_US
     lang_desc = GetLocaleDict(GetAvailLocales(), OPT_DESCRIPT)
     return lang_desc.get(lang_n, wx.LANGUAGE_DEFAULT)
 

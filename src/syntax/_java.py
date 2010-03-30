@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _java.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _java.py 63359 2010-02-03 03:10:42Z CJP $"
+__revision__ = "$Revision: 63359 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -31,15 +31,24 @@ from _cpp import AutoIndenter
 #---- Keyword Specifications ----#
 
 # Java Keywords
-JAVA_KEYWORDS = (0, "import native package goto const if else switch while for "
-                     "do true false null this super new instanceof return "
-                     "throw try catch finally assert synchronized throws "
-                     "extends implements interface break continue ")
+JAVA_KEYWORDS = (0, "goto if else switch while for "
+                    "do this super new instanceof return "
+                    "throw try catch finally assert synchronize "
+                    "break continue ")
+
+JAVA_KEYWORDS2 = (1, "import native package synchronized throws "
+                     "extends implements interface class "
+                     "static synchronized transient volatile final "
+                     "serializable public protected private abstract")
 
 # Java Types/Structures/Storage Classes
-JAVA_TYPES = (1, "boolean char byte short int long float double void static "
-                  "synchronized transient volatile final strictfp serializable "
-                  "class public protected private abstract")
+JAVA_TYPES = (3, "boolean char byte short int long float double void "
+                 "true false null "
+                 "String Integer Long Float Double Byte Boolean "
+                 "Map HashMap TreeMap CharSequence StringBuilder "
+                 "List ArrayList Set HashSet TreeSet Collection "
+                 "Exception System Runtime Collections Math ")
+
 
 # Documentation Keywords (Doxygen keywords/ect)
 DOC_KEYWORDS = (2, "TODO FIXME XXX \\author \\brief \\bug \\callgraph "
@@ -51,6 +60,7 @@ DOC_KEYWORDS = (2, "TODO FIXME XXX \\author \\brief \\bug \\callgraph "
                    "\\retval \\section \\struct \\subpage \\subsection "
                    "\\subsubsection \\test \\todo \\typedef \\union \\var "
                    "\\verbatim \\version \\warning \\$ \\@ \\~ \\< \\> \\# \\% "
+                   "@param @return @throws "
                    "HACK")
 
 #---- Syntax Style Specs ----#
@@ -71,7 +81,7 @@ SYNTAX_ITEMS = [ ('STC_C_DEFAULT', 'default_style'),
                  ('STC_C_STRING', 'string_style'),
                  ('STC_C_STRINGEOL', 'stringeol_style'),
                  ('STC_C_UUID', 'pre_style'),
-                 ('STC_C_VERBATIM', "number2_style"),
+                 ('STC_C_VERBATIM', 'number2_style'),
                  ('STC_C_WORD', 'keyword_style'),
                  ('STC_C_WORD2', 'keyword2_style') ]
 
@@ -95,7 +105,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     def GetKeywords(self):
         """Returns Specified Keywords List """
-        return [JAVA_KEYWORDS, JAVA_TYPES, DOC_KEYWORDS]
+        return [JAVA_KEYWORDS, JAVA_KEYWORDS2, DOC_KEYWORDS, JAVA_TYPES]
 
     def GetSyntaxSpec(self):
         """Syntax Specifications """

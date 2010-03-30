@@ -19,8 +19,8 @@ threads to interact with the buffer.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: OutputBufferDemo.py 61806 2009-09-02 01:31:01Z CJP $"
-__revision__ = "$Revision: 61806 $"
+__svnid__ = "$Id: OutputBufferDemo.py 63510 2010-02-18 02:30:38Z CJP $"
+__revision__ = "$Revision: 63510 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -253,7 +253,7 @@ class ProcessOutputBuffer(eclib.OutputBuffer, eclib.ProcessBufferMixin):
         @param cmd: Command string (i.e 'ping localhost')
 
         """
-        proc = eclib.ProcessThread(self, cmd)
+        proc = eclib.ProcessThread(self, cmd, env=os.environ)
         self._threads.append((proc, cmd))
         self._threads[-1][0].start()
         

@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 62937 2009-12-19 05:55:39Z CJP $"
-__revision__ = "$Revision: 62937 $"
+__svnid__ = "$Id: ed_basestc.py 63656 2010-03-08 23:58:21Z CJP $"
+__revision__ = "$Revision: 63656 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -36,6 +36,9 @@ from syntax import synglob
 import autocomp
 from extern import vertedit
 from profiler import Profile_Get
+import plugin
+import iface
+import util
 
 #-----------------------------------------------------------------------------#
 
@@ -102,6 +105,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         # Event Handlers
         self.Bind(wx.stc.EVT_STC_CHANGE, self.OnChanged)
         self.Bind(wx.stc.EVT_STC_MODIFIED, self.OnModified)
+        self.Bind(wx.stc.EVT_STC_AUTOCOMP_SELECTION, self.OnAutoCompSel)
 
     def __del__(self):
         # Cleanup the file object callbacks
@@ -248,7 +252,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
     def CanCopy(self):
         """Check if copy/cut is possible"""
-        return self.GetSelectionStart() != self.GetSelectionEnd()
+        return self.HasSelection()
 
     CanCut = CanCopy
 
@@ -308,9 +312,8 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
         """
         self.AutoCompSetAutoHide(False)
-        self.AutoCompSetChooseSingle(True)
-        extend = Profile_Get('AUTO_COMP_EX') # Using extended autocomp?
-        self._code['compsvc'] = autocomp.AutoCompService.GetCompleter(self, extend)
+        self.InitCompleter()
+        self.AutoCompSetChooseSingle(self._code['compsvc'].GetChooseSingle())
         self.AutoCompSetIgnoreCase(not self._code['compsvc'].GetCaseSensitive())
         self.AutoCompStops(self._code['compsvc'].GetAutoCompStops())
         # TODO: come back to this it can cause some annoying behavior where
@@ -643,9 +646,36 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         pos = max(0, pos-1)
         return 'comment' in self.FindTagById(self.GetStyleAt(pos))
 
+    def HasSelection(self):
+        """Check if there is a selection in the buffer
+        @return: bool
+
+        """
+        sel = self.GetSelection()
+        return sel[0] != sel[1]
+
+    def HidePopups(self):
+        """Hide autocomp/calltip popup windows if any are active"""
+        if self.AutoCompActive():
+            self.AutoCompCancel()
+
+        if self.CallTipActive():
+            self.CallTipCancel()
+
     def InitCompleter(self):
-        """(Re)Initialize a completer object for this buffer"""
-        self._code['compsvc'] = autocomp.AutoCompService.GetCompleter(self)
+        """(Re)Initialize a completer object for this buffer
+        @todo: handle extended autocomp for plugins?
+
+        """
+        # Check for plugins that may extend or override functionality for this
+        # file type.
+        autocomp_ext = AutoCompExtension(wx.GetApp().GetPluginManager())
+        completer = autocomp_ext.GetCompleter(self)
+        if completer is not None:
+            self._code['compsvc'] = completer
+        else:
+            extend = Profile_Get('AUTO_COMP_EX') # Using extended autocomp?
+            self._code['compsvc'] = autocomp.AutoCompService.GetCompleter(self, extend)
 
     def IsString(self, pos):
         """Is the given position in a string region of the current buffer
@@ -695,6 +725,12 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         self.GotoPos(pos)
         self.ChooseCaretX()
 
+    def OnAutoCompSel(self, evt):
+        """Handle when an item is inserted from the autocomp list"""
+        text = evt.GetText()
+        cpos = evt.GetPosition()
+        self._code['compsvc'].OnCompletionInserted(cpos, text)
+
     def OnChanged(self, evt):
         """Handles updates that need to take place after
         the control has been modified.
@@ -708,17 +744,16 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             lines = self.GetLineCount()
             mwidth = self.GetTextExtent(str(lines))[0]
 
+            adj = 8
             if wx.Platform == '__WXMAC__':
                 adj = 2
-            else:
-                adj = 8
 
             nwidth = max(15, mwidth + adj)
             if self.GetMarginWidth(NUM_MARGIN) != nwidth:
                 self.SetMarginWidth(NUM_MARGIN, nwidth)
 
         wx.PostEvent(self.GetParent(), evt)
-        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_CHANGED)
+        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_CHANGED, context=self)
 
     def OnModified(self, evt):
         """Handle modify events, includes style changes!"""
@@ -733,6 +768,22 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             self._code['clexer'](self, self.GetEndStyled(), evt.GetPosition())
         else:
             evt.Skip()
+
+    def PutText(self, text):
+        """Put text in the buffer. Like AddText but does the right thing
+        depending upon the input mode and buffer state.
+        @param text: string
+
+        """
+        if not self.HasSelection():
+            cpos = self.GetCurrentPos()
+            lepos = self.GetLineEndPosition(self.GetCurrentLine())
+            if self.GetOvertype() and cpos != lepos:
+                self.CharRight()
+                self.DeleteBack()
+            self.AddText(text)
+        else:
+            self.ReplaceSelection(text)
 
     def RegisterImages(self):
         """Register the images for the autocomp popup list"""
@@ -833,13 +884,15 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
                     kwlist += keyw[1]
                     super(EditraBaseStc, self).SetKeyWords(keyw[0], keyw[1])
 
+        # Can't have ? in scintilla autocomp list unless specifying an image
+        # TODO: this should be handled by the autocomp service
+        if '?' in kwlist:
+            kwlist.replace('?', '')
+
         kwlist = kwlist.split()         # Split into a list of words
         kwlist = list(set(kwlist))      # Remove duplicates from the list
         kwlist.sort()                   # Sort into alphabetical order
 
-        # Can't have ? in scintilla autocomp list unless specifying an image
-        if '?' in kwlist:
-            kwlist.remove('?')
         self._code['keywords'] = kwlist
 
     def SetLexer(self, lexer):
@@ -901,8 +954,13 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
                 return
             self.AutoCompShow(pos - self.WordStartPosition(pos, True), lst)
 
-            if self._code['compsvc'].GetAutoCompAfter():
-                super(EditraBaseStc, self).GotoPos(pos)
+            # Check if something was inserted due to there only being a 
+            # single choice returned from the completer and allow the completer
+            # to adjust caret position as necessary.
+            curpos = self.GetCurrentPos()
+            if curpos != pos:
+                text = self.GetTextRange(pos, curpos)
+                self._code['compsvc'].OnCompletionInserted(pos, text)
             self.EndUndoAction()
             self.SetFocus()
 
@@ -996,6 +1054,26 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             sback = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
         self.vert_edit.SetBlockColor(sback)
         self.DefineMarkers()
+
+#-----------------------------------------------------------------------------#
+
+class AutoCompExtension(plugin.Plugin):
+    """Plugin that Extends the autocomp feature"""
+    observers = plugin.ExtensionPoint(iface.AutoCompI)
+    def GetCompleter(self, buff):
+        """Get the completer for the specified file type id
+        @param buff: EditraStc instance
+
+        """
+        ftypeid = buff.GetLangId()
+        for observer in self.observers:
+            try:
+                if observer.GetFileTypeId() == ftypeid:
+                    return observer.GetCompleter(buff)
+            except Exception, msg:
+                util.Log("[ed_basestc][err] GetCompleter Extension: %s" % str(msg))
+        else:
+            return None
 
 #-----------------------------------------------------------------------------#
 

@@ -15,8 +15,8 @@ notebook.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_tab.py 60285 2009-04-22 18:25:17Z CJP $"
-__revision__ = "$Revision: 60285 $"
+__svnid__ = "$Id: ed_tab.py 63569 2010-02-28 07:50:05Z CJP $"
+__revision__ = "$Revision: 63569 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -141,7 +141,7 @@ class EdTabBase(object):
         for page in range(self._nb.GetPageCount()):
             ctrl = self._nb.GetPage(page)
             if ctrl.GetId() == obj_id:
-                self._nb.SetPageText(title)
+                self._nb.SetPageText(page, title)
                 break
         else:
             # TODO: notify of error?

@@ -22,4 +22,9 @@ int add(int x, int y)
     return x + y;
 }
 
+void TestClass::Foo(int &nVal)
+{
+    nVal++;
+}
+
 // EOF

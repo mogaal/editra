@@ -14,8 +14,8 @@ for managing keybindings and profiles is also provided by this module.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_menu.py 63009 2009-12-28 23:59:09Z CJP $"
-__revision__ = "$Revision: 63009 $"
+__svnid__ = "$Id: ed_menu.py 63532 2010-02-21 21:45:16Z CJP $"
+__revision__ = "$Revision: 63532 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -27,6 +27,8 @@ import ed_glob
 import ed_msg
 import profiler
 import util
+from syntax import syntax
+from syntax import synglob
 
 #--------------------------------------------------------------------------#
 # Globals
@@ -452,6 +454,31 @@ class EdMenuBar(wx.MenuBar):
         # Message handlers
         ed_msg.Subscribe(self.OnRebind, ed_msg.EDMSG_MENU_REBIND)
         ed_msg.Subscribe(self.OnLoadProfile, ed_msg.EDMSG_MENU_LOADPROFILE)
+        ed_msg.Subscribe(self.OnCreateLexerMenu, ed_msg.EDMSG_CREATE_LEXER_MENU)
+
+    def CreateLexerMenu(self):
+        """Create the Lexer menu"""
+        settingsmenu = self._menus['settings']
+        item = settingsmenu.FindItemById(ed_glob.ID_LEXER)
+        if item:
+            settingsmenu.Remove(ed_glob.ID_LEXER)
+        mconfig = profiler.Profile_Get('LEXERMENU', default=list())
+        mconfig.sort()
+
+        # Create the menu
+        langmenu = wx.Menu()
+        langmenu.Append(ed_glob.ID_LEXER_CUSTOM, _("Customize..."),
+                        _("Customize the items shown in this menu."))
+        langmenu.AppendSeparator()
+
+        for label in mconfig:
+            lid = synglob.GetIdFromDescription(label)
+            langmenu.Append(lid, label,
+                            _("Switch Lexer to %s") % label, wx.ITEM_CHECK)
+
+        settingsmenu.AppendMenu(ed_glob.ID_LEXER, _("Lexers"),
+                                langmenu,
+                                _("Manually Set a Lexer/Syntax"))
 
     @classmethod
     def DeleteKeyProfile(cls, pname):
@@ -760,9 +787,13 @@ class EdMenuBar(wx.MenuBar):
         settingsmenu.AppendEx(ed_glob.ID_SYNTAX, _("Syntax Highlighting"),
                             _("Color Highlight Code Syntax"), wx.ITEM_CHECK)
 
+        settingsmenu.AppendSeparator()
+
         # Lexer Menu Appended later by main frame
         self.Append(settingsmenu, _("&Settings"))
         self._menus['settings'] = settingsmenu
+
+        self.CreateLexerMenu()
 
     def GenToolsMenu(self):
         """Makes and attaches the tools menu
@@ -804,6 +835,7 @@ class EdMenuBar(wx.MenuBar):
                         _("Online project documentation and help guides"))
         helpmenu.AppendEx(ed_glob.ID_TRANSLATE, _("Translate Editra..."),
                         _("Editra translations project"))
+        helpmenu.AppendEx(ed_glob.ID_BUG_TRACKER, _("Bug Tracker..."))
         helpmenu.AppendEx(ed_glob.ID_CONTACT, _("Feedback"),
                         _("Send bug reports and suggestions"))
 
@@ -845,6 +877,10 @@ class EdMenuBar(wx.MenuBar):
         """
         cls.keybinder.SetProfileName(pname)
         cls.keybinder.SaveKeyProfile()
+
+    def OnCreateLexerMenu(self, msg):
+        """Recreate the lexer menu"""
+        self.CreateLexerMenu()
 
     def OnLoadProfile(self, msg):
         """Load and set the current key profile

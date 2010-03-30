@@ -12,8 +12,8 @@ Provides helper functions and classes for managing documents and their services.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: doctools.py 61142 2009-06-20 05:28:36Z CJP $"
-__revision__ = "$Revision: 61142 $"
+__svnid__ = "$Id: doctools.py 63349 2010-02-01 22:13:57Z CJP $"
+__revision__ = "$Revision: 63349 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -192,7 +192,7 @@ class DocPositionMgr(object):
 
             for line in lines:
                 line = line.strip()
-                vals = line.split(u'=')
+                vals = line.rsplit(u'=', 1)
                 if len(vals) != 2 or not os.path.exists(vals[0]):
                     continue
 

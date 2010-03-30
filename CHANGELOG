@@ -9,6 +9,65 @@ Change Log:
 #-----------------------------------------------------------------------------#
 Changes since last release:
 
+VERSION 0.5.51
+DATE 03/14/2010
+33rd Alpha Release
+
+NEWS:
+
+This release was initially going to be held until wxPython 2.8.11 was released
+but it seems to be delayed so this release will still have some minor issues
+when running on OSX 10.6.
+
+There are a number of new features in this release. The tabs in the notebooks
+can be dragged out to split the notebook into separate views so that files can
+be viewed side by side. This feature has also been extended to the Shelf window.
+There are also new versions of the CodeBrowser and Launch plugins included with
+this release. For detailed changes please review the changelog below.
+
+NEW: [features/improvements]
++Tabs can be dragged out to split notebooks so that buffers and Shelf items
+can be viewed side by side.
++What items are displayed in the Lexer menu are now configurable.
++Basic support for highlighting asp script embedded in html files.
++New version of Launch plugin with some bug fixes.
++Add Close Others option to right click tab menu to close all but the selected tab.
++Add support for highlighting Forth source files.
++Add support for Java to CodeBrowser (patch from Eric Gaudet)
++Add support for Diff files to CodeBrowser (patch from Eric Gaudet)
++Custom autobackup directory can be configured.
++Extend HTML support to support HTML5 syntax (patch from Hagn99)
++Add --no-clean option to source file installer to skip old file cleanup.
+
+LIBRARY:
++New plugin interface for adding autocompletion providers added (iface.AutocompI)
++FilterDialog class added to eclib
+
+BUG FIXES:
++Fix segmentation fault on Linux when using right click context menu to paste.
++Fix some minor vhdl highlighting issues.
++Fix issue where typing over selected text would sometimes not overwrite it
++Fix exception that could occur when syntax highlighting extensions are removed.
++Fix issue where autocomp/callip popups would not get hidden when they should.
++Fix issue where window could be restored off screen when extra displays have
+been removed from the system between running the program.
++Fix issue where tab label would incorrectly show a modified state after loading
+a large file in incremental mode.
++Fix bug in python autocompleter that could raise an error when retrieving a 
+calltip under some conditions.
++Fix issue with detecting magic encoding if it was changed after the buffer
+was loaded on subsequent saves.
++Fix bug in reloading of buffers after encoding error is detected that would
+result in them always becoming a read only buffer.
++Fix bug in retrieving file extension for file types that have no extensions
+associated with them.
++Fix bad link to online documentation in Help menu
++Default to English local when localized resource for LANGUAGE_DEFAULT are not 
+available.
++Fix issue with folded code disappearing when folding option is toggled off.
+
+#-----------------------------------------------------------------------------#
+
 VERSION 0.5.32
 DATE 12/28/2009
 32nd Alpha Release

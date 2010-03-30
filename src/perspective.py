@@ -13,8 +13,8 @@ perspectives in the MainWindow.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: perspective.py 59200 2009-02-28 16:36:22Z CJP $"
-__revision__ = "$Revision: 59200 $"
+__cvsid__ = "$Id: perspective.py 63183 2010-01-19 01:24:02Z CJP $"
+__revision__ = "$Revision: 63183 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -70,7 +70,7 @@ class PerspectiveManager(object):
                     _("Save the current window layout"))
         self._menu.Append(ID_DELETE_PERSPECTIVE, _("Delete Saved View"))
         self._menu.AppendSeparator()
-        self._menu.Append(ID_AUTO_PERSPECTIVE, _(AUTO_PERSPECTIVE),
+        self._menu.Append(ID_AUTO_PERSPECTIVE, _("Automatic"),
                           _("Automatically save/use window state from last session"),
                           wx.ITEM_CHECK)
         self._menu.AppendSeparator()
@@ -81,10 +81,8 @@ class PerspectiveManager(object):
         pos = Profile_Get('WPOS', "size_tuple", False)
         if Profile_Get('SET_WPOS') and pos:
             # Ensure window is on screen
-            # NOTE: don't default to 0,0 otherwise on osx the frame will be
-            #       stuck behind the menubar.
-            if pos[0] < 0 or pos[1] < 0:
-                pos = (100, 100)
+            if not self.IsPositionOnScreen(pos):
+                pos = self.GetPrimaryDisplayOrigin()
             self._window.SetPosition(pos)
 
         # Event Handlers
@@ -167,6 +165,22 @@ class PerspectiveManager(object):
         """
         return sorted(self._viewset.keys())
 
+    def GetPrimaryDisplayOrigin(self):
+        """Get the origin on the primary display to use as a default
+        window placement position.
+        @return: position tuple
+
+        """
+        # NOTE: don't default to 0,0 otherwise on osx the frame will be
+        #       stuck behind the menubar.
+        for idx in range(wx.Display.GetCount()):
+            disp = wx.Display(idx)
+            if disp.IsPrimary():
+                drect = disp.GetClientArea()
+                return drect.GetPosition() + (5, 5)
+        else:
+            return (5, 5)
+
     def HasPerspective(self, name):
         """Returns True if there is a perspective by the given name
         being managed by this manager, or False otherwise.
@@ -182,6 +196,22 @@ class PerspectiveManager(object):
         # Only set the transparency if it is not opaque
         if level != 255:
             self._window.SetTransparent(level)
+
+    def IsPositionOnScreen(self, pos):
+        """Check if the given position is on any of the connected displays
+        @param pos: Position Tuple
+        @return: bool
+
+        """
+        bOnScreen = False
+        if len(pos) == 2:
+            for idx in range(wx.Display.GetCount()):
+                disp = wx.Display(idx)
+                drect = disp.GetClientArea()
+                bOnScreen = drect.Contains(pos)
+                if bOnScreen:
+                    break
+        return bOnScreen
 
     def LoadPerspectives(self):
         """Loads the perspectives data into the manager. Returns

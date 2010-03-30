@@ -12,8 +12,8 @@ Simple autocompletion support for Cascading Style Sheets.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: csscomp.py 62937 2009-12-19 05:55:39Z CJP $"
-__revision__ = "$Revision: 62937 $"
+__cvsid__ = "$Id: csscomp.py 63130 2010-01-10 03:29:46Z CJP $"
+__revision__ = "$Revision: 63130 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -48,8 +48,7 @@ class Completer(completer.BaseCompleter):
         self.SetAutoCompFillups('')
         self.SetCallTipKeys([ord('('), ])
         self.SetCallTipCancel([ord(')'), wx.WXK_RETURN])
-        self.SetAutoCompAfter(False) # Insert Text after cursor on completions
-
+        
     def GetAutoCompList(self, command):
         """Returns the list of possible completions for a
         command string. If namespace is not specified the lookup

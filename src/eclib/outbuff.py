@@ -9,18 +9,18 @@
 """
 Editra Control Library: OutputBuffer
 
-This module contains classes that are usefull for displaying output from running
-tasks and processes. The classes are divided into three main catagories, gui
+This module contains classes that are useful for displaying output from running
+tasks and processes. The classes are divided into three main categories, gui
 classes, mixins, and thread classes. All the classes can be used together to
-easily create multithreaded gui display classes without neededing to worry about
+easily create multithreaded gui display classes without needing to worry about
 the details and thread safety of the gui.
 
 For example usage of these classes see ed_log and the Editra's Launch plugin
 
 Class OutputBuffer:
-This is the main class exported by ths module. It provides a readonly output
+This is the main class exported by this module. It provides a readonly output
 display buffer that when used with the other classes in this module provides an
-easy way to display continous output from other processes and threads. It
+easy way to display continuous output from other processes and threads. It
 provides two methods for subclasses to override if they wish to perform custom
 handling.
 
@@ -37,11 +37,11 @@ OutputBuffer is used with a L{ProcessThread}. It provides three methods that can
 be overridden in subclasses to perform extra processing.
 
   - DoProcessStart: Called as the process is being started in the ProcessThread,
-                    it recieves the process command string as an argument.
+                    it receives the process command string as an argument.
   - DoFilterInput: Called as each chunk of output comes from the running process
                    use it to filter the results before displaying them in the
                    buffer.
-  - DoProcessExit: Called when the running process has exited. It recieves the
+  - DoProcessExit: Called when the running process has exited. It receives the
                    processes exit code as a parameter.
 
 Class ProcessThread:
@@ -49,7 +49,7 @@ Thread class for running subprocesses and posting the output to an
 L{OutputBuffer} via events.
 
 Class TaskThread:
-Thread class for running a callable. For optimal performance and resposiveness
+Thread class for running a callable. For optimal performance and responsiveness
 the callable should be a generator object. All results are directed to an
 L{OutputBuffer} through its AppendUpdate method.
 
@@ -61,8 +61,8 @@ Requirements:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: outbuff.py 62888 2009-12-15 00:48:33Z CJP $"
-__revision__ = "$Revision: 62888 $"
+__svnid__ = "$Id: outbuff.py 63558 2010-02-26 01:13:41Z CJP $"
+__revision__ = "$Revision: 63558 $"
 
 __all__ = ["OutputBuffer", "OutputBufferEvent", "ProcessBufferMixin",
            "ProcessThread", "TaskThread", "OPB_STYLE_DEFAULT", "OPB_STYLE_INFO",
@@ -93,6 +93,7 @@ if subprocess.mswindows:
     import msvcrt
     import ctypes
 else:
+    import shlex
     import select
     import fcntl
 
@@ -151,7 +152,10 @@ class OutputBufferEvent(wx.PyCommandEvent):
     def __init__(self, etype, eid=wx.ID_ANY, value=''):
         """Creates the event object"""
         wx.PyCommandEvent.__init__(self, etype, eid)
+
+        # Attributes
         self._value = value
+        self._errmsg = None
 
     def GetValue(self):
         """Returns the value from the event.
@@ -159,6 +163,24 @@ class OutputBufferEvent(wx.PyCommandEvent):
 
         """
         return self._value
+
+    def GetErrorMessage(self):
+        """Get the error message value
+        @return: Exception traceback string or None
+
+        """
+        return self._errmsg
+
+    def SetErrorMessage(self, msg):
+        """Set the error message value
+        @param msg: Exception traceback string
+
+        """
+        try:
+            tmsg = unicode(msg)
+        except:
+            tmsg = None
+        self._errmsg = msg
 
 #--------------------------------------------------------------------------#
 
@@ -563,7 +585,7 @@ class ProcessBufferMixin:
 
     def _OnProcessError(self, evt):
         """Handle EVT_PROCESS_ERROR"""
-        self.DoProcessError(evt.GetValue())
+        self.DoProcessError(evt.GetValue(), evt.GetErrorMessage())
 
     def _OnProcessExit(self, evt):
         """Handles EVT_PROCESS_EXIT"""
@@ -589,10 +611,11 @@ class ProcessBufferMixin:
         """
         return txt
 
-    def DoProcessError(self, code):
+    def DoProcessError(self, code, excdata=None):
         """Override this method to do any ui notification of when errors happen
         in running the process.
         @param code: an OBP error code
+        @keyword excdata: Exception Data from process error
         @return: None
 
         """
@@ -635,7 +658,8 @@ class ProcessThread(threading.Thread):
 
     """
     def __init__(self, parent, command, fname='',
-                 args=list(), cwd=None, env=None):
+                 args=list(), cwd=None, env=dict(),
+                 use_shell=True):
         """Initialize the ProcessThread object
         Example:
           >>> myproc = ProcessThread(myframe, '/usr/local/bin/python',
@@ -650,6 +674,8 @@ class ProcessThread(threading.Thread):
         @keyword cwd: Directory to execute process from or None to use current
         @keyword env: Environment to run the process in (dictionary) or None to
                       use default.
+        @keyword use_shell: Specify whether a shell should be used to launch 
+                            program or run directly
 
         """
         threading.Thread.__init__(self)
@@ -663,6 +689,8 @@ class ProcessThread(threading.Thread):
         self._parent = parent       # Parent Window/Event Handler
         self._cwd = cwd             # Path at which to run from
         self._cmd = dict(cmd=command, file=fname, args=args)
+        self._use_shell = use_shell
+        self._sig_abort = signal.SIGTERM    # default signal to kill process
 
         # Make sure the environment is sane it must be all strings
         nenv = dict(env) # make a copy to manipulate
@@ -762,7 +790,7 @@ class ProcessThread(threading.Thread):
 
             # Try to kill the group
             try:
-                os.kill(pid, signal.SIGKILL)
+                os.kill(pid, self._sig_abort)
             except OSError, msg:
                 pass
 
@@ -786,8 +814,9 @@ class ProcessThread(threading.Thread):
             ctypes.windll.kernel32.CloseHandle(handle)
 
     #---- Public Member Functions ----#
-    def Abort(self):
+    def Abort(self, sig=signal.SIGTERM):
         """Abort the running process and return control to the main thread"""
+        self._sig_abort = sig
         self.abort = True
 
     def run(self):
@@ -797,29 +826,42 @@ class ProcessThread(threading.Thread):
         @note: overridden from Thread
 
         """
+        # using shell, Popen will need a string, else it must be a sequence
+        # use shlex for complex command line tokenization/parsing
         command = u' '.join([item.strip() for item in [self._cmd['cmd'],
                                                        self._cmd['file'],
                                                        self._cmd['args']]])
+        command = command.strip()
+        if not self._use_shell and not subprocess.mswindows:
+            # shlex does not support unicode
+            command = shlex.split(command.encode(sys.getfilesystemencoding()))
 
-        use_shell = not subprocess.mswindows
+        if sys.platform.lower().startswith('win'):            
+            suinfo = subprocess.STARTUPINFO()
+            suinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        else:
+            suinfo = None
+        
         err = None
         try:
-            self._proc = subprocess.Popen(command.strip(),
+            self._proc = subprocess.Popen(command,
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.STDOUT,
-                                          shell=use_shell,
+                                          shell=self._use_shell,
                                           cwd=self._cwd,
-                                          env=self._env)
+                                          env=self._env,
+                                          startupinfo=suinfo)
         except OSError, msg:
             # NOTE: throws WindowsError on Windows which is a subclass of
             #       OSError, so it will still get caught here.
             err =  OutputBufferEvent(edEVT_PROCESS_ERROR,
                                      self._parent.GetId(),
                                      OPB_ERROR_INVALID_COMMAND)
+            err.SetErrorMessage(msg)
 
         evt = OutputBufferEvent(edEVT_PROCESS_START,
                                 self._parent.GetId(),
-                                command.strip())
+                                command)
         wx.PostEvent(self._parent, evt)
 
         # Read from stdout while there is output from process

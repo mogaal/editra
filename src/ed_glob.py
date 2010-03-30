@@ -14,8 +14,8 @@ access point for all common variables in the project.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_glob.py 61283 2009-07-02 13:50:51Z CJP $"
-__revision__ = "$Revision: 61283 $"
+__svnid__ = "$Id: ed_glob.py 63532 2010-02-21 21:45:16Z CJP $"
+__revision__ = "$Revision: 63532 $"
 
 __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_CLOSE', 'ID_CLOSEALL', 'ID_SAVE', 'ID_SAVEAS', 'ID_SAVEALL',
@@ -37,14 +37,14 @@ __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_FOLDING', 'ID_BRACKETHL', 'ID_LEXER',
             'ID_PLUGMGR', 'ID_STYLE_EDIT', 'ID_MACRO_START', 'ID_MACRO_STOP',
             'ID_MACRO_PLAY', 'ID_ABOUT', 'ID_HOMEPAGE', 'ID_CONTACT',
-            'ID_DOCUMENTATION', 'ID_COMMAND',
+            'ID_BUG_TRACKER', 'ID_DOCUMENTATION', 'ID_COMMAND',
             'ID_USE_SOFTTABS', 'ID_DUP_LINE', 'ID_TRANSLATE',
             'I18N_PAGE', 'ID_GOTO_MBRACE', 'ID_HLCARET_LINE', 'ID_SHOW_SB',
             'ID_REVERT_FILE', 'ID_RELOAD_ENC', 'ID_DOCPROP', 'ID_PASTE_AFTER',
             'ID_COLUMN_MODE', 'ID_PANELIST', 'ID_MAXIMIZE_EDITOR',
             'ID_NEW_WINDOW', 'ID_TOGGLE_FOLD', 'ID_TOGGLE_ALL_FOLDS',
             'ID_SAVE_SESSION', 'ID_LOAD_SESSION', 'ID_NEXT_POS', 'ID_PRE_POS',
-            'ID_CYCLE_CLIPBOARD']
+            'ID_CYCLE_CLIPBOARD', 'ID_LEXER_CUSTOM']
 
 #---- Project Info ----#
 # The project info was moved to another module so it could be accessed
@@ -94,6 +94,7 @@ ID_OPEN          = wx.ID_OPEN
 ID_FHIST         = wx.NewId()
 ID_CLOSE         = wx.ID_CLOSE
 ID_CLOSEALL      = wx.ID_CLOSE_ALL
+ID_CLOSE_OTHERS  = wx.NewId()
 ID_CLOSE_WINDOW  = wx.NewId()
 ID_SAVE          = wx.ID_SAVE
 ID_SAVEAS        = wx.ID_SAVEAS
@@ -148,7 +149,7 @@ if wx.Platform == '__WXMAC__':
 ID_QUICK_FIND    = wx.NewId()
 ID_PREF          = wx.ID_PREFERENCES
 
-# Prefrence Dlg Ids
+# Preference Dlg Ids
 ID_PREF_LANG     = wx.NewId()
 ID_PREF_AALIAS   = wx.NewId()
 ID_PREF_AUTOBKUP = wx.NewId()
@@ -232,6 +233,7 @@ ID_SYN_OFF       = wx.NewId()
 ID_FOLDING       = wx.NewId()
 ID_BRACKETHL     = wx.NewId()
 ID_LEXER         = wx.NewId()
+ID_LEXER_CUSTOM  = wx.NewId()
 
 # Tool Menu IDs
 ID_COMMAND       = wx.NewId()
@@ -253,6 +255,7 @@ ID_HOMEPAGE      = wx.ID_HOME
 ID_DOCUMENTATION = wx.NewId()
 ID_TRANSLATE     = wx.NewId()
 ID_CONTACT       = wx.NewId()
+ID_BUG_TRACKER   = wx.NewId()
 
 # Misc IDs
 ID_ADVANCED          = wx.NewId()
