@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _html.py 63476 2010-02-13 06:20:53Z CJP $"
-__revision__ = "$Revision: 63476 $"
+__svnid__ = "$Id: _html.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -122,76 +122,76 @@ SGML_KEYWORDS = (5, "ELEMENT DOCTYPE ATTLIST ENTITY NOTATION")
 SGML_BLOCK = (7, "")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_H_DEFAULT', 'default_style'),
-                 ('STC_H_ASP', 'array_style'),
-                 ('STC_H_ASPAT', 'array_style'),
-                 ('STC_H_ATTRIBUTE', 'keyword2_style'),
-                 ('STC_H_ATTRIBUTEUNKNOWN', 'error_style'),
-                 ('STC_H_CDATA', 'default_style'), # Style ME
-                 ('STC_H_COMMENT', 'comment_style'),
-                 ('STC_H_DOUBLESTRING', 'string_style'),
-                 ('STC_H_ENTITY', 'default_style'), # Style ME
-                 ('STC_H_NUMBER', 'number_style'),
-                 ('STC_H_OTHER', 'default_style'),  # Style ME
-                 ('STC_H_QUESTION', 'scalar_style'),
-                 ('STC_H_SCRIPT', 'funct_style'), # STYLE ME
-                 ('STC_H_SGML_1ST_PARAM', 'keyword2_style'), # STYLE ME
-                 ('STC_H_SGML_1ST_PARAM_COMMENT', 'comment_style'),
-                 ('STC_H_SGML_BLOCK_DEFAULT', 'default_style'), # STYLE ME
-                 ('STC_H_SGML_COMMAND', 'keyword_style'), # STYLE ME
-                 ('STC_H_SGML_COMMENT', 'comment_style'),
-                 ('STC_H_SGML_DEFAULT', 'array_style'), # STYLE ME
-                 ('STC_H_SGML_DOUBLESTRING', 'string_style'),
-                 ('STC_H_SGML_ENTITY', 'default_style'), # STYLE ME
-                 ('STC_H_SGML_ERROR', 'error_style'),
-                 ('STC_H_SGML_SIMPLESTRING', 'string_style'),
-                 ('STC_H_SGML_SPECIAL', 'default_style'), # STYLE ME
-                 ('STC_H_SINGLESTRING', 'string_style'),
-                 ('STC_H_TAG', 'keyword_style'),
-                 ('STC_H_TAGEND', 'keyword_style'),
-                 ('STC_H_TAGUNKNOWN', 'error_style'),
-                 ('STC_H_VALUE', 'number_style'),
-                 ('STC_H_XCCOMMENT', 'comment_style'),
-                 ('STC_H_XMLEND', 'scalar_style'),
-                 ('STC_H_XMLSTART', 'scalar_style'),
+SYNTAX_ITEMS = [ (stc.STC_H_DEFAULT, 'default_style'),
+                 (stc.STC_H_ASP, 'array_style'),
+                 (stc.STC_H_ASPAT, 'array_style'),
+                 (stc.STC_H_ATTRIBUTE, 'keyword2_style'),
+                 (stc.STC_H_ATTRIBUTEUNKNOWN, 'error_style'),
+                 (stc.STC_H_CDATA, 'default_style'), # Style ME
+                 (stc.STC_H_COMMENT, 'comment_style'),
+                 (stc.STC_H_DOUBLESTRING, 'string_style'),
+                 (stc.STC_H_ENTITY, 'default_style'), # Style ME
+                 (stc.STC_H_NUMBER, 'number_style'),
+                 (stc.STC_H_OTHER, 'default_style'),  # Style ME
+                 (stc.STC_H_QUESTION, 'scalar_style'),
+                 (stc.STC_H_SCRIPT, 'funct_style'), # STYLE ME
+                 (stc.STC_H_SGML_1ST_PARAM, 'keyword2_style'), # STYLE ME
+                 (stc.STC_H_SGML_1ST_PARAM_COMMENT, 'comment_style'),
+                 (stc.STC_H_SGML_BLOCK_DEFAULT, 'default_style'), # STYLE ME
+                 (stc.STC_H_SGML_COMMAND, 'keyword_style'), # STYLE ME
+                 (stc.STC_H_SGML_COMMENT, 'comment_style'),
+                 (stc.STC_H_SGML_DEFAULT, 'array_style'), # STYLE ME
+                 (stc.STC_H_SGML_DOUBLESTRING, 'string_style'),
+                 (stc.STC_H_SGML_ENTITY, 'default_style'), # STYLE ME
+                 (stc.STC_H_SGML_ERROR, 'error_style'),
+                 (stc.STC_H_SGML_SIMPLESTRING, 'string_style'),
+                 (stc.STC_H_SGML_SPECIAL, 'default_style'), # STYLE ME
+                 (stc.STC_H_SINGLESTRING, 'string_style'),
+                 (stc.STC_H_TAG, 'keyword_style'),
+                 (stc.STC_H_TAGEND, 'keyword_style'),
+                 (stc.STC_H_TAGUNKNOWN, 'error_style'),
+                 (stc.STC_H_VALUE, 'number_style'),
+                 (stc.STC_H_XCCOMMENT, 'comment_style'),
+                 (stc.STC_H_XMLEND, 'scalar_style'),
+                 (stc.STC_H_XMLSTART, 'scalar_style'),
 
                  # Embedded JavaScript
-                 ('STC_HJ_COMMENT', 'comment_style'),
-                 ('STC_HJ_COMMENTDOC', 'comment_style'),
-                 ('STC_HJ_COMMENTLINE', 'comment_style'),
-                 ('STC_HJ_DEFAULT', 'default_style'),
-                 ('STC_HJ_DOUBLESTRING', 'default_style'), # STYLE ME
-                 ('STC_HJ_KEYWORD', 'default_style'), # STYLE ME
-                 ('STC_HJ_NUMBER', 'default_style'), # STYLE ME
-                 ('STC_HJ_REGEX', 'default_style'), # STYLE ME
-                 ('STC_HJ_SINGLESTRING', 'default_style'), # STYLE ME
-                 ('STC_HJ_START', 'default_style'), # STYLE ME
-                 ('STC_HJ_STRINGEOL', 'default_style'), # STYLE ME
-                 ('STC_HJ_SYMBOLS', 'default_style'), # STYLE ME
-                 ('STC_HJ_WORD', 'default_style'), # STYLE ME
+                 (stc.STC_HJ_COMMENT, 'comment_style'),
+                 (stc.STC_HJ_COMMENTDOC, 'comment_style'),
+                 (stc.STC_HJ_COMMENTLINE, 'comment_style'),
+                 (stc.STC_HJ_DEFAULT, 'default_style'),
+                 (stc.STC_HJ_DOUBLESTRING, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_KEYWORD, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_NUMBER, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_REGEX, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_SINGLESTRING, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_START, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_STRINGEOL, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_SYMBOLS, 'default_style'), # STYLE ME
+                 (stc.STC_HJ_WORD, 'default_style'), # STYLE ME
 
-                 ('STC_HJA_COMMENT', 'comment_style'),
-                 ('STC_HJA_COMMENTDOC', 'comment_style'),
-                 ('STC_HJA_COMMENTLINE', 'comment_style'),
-                 ('STC_HJA_DEFAULT', 'default_style'),
-                 ('STC_HJA_DOUBLESTRING', 'default_style'), # STYLE ME
-                 ('STC_HJA_KEYWORD', 'default_style'), # STYLE ME
-                 ('STC_HJA_NUMBER', 'default_style'), # STYLE ME
-                 ('STC_HJA_REGEX', 'default_style'), # STYLE ME # STYLE ME
-                 ('STC_HJA_SINGLESTRING', 'default_style'), # STYLE ME
-                 ('STC_HJA_START', 'default_style'), # STYLE ME
-                 ('STC_HJA_STRINGEOL', 'default_style'), # STYLE ME
-                 ('STC_HJA_SYMBOLS', 'default_style'), # STYLE ME
-                 ('STC_HJA_WORD', 'default_style'),
+                 (stc.STC_HJA_COMMENT, 'comment_style'),
+                 (stc.STC_HJA_COMMENTDOC, 'comment_style'),
+                 (stc.STC_HJA_COMMENTLINE, 'comment_style'),
+                 (stc.STC_HJA_DEFAULT, 'default_style'),
+                 (stc.STC_HJA_DOUBLESTRING, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_KEYWORD, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_NUMBER, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_REGEX, 'default_style'), # STYLE ME # STYLE ME
+                 (stc.STC_HJA_SINGLESTRING, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_START, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_STRINGEOL, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_SYMBOLS, 'default_style'), # STYLE ME
+                 (stc.STC_HJA_WORD, 'default_style'),
                  
-                 ('STC_HBA_DEFAULT', 'operator_style'), # Styles ( ) ?
-                 ('STC_HBA_COMMENTLINE', 'comment_style'),
-                 ('STC_HBA_IDENTIFIER', 'default_style'), # TODO
-                 ('STC_HBA_NUMBER', 'number_style'),
-                 ('STC_HBA_START', 'default_style'), # TODO
-                 ('STC_HBA_STRING', 'string_style'),
-                 ('STC_HBA_STRINGEOL', 'stringeol_style'),
-                 ('STC_HBA_WORD', 'keyword_style')  ]
+                 (stc.STC_HBA_DEFAULT, 'operator_style'), # Styles ( ) ?
+                 (stc.STC_HBA_COMMENTLINE, 'comment_style'),
+                 (stc.STC_HBA_IDENTIFIER, 'default_style'), # TODO
+                 (stc.STC_HBA_NUMBER, 'number_style'),
+                 (stc.STC_HBA_START, 'default_style'), # TODO
+                 (stc.STC_HBA_STRING, 'string_style'),
+                 (stc.STC_HBA_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_HBA_WORD, 'keyword_style')  ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -206,6 +206,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
         # Setup
         self.SetLexer(stc.STC_LEX_HTML)
+        self.RegisterFeature(synglob.FEATURE_AUTOINDENT, AutoIndenter)
 
     def GetKeywords(self):
         """Returns Specified Keywords List"""
@@ -226,7 +227,62 @@ class SyntaxData(syndata.SyntaxDataBase):
         """Returns a list of characters used to comment a block of code"""
         return [u'<!--', u'-->']
 
-#---- End Required Functions ----#
+#-----------------------------------------------------------------------------#
+
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent python code.
+    @param estc: EditraStyledTextCtrl
+    @param pos: current carat position
+    @param ichar: Indentation character
+
+    """
+    rtxt = u''
+    line = estc.GetCurrentLine()
+    spos = estc.PositionFromLine(line)
+    text = estc.GetTextRange(spos, pos)
+    epos = estc.GetLineEndPosition(line)
+    eolch = estc.GetEOLChar()
+    inspace = text.isspace()
+
+    # Cursor is in the indent area somewhere
+    if inspace:
+        estc.AddText(eolch + txt)
+        return
+
+    # Check if the cursor is in column 0 and just return newline.
+    if not len(text):
+        estc.AddText(eolch)
+        return
+
+    if ichar == u"\t":
+        tabw = estc.GetTabWidth()
+    else:
+        tabw = estc.GetIndent()
+
+    # Standard indent to match previous line
+    indent = estc.GetLineIndentation(line)
+    levels = indent / tabw
+    end_spaces = ((indent - (tabw * levels)) * u" ")
+    rtxt = eolch + (ichar * levels) + end_spaces
+
+    # Check if we need some 'special' indentation
+    tmp = text.rstrip()
+    if tmp.endswith(u">"):
+        # At a tag check for if we need extra indentation
+        tagstart = tmp.rfind(u"<")
+        if tagstart >= 0:
+            tagval = tmp[tagstart:]
+            if not tagval.startswith(u"</") and \
+               not tagval.endswith(u"/>") and \
+               not tagval.endswith(u"?>"):
+                # Cursor is after an opening tag so we need to indent more
+                # First match to the starting tag
+                levels = (tagstart / tabw) # Add an extra level
+                end_spaces = ((tagstart - (tabw * levels)) * u" ")
+                rtxt = eolch + (ichar * (levels+1)) + end_spaces
+
+    # Put text in the buffer
+    estc.AddText(rtxt)
 
 #---- Syntax Modules Internal Functions ----#
 def KeywordString(option=0):

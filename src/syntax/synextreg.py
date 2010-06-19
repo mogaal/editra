@@ -21,8 +21,8 @@ LANGUAGE: Python
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synextreg.py 63255 2010-01-25 02:05:22Z CJP $"
-__revision__ = "$Revision: 63255 $"
+__svnid__ = "$Id: synextreg.py 63844 2010-04-03 17:31:54Z CJP $"
+__revision__ = "$Revision: 63844 $"
 
 #-----------------------------------------------------------------------------#
 import os
@@ -386,9 +386,9 @@ EXT_MAP = {
 
 class ExtensionRegister(dict):
     """A data storage class for managing mappings of
-    file types to file extentions. The register is created
+    file types to file extensions. The register is created
     as a singleton.
-    @status: initial implimentation
+    @status: initial implementation
 
     """
     instance = None
@@ -536,7 +536,7 @@ class ExtensionRegister(dict):
 
     def Remove(self, ftype):
         """Remove a filetype from the register
-        @param ftype: File tyep description string
+        @param ftype: File type description string
         @return: bool removed or not
 
         """

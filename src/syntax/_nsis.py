@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _nsis.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _nsis.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -114,22 +114,22 @@ NSIS_LBL = (2, "ARCHIVE FILE_ATTRIBUTE_ARCHIVE FILE_ATTRIBUTE_HIDDEN LEFT "
 NSIS_DEF = (3, "")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_NSIS_DEFAULT', 'default_style'),
-                 ('STC_NSIS_COMMENT', 'comment_style'),
-                 ('STC_NSIS_FUNCTION', 'funct_style'),
-                 ('STC_NSIS_FUNCTIONDEF', 'keyword_style'),
-                 ('STC_NSIS_IFDEFINEDEF', 'pre_style'),
-                 ('STC_NSIS_LABEL', 'class_style'),
-                 ('STC_NSIS_MACRODEF', 'pre_style'),
-                 ('STC_NSIS_NUMBER', 'number_style'),
-                 ('STC_NSIS_SECTIONDEF', 'keyword_style'),
-                 ('STC_NSIS_STRINGDQ', 'string_style'),
-                 ('STC_NSIS_STRINGLQ', 'string_style'),
-                 ('STC_NSIS_STRINGRQ', 'string_style'),
-                 ('STC_NSIS_STRINGVAR', 'string_style'),
-                 ('STC_NSIS_SUBSECTIONDEF', 'keyword_style'),
-                 ('STC_NSIS_USERDEFINED', 'pre_style'),
-                 ('STC_NSIS_VARIABLE', 'scalar_style') ]
+SYNTAX_ITEMS = [ (stc.STC_NSIS_DEFAULT, 'default_style'),
+                 (stc.STC_NSIS_COMMENT, 'comment_style'),
+                 (stc.STC_NSIS_FUNCTION, 'funct_style'),
+                 (stc.STC_NSIS_FUNCTIONDEF, 'keyword_style'),
+                 (stc.STC_NSIS_IFDEFINEDEF, 'pre_style'),
+                 (stc.STC_NSIS_LABEL, 'class_style'),
+                 (stc.STC_NSIS_MACRODEF, 'pre_style'),
+                 (stc.STC_NSIS_NUMBER, 'number_style'),
+                 (stc.STC_NSIS_SECTIONDEF, 'keyword_style'),
+                 (stc.STC_NSIS_STRINGDQ, 'string_style'),
+                 (stc.STC_NSIS_STRINGLQ, 'string_style'),
+                 (stc.STC_NSIS_STRINGRQ, 'string_style'),
+                 (stc.STC_NSIS_STRINGVAR, 'string_style'),
+                 (stc.STC_NSIS_SUBSECTIONDEF, 'keyword_style'),
+                 (stc.STC_NSIS_USERDEFINED, 'pre_style'),
+                 (stc.STC_NSIS_VARIABLE, 'scalar_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

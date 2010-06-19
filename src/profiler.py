@@ -20,8 +20,8 @@ happen during run time.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: profiler.py 63435 2010-02-09 02:34:25Z CJP $"
-__revision__ = "$Revision: 63435 $"
+__svnid__ = "$Id: profiler.py 63791 2010-03-30 02:57:15Z CJP $"
+__revision__ = "$Revision: 63791 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -481,6 +481,10 @@ def UpdateProfileLoader():
         prof_name = os.path.join(CONFIG['CONFIG_DIR'],
                                  os.path.basename(prof_name))
         Profile_Set('MYPROFILE', prof_name)
+
+    # Use just the relative profile name for local(portable) config paths
+    if CONFIG['ISLOCAL']:
+        prof_name = os.path.basename(prof_name)
 
     writer.write(prof_name)
     writer.write(u"\nVERSION\t" + VERSION)

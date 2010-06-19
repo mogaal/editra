@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _apache.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _apache.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -140,16 +140,16 @@ PARAMS = (1, 'on off standalone inetd force-response-1.0 downgrade-1.0 '
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_CONF_COMMENT', 'comment_style'),
-                ('STC_CONF_DEFAULT', 'default_style'),
-                ('STC_CONF_DIRECTIVE', 'keyword_style'),
-                ('STC_CONF_EXTENSION', 'pre_style'),
-                ('STC_CONF_IDENTIFIER', 'number_style'),
-                ('STC_CONF_IP', 'number2_style'),
-                ('STC_CONF_NUMBER', 'number_style'),
-                ('STC_CONF_OPERATOR', 'operator_style'),
-                ('STC_CONF_PARAMETER', 'global_style'),
-                ('STC_CONF_STRING', 'string_style')]
+SYNTAX_ITEMS = [(stc.STC_CONF_COMMENT,  'comment_style'),
+                (stc.STC_CONF_DEFAULT,  'default_style'),
+                (stc.STC_CONF_DIRECTIVE, 'keyword_style'),
+                (stc.STC_CONF_EXTENSION, 'pre_style'),
+                (stc.STC_CONF_IDENTIFIER, 'number_style'),
+                (stc.STC_CONF_IP,       'number2_style'),
+                (stc.STC_CONF_NUMBER,   'number_style'),
+                (stc.STC_CONF_OPERATOR, 'operator_style'),
+                (stc.STC_CONF_PARAMETER, 'global_style'),
+                (stc.STC_CONF_STRING,   'string_style')]
 
 #---- Extra Properties ----#
 

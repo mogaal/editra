@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _caml.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _caml.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -45,21 +45,21 @@ CAML_KW3 = (2, "array bool char float int list string unit")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_CAML_CHAR', 'char_style'),
-                ('STC_CAML_COMMENT', 'comment_style'),
-                ('STC_CAML_COMMENT1', 'comment_style'),
-                ('STC_CAML_COMMENT2', 'comment_style'),
-                ('STC_CAML_COMMENT3', 'comment_style'),
-                ('STC_CAML_DEFAULT', 'default_style'),
-                ('STC_CAML_IDENTIFIER', 'default_style'),
-                ('STC_CAML_KEYWORD', 'keyword_style'),
-                ('STC_CAML_KEYWORD2', 'pre_style'),
-                ('STC_CAML_KEYWORD3', 'keyword2_style'),
-                ('STC_CAML_LINENUM', 'number_style'),
-                ('STC_CAML_NUMBER', 'number_style'),
-                ('STC_CAML_OPERATOR', 'operator_style'),
-                ('STC_CAML_STRING', 'string_style'),
-                ('STC_CAML_TAGNAME', 'directive_style')] #STYLE ME
+SYNTAX_ITEMS = [(stc.STC_CAML_CHAR, 'char_style'),
+                (stc.STC_CAML_COMMENT, 'comment_style'),
+                (stc.STC_CAML_COMMENT1, 'comment_style'),
+                (stc.STC_CAML_COMMENT2, 'comment_style'),
+                (stc.STC_CAML_COMMENT3, 'comment_style'),
+                (stc.STC_CAML_DEFAULT, 'default_style'),
+                (stc.STC_CAML_IDENTIFIER, 'default_style'),
+                (stc.STC_CAML_KEYWORD, 'keyword_style'),
+                (stc.STC_CAML_KEYWORD2, 'pre_style'),
+                (stc.STC_CAML_KEYWORD3, 'keyword2_style'),
+                (stc.STC_CAML_LINENUM, 'number_style'),
+                (stc.STC_CAML_NUMBER, 'number_style'),
+                (stc.STC_CAML_OPERATOR, 'operator_style'),
+                (stc.STC_CAML_STRING, 'string_style'),
+                (stc.STC_CAML_TAGNAME, 'directive_style')] #STYLE ME
 
 #---- Extra Properties ----#
 FOLD = ('fold', '1')

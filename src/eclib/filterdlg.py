@@ -13,8 +13,8 @@ Editra Control Library: FilterDialog
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: filterdlg.py 63200 2010-01-20 03:49:01Z CJP $"
-__revision__ = "$Revision: 63200 $"
+__svnid__ = "$Id: filterdlg.py 63825 2010-04-02 01:20:36Z CJP $"
+__revision__ = "$Revision: 63825 $"
 
 __all__ = ["FilterDialog",]
 
@@ -53,13 +53,15 @@ class FilterPanel(wx.Panel):
         wx.Panel.__init__(self, parent)
 
         # Attributes
-        self._left  = wx.ListBox(self, style=wx.LB_MULTIPLE|wx.LB_SORT)
-        self._right = wx.ListBox(self, style=wx.LB_MULTIPLE)
+        self._left  = wx.ListBox(self, style=wx.LB_EXTENDED|wx.LB_SORT)
+        self._right = wx.ListBox(self, style=wx.LB_EXTENDED)
 
         self.__DoLayout()
 
         # Event Handlers
         self.Bind(wx.EVT_BUTTON, self.OnButton)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateButton, id=wx.ID_ADD)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateButton, id=wx.ID_REMOVE)
         
     def __DoLayout(self):
         """Layout the panel"""
@@ -163,14 +165,15 @@ class FilterPanel(wx.Panel):
         else:
             evt.Skip()
 
-#-----------------------------------------------------------------------------#
-if __name__ == '__main__':
-    app = wx.App(False)
-    dlg = FilterDialog(None, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
-    dlg.SetListValues(dict(apple=True, orange=False,
-                           banana=False, peach=False,
-                           mango=True, strawberry=False))
-    dlg.ShowModal()
-    dlg.Destroy()
-    app.MainLoop()
+    def OnUpdateButton(self, evt):
+        """Enable/Disable the Add/Remove buttons based on
+        selections in the list.
 
+        """
+        e_id = evt.GetId()
+        if e_id == wx.ID_ADD:
+            evt.Enable(len(self._left.GetSelections()))
+        elif e_id == wx.ID_REMOVE:
+            evt.Enable(len(self._right.GetSelections()))
+        else:
+            evt.Skip()

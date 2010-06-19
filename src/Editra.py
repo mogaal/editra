@@ -16,8 +16,8 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 63054 2010-01-04 02:27:26Z CJP $"
-__revision__ = "$Revision: 63054 $"
+__svnid__ = "$Id: Editra.py 64481 2010-06-03 21:18:30Z CJP $"
+__revision__ = "$Revision: 64481 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -27,7 +27,7 @@ import sys
 # Due to some methods that were added in 2.8.3 being used in a large number
 # of places Editra has become incompatible with wxPython 2.8.1.1 and earlier.
 # So ensure correct version of wxPython can be loaded
-if not hasattr(sys, 'frozen'):
+if not hasattr(sys, 'frozen') and 'wx' not in sys.modules:
     import wxversion
     wxversion.ensureMinimal('2.8')
 
@@ -406,20 +406,28 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
         """
         window = self.GetTopWindow()
-        if isinstance(window, ed_main.MainWindow):
-            try:
-                encoding = sys.getfilesystemencoding()
-                window.DoOpen(ed_glob.ID_COMMAND_LINE_OPEN,
-                              ed_txt.DecodeString(filename, encoding),
-                              line)
+        if not isinstance(window, ed_main.MainWindow):
+            window = None
+
+        try:
+            encoding = sys.getfilesystemencoding()
+            fname = ed_txt.DecodeString(filename, encoding)
+
+            if profiler.Profile_Get('OPEN_NW', default=False):
+                self.OpenNewWindow(fname, window)
+            elif window:
+                window.DoOpen(ed_glob.ID_COMMAND_LINE_OPEN, fname, line)
 
                 # Make sure the window is brought to the front
                 if window.IsIconized():
                     window.Iconize(False)
                 window.Raise()
-            except Exception, msg:
-                self._log("[app][err] Failed to open drop file: %s" % str(msg))
-                pass
+            else:
+                # Some unlikely error condition
+                self._log("[app][err] OpenFile unknown error: %s" % filename)
+                
+        except Exception, msg:
+            self._log("[app][err] Failed to open file: %s" % str(msg))
 
     def MacNewFile(self):
         """Stub for future use"""
@@ -708,6 +716,7 @@ def InitConfig():
         ed_glob.CONFIG['CONFIG_BASE'] = config_base
         ed_glob.CONFIG['PROFILE_DIR'] = os.path.join(config_base, u"profiles")
         ed_glob.CONFIG['PROFILE_DIR'] += os.sep
+        ed_glob.CONFIG['ISLOCAL'] = True
     else:
         config_base = wx.StandardPaths.Get().GetUserDataDir()
         ed_glob.CONFIG['PROFILE_DIR'] = util.ResolvConfigDir(u"profiles")
@@ -718,6 +727,10 @@ def InitConfig():
     if util.HasConfigDir() and os.path.exists(ed_glob.CONFIG['PROFILE_DIR']):
         if profiler.ProfileIsCurrent():
             pstr = profiler.GetProfileStr()
+            # If using local(portable) config the profile string is stored
+            # as a relative path that just names the config file.
+            if ed_glob.CONFIG['ISLOCAL']:
+                pstr = os.path.join(ed_glob.CONFIG['PROFILE_DIR'], pstr)
             pstr = util.RepairConfigState(pstr)
             profiler.TheProfile.Load(pstr)
         else:
@@ -756,7 +769,7 @@ def InitConfig():
             if isinstance(profiler.Profile_Get('PRINT_MODE'), basestring):
                 profiler.Profile_Set('PRINT_MODE', ed_glob.PRINT_BLACK_WHITE)
 
-            # Simplifications to eol mode persistance (0.4.28)
+            # Simplifications to eol mode persistence (0.4.28)
             # Keep for now till plugins are updated
             #profiler.Profile_Del('EOL') # changed to EOL_MODE
 

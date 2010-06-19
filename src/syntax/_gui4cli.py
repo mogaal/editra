@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _gui4cli.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _gui4cli.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -103,16 +103,16 @@ COMMANDS = (4, "ADD ADDRESS ADDUNIQUE APPEND APPVAR ASSIGN AUTO BRANCH BROWSER "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_GC_ATTRIBUTE', 'keyword3_style'),
-                ('STC_GC_COMMAND', 'keyword2_style'),
-                ('STC_GC_COMMENTBLOCK', 'comment_style'),
-                ('STC_GC_COMMENTLINE', 'comment_style'),
-                ('STC_GC_CONTROL', 'keyword_style'),
-                ('STC_GC_DEFAULT', 'default_style'),
-                ('STC_GC_EVENT', 'keyword4_style'),
-                ('STC_GC_GLOBAL', 'global_style'),
-                ('STC_GC_OPERATOR', 'operator_style'),
-                ('STC_GC_STRING', 'string_style')]
+SYNTAX_ITEMS = [(stc.STC_GC_ATTRIBUTE, 'keyword3_style'),
+                (stc.STC_GC_COMMAND, 'keyword2_style'),
+                (stc.STC_GC_COMMENTBLOCK, 'comment_style'),
+                (stc.STC_GC_COMMENTLINE, 'comment_style'),
+                (stc.STC_GC_CONTROL, 'keyword_style'),
+                (stc.STC_GC_DEFAULT, 'default_style'),
+                (stc.STC_GC_EVENT, 'keyword4_style'),
+                (stc.STC_GC_GLOBAL, 'global_style'),
+                (stc.STC_GC_OPERATOR, 'operator_style'),
+                (stc.STC_GC_STRING, 'string_style')]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

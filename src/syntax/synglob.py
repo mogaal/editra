@@ -18,8 +18,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synglob.py 63255 2010-01-25 02:05:22Z CJP $"
-__revision__ = "$Revision: 63255 $"
+__svnid__ = "$Id: synglob.py 63788 2010-03-30 01:16:28Z CJP $"
+__revision__ = "$Revision: 63788 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -137,9 +137,11 @@ def GetDescriptionFromId(lang_id):
 
     """
     rval = LANG_TXT
-    for key, val in globals().iteritems():
+    # Guard against async code that may be modifying globals
+    globs = dict(globals())
+    for key, val in globs.iteritems():
         if val == lang_id and key.startswith('ID_LANG'):
-            rval = globals().get(key[3:], LANG_TXT)
+            rval = globs.get(key[3:], LANG_TXT)
             break
     return rval
 
@@ -152,9 +154,11 @@ def GetIdFromDescription(desc):
     """
     rval = ID_LANG_TXT
     desc = desc.lower()
-    for key, val in globals().iteritems():
+    # Guard against async code that may be modifying globals
+    globs = dict(globals())
+    for key, val in globs.iteritems():
         if isinstance(val, basestring) and \
            val.lower() == desc and key.startswith('LANG_'):
-            rval = globals().get(u"ID_" + key, ID_LANG_TXT)
+            rval = globs.get(u"ID_" + key, ID_LANG_TXT)
             break
     return rval

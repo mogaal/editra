@@ -12,8 +12,8 @@ Simple autocompletion support for HTML and XML documents.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: htmlcomp.py 63476 2010-02-13 06:20:53Z CJP $"
-__revision__ = "$Revision: 63476 $"
+__cvsid__ = "$Id: htmlcomp.py 64560 2010-06-12 01:33:29Z CJP $"
+__revision__ = "$Revision: 64560 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -146,7 +146,10 @@ class Completer(completer.BaseCompleter):
                            not tag[0] in ('!', '/'):
                             rtag = u"</" + tag + u">"
                             if tag in NLINE_TAGS:
-                                rtag = buff.GetEOLChar() + rtag
+                                buff.BeginUndoAction()
+                                buff.AutoIndent()
+                                buff.BackTab()
+                                buff.EndUndoAction()
 
                             if not parts[-1].endswith('>'):
                                 rtag = u">" + rtag
@@ -162,10 +165,11 @@ class Completer(completer.BaseCompleter):
 
         """
         buff = self.GetBuffer()
-        if text.startswith(u"</"):
+        if text.strip().startswith(u"</"):
             buff.SetCurrentPos(pos) # move caret back between the tags
             # HACK: SetCurrentPos causes text to be selected
             buff.SetSelection(pos, pos)
+            buff.AutoIndent()
 
 #--------------------------------------------------------------------------#
 

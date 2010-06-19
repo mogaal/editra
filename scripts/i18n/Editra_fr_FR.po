@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: editra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 18:29-0600\n"
+"POT-Creation-Date: 2010-05-16 14:03-0500\n"
 "PO-Revision-Date: 2010-02-04 13:26+0000\n"
 "Last-Translator: Omega13 <omegatreize@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-16 00:04+0000\n"
+"X-Launchpad-Export-Date: 2010-05-16 18:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../src/ed_search.py:429
@@ -32,7 +32,7 @@ msgstr "%d occurences ont été remplacées"
 msgid "%s Source File"
 msgstr "%s Fichier Source"
 
-#: ../../src/ed_main.py:584
+#: ../../src/ed_main.py:599
 #, python-format
 msgid ""
 "%s could not be found.\n"
@@ -41,12 +41,12 @@ msgstr ""
 "%s n'a pu être trouvé.\n"
 "Il a peut-être été déplacé ou supprimé."
 
-#: ../../src/ed_stc.py:1667
+#: ../../src/ed_stc.py:1699
 #, python-format
 msgid "%s does not exist"
 msgstr "%s n'existe pas"
 
-#: ../../src/ed_editv.py:445
+#: ../../src/ed_editv.py:442
 #, python-format
 msgid ""
 "%s has been deleted since its last save point.\n"
@@ -57,7 +57,7 @@ msgstr ""
 "\n"
 "Voulez-vous l'enregistrer de nouveau?"
 
-#: ../../src/ed_editv.py:465
+#: ../../src/ed_editv.py:462
 #, python-format
 msgid ""
 "%s has been modified by another application.\n"
@@ -97,7 +97,7 @@ msgstr "&Police"
 msgid "&Goto Line"
 msgstr "Aller à la &ligne"
 
-#: ../../src/ed_main.py:149 ../../src/ed_menu.py:842
+#: ../../src/ed_main.py:149 ../../src/ed_menu.py:843
 msgid "&Help"
 msgstr "&Aide"
 
@@ -153,7 +153,7 @@ msgstr "**Alias**"
 msgid "**New Value**"
 msgstr "**Nouvelle Valeur**"
 
-#: ../../src/eclib/filterdlg.py:74
+#: ../../src/eclib/filterdlg.py:76
 msgid "<< Remove"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgstr "À propos"
 msgid "Access Denied: %s"
 msgstr "Accès refusé: %s"
 
-#: ../../src/eclib/filterdlg.py:73
+#: ../../src/eclib/filterdlg.py:75
 msgid "Add >>"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr "Anti-crénelage"
 msgid "Appearance"
 msgstr "Apparence"
 
-#: ../../src/prefdlg.py:1767
+#: ../../src/prefdlg.py:1760
 msgid "Apply"
 msgstr "Appliquer"
 
@@ -228,7 +228,7 @@ msgstr "Appliquer"
 msgid "Are you sure want to delete %s?"
 msgstr ""
 
-#: ../../src/plugdlg.py:1058
+#: ../../src/plugdlg.py:1060
 #, python-format
 msgid ""
 "Are you sure you want to uninstall %s?\n"
@@ -243,11 +243,11 @@ msgstr "Attributs"
 msgid "Audible feedback when errors are detected"
 msgstr ""
 
-#: ../../src/ed_main.py:1225
+#: ../../src/ed_main.py:1237
 msgid "Aui Pane Navigator"
 msgstr ""
 
-#: ../../src/plugdlg.py:948 ../../src/plugdlg.py:1127
+#: ../../src/plugdlg.py:948 ../../src/plugdlg.py:1129
 #, python-format
 msgid "Author: %s"
 msgstr "Auteur : %s"
@@ -304,11 +304,11 @@ msgstr ""
 msgid "Base new theme on existing one"
 msgstr "Baser le nouveau thème sur l'éxistant"
 
-#: ../../src/prefdlg.py:1741
+#: ../../src/prefdlg.py:1734
 msgid "Binding"
 msgstr "Liaison"
 
-#: ../../src/prefdlg.py:2155
+#: ../../src/prefdlg.py:2148
 msgid "Black/White"
 msgstr "Noir/Blanc"
 
@@ -328,12 +328,16 @@ msgstr "Surlignage des crochets"
 msgid "Browse"
 msgstr "Parcourir"
 
+#: ../../src/ed_menu.py:838
+msgid "Bug Tracker..."
+msgstr ""
+
 #: ../../src/ed_cmdbar.py:559
 #, python-format
 msgid "Can't change directory to: %s"
 msgstr ""
 
-#: ../../src/ed_search.py:1241 ../../src/style_editor.py:139
+#: ../../src/ed_search.py:1242 ../../src/style_editor.py:139
 #: ../../src/updater.py:567
 msgid "Cancel"
 msgstr "Annuler"
@@ -399,11 +403,11 @@ msgstr "Choisir un dossier"
 msgid "Choose Search Folder"
 msgstr "Choisir le dossier où rechercher"
 
-#: ../../src/ed_main.py:676
+#: ../../src/ed_main.py:688
 msgid "Choose a Save Location"
 msgstr "Choisir un emplacement de sauvegarde"
 
-#: ../../src/ed_pages.py:166
+#: ../../src/ed_pages.py:168
 msgid "Choose an Encoding"
 msgstr "Choisir un encodage"
 
@@ -415,7 +419,7 @@ msgstr "Choisir un exécutable"
 msgid "Class Definitions"
 msgstr "Définitions de classe"
 
-#: ../../src/ed_log.py:140 ../../src/ed_search.py:1250
+#: ../../src/ed_log.py:140 ../../src/ed_search.py:1251
 #: ../../plugins/Launch/launch/launch.py:204
 #: ../../plugins/PyShell/PyShell/__init__.py:114
 msgid "Clear"
@@ -425,12 +429,12 @@ msgstr "Effacer"
 msgid "Click on an item to edit"
 msgstr "Cliquez sur un objet pour l'éditer"
 
-#: ../../src/ed_editv.py:282
+#: ../../src/ed_editv.py:230
 #, python-format
 msgid "Close \"%s\""
 msgstr "Fermer \"%s\""
 
-#: ../../src/ed_editv.py:284
+#: ../../src/ed_editv.py:232
 msgid "Close All"
 msgstr "Fermer tout"
 
@@ -442,7 +446,7 @@ msgstr "Fermer tous les onglets"
 msgid "Close Current Tab"
 msgstr "Fermer l'onglet actuel"
 
-#: ../../src/ed_editv.py:283
+#: ../../src/ed_editv.py:231
 #, fuzzy
 msgid "Close Other Tabs"
 msgstr "Fermer tous les onglets"
@@ -491,11 +495,11 @@ msgstr "Coloration syntaxique"
 msgid "Color Scheme"
 msgstr "Modèle de couleurs"
 
-#: ../../src/prefdlg.py:2157
+#: ../../src/prefdlg.py:2150
 msgid "Colour/Default"
 msgstr "Couleur/defaut"
 
-#: ../../src/prefdlg.py:2156
+#: ../../src/prefdlg.py:2149
 msgid "Colour/White"
 msgstr "Couleur/Blanc"
 
@@ -543,7 +547,7 @@ msgstr "Convertir les espaces en tabulations dans le text selectionné/tout"
 msgid "Convert tabs to spaces in selected/all text"
 msgstr "Convertir les tabulations en espaces dans le text selectionné/tout"
 
-#: ../../src/ed_editv.py:132 ../../src/ed_toolbar.py:85
+#: ../../src/ed_editv.py:363 ../../src/ed_toolbar.py:85
 msgid "Copy"
 msgstr "Copier"
 
@@ -551,7 +555,7 @@ msgstr "Copier"
 msgid "Copy Current Line"
 msgstr "Copier la ligne actuelle"
 
-#: ../../src/ed_editv.py:286
+#: ../../src/ed_editv.py:234
 msgid "Copy Full Path"
 msgstr "Copier le chemin complet"
 
@@ -563,7 +567,7 @@ msgstr "Copier la ligne"
 msgid "Copy Selected Text to Clipboard"
 msgstr "Copier le texte sélectionné dans le presse-papiers"
 
-#: ../../src/ed_main.py:1531
+#: ../../src/ed_main.py:1545
 msgid "Copyright"
 msgstr "Copyright"
 
@@ -593,7 +597,7 @@ msgstr "Document actuel"
 msgid "Customize"
 msgstr "Personnaliser"
 
-#: ../../src/ed_main.py:1421
+#: ../../src/ed_main.py:1433
 #, fuzzy
 msgid "Customize Menu"
 msgstr "Personnaliser"
@@ -607,7 +611,7 @@ msgstr ""
 msgid "Customize..."
 msgstr "Personnaliser"
 
-#: ../../src/ed_editv.py:131 ../../src/ed_toolbar.py:83
+#: ../../src/ed_editv.py:362 ../../src/ed_toolbar.py:83
 msgid "Cut"
 msgstr "Couper"
 
@@ -659,7 +663,7 @@ msgstr "Coloration par défaut des nouveaux documents"
 msgid "Defines"
 msgstr "Définit"
 
-#: ../../src/prefdlg.py:1710
+#: ../../src/prefdlg.py:1703
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -714,7 +718,7 @@ msgstr "Police d'affichage"
 msgid "Do you wish to exit?"
 msgstr "Voulez vous quitter ?"
 
-#: ../../src/ed_pages.py:955
+#: ../../src/ed_pages.py:977
 #, python-format
 msgid ""
 "Do you wish to open all %d files in this directory?\n"
@@ -730,7 +734,7 @@ msgstr "Document"
 msgid "Down"
 msgstr "Bas"
 
-#: ../../src/plugdlg.py:120 ../../src/plugdlg.py:460 ../../src/plugdlg.py:1106
+#: ../../src/plugdlg.py:120 ../../src/plugdlg.py:460 ../../src/plugdlg.py:1108
 #: ../../src/prefdlg.py:1521
 msgid "Download"
 msgstr "Télécharger"
@@ -781,12 +785,12 @@ msgstr "&Quitter"
 msgid "EOL Mode"
 msgstr "Mode EOL"
 
-#: ../../src/ed_main.py:649
+#: ../../src/ed_main.py:664
 #, python-format
 msgid "ERROR: %s"
 msgstr "ERREUR : %s"
 
-#: ../../src/ed_main.py:692
+#: ../../src/ed_main.py:704
 #, python-format
 msgid "ERROR: Failed to save %s"
 msgstr "ERREUR : La sauvegarde de %s  a échoué"
@@ -835,7 +839,7 @@ msgstr ""
 "Erreur:\n"
 "%(errormsg)s"
 
-#: ../../src/ed_main.py:1521
+#: ../../src/ed_main.py:1535
 msgid "Editra is a programmers text editor."
 msgstr "Editra est un éditeur de texte pour programmeurs"
 
@@ -843,12 +847,12 @@ msgstr "Editra est un éditeur de texte pour programmeurs"
 msgid "Editra translations project"
 msgstr "Projet de traduction Editra"
 
-#: ../../src/ed_main.py:446
+#: ../../src/ed_main.py:461
 #, fuzzy
 msgid "Editra: Open"
 msgstr "Log d'Editra"
 
-#: ../../src/ed_pages.py:368
+#: ../../src/ed_pages.py:370
 msgid "Empty File"
 msgstr "Fichier vide"
 
@@ -884,7 +888,7 @@ msgstr "Entrez une valeur de couleur hexadécimale"
 msgid "Enter style sheet name"
 msgstr "Nom de la feuille de style"
 
-#: ../../src/prefdlg.py:1905
+#: ../../src/prefdlg.py:1898
 msgid "Enter the name of the new key profile"
 msgstr "Entrez le nom de la nouvelle clé de profil"
 
@@ -892,7 +896,7 @@ msgstr "Entrez le nom de la nouvelle clé de profil"
 msgid "Enter wildcard shell patterns for matching files (*.txt)."
 msgstr "Nom des fichiers avec métacaractères (*.txt)."
 
-#: ../../src/ed_editv.py:241 ../../src/plugdlg.py:838
+#: ../../src/ed_editv.py:189 ../../src/plugdlg.py:838
 msgid "Error"
 msgstr "Erreur"
 
@@ -900,7 +904,7 @@ msgstr "Erreur"
 msgid "Error Opening File"
 msgstr "Erreur lors de l'ouverture du fichier"
 
-#: ../../src/ed_pages.py:318
+#: ../../src/ed_pages.py:320
 msgid "Error Saving Session File"
 msgstr ""
 
@@ -930,7 +934,7 @@ msgstr ""
 "Aidez à améliorer Editra en cliquant sur Rapporter l'erreur\n"
 "pour envoyer l'Error Traceback affichée ci-dessous."
 
-#: ../../src/ed_main.py:1471
+#: ../../src/ed_main.py:1485
 #, python-format
 msgid "Error: Unable to open %s"
 msgstr "Erreur : Impossible d'ouvrir %s"
@@ -971,7 +975,7 @@ msgstr "Exporter la feuille de style"
 msgid "Extended Auto-Comp"
 msgstr ""
 
-#: ../../src/prefdlg.py:2044
+#: ../../src/prefdlg.py:2037
 msgid "Extensions (space separated, no dots)"
 msgstr "Extensions (séparées par des espaces, pas de points)"
 
@@ -996,7 +1000,7 @@ msgstr "Echec de l'installation de %d modules"
 msgid "Failed to load Enchant"
 msgstr ""
 
-#: ../../src/ed_editv.py:239
+#: ../../src/ed_editv.py:187
 #, python-format
 msgid ""
 "Failed to reload %(filename)s:\n"
@@ -1005,7 +1009,7 @@ msgstr ""
 "Impossible de recharger %(filename)s\n"
 "Erreur: %(errmsg)s"
 
-#: ../../src/ed_main.py:1206
+#: ../../src/ed_main.py:1218
 #, python-format
 msgid "Failed to reload the file with: %(encoding)s"
 msgstr "Impossible de recharger le fichier avec %(encoding)s"
@@ -1022,7 +1026,7 @@ msgstr ""
 "Erreur:\n"
 "%(errormsg)s"
 
-#: ../../src/ed_menu.py:838
+#: ../../src/ed_menu.py:839
 msgid "Feedback"
 msgstr "Retour d'expérience"
 
@@ -1038,7 +1042,7 @@ msgstr "Filtre des fichiers :"
 msgid "File History Length"
 msgstr "Taille de l'historique des fichiers"
 
-#: ../../src/ed_main.py:586
+#: ../../src/ed_main.py:601
 msgid "File Not Found"
 msgstr "Fichier non trouvé"
 
@@ -1059,11 +1063,11 @@ msgstr "Type de Fichier"
 msgid "File backup performed: %s"
 msgstr ""
 
-#: ../../src/ed_stc.py:1714
+#: ../../src/ed_stc.py:1746
 msgid "File is Read Only and cannot be saved"
 msgstr "Le fichier est en lecture seule et ne peut être enregistré"
 
-#: ../../src/ed_pages.py:205
+#: ../../src/ed_pages.py:207
 msgid ""
 "File is already open in an existing page.\n"
 "Do you wish to open it again?"
@@ -1075,7 +1079,7 @@ msgstr ""
 msgid "Files"
 msgstr "Fichiers"
 
-#: ../../src/ed_search.py:1295
+#: ../../src/ed_search.py:1296
 #, python-format
 msgid "Files Searched: %d"
 msgstr "Fichiers recherchés : %d"
@@ -1164,7 +1168,7 @@ msgstr "Premier plan"
 msgid "Format"
 msgstr "Format"
 
-#: ../../src/ed_stc.py:1093
+#: ../../src/ed_stc.py:1103
 msgid "Format EOL?"
 msgstr "Format de fin de ligne ?"
 
@@ -1275,7 +1279,7 @@ msgstr "Surligner le fond de la ligne courante"
 msgid "Home directory"
 msgstr "Dossier personnel"
 
-#: ../../src/ed_main.py:1523
+#: ../../src/ed_main.py:1537
 msgid "Homepage"
 msgstr "Page d'accueil"
 
@@ -1352,8 +1356,13 @@ msgstr "Erreur d'installation"
 msgid "Installed Version"
 msgstr "Version installée"
 
-#: ../../src/ed_pages.py:347
+#: ../../src/ed_pages.py:349
 msgid "Invalid File"
+msgstr "Fichier invalide"
+
+#: ../../src/ed_cmdbar.py:776
+#, fuzzy
+msgid "Invalid Path"
 msgstr "Fichier invalide"
 
 #: ../../src/ed_search.py:349
@@ -1361,16 +1370,16 @@ msgstr "Fichier invalide"
 msgid "Invalid expression \"%s\""
 msgstr "Expression invalide \"%s\""
 
-#: ../../src/ed_pages.py:361
+#: ../../src/ed_pages.py:363
 msgid "Invalid file"
 msgstr "Fichier invalide"
 
-#: ../../src/ed_pages.py:939
+#: ../../src/ed_pages.py:961
 #, python-format
 msgid "Invalid file: %s"
 msgstr "Fichier invalide: %s"
 
-#: ../../src/prefdlg.py:2158
+#: ../../src/prefdlg.py:2151
 msgid "Inverse"
 msgstr "Inverser"
 
@@ -1386,11 +1395,11 @@ msgstr "Fusionner les lignes sélectionnées"
 msgid "Jump to Saved Path"
 msgstr "Aller au chemin sauvé"
 
-#: ../../src/prefdlg.py:1737
+#: ../../src/prefdlg.py:1730
 msgid "Key"
 msgstr "Touche"
 
-#: ../../src/prefdlg.py:1706
+#: ../../src/prefdlg.py:1699
 msgid "Key Profile"
 msgstr "Clé du profil"
 
@@ -1426,7 +1435,7 @@ msgstr "Configuration du module Launch"
 msgid "Layout"
 msgstr "Mise en page"
 
-#: ../../src/prefdlg.py:2042
+#: ../../src/prefdlg.py:2035
 msgid "Lexer"
 msgstr "Lexer"
 
@@ -1438,7 +1447,7 @@ msgstr "Lexers"
 msgid "Library Error"
 msgstr ""
 
-#: ../../src/ed_main.py:1525
+#: ../../src/ed_main.py:1539
 msgid "License: wxWindows (see COPYING.txt for full license)"
 msgstr "License: wxWindows (voir COPYING.txt pour la license complète)"
 
@@ -1446,7 +1455,7 @@ msgstr "License: wxWindows (voir COPYING.txt pour la license complète)"
 msgid "Line Edit"
 msgstr "Édition d'une ligne"
 
-#: ../../src/ed_stc.py:690
+#: ../../src/ed_stc.py:700
 #, python-format
 msgid "Line: %(lnum)d  Column: %(cnum)d"
 msgstr "Ligne : %(lnum)d Colonne : %(cnum)d"
@@ -1463,11 +1472,11 @@ msgstr "Charger le profil"
 msgid "Load Session"
 msgstr ""
 
-#: ../../src/ed_main.py:732 ../../src/ed_menu.py:544
+#: ../../src/ed_main.py:744 ../../src/ed_menu.py:544
 msgid "Load a Custom Profile"
 msgstr "Charger un profil personnalisé"
 
-#: ../../src/ed_main.py:783
+#: ../../src/ed_main.py:795
 msgid "Load a Session file"
 msgstr ""
 
@@ -1487,12 +1496,12 @@ msgstr ""
 msgid "Load files from last session on startup"
 msgstr "Charger les fichiers de la session précédente au démarrage"
 
-#: ../../src/ed_main.py:739
+#: ../../src/ed_main.py:751
 #, python-format
 msgid "Loaded Profile: %s"
 msgstr "Profil chargé: %s"
 
-#: ../../src/ed_main.py:797
+#: ../../src/ed_main.py:809
 #, python-format
 msgid "Loaded Session: %s"
 msgstr ""
@@ -1541,11 +1550,11 @@ msgstr "Sensible à la casse"
 msgid "Match case"
 msgstr "Sensible à la casse"
 
-#: ../../src/ed_main.py:1399 ../../src/ed_menu.py:686
+#: ../../src/ed_main.py:1411 ../../src/ed_menu.py:686
 msgid "Maximize Editor"
 msgstr "Maximiser l'éditeur"
 
-#: ../../src/prefdlg.py:1719
+#: ../../src/prefdlg.py:1712
 msgid "Menu"
 msgstr "Menu"
 
@@ -1557,7 +1566,7 @@ msgstr "Divers"
 msgid "Missing session files"
 msgstr ""
 
-#: ../../src/ed_stc.py:1090
+#: ../../src/ed_stc.py:1100
 msgid ""
 "Mixed EOL characters detected.\n"
 "\n"
@@ -1571,11 +1580,11 @@ msgstr ""
 msgid "Modified"
 msgstr "Modifié"
 
-#: ../../src/prefdlg.py:1729
+#: ../../src/prefdlg.py:1722
 msgid "Modifier 1"
 msgstr "Modifier 1"
 
-#: ../../src/prefdlg.py:1733
+#: ../../src/prefdlg.py:1726
 msgid "Modifier 2"
 msgstr "Modifier 2"
 
@@ -1591,7 +1600,7 @@ msgstr ""
 msgid "Move Current Line Up"
 msgstr ""
 
-#: ../../src/ed_editv.py:279
+#: ../../src/ed_editv.py:227
 msgid "Move Tab to New Window"
 msgstr "Déplacer l'onglet vers une nouvelle fenêtre"
 
@@ -1623,7 +1632,7 @@ msgstr "Espaces de noms"
 msgid "Network"
 msgstr "Réseau"
 
-#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1709
+#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1702
 #: ../../src/style_editor.py:198
 msgid "New"
 msgstr "Nouveau"
@@ -1648,11 +1657,11 @@ msgstr "Nouvelle ligne après"
 msgid "New Line Before"
 msgstr "Nouvelle ligne avant"
 
-#: ../../src/prefdlg.py:1904
+#: ../../src/prefdlg.py:1897
 msgid "New Profile"
 msgstr "Nouveau Profil"
 
-#: ../../src/ed_editv.py:278
+#: ../../src/ed_editv.py:226
 msgid "New Tab"
 msgstr "Nouvel onglet"
 
@@ -1672,19 +1681,19 @@ msgstr ""
 msgid "No Description Available"
 msgstr "Pas de description disponible"
 
-#: ../../src/ed_editv.py:160
+#: ../../src/ed_editv.py:392
 msgid "No Suggestions"
 msgstr "Aucune suggestion"
 
-#: ../../src/ed_pages.py:949
+#: ../../src/ed_pages.py:971
 msgid "No Valid Files to Open"
 msgstr "Pas de fichiers valides à ouvrir"
 
-#: ../../src/prefdlg.py:1803
+#: ../../src/prefdlg.py:1796
 msgid "None"
 msgstr "Aucun"
 
-#: ../../src/prefdlg.py:2159
+#: ../../src/prefdlg.py:2152
 msgid "Normal"
 msgstr "Normale"
 
@@ -1696,7 +1705,7 @@ msgstr "Non implémenté"
 msgid "Ok"
 msgstr "Ok"
 
-#: ../../src/ed_glob.py:380 ../../src/ed_mdlg.py:137
+#: ../../src/ed_glob.py:382 ../../src/ed_mdlg.py:137
 msgid "Old Machintosh (\\r)"
 msgstr ""
 
@@ -1728,7 +1737,7 @@ msgstr "Ouvrir un Shell Python"
 msgid "Open Code Browser Sidepanel"
 msgstr "Ouvrir le panneau d'exploration de code"
 
-#: ../../src/ed_pages.py:960
+#: ../../src/ed_pages.py:982
 msgid "Open Directory?"
 msgstr "Ouvrir dossier?"
 
@@ -1736,7 +1745,7 @@ msgstr "Ouvrir dossier?"
 msgid "Open Documents"
 msgstr "Documents ouverts"
 
-#: ../../src/ed_pages.py:207
+#: ../../src/ed_pages.py:209
 msgid "Open File"
 msgstr "Ouvrir un fichier"
 
@@ -1756,12 +1765,12 @@ msgstr "Ouvrir la barre de recherche rapide"
 msgid "Open with "
 msgstr "Ouvrir avec "
 
-#: ../../src/ed_pages.py:980
+#: ../../src/ed_pages.py:1002
 #, python-format
 msgid "Opened file: %s"
 msgstr "Fichier ouvert: %s"
 
-#: ../../src/ed_main.py:1468
+#: ../../src/ed_main.py:1482
 #, python-format
 msgid "Opening %s"
 msgstr "Ouverture de %s"
@@ -1791,7 +1800,7 @@ msgstr "Panneau de navigation"
 msgid "Password"
 msgstr "Mot de passe :"
 
-#: ../../src/ed_editv.py:133 ../../src/ed_toolbar.py:87
+#: ../../src/ed_editv.py:364 ../../src/ed_toolbar.py:87
 msgid "Paste"
 msgstr "Coller"
 
@@ -1831,19 +1840,19 @@ msgstr "Perspectives"
 msgid "Plain Text"
 msgstr "Texte brut"
 
-#: ../../src/ed_main.py:1524
+#: ../../src/ed_main.py:1538
 msgid "Platform Info"
 msgstr "Infos sur la plateforme"
 
-#: ../../src/Editra.py:884
+#: ../../src/Editra.py:889
 msgid "Please check the preferences dialog to check your preferences"
 msgstr "Veuillez vérifier vos préférences dans la fenêtre \"préférences\""
 
-#: ../../src/Editra.py:1093
+#: ../../src/Editra.py:1098
 msgid "Please check the preferences dialog to verify your preferences"
 msgstr ""
 
-#: ../../src/ed_main.py:1057 ../../src/ed_menu.py:806
+#: ../../src/ed_main.py:1069 ../../src/ed_menu.py:806
 msgid "Plugin Manager"
 msgstr "Gestionnaire de modules"
 
@@ -1919,16 +1928,16 @@ msgstr "Mode d'impression"
 msgid "Procedure Definitions"
 msgstr "Définitions de procédures"
 
-#: ../../src/ed_main.py:713 ../../src/ed_main.py:734 ../../src/ed_menu.py:545
+#: ../../src/ed_main.py:725 ../../src/ed_main.py:746 ../../src/ed_menu.py:545
 msgid "Profile"
 msgstr "Profil"
 
-#: ../../src/ed_main.py:718
+#: ../../src/ed_main.py:730
 #, python-format
 msgid "Profile Saved as: %s"
 msgstr "Profil sauvegardé en tant que: %s"
 
-#: ../../src/Editra.py:886 ../../src/Editra.py:1095
+#: ../../src/Editra.py:891 ../../src/Editra.py:1100
 msgid "Profile Updated"
 msgstr "Profil mis à jour"
 
@@ -1977,7 +1986,7 @@ msgstr "Taux: %.2f Kb/s"
 msgid "Re-run the last run program"
 msgstr "Exécuter de nouveau le dernier programme"
 
-#: ../../src/ed_stc.py:1715
+#: ../../src/ed_stc.py:1747
 msgid "Read Only"
 msgstr "Lecture Seule"
 
@@ -1989,15 +1998,15 @@ msgstr "Recherches récentes"
 msgid "Recently Opened Files"
 msgstr "Fichiers ouverts récemment"
 
-#: ../../src/ed_stc.py:1361
+#: ../../src/ed_stc.py:1371
 msgid "Recording Finished"
 msgstr "enregistrement terminé"
 
-#: ../../src/ed_stc.py:1348
+#: ../../src/ed_stc.py:1358
 msgid "Recording Macro"
 msgstr "Enregistrer une Macro"
 
-#: ../../src/ed_editv.py:129 ../../src/ed_menu.py:577
+#: ../../src/ed_editv.py:360 ../../src/ed_menu.py:577
 #: ../../src/ed_toolbar.py:81
 msgid "Redo"
 msgstr "Refaire"
@@ -2018,7 +2027,7 @@ msgstr "Expression régulière"
 msgid "Regular expression"
 msgstr "Expression régulière"
 
-#: ../../src/ed_editv.py:468
+#: ../../src/ed_editv.py:465
 msgid "Reload File?"
 msgstr "Recharger le fichier?"
 
@@ -2026,7 +2035,7 @@ msgstr "Recharger le fichier?"
 msgid "Reload the file with a specified encoding"
 msgstr "Recharge le fichier avec l'encodage spécifié"
 
-#: ../../src/ed_main.py:1194
+#: ../../src/ed_main.py:1206
 msgid "Reload with Encoding"
 msgstr "Recharger avec l'encodage"
 
@@ -2090,11 +2099,11 @@ msgstr "Remplacer par"
 msgid "Report Error"
 msgstr "Rapporter l'erreur"
 
-#: ../../src/ed_editv.py:448
+#: ../../src/ed_editv.py:445
 msgid "Resave File?"
 msgstr "Réenregistrer le fichier?"
 
-#: ../../src/ed_main.py:1401
+#: ../../src/ed_main.py:1413
 msgid "Restore Editor"
 msgstr "Restorer l'éditeur"
 
@@ -2110,7 +2119,7 @@ msgstr "Afficher dans "
 msgid "Revert file to last save point"
 msgstr "Retourner au dernier point de sauvegarde"
 
-#: ../../src/prefdlg.py:1103 ../../src/prefdlg.py:1765
+#: ../../src/prefdlg.py:1103 ../../src/prefdlg.py:1758
 msgid "Revert to Default"
 msgstr "Retourner aux valeurs par défaut"
 
@@ -2140,7 +2149,7 @@ msgstr "Executer le fichier associé avec le buffer courant dans \"Launch\""
 msgid "Save"
 msgstr "Enregister"
 
-#: ../../src/ed_editv.py:281
+#: ../../src/ed_editv.py:229
 #, python-format
 msgid "Save \"%s\""
 msgstr "Sauver \"%s\""
@@ -2157,7 +2166,7 @@ msgstr "Enregistrer tout"
 msgid "Save As"
 msgstr "Enregistrer sous..."
 
-#: ../../src/ed_editv.py:504
+#: ../../src/ed_editv.py:501
 msgid "Save Changes?"
 msgstr "Enregistrer les modifications ?"
 
@@ -2209,12 +2218,12 @@ msgstr "Sauvegarder la session en cours"
 msgid "Save the current window layout"
 msgstr "Sauver l'agencement actuel de la fenêtre"
 
-#: ../../src/ed_main.py:695
+#: ../../src/ed_main.py:707
 #, python-format
 msgid "Saved File As: %s"
 msgstr "Fichier sauvegardé en tant que: %s"
 
-#: ../../src/ed_main.py:646
+#: ../../src/ed_main.py:661
 #, python-format
 msgid "Saved File: %s"
 msgstr "Enregistrer le fichier: %s"
@@ -2223,7 +2232,7 @@ msgstr "Enregistrer le fichier: %s"
 msgid "Script Arguments"
 msgstr "Paramètres du script"
 
-#: ../../src/ed_search.py:1294
+#: ../../src/ed_search.py:1295
 #, python-format
 msgid "Search Complete: %d matching lines where found."
 msgstr "Recherche terminée : %d lignes correspondantes trouvées."
@@ -2232,11 +2241,11 @@ msgstr "Recherche terminée : %d lignes correspondantes trouvées."
 msgid "Search Recursively"
 msgstr "Recherche récursive"
 
-#: ../../src/ed_search.py:1268
+#: ../../src/ed_search.py:1269
 msgid "Search Started"
 msgstr "Recherche commencée"
 
-#: ../../src/ed_search.py:1287
+#: ../../src/ed_search.py:1288
 msgid "Search complete"
 msgstr "Recherche terminée"
 
@@ -2256,7 +2265,7 @@ msgstr "Rechercher de haut en bas"
 msgid "Search wrapped to top"
 msgstr "Rechercher de bas en haut"
 
-#: ../../src/ed_search.py:1378
+#: ../../src/ed_search.py:1379
 #, python-format
 msgid "Searching in: %s"
 msgstr "Recherche dans : %s"
@@ -2273,7 +2282,7 @@ msgstr "Sections"
 msgid "Select &All"
 msgstr "Tout &sélectionner"
 
-#: ../../src/ed_editv.py:138
+#: ../../src/ed_editv.py:369
 msgid "Select All"
 msgstr "Tout sélectionner"
 
@@ -2281,7 +2290,7 @@ msgstr "Tout sélectionner"
 msgid "Select All Text in Document"
 msgstr "Selectionner tout le texte du document"
 
-#: ../../src/ed_main.py:1193
+#: ../../src/ed_main.py:1205
 msgid "Select an encoding to reload the file with"
 msgstr "Coisir un encodage pour recharger le fichier"
 
@@ -2293,28 +2302,28 @@ msgstr "Sélectionner les modules à télécharger"
 msgid "Selected Text"
 msgstr "Texte sélectionné"
 
-#: ../../src/ed_pages.py:362
+#: ../../src/ed_pages.py:364
 msgid "Selected file is not a valid session file"
 msgstr ""
 
-#: ../../src/ed_menu.py:839
+#: ../../src/ed_menu.py:840
 msgid "Send bug reports and suggestions"
 msgstr "Envoyer des rapports de bugs et des suggestions"
 
-#: ../../src/ed_main.py:758 ../../src/ed_main.py:785
+#: ../../src/ed_main.py:770 ../../src/ed_main.py:797
 msgid "Session"
 msgstr "Session"
 
-#: ../../src/ed_main.py:773
+#: ../../src/ed_main.py:785
 #, python-format
 msgid "Session Saved as: %s"
 msgstr ""
 
-#: ../../src/ed_pages.py:347
+#: ../../src/ed_pages.py:349
 msgid "Session file doesn't exist."
 msgstr ""
 
-#: ../../src/ed_pages.py:368
+#: ../../src/ed_pages.py:370
 msgid "Session file is empty."
 msgstr ""
 
@@ -2374,7 +2383,7 @@ msgstr "Affichier les numéros de ligne dans la marge"
 msgid "Show Line Numbers"
 msgstr "Afficher les numéros de ligne"
 
-#: ../../src/ed_shelf.py:346
+#: ../../src/ed_shelf.py:349
 msgid "Show Shelf"
 msgstr "Afficher le \"Shelf\""
 
@@ -2402,7 +2411,7 @@ msgstr "Afficher les marques d'espaces"
 msgid "Show output from"
 msgstr "Afficher la sortie de"
 
-#: ../../src/ed_shelf.py:348
+#: ../../src/ed_shelf.py:351
 msgid "Show the Shelf"
 msgstr "Afficher le \"Shelf\""
 
@@ -2410,7 +2419,7 @@ msgstr "Afficher le \"Shelf\""
 msgid "Show the edge column guide"
 msgstr "Afficher le guide de colonne"
 
-#: ../../src/style_editor.py:698 ../../src/eclib/infodlg.py:189
+#: ../../src/style_editor.py:702 ../../src/eclib/infodlg.py:189
 msgid "Size"
 msgstr "Taille"
 
@@ -2491,7 +2500,7 @@ msgstr "Sous-routines"
 msgid "Successfully Installed Plugins"
 msgstr "Modules installés avec succès"
 
-#: ../../src/ed_menu.py:477 ../../src/syntax/syntax.py:317
+#: ../../src/ed_menu.py:477 ../../src/syntax/syntax.py:315
 #, python-format
 msgid "Switch Lexer to %s"
 msgstr "Changer le lexer en %s"
@@ -2528,7 +2537,7 @@ msgstr "Couleurs du texte"
 msgid "Text Document"
 msgstr "Document Texte"
 
-#: ../../src/ed_pages.py:156
+#: ../../src/ed_pages.py:158
 #, python-format
 msgid ""
 "The correct encoding of '%s' could not be determined.\n"
@@ -2540,7 +2549,7 @@ msgstr ""
 "Coisissez un encodage et cliquez sur Ok pour changer l'encodage.\n"
 "Cliquez sur Cancel pour abandonner l'ouverture de ce fichier."
 
-#: ../../src/ed_editv.py:501
+#: ../../src/ed_editv.py:498
 #, python-format
 msgid ""
 "The file: \"%s\" has been modified since the last save point.\n"
@@ -2560,7 +2569,7 @@ msgstr ""
 msgid "The search term '%(term)s' was found %(count)d times."
 msgstr ""
 
-#: ../../src/ed_pages.py:947
+#: ../../src/ed_pages.py:969
 #, python-format
 msgid "There are no files that Editra can open in %s"
 msgstr "Il n'y a aucun fichier que Editra peut ouvrir dans %s"
@@ -2575,15 +2584,15 @@ msgstr ""
 msgid "This plugin requires a newer version of Editra."
 msgstr ""
 
-#: ../../src/plugdlg.py:1064
+#: ../../src/plugdlg.py:1066
 msgid "This plugin will be uninstalled on next program launch."
 msgstr ""
 
-#: ../../src/ed_editv.py:136
+#: ../../src/ed_editv.py:367
 msgid "To Lowercase"
 msgstr "Convertir en minuscules"
 
-#: ../../src/ed_editv.py:135
+#: ../../src/ed_editv.py:366
 msgid "To Uppercase"
 msgstr "Convertir en majuscules"
 
@@ -2690,7 +2699,7 @@ msgstr "Impossible de charger la liste des modules"
 msgid "Unable to retrieve version info"
 msgstr "Impossible de relire les infos de version"
 
-#: ../../src/ed_editv.py:128 ../../src/ed_toolbar.py:80
+#: ../../src/ed_editv.py:359 ../../src/ed_toolbar.py:80
 msgid "Undo"
 msgstr "Annuler"
 
@@ -2710,11 +2719,11 @@ msgstr "Désindenter les lignes selectionnées"
 msgid "Uninstall"
 msgstr "Désinstaller"
 
-#: ../../src/plugdlg.py:1060
+#: ../../src/plugdlg.py:1062
 msgid "Uninstall Plugin"
 msgstr ""
 
-#: ../../src/ed_glob.py:381 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:759
+#: ../../src/ed_glob.py:383 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:759
 #: ../../src/ed_menu.py:761 ../../src/prefdlg.py:752
 msgid "Unix (\\n)"
 msgstr "Unix (\\n)"
@@ -2826,11 +2835,11 @@ msgstr ""
 msgid "Where"
 msgstr "Destination"
 
-#: ../../src/ed_main.py:711
+#: ../../src/ed_main.py:723
 msgid "Where to Save Profile?"
 msgstr "Où enregistrer le profil?"
 
-#: ../../src/ed_main.py:756
+#: ../../src/ed_main.py:768
 msgid "Where to Save Session?"
 msgstr ""
 
@@ -2850,7 +2859,7 @@ msgstr ""
 msgid "Whole word"
 msgstr "Mot entier"
 
-#: ../../src/ed_glob.py:382 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:762
+#: ../../src/ed_glob.py:384 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:762
 #: ../../src/ed_menu.py:764 ../../src/prefdlg.py:753
 msgid "Windows (\\r\\n)"
 msgstr "Windows (\\r\\n)"
@@ -2863,7 +2872,7 @@ msgstr "Césure des lignes"
 msgid "Wrap Text Horizontally"
 msgstr "Transposer le texte horizontalement"
 
-#: ../../src/ed_main.py:1522
+#: ../../src/ed_main.py:1536
 #, python-format
 msgid "Written in 100%% Python."
 msgstr "Programme écrit uniquement en Python"
@@ -2872,7 +2881,7 @@ msgstr "Programme écrit uniquement en Python"
 msgid "You must restart Editra before your changes will take full affect."
 msgstr ""
 
-#: ../../src/Editra.py:882 ../../src/Editra.py:1091
+#: ../../src/Editra.py:887 ../../src/Editra.py:1096
 msgid "Your profile has been updated to the latest version"
 msgstr "Votre profile a été mis à jour avec la dernière version"
 
@@ -2896,7 +2905,7 @@ msgstr "arguments"
 msgid "bold"
 msgstr "gras"
 
-#: ../../src/ed_cmdbar.py:866
+#: ../../src/ed_cmdbar.py:871
 msgid "cwd: "
 msgstr ""
 
@@ -2916,12 +2925,12 @@ msgstr "italique"
 msgid "underline"
 msgstr "souligné"
 
-#: ../../src/ed_pages.py:228
+#: ../../src/ed_pages.py:230
 #, fuzzy
 msgid "untitled"
 msgstr "Sans titre - %d"
 
-#: ../../src/ed_pages.py:226
+#: ../../src/ed_pages.py:228
 #, fuzzy, python-format
 msgid "untitled %d"
 msgstr "Sans titre - %d"

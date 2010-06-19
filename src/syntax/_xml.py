@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _xml.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _xml.py 64546 2010-06-10 03:51:14Z CJP $"
+__revision__ = "$Revision: 64546 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -43,6 +43,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
         # Setup
         self.SetLexer(stc.STC_LEX_XML)
+        self.RegisterFeature(synglob.FEATURE_AUTOINDENT, _html.AutoIndenter)
 
     def GetKeywords(self):
         """Returns Specified Keywords List """

@@ -13,16 +13,17 @@ text buffer.
 """
 
 __author__ = "Hasan Aljudy"
-__cvsid__ = "$Id: ed_vim.py 61567 2009-07-30 19:44:52Z CJP $"
-__revision__ = "$Revision: 61567 $"
+__cvsid__ = "$Id: ed_vim.py 63851 2010-04-04 15:39:50Z CJP $"
+__revision__ = "$Revision: 63851 $"
 
 # ---------------------------------------------------------------------------- #
 # Imports
+import wx
 import re
 import string
 
 # Local Imports
-from ebmlib import Clipboard
+import ebmlib
 
 # ---------------------------------------------------------------------------- #
 
@@ -591,11 +592,11 @@ class EditraCommander(object):
 
     def SetRegister(self, reg='"'):
         """Set the current working clipboard (aka register) to given name"""
-        Clipboard.Switch(reg)
+        ebmlib.Clipboard.Switch(reg)
 
     def YankSelection(self):
         """Copy the current selection to the clipboard"""
-        Clipboard.Set(self.GetSelectedText())
+        ebmlib.Clipboard.Set(self.GetSelectedText())
 
     def DeleteSelection(self):
         """Yank selection and delete it"""
@@ -619,7 +620,7 @@ class EditraCommander(object):
         is set to True, then it's pasted on a new line above the current line
 
         """
-        text = Clipboard.Get()
+        text = ebmlib.Clipboard.Get()
         if not text:
             return
 
@@ -1121,7 +1122,7 @@ def Change(editor, repeat, cmd):
         if motion_repeat:
             repeat = repeat * motion_repeat
         if motion_cmd == cmd:
-            # Oerate on whole line
+            # Operate on whole line
             line_motion = True
             editor.PushColumn()
             editor.SelectLines(repeat)
@@ -1198,7 +1199,11 @@ def Reg(editor, repeat, cmd):
         return NeedMore
 
     cmd, char = cmd
-    editor.SetRegister(char)
+    try:
+        editor.SetRegister(char)
+    except ebmlib.ClipboardException:
+        # Attempted to switch to invalid register
+        wx.Bell()
 
 @vim_parser(u'r')
 def ReplaceChar(editor, repeat, cmd):

@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _lua.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _lua.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -78,26 +78,26 @@ LUA_U4 = (7, "")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_LUA_CHARACTER', 'char_style'),
-                ('STC_LUA_COMMENT', 'comment_style'),
-                ('STC_LUA_COMMENTDOC', 'dockey_style'),
-                ('STC_LUA_COMMENTLINE', 'comment_style'),
-                ('STC_LUA_DEFAULT', 'default_style'),
-                ('STC_LUA_IDENTIFIER', 'default_style'), # style maybe
-                ('STC_LUA_LITERALSTRING', 'string_style'),
-                ('STC_LUA_NUMBER', 'number_style'),
-                ('STC_LUA_OPERATOR', 'operator_style'),
-                ('STC_LUA_PREPROCESSOR', 'pre_style'),
-                ('STC_LUA_STRING', 'string_style'),
-                ('STC_LUA_STRINGEOL', 'stringeol_style'),
-                ('STC_LUA_WORD', 'keyword_style'),
-                ('STC_LUA_WORD2', 'keyword3_style'),
-                ('STC_LUA_WORD3', 'funct_style'),
-                ('STC_LUA_WORD4', 'funct_style'),
-                ('STC_LUA_WORD5', 'default_style'), # currently unused
-                ('STC_LUA_WORD6', 'default_style'), # currently unused
-                ('STC_LUA_WORD7', 'default_style'), # currently unused
-                ('STC_LUA_WORD8', 'default_style')  # currently unused
+SYNTAX_ITEMS = [(stc.STC_LUA_CHARACTER, 'char_style'),
+                (stc.STC_LUA_COMMENT, 'comment_style'),
+                (stc.STC_LUA_COMMENTDOC, 'dockey_style'),
+                (stc.STC_LUA_COMMENTLINE, 'comment_style'),
+                (stc.STC_LUA_DEFAULT, 'default_style'),
+                (stc.STC_LUA_IDENTIFIER, 'default_style'), # style maybe
+                (stc.STC_LUA_LITERALSTRING, 'string_style'),
+                (stc.STC_LUA_NUMBER, 'number_style'),
+                (stc.STC_LUA_OPERATOR, 'operator_style'),
+                (stc.STC_LUA_PREPROCESSOR, 'pre_style'),
+                (stc.STC_LUA_STRING, 'string_style'),
+                (stc.STC_LUA_STRINGEOL, 'stringeol_style'),
+                (stc.STC_LUA_WORD, 'keyword_style'),
+                (stc.STC_LUA_WORD2, 'keyword3_style'),
+                (stc.STC_LUA_WORD3, 'funct_style'),
+                (stc.STC_LUA_WORD4, 'funct_style'),
+                (stc.STC_LUA_WORD5, 'default_style'), # currently unused
+                (stc.STC_LUA_WORD6, 'default_style'), # currently unused
+                (stc.STC_LUA_WORD7, 'default_style'), # currently unused
+                (stc.STC_LUA_WORD8, 'default_style')  # currently unused
                ]
 
 #---- Extra Properties ----#

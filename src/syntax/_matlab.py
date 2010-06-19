@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _matlab.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _matlab.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -38,15 +38,15 @@ OCTAVE_KW = (0, "break case catch continue do else elseif end "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_MATLAB_COMMAND', 'funct_style'),
-                ('STC_MATLAB_COMMENT', 'comment_style'),
-                ('STC_MATLAB_DEFAULT', 'default_style'),
-                ('STC_MATLAB_DOUBLEQUOTESTRING', 'string_style'),
-                ('STC_MATLAB_IDENTIFIER', 'default_style'),
-                ('STC_MATLAB_KEYWORD', 'keyword_style'),
-                ('STC_MATLAB_NUMBER', 'number_style'),
-                ('STC_MATLAB_OPERATOR', 'operator_style'),
-                ('STC_MATLAB_STRING', 'string_style')]
+SYNTAX_ITEMS = [(stc.STC_MATLAB_COMMAND, 'funct_style'),
+                (stc.STC_MATLAB_COMMENT, 'comment_style'),
+                (stc.STC_MATLAB_DEFAULT, 'default_style'),
+                (stc.STC_MATLAB_DOUBLEQUOTESTRING, 'string_style'),
+                (stc.STC_MATLAB_IDENTIFIER, 'default_style'),
+                (stc.STC_MATLAB_KEYWORD, 'keyword_style'),
+                (stc.STC_MATLAB_NUMBER, 'number_style'),
+                (stc.STC_MATLAB_OPERATOR, 'operator_style'),
+                (stc.STC_MATLAB_STRING, 'string_style')]
 
 #---- Extra Properties ----#
 FOLD = ('fold', '1')

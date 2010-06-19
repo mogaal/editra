@@ -13,7 +13,7 @@ FILE: stata.py
 """
 
 __author__ = "Jean Eid <jeid@wlu.ca>"
-__svnid__ = "$Id: _stata.py 62364 2009-10-11 01:02:12Z CJP $"
+__svnid__ = "$Id: _stata.py 63834 2010-04-03 06:04:33Z CJP $"
 __revision__ = "$Revision: 0$"
 
 #-----------------------------------------------------------------------------#
@@ -376,27 +376,27 @@ MAIN_KEYWORDS =  (0,
 )
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_C_DEFAULT', 'default_style'),
-                 ('STC_C_COMMENT', 'comment_style'),
-                 ('STC_C_COMMENTLINE', 'comment_style'),
-                 ('STC_C_COMMENTDOC', 'comment_style'),
-                 ('STC_C_COMMENTDOCKEYWORD', 'dockey_style'),
-                 ('STC_C_COMMENTDOCKEYWORDERROR', 'error_style'),
-                 ('STC_C_COMMENTLINE', 'comment_style'),
-                 ('STC_C_COMMENTLINEDOC', 'comment_style'),
-                 ('STC_C_CHARACTER', 'char_style'),
-                 ('STC_C_GLOBALCLASS', 'global_style'),
-                 ('STC_C_IDENTIFIER', 'default_style'),
-                 ('STC_C_NUMBER', 'number_style'),
-                 ('STC_C_OPERATOR', 'operator_style'),
-                 ('STC_C_PREPROCESSOR', 'pre_style'),
-                 ('STC_C_REGEX', 'pre_style'),
-                 ('STC_C_STRING', 'string_style'),
-                 ('STC_C_STRINGEOL', 'default_style'),
-                 ('STC_C_UUID', 'pre_style'),
-                 ('STC_C_VERBATIM', 'number2_style'),
-                 ('STC_C_WORD', 'keyword_style'),
-                 ('STC_C_WORD2', 'keyword2_style') ]
+SYNTAX_ITEMS = [ (stc.STC_C_DEFAULT, 'default_style'),
+                 (stc.STC_C_COMMENT, 'comment_style'),
+                 (stc.STC_C_COMMENTLINE, 'comment_style'),
+                 (stc.STC_C_COMMENTDOC, 'comment_style'),
+                 (stc.STC_C_COMMENTDOCKEYWORD, 'dockey_style'),
+                 (stc.STC_C_COMMENTDOCKEYWORDERROR, 'error_style'),
+                 (stc.STC_C_COMMENTLINE, 'comment_style'),
+                 (stc.STC_C_COMMENTLINEDOC, 'comment_style'),
+                 (stc.STC_C_CHARACTER, 'char_style'),
+                 (stc.STC_C_GLOBALCLASS, 'global_style'),
+                 (stc.STC_C_IDENTIFIER, 'default_style'),
+                 (stc.STC_C_NUMBER, 'number_style'),
+                 (stc.STC_C_OPERATOR, 'operator_style'),
+                 (stc.STC_C_PREPROCESSOR, 'pre_style'),
+                 (stc.STC_C_REGEX, 'pre_style'),
+                 (stc.STC_C_STRING, 'string_style'),
+                 (stc.STC_C_STRINGEOL, 'default_style'),
+                 (stc.STC_C_UUID, 'pre_style'),
+                 (stc.STC_C_VERBATIM, 'number2_style'),
+                 (stc.STC_C_WORD, 'keyword_style'),
+                 (stc.STC_C_WORD2, 'keyword2_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

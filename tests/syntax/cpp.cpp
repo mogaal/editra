@@ -13,7 +13,7 @@ int main(void)
 
     // One line comment
     int a = 0;
-    
+
     exit(a);
 }
 

@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _make.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _make.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -26,13 +26,13 @@ import syndata
 
 #-----------------------------------------------------------------------------#
 # Syntax Style Specs
-SYNTAX_ITEMS = [ ('STC_MAKE_DEFAULT', 'default_style'),
-                 ('STC_MAKE_COMMENT', 'comment_style'),
-                 ('STC_MAKE_IDENTIFIER', "scalar_style"),
-                 ('STC_MAKE_IDEOL', 'ideol_style'),
-                 ('STC_MAKE_OPERATOR', 'operator_style'),
-                 ('STC_MAKE_PREPROCESSOR', "pre2_style"),
-                 ('STC_MAKE_TARGET', 'keyword_style') ]
+SYNTAX_ITEMS = [ (stc.STC_MAKE_DEFAULT,      'default_style'),
+                 (stc.STC_MAKE_COMMENT,      'comment_style'),
+                 (stc.STC_MAKE_IDENTIFIER,   'scalar_style'),
+                 (stc.STC_MAKE_IDEOL,        'ideol_style'),
+                 (stc.STC_MAKE_OPERATOR,     'operator_style'),
+                 (stc.STC_MAKE_PREPROCESSOR, 'pre2_style'),
+                 (stc.STC_MAKE_TARGET,       'keyword_style') ]
 
 #-----------------------------------------------------------------------------#
 

@@ -36,3 +36,9 @@ a:what { color: red; }
 
 /** Important **/
 .hide { display: none !important; }
+
+.hide p { color: blue; }
+
+.hide .hidedecendant { color: red; }
+
+.hide #someID { color: yellow; }

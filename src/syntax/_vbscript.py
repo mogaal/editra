@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _vbscript.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _vbscript.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 
 #-----------------------------------------------------------------------------#
@@ -44,25 +44,25 @@ VBS_KW = ("addressof alias and as attribute base begin binary boolean byref "
           "unload until variant wend while with withevents xor")
 
 # Syntax specifications
-SYNTAX_ITEMS = [ ('STC_B_ASM', 'asm_style'),
-                 ('STC_B_BINNUMBER', 'default_style'), # STYLE NEEDED
-                 ('STC_B_COMMENT', 'comment_style'),
-                 ('STC_B_CONSTANT', 'const_style'),
-                 ('STC_B_DATE', 'default_style'), # STYLE NEEDED
-                 ('STC_B_DEFAULT', 'default_style'),
-                 ('STC_B_ERROR', 'error_style'),
-                 ('STC_B_HEXNUMBER', 'number_style'),
-                 ('STC_B_IDENTIFIER', 'default_style'),
-                 ('STC_B_KEYWORD', 'keyword_style'),
-                 ('STC_B_KEYWORD2', 'class_style'),   # STYLE NEEDED
-                 ('STC_B_KEYWORD3', 'funct_style'), # STYLE NEEDED
-                 ('STC_B_KEYWORD4', 'scalar_style'), # STYLE NEEDED
-                 ('STC_B_LABEL', 'directive_style'), # STYLE NEEDED
-                 ('STC_B_NUMBER', 'number_style'),
-                 ('STC_B_OPERATOR', 'operator_style'),
-                 ('STC_B_PREPROCESSOR', 'pre_style'),
-                 ('STC_B_STRING', 'string_style'),
-                 ('STC_B_STRINGEOL', 'stringeol_style')
+SYNTAX_ITEMS = [ (stc.STC_B_ASM, 'asm_style'),
+                 (stc.STC_B_BINNUMBER, 'default_style'), # STYLE NEEDED
+                 (stc.STC_B_COMMENT, 'comment_style'),
+                 (stc.STC_B_CONSTANT, 'const_style'),
+                 (stc.STC_B_DATE, 'default_style'), # STYLE NEEDED
+                 (stc.STC_B_DEFAULT, 'default_style'),
+                 (stc.STC_B_ERROR, 'error_style'),
+                 (stc.STC_B_HEXNUMBER, 'number_style'),
+                 (stc.STC_B_IDENTIFIER, 'default_style'),
+                 (stc.STC_B_KEYWORD, 'keyword_style'),
+                 (stc.STC_B_KEYWORD2, 'class_style'),   # STYLE NEEDED
+                 (stc.STC_B_KEYWORD3, 'funct_style'), # STYLE NEEDED
+                 (stc.STC_B_KEYWORD4, 'scalar_style'), # STYLE NEEDED
+                 (stc.STC_B_LABEL, 'directive_style'), # STYLE NEEDED
+                 (stc.STC_B_NUMBER, 'number_style'),
+                 (stc.STC_B_OPERATOR, 'operator_style'),
+                 (stc.STC_B_PREPROCESSOR, 'pre_style'),
+                 (stc.STC_B_STRING, 'string_style'),
+                 (stc.STC_B_STRINGEOL, 'stringeol_style')
                ]
 
 #---- Extra Properties ----#

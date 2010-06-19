@@ -15,8 +15,8 @@
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _ada.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _ada.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -40,18 +40,18 @@ ADA_KEYWORDS = (0, "abort abstract accept access aliased all array at begin "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_ADA_CHARACTER', 'char_style'),
-                 ('STC_ADA_CHARACTEREOL', 'stringeol_style'),
-                 ('STC_ADA_COMMENTLINE', 'comment_style'),
-                 ('STC_ADA_DEFAULT', 'default_style'),
-                 ('STC_ADA_DELIMITER', 'operator_style'),
-                 ('STC_ADA_IDENTIFIER', 'default_style'),
-                 ('STC_ADA_ILLEGAL', 'error_style'),
-                 ('STC_ADA_LABEL', 'keyword2_style'),   # Style This
-                 ('STC_ADA_NUMBER', 'number_style'),
-                 ('STC_ADA_STRING', 'string_style'),
-                 ('STC_ADA_STRINGEOL', 'stringeol_style'),
-                 ('STC_ADA_WORD', 'keyword_style')]
+SYNTAX_ITEMS = [ (stc.STC_ADA_CHARACTER, 'char_style'),
+                 (stc.STC_ADA_CHARACTEREOL, 'stringeol_style'),
+                 (stc.STC_ADA_COMMENTLINE, 'comment_style'),
+                 (stc.STC_ADA_DEFAULT, 'default_style'),
+                 (stc.STC_ADA_DELIMITER, 'operator_style'),
+                 (stc.STC_ADA_IDENTIFIER, 'default_style'),
+                 (stc.STC_ADA_ILLEGAL, 'error_style'),
+                 (stc.STC_ADA_LABEL, 'keyword2_style'),   # Style This
+                 (stc.STC_ADA_NUMBER, 'number_style'),
+                 (stc.STC_ADA_STRING, 'string_style'),
+                 (stc.STC_ADA_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_ADA_WORD, 'keyword_style')]
 
 #---- Extra Properties ----#
 

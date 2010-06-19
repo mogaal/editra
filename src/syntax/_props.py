@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _props.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _props.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -29,12 +29,12 @@ import syndata
 #-----------------------------------------------------------------------------#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_PROPS_ASSIGNMENT', 'operator_style'),
-                ('STC_PROPS_COMMENT', 'comment_style'),
-                ('STC_PROPS_DEFAULT', 'default_style'),
-                ('STC_PROPS_DEFVAL', 'string_style'),
-                ('STC_PROPS_KEY', 'scalar_style'),
-                ('STC_PROPS_SECTION', 'keyword_style')]
+SYNTAX_ITEMS = [(stc.STC_PROPS_ASSIGNMENT, 'operator_style'),
+                (stc.STC_PROPS_COMMENT,   'comment_style'),
+                (stc.STC_PROPS_DEFAULT,   'default_style'),
+                (stc.STC_PROPS_DEFVAL,    'string_style'),
+                (stc.STC_PROPS_KEY,       'scalar_style'),
+                (stc.STC_PROPS_SECTION,   'keyword_style')]
 
 #---- Extra Properties ----#
 FOLD = ('fold', '1')

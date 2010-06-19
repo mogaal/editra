@@ -14,8 +14,8 @@
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: syndata.py 62513 2009-10-31 04:48:39Z CJP $"
-__revision__ = "$Revision: 62513 $"
+__svnid__ = "$Id: syndata.py 63843 2010-04-03 16:19:09Z CJP $"
+__revision__ = "$Revision: 63843 $"
 
 __all__ = ['SyntaxDataBase',]
 
@@ -48,7 +48,7 @@ class SyntaxDataBase(object):
 
     @property
     def LangId(self):
-        return self._langid
+        return self.GetLangId()
 
     @property
     def Lexer(self):
@@ -60,16 +60,7 @@ class SyntaxDataBase(object):
 
     @property
     def SyntaxSpec(self):
-        """@todo: update syntax spec files to remove need for this workaround"""
-        spec = self.GetSyntaxSpec()
-        if len(spec) and isinstance(spec[0][0], basestring):
-            newspec = list()
-            for val, tag in spec:
-                sid = getattr(stc, val, None)
-                if sid is not None:
-                    newspec.append((sid, tag))
-            spec = newspec
-        return spec
+        return self.GetSyntaxSpec()
 
     #---- Interface Methods ----#
 
@@ -86,6 +77,13 @@ class SyntaxDataBase(object):
 
         """
         return list()
+
+    def GetLangId(self):
+        """Get the language id
+        @return: int
+
+        """
+        return self._langid
 
     def GetLexer(self):
         """Get the lexer id

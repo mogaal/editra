@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _tcl.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _tcl.py 64493 2010-06-05 21:25:30Z CJP $"
+__revision__ = "$Revision: 64493 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -55,7 +55,7 @@ TK_KW = (1, "bell bind bindtags bitmap button canvas checkbutton clipboard "
 ITCL_KW = (2, "@scope body class code common component configbody constructor "
               "define destructor hull import inherit itcl itk itk_component "
               "itk_initialize itk_interior itk_option iwidgets keep method "
-              "private protected public")
+              "private protected public typemethod typevariable")
 
 TK_COMMANDS = (3, "tk_bisque tk_chooseColor tk_dialog tk_focusFollowsMouse "
                   "tk_focusNext tk_focusPrev tk_getOpenFile tk_getSaveFile "
@@ -144,28 +144,28 @@ USER4_KW = (8, "")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_TCL_BLOCK_COMMENT', 'comment_style'),
-                 ('STC_TCL_COMMENT', 'comment_style'),
-                 ('STC_TCL_COMMENTLINE', 'comment_style'),
-                 ('STC_TCL_COMMENT_BOX', 'comment_style'),
-                 ('STC_TCL_DEFAULT', 'default_style'),
-                 ('STC_TCL_EXPAND', 'default_style'), # STYLE NEEDED
-                 ('STC_TCL_IDENTIFIER', 'default_style'),
-                 ('STC_TCL_IN_QUOTE', 'string_style'),
-                 ('STC_TCL_MODIFIER', 'default_style'), # STYLE NEEDED
-                 ('STC_TCL_NUMBER', 'number_style'),
-                 ('STC_TCL_OPERATOR', 'operator_style'),
-                 ('STC_TCL_SUBSTITUTION', 'scalar_style'),
-                 ('STC_TCL_SUB_BRACE', 'string_style'), # STYLE NEEDED
-                 ('STC_TCL_WORD', 'keyword_style'),        # tcl_kw
-                 ('STC_TCL_WORD2', 'keyword2_style'),      # tk_kw
-                 ('STC_TCL_WORD3', 'keyword3_style'),      # itcl_kw
-                 ('STC_TCL_WORD4', 'keyword4_style'),      # tkCommands
-                 ('STC_TCL_WORD5', 'default_style'),
-                 ('STC_TCL_WORD6', 'default_style'),
-                 ('STC_TCL_WORD7', 'default_style'),
-                 ('STC_TCL_WORD8', 'default_style'),
-                 ('STC_TCL_WORD_IN_QUOTE', 'default_style')]
+SYNTAX_ITEMS = [ (stc.STC_TCL_BLOCK_COMMENT, 'comment_style'),
+                 (stc.STC_TCL_COMMENT, 'comment_style'),
+                 (stc.STC_TCL_COMMENTLINE, 'comment_style'),
+                 (stc.STC_TCL_COMMENT_BOX, 'comment_style'),
+                 (stc.STC_TCL_DEFAULT, 'default_style'),
+                 (stc.STC_TCL_EXPAND, 'default_style'), # STYLE NEEDED
+                 (stc.STC_TCL_IDENTIFIER, 'default_style'),
+                 (stc.STC_TCL_IN_QUOTE, 'string_style'),
+                 (stc.STC_TCL_MODIFIER, 'default_style'), # STYLE NEEDED
+                 (stc.STC_TCL_NUMBER, 'number_style'),
+                 (stc.STC_TCL_OPERATOR, 'operator_style'),
+                 (stc.STC_TCL_SUBSTITUTION, 'scalar_style'),
+                 (stc.STC_TCL_SUB_BRACE, 'string_style'), # STYLE NEEDED
+                 (stc.STC_TCL_WORD, 'keyword_style'),        # tcl_kw
+                 (stc.STC_TCL_WORD2, 'keyword2_style'),      # tk_kw
+                 (stc.STC_TCL_WORD3, 'keyword3_style'),      # itcl_kw
+                 (stc.STC_TCL_WORD4, 'keyword4_style'),      # tkCommands
+                 (stc.STC_TCL_WORD5, 'default_style'),
+                 (stc.STC_TCL_WORD6, 'default_style'),
+                 (stc.STC_TCL_WORD7, 'default_style'),
+                 (stc.STC_TCL_WORD8, 'default_style'),
+                 (stc.STC_TCL_WORD_IN_QUOTE, 'default_style')]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

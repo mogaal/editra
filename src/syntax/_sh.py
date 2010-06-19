@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _sh.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _sh.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -66,20 +66,20 @@ CSH_KEYWORDS = ("alias cd chdir continue dirs echo break breaksw foreach end "
                 "unsetenv wait")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_SH_DEFAULT', 'default_style'),
-                 ('STC_SH_BACKTICKS', 'scalar_style'),
-                 ('STC_SH_CHARACTER', 'char_style'),
-                 ('STC_SH_COMMENTLINE', 'comment_style'),
-                 ('STC_SH_ERROR', 'error_style'),
-                 ('STC_SH_HERE_DELIM', 'here_style'),
-                 ('STC_SH_HERE_Q', 'here_style'),
-                 ('STC_SH_IDENTIFIER', 'default_style'),
-                 ('STC_SH_NUMBER', 'number_style'),
-                 ('STC_SH_OPERATOR', 'operator_style'),
-                 ('STC_SH_PARAM', 'scalar_style'),
-                 ('STC_SH_SCALAR', 'scalar_style'),
-                 ('STC_SH_STRING', 'string_style'),
-                 ('STC_SH_WORD', 'keyword_style') ]
+SYNTAX_ITEMS = [ (stc.STC_SH_DEFAULT, 'default_style'),
+                 (stc.STC_SH_BACKTICKS, 'scalar_style'),
+                 (stc.STC_SH_CHARACTER, 'char_style'),
+                 (stc.STC_SH_COMMENTLINE, 'comment_style'),
+                 (stc.STC_SH_ERROR, 'error_style'),
+                 (stc.STC_SH_HERE_DELIM, 'here_style'),
+                 (stc.STC_SH_HERE_Q, 'here_style'),
+                 (stc.STC_SH_IDENTIFIER, 'default_style'),
+                 (stc.STC_SH_NUMBER, 'number_style'),
+                 (stc.STC_SH_OPERATOR, 'operator_style'),
+                 (stc.STC_SH_PARAM, 'scalar_style'),
+                 (stc.STC_SH_SCALAR, 'scalar_style'),
+                 (stc.STC_SH_STRING, 'string_style'),
+                 (stc.STC_SH_WORD, 'keyword_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

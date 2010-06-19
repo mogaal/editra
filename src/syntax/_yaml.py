@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _yaml.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _yaml.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -33,15 +33,15 @@ YAML_KW = [(0, "true false yes no")]
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_YAML_COMMENT', 'comment_style'),
-                ('STC_YAML_DEFAULT', 'default_style'),
-                ('STC_YAML_DOCUMENT', 'scalar_style'),
-                ('STC_YAML_ERROR', 'error_style'),
-                ('STC_YAML_IDENTIFIER', 'keyword2_style'),
-                ('STC_YAML_KEYWORD', 'keyword_style'),
-                ('STC_YAML_NUMBER', 'number_style'),
-                ('STC_YAML_REFERENCE', 'global_style'),
-                ('STC_YAML_TEXT', 'default_style')] # Different style maybe
+SYNTAX_ITEMS = [(stc.STC_YAML_COMMENT, 'comment_style'),
+                (stc.STC_YAML_DEFAULT, 'default_style'),
+                (stc.STC_YAML_DOCUMENT, 'scalar_style'),
+                (stc.STC_YAML_ERROR, 'error_style'),
+                (stc.STC_YAML_IDENTIFIER, 'keyword2_style'),
+                (stc.STC_YAML_KEYWORD, 'keyword_style'),
+                (stc.STC_YAML_NUMBER, 'number_style'),
+                (stc.STC_YAML_REFERENCE, 'global_style'),
+                (stc.STC_YAML_TEXT, 'default_style')] # Different style maybe
 
 #---- Extra Properties ----#
 FOLD_COMMENT = ("fold.comment.yaml", "1")

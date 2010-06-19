@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 63656 2010-03-08 23:58:21Z CJP $"
-__revision__ = "$Revision: 63656 $"
+__svnid__ = "$Id: ed_stc.py 64395 2010-05-26 02:46:49Z CJP $"
+__revision__ = "$Revision: 64395 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -288,6 +288,17 @@ class EditraStc(ed_basestc.EditraBaseStc):
 
         """
         return [mark for mark in xrange(self.GetLineCount()) if self.MarkerGet(mark)]
+
+    def DoBraceHighlight(self):
+        """Perform a brace matching highlight
+        @note: intended for internal use only
+        """
+        brace_at_caret, brace_opposite = self.GetBracePair()
+        # CallAfter necessary to reduce CG warnings on Mac
+        if brace_at_caret != -1  and brace_opposite == -1:
+            wx.CallAfter(self.BraceBadLight, brace_at_caret)
+        else:
+            wx.CallAfter(self.BraceHighlight, brace_at_caret, brace_opposite)
 
     def GetBracePair(self):
         """Get a tuple of the positions in the buffer where the brace at the
@@ -673,7 +684,12 @@ class EditraStc(ed_basestc.EditraBaseStc):
             evt.Skip()
             if self.CallTipActive():
                 self.CallTipCancel()
+#        elif key_code == wx.WXK_TAB and \
+#             True not in (evt.ControlDown(), evt.CmdDown(), 
+#                          evt.ShiftDown(), evt.AltDown()):
+#            self.Tab() # <- So action can be overridden
         else:
+#            print "IS TAB", key_code, wx.WXK_TAB
             evt.Skip()
 
     def OnKeyUp(self, evt):
@@ -803,12 +819,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """
         # If disabled just skip the event
         if self._config['brackethl']:
-            brace_at_caret, brace_opposite = self.GetBracePair()
-            # CallAfter necessary to reduce CG warnings on Mac
-            if brace_at_caret != -1  and brace_opposite == -1:
-                wx.CallAfter(self.BraceBadLight, brace_at_caret)
-            else:
-                wx.CallAfter(self.BraceHighlight, brace_at_caret, brace_opposite)
+            self.DoBraceHighlight()
 
         # XXX: handle when column mode is enabled
         if self.VertEdit.Enabled:
@@ -1463,6 +1474,28 @@ class EditraStc(ed_basestc.EditraBaseStc):
             self.UpdateBaseStyles()
         return 0
 
+    def Tab(self):
+        """Override base method to ensure that folded blocks get unfolded
+        prior to changing the indentation.
+
+        """
+        # TODO: unfolding of folded blocks during block indent
+#        lines = list()
+#        if self.HasSelection():
+#            sel = self.GetSelection()
+#            sline = self.LineFromPosition(sel[0])
+#            eline = self.LineFromPosition(sel[1])
+#            lines = range(sline, eline+1)
+#        else:
+#            cline = self.GetCurrentLine()
+#            lines = [cline, cline+1]
+
+#        for line_num in lines:
+#            if self.GetFoldLevel(line_num) & wx.stc.STC_FOLDLEVELHEADERFLAG:
+#                if not self.GetFoldExpanded(line_num):
+#                    self.Expand(line_num, True)
+        super(EditraStc, self).Tab()
+
     def ToggleAutoIndent(self, switch=None):
         """Toggles Auto-indent On and Off
         @keyword switch: force a particular setting
@@ -1481,9 +1514,13 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if (switch is None and not self._config['brackethl']) or switch:
             self.LOG("[ed_stc][evt] Bracket Highlighting Turned On")
             self._config['brackethl'] = True
+            # Make sure to highlight a brace if next to on when turning it on
+            self.DoBraceHighlight()
         else:
             self.LOG("[ed_stc][evt] Bracket Highlighting Turned Off")
             self._config['brackethl'] = False
+            # Make sure that if there was a highlighted brace it gets cleared
+            wx.CallAfter(self.BraceHighlight, -1, -1)
 
     def ToggleFold(self, lineNum=None):
         """Toggle the fold at the given line number. If lineNum is

@@ -14,8 +14,8 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 63523 2010-02-19 15:57:32Z CJP $"
-__revision__ = "$Revision: 63523 $"
+__svnid__ = "$Id: ed_shelf.py 64553 2010-06-10 13:17:16Z CJP $"
+__revision__ = "$Revision: 64553 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -26,6 +26,7 @@ import wx
 import ed_menu
 import ed_glob
 from profiler import Profile_Get
+import ed_msg
 import plugin
 import iface
 import extern.aui as aui
@@ -144,17 +145,24 @@ class EdShelfBook(aui.AuiNotebook):
                 aui.AUI_NB_DRAW_DND_TAB
         if wx.Platform == '__WXMAC__':
             style |= aui.AUI_NB_CLOSE_ON_TAB_LEFT
-        aui.AuiNotebook.__init__(self, parent, style=style)
+        aui.AuiNotebook.__init__(self, parent, agwStyle=style)
 
         # Attributes
         self._parent = parent
         self._open = dict()
         self._imgidx = dict()
         self._imglst = wx.ImageList(16, 16)
+        self._name2idx = dict() # For settings maintenance
 
         # Setup
         self.SetImageList(self._imglst)
         self.SetSashDClickUnsplit(True)
+
+        # Message handlers
+        ed_msg.Subscribe(self.OnUpdateTabs, ed_msg.EDMSG_THEME_NOTEBOOK)
+
+    def __del__(self):
+        ed_msg.Unsubscribe(self.OnUpdateTabs)
 
     @property
     def ImgIdx(self):
@@ -178,6 +186,7 @@ class EdShelfBook(aui.AuiNotebook):
                      select=True)
 
         # Set the tab icon
+        self._name2idx[repr(item.__class__)] = imgid
         if imgid >= 0 and Profile_Get('TABICONS', default=True):
             self.SetPageImage(self.GetPageCount()-1, imgid)
         self._open[name] = self._open.get(name, 0) + 1
@@ -256,6 +265,18 @@ class EdShelfBook(aui.AuiNotebook):
             return pane.IsShown()
         else:
             return False
+
+    def OnUpdateTabs(self, msg):
+        """Update all tab images depending upon current settings"""
+        if not Profile_Get('TABICONS', default=True):
+            for page in range(self.GetPageCount()):
+                self.SetPageImage(page, -1)
+        else:
+            # Show the icons
+            for pnum in range(self.GetPageCount()):
+                page = self.GetPage(pnum)
+                imgid = self._name2idx.get(repr(page.__class__), -1)
+                self.SetPageImage(pnum, imgid)
 
 #--------------------------------------------------------------------------#
 

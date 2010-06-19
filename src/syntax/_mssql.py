@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _mssql.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _mssql.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -43,23 +43,23 @@ MSSQL_SYSP = (4, "")
 MSSQL_OPS = (5, "")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_MSSQL_DEFAULT', 'default_style'),
-                 ('STC_MSSQL_COMMENT', 'comment_style'),
-                 ('STC_MSSQL_COLUMN_NAME', 'keyword_style'),
-                 ('STC_MSSQL_COLUMN_NAME_2', 'keyword_style'),
-                 ('STC_MSSQL_DATATYPE', 'keyword2_style'),
-                 ('STC_MSSQL_DEFAULT_PREF_DATATYPE', 'class_style'),
-                 ('STC_MSSQL_FUNCTION', 'keyword3_style'),
-                 ('STC_MSSQL_GLOBAL_VARIABLE', 'global_style'),
-                 ('STC_MSSQL_IDENTIFIER', 'default_style'),
-                 ('STC_MSSQL_LINE_COMMENT', 'comment_style'),
-                 ('STC_MSSQL_NUMBER', 'number_style'),
-                 ('STC_MSSQL_OPERATOR', 'operator_style'),
-                 ('STC_MSSQL_STATEMENT', 'keyword_style'),
-                 ('STC_MSSQL_STORED_PROCEDURE', 'scalar2_style'),
-                 ('STC_MSSQL_STRING', 'string_style'),
-                 ('STC_MSSQL_SYSTABLE', 'keyword4_style'),
-                 ('STC_MSSQL_VARIABLE', 'scalar_style') ]
+SYNTAX_ITEMS = [ (stc.STC_MSSQL_DEFAULT, 'default_style'),
+                 (stc.STC_MSSQL_COMMENT, 'comment_style'),
+                 (stc.STC_MSSQL_COLUMN_NAME, 'keyword_style'),
+                 (stc.STC_MSSQL_COLUMN_NAME_2, 'keyword_style'),
+                 (stc.STC_MSSQL_DATATYPE, 'keyword2_style'),
+                 (stc.STC_MSSQL_DEFAULT_PREF_DATATYPE, 'class_style'),
+                 (stc.STC_MSSQL_FUNCTION, 'keyword3_style'),
+                 (stc.STC_MSSQL_GLOBAL_VARIABLE, 'global_style'),
+                 (stc.STC_MSSQL_IDENTIFIER, 'default_style'),
+                 (stc.STC_MSSQL_LINE_COMMENT, 'comment_style'),
+                 (stc.STC_MSSQL_NUMBER, 'number_style'),
+                 (stc.STC_MSSQL_OPERATOR, 'operator_style'),
+                 (stc.STC_MSSQL_STATEMENT, 'keyword_style'),
+                 (stc.STC_MSSQL_STORED_PROCEDURE, 'scalar2_style'),
+                 (stc.STC_MSSQL_STRING, 'string_style'),
+                 (stc.STC_MSSQL_SYSTABLE, 'keyword4_style'),
+                 (stc.STC_MSSQL_VARIABLE, 'scalar_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

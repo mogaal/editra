@@ -14,8 +14,8 @@ FILE: cpp.py
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _cpp.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _cpp.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -97,27 +97,27 @@ VALA_TYPES = ("bool byte char class const decimal double enum explicit extern "
               "volatile void virtual")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_C_DEFAULT', 'default_style'),
-                 ('STC_C_COMMENT', 'comment_style'),
-                 ('STC_C_COMMENTLINE', 'comment_style'),
-                 ('STC_C_COMMENTDOC', 'comment_style'),
-                 ('STC_C_COMMENTDOCKEYWORD', 'dockey_style'),
-                 ('STC_C_COMMENTDOCKEYWORDERROR', 'error_style'),
-                 ('STC_C_COMMENTLINE', 'comment_style'),
-                 ('STC_C_COMMENTLINEDOC', 'comment_style'),
-                 ('STC_C_CHARACTER', 'char_style'),
-                 ('STC_C_GLOBALCLASS', 'global_style'),
-                 ('STC_C_IDENTIFIER', 'default_style'),
-                 ('STC_C_NUMBER', 'number_style'),
-                 ('STC_C_OPERATOR', 'operator_style'),
-                 ('STC_C_PREPROCESSOR', 'pre_style'),
-                 ('STC_C_REGEX', 'pre_style'),
-                 ('STC_C_STRING', 'string_style'),
-                 ('STC_C_STRINGEOL', 'stringeol_style'),
-                 ('STC_C_UUID', 'pre_style'),
-                 ('STC_C_VERBATIM', 'number2_style'),
-                 ('STC_C_WORD', 'keyword_style'),
-                 ('STC_C_WORD2', 'keyword2_style') ]
+SYNTAX_ITEMS = [ (stc.STC_C_DEFAULT, 'default_style'),
+                 (stc.STC_C_COMMENT, 'comment_style'),
+                 (stc.STC_C_COMMENTLINE, 'comment_style'),
+                 (stc.STC_C_COMMENTDOC, 'comment_style'),
+                 (stc.STC_C_COMMENTDOCKEYWORD, 'dockey_style'),
+                 (stc.STC_C_COMMENTDOCKEYWORDERROR, 'error_style'),
+                 (stc.STC_C_COMMENTLINE, 'comment_style'),
+                 (stc.STC_C_COMMENTLINEDOC, 'comment_style'),
+                 (stc.STC_C_CHARACTER, 'char_style'),
+                 (stc.STC_C_GLOBALCLASS, 'global_style'),
+                 (stc.STC_C_IDENTIFIER, 'default_style'),
+                 (stc.STC_C_NUMBER, 'number_style'),
+                 (stc.STC_C_OPERATOR, 'operator_style'),
+                 (stc.STC_C_PREPROCESSOR, 'pre_style'),
+                 (stc.STC_C_REGEX, 'pre_style'),
+                 (stc.STC_C_STRING, 'string_style'),
+                 (stc.STC_C_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_C_UUID, 'pre_style'),
+                 (stc.STC_C_VERBATIM, 'number2_style'),
+                 (stc.STC_C_WORD, 'keyword_style'),
+                 (stc.STC_C_WORD2, 'keyword2_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -185,27 +185,27 @@ class SyntaxData(syndata.SyntaxDataBase):
 
 #-----------------------------------------------------------------------------#
 
-def AutoIndenter(stc, pos, ichar):
-    """Auto indent cpp code. uses \n the text buffer will
-    handle any eol character formatting.
-    @param stc: EditraStyledTextCtrl
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent cpp code.
+    @param estc: EditraStyledTextCtrl
     @param pos: current carat position
     @param ichar: Indentation character
     @return: string
 
     """
     rtxt = u''
-    line = stc.GetCurrentLine()
-    text = stc.GetTextRange(stc.PositionFromLine(line), pos)
+    line = estc.GetCurrentLine()
+    text = estc.GetTextRange(estc.PositionFromLine(line), pos)
+    eolch = estc.GetEOLChar()
 
-    indent = stc.GetLineIndentation(line)
+    indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
-        tabw = stc.GetTabWidth()
+        tabw = estc.GetTabWidth()
     else:
-        tabw = stc.GetIndent()
+        tabw = estc.GetIndent()
 
     i_space = indent / tabw
-    ndent = u"\n" + ichar * i_space
+    ndent = eolch + ichar * i_space
     rtxt = ndent + ((indent - (tabw * i_space)) * u' ')
 
     cdef_pat = re.compile('(public|private|protected)\s*\:')
@@ -214,4 +214,5 @@ def AutoIndenter(stc, pos, ichar):
     if text.endswith('{') or cdef_pat.match(text) or case_pat.match(text):
         rtxt += ichar
 
-    return rtxt
+    # Put text in the buffer
+    estc.AddText(rtxt)

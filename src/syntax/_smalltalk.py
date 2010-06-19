@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _smalltalk.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _smalltalk.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -38,23 +38,23 @@ ST_KEYWORDS = (0, "ifTrue: ifFalse: whileTrue: whileFalse: ifNil: ifNotNil: "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_ST_ASSIGN', 'operator_style'),
-                ('STC_ST_BINARY', 'operator_style'),
-                ('STC_ST_BOOL', 'keyword_style'),
-                ('STC_ST_CHARACTER', 'char_style'),
-                ('STC_ST_COMMENT', 'comment_style'),
-                ('STC_ST_DEFAULT', 'default_style'),
-                ('STC_ST_GLOBAL', 'global_style'),
-                ('STC_ST_KWSEND', 'keyword_style'),
-                ('STC_ST_NIL', 'keyword_style'),
-                ('STC_ST_NUMBER', 'number_style'),
-                ('STC_ST_RETURN', 'keyword_style'),
-                ('STC_ST_SELF', 'keyword_style'),
-                ('STC_ST_SPECIAL', 'pre_style'),
-                ('STC_ST_SPEC_SEL', 'keyword_style'),   # Words in keyword list
-                ('STC_ST_STRING', 'string_style'),
-                ('STC_ST_SUPER', 'class_style'),
-                ('STC_ST_SYMBOL', 'scalar_style')]
+SYNTAX_ITEMS = [(stc.STC_ST_ASSIGN, 'operator_style'),
+                (stc.STC_ST_BINARY, 'operator_style'),
+                (stc.STC_ST_BOOL, 'keyword_style'),
+                (stc.STC_ST_CHARACTER, 'char_style'),
+                (stc.STC_ST_COMMENT, 'comment_style'),
+                (stc.STC_ST_DEFAULT, 'default_style'),
+                (stc.STC_ST_GLOBAL, 'global_style'),
+                (stc.STC_ST_KWSEND, 'keyword_style'),
+                (stc.STC_ST_NIL, 'keyword_style'),
+                (stc.STC_ST_NUMBER, 'number_style'),
+                (stc.STC_ST_RETURN, 'keyword_style'),
+                (stc.STC_ST_SELF, 'keyword_style'),
+                (stc.STC_ST_SPECIAL, 'pre_style'),
+                (stc.STC_ST_SPEC_SEL, 'keyword_style'), # Words in keyword list
+                (stc.STC_ST_STRING, 'string_style'),
+                (stc.STC_ST_SUPER, 'class_style'),
+                (stc.STC_ST_SYMBOL, 'scalar_style')]
 
 #---- Extra Properties ----#
 

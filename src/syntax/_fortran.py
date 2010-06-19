@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _fortran.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _fortran.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -108,21 +108,21 @@ FORT_EXT = (2, "cdabs cdcos cdexp cdlog cdsin cdsqrt cotan cotand dcmplx "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_F_COMMENT', 'comment_style'),
-                ('STC_F_CONTINUATION', 'default_style'), # NEED STYLE
-                ('STC_F_DEFAULT', 'default_style'),
-                ('STC_F_IDENTIFIER', 'default_style'),
-                ('STC_F_LABEL', 'number2_style'), # NEED STYLE
-                ('STC_F_NUMBER', 'number_style'),
-                ('STC_F_OPERATOR', 'operator_style'),
-                ('STC_F_OPERATOR2', 'operator_style'), # NEED STYLE
-                ('STC_F_PREPROCESSOR', 'pre_style'),
-                ('STC_F_STRING1', 'string_style'),
-                ('STC_F_STRING2', 'string_style'),
-                ('STC_F_STRINGEOL', 'stringeol_style'),
-                ('STC_F_WORD', 'keyword_style'),
-                ('STC_F_WORD2', 'keyword3_style'),
-                ('STC_F_WORD3', 'funct_style')]
+SYNTAX_ITEMS = [(stc.STC_F_COMMENT, 'comment_style'),
+                (stc.STC_F_CONTINUATION, 'default_style'), # NEED STYLE
+                (stc.STC_F_DEFAULT, 'default_style'),
+                (stc.STC_F_IDENTIFIER, 'default_style'),
+                (stc.STC_F_LABEL, 'number2_style'), # NEED STYLE
+                (stc.STC_F_NUMBER, 'number_style'),
+                (stc.STC_F_OPERATOR, 'operator_style'),
+                (stc.STC_F_OPERATOR2, 'operator_style'), # NEED STYLE
+                (stc.STC_F_PREPROCESSOR, 'pre_style'),
+                (stc.STC_F_STRING1, 'string_style'),
+                (stc.STC_F_STRING2, 'string_style'),
+                (stc.STC_F_STRINGEOL, 'stringeol_style'),
+                (stc.STC_F_WORD, 'keyword_style'),
+                (stc.STC_F_WORD2, 'keyword3_style'),
+                (stc.STC_F_WORD3, 'funct_style')]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -165,27 +165,26 @@ class SyntaxData(syndata.SyntaxDataBase):
 
 #---- End Required Module Functions ----#
 
-def AutoIndenter(stc, pos, ichar):
-    """Auto indent cpp code. uses \n the text buffer will
-    handle any eol character formatting.
-    @param stc: EditraStyledTextCtrl
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent cpp code.
+    @param estc: EditraStyledTextCtrl
     @param pos: current carat position
     @param ichar: Indentation character
-    @return: string
 
     """
     rtxt = u''
-    line = stc.GetCurrentLine()
-    text = stc.GetTextRange(stc.PositionFromLine(line), pos)
+    line = estc.GetCurrentLine()
+    text = estc.GetTextRange(estc.PositionFromLine(line), pos)
+    eolch = estc.GetEOLChar()
 
-    indent = stc.GetLineIndentation(line)
+    indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
-        tabw = stc.GetTabWidth()
+        tabw = estc.GetTabWidth()
     else:
-        tabw = stc.GetIndent()
+        tabw = estc.GetIndent()
 
     i_space = indent / tabw
-    ndent = u"\n" + ichar * i_space
+    ndent = eolch + ichar * i_space
     rtxt = ndent + ((indent - (tabw * i_space)) * u' ')
 
     blks = '(program|function|subroutine|if|do|while)'
@@ -194,4 +193,5 @@ def AutoIndenter(stc, pos, ichar):
     if text.endswith('{') or blk_pat.match(text) or text == 'else':
         rtxt += ichar
 
-    return rtxt
+    # Put text in the buffer
+    estc.AddText(rtxt)

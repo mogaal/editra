@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _php.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _php.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -388,17 +388,17 @@ PHP_FUNC = ("__construct __autoload __destruct __get __set __isset __unset "
             "mcrypt_module_get_algo_block_size imagepsslantfont count ")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_HPHP_DEFAULT', 'default_style'),
-                 ('STC_HPHP_COMMENT', 'comment_style'),
-                 ('STC_HPHP_COMMENTLINE', 'comment_style'),
-                 ('STC_HPHP_COMPLEX_VARIABLE', 'pre_style'), #STYLE ME
-                 ('STC_HPHP_HSTRING', 'string_style'),
-                 ('STC_HPHP_HSTRING_VARIABLE', 'scalar_style'), # STYLE ME
-                 ('STC_HPHP_NUMBER', 'number_style'),
-                 ('STC_HPHP_OPERATOR', 'operator_style'),
-                 ('STC_HPHP_SIMPLESTRING', 'string_style'),
-                 ('STC_HPHP_VARIABLE', 'pre2_style'),
-                 ('STC_HPHP_WORD', 'keyword_style') ]
+SYNTAX_ITEMS = [ (stc.STC_HPHP_DEFAULT,      'default_style'),
+                 (stc.STC_HPHP_COMMENT,      'comment_style'),
+                 (stc.STC_HPHP_COMMENTLINE,  'comment_style'),
+                 (stc.STC_HPHP_COMPLEX_VARIABLE, 'pre_style'), #STYLE ME
+                 (stc.STC_HPHP_HSTRING,      'string_style'),
+                 (stc.STC_HPHP_HSTRING_VARIABLE, 'scalar_style'), # STYLE ME
+                 (stc.STC_HPHP_NUMBER,       'number_style'),
+                 (stc.STC_HPHP_OPERATOR,     'operator_style'),
+                 (stc.STC_HPHP_SIMPLESTRING, 'string_style'),
+                 (stc.STC_HPHP_VARIABLE,     'pre2_style'),
+                 (stc.STC_HPHP_WORD,         'keyword_style') ]
 
 #------------------------------------------------------------------------------#
 

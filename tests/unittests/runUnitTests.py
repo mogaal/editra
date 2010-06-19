@@ -16,8 +16,8 @@ This module is mostly copied from the wxPython Unittest Suite.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: runUnitTests.py 57492 2008-12-22 00:48:12Z CJP $"
-__revision__ = "$Revision: 57492 $"
+__svnid__ = "$Id: runUnitTests.py 63846 2010-04-03 22:57:21Z CJP $"
+__revision__ = "$Revision: 63846 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -30,6 +30,7 @@ from optparse import OptionParser
 
 # Put Editra/src on the 
 sys.path.append(os.path.abspath("../../src"))
+sys.path.append(os.path.abspath("../../src/extern"))
 
 # ----------------- Helper Functions / Classes ---------------------
 

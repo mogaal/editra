@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 63568 2010-02-27 18:52:47Z CJP $"
-__revision__ = "$Revision: 63568 $"
+__svnid__ = "$Id: ed_editv.py 64304 2010-05-13 16:44:35Z CJP $"
+__revision__ = "$Revision: 64304 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -104,6 +104,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         # Hide autocomp/calltips when window looses focus
         # TODO: decide on whether this belongs in base class or not
         self.Bind(wx.EVT_KILL_FOCUS, lambda evt: self.HidePopups())
+        self.Bind(wx.EVT_LEFT_UP, self.OnSetFocus)
 
         ed_msg.Subscribe(self.OnConfigMsg,
                          ed_msg.EDMSG_PROFILE_CHANGE + ('SPELLCHECK',))
@@ -255,14 +256,26 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
 
         """
         if self._ignore_del:
+            self._ignore_del = False
             return True
 
         result = True
         if self.GetModify():
             result = self.ModifySave()
             result = result in (wx.ID_YES, wx.ID_OK, wx.ID_NO)
+            if result:
+                self._ignore_del = True
 
         return result
+
+    def OnSetFocus(self, evt):
+        """Make sure that the currently selected tab is this one"""
+        evt.Skip()
+        parent = self.GetParent()
+        csel = parent.GetSelection()
+        idx = self.GetTabIndex()
+        if csel != idx:
+            parent.SetSelection(idx)
 
     def OnSpelling(self, buff, evt):
         """Context menu subscriber callback

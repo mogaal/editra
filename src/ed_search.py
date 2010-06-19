@@ -15,8 +15,8 @@ text documents and files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_search.py 62949 2009-12-19 18:14:39Z CJP $"
-__revision__ = "$Revision: 62949 $"
+__svnid__ = "$Id: ed_search.py 63753 2010-03-24 00:23:22Z CJP $"
+__revision__ = "$Revision: 63753 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -1016,6 +1016,7 @@ class EdSearchCtrl(wx.SearchCtrl):
 
         """
         if evt.GetEventType() != wx.wxEVT_KEY_UP:
+            print "SKIPPY"
             evt.Skip()
             return
 
@@ -1035,8 +1036,8 @@ class EdSearchCtrl(wx.SearchCtrl):
         tmp = self.GetValue()
         self.ShowCancelButton(len(tmp) > 0)
 
-        # Dont do search for navigation keys
-        if tmp == wx.EmptyString or evt.CmdDown() or \
+        # Don't do search for navigation keys
+        if tmp == wx.EmptyString or evt.CmdDown() or evt.ControlDown() or \
            e_key in [wx.WXK_COMMAND, wx.WXK_LEFT, wx.WXK_RIGHT, wx.WXK_CONTROL,
                      wx.WXK_ALT, wx.WXK_UP, wx.WXK_DOWN, wx.WXK_F1, wx.WXK_F2, 
                      wx.WXK_F3, wx.WXK_F4, wx.WXK_F5, wx.WXK_F6, wx.WXK_F7, 
