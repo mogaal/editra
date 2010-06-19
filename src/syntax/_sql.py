@@ -85,8 +85,8 @@ wil not work.
 """
 
 __author__ = "Thomas Keul <tgkeul@web.de>"
-__svnid__ = "$Id: _sql.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _sql.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -320,29 +320,29 @@ SQL_PKG = (3, "apex_custom_auth apex_application apex_item apex_util ctx_adm "
 
 #---- Syntax Style Specs ----#
 # Scintilla 1.75 SQL Lexer
-SYNTAX_ITEMS = [ ('STC_SQL_DEFAULT',                'default_style'),       #  0
-                 ('STC_SQL_CHARACTER',              'char_style'),          #  7
-                 ('STC_SQL_COMMENT',                'comment_style'),       #  1
-                 ('STC_SQL_COMMENTDOC',             'comment_style'),       #  3
-                 ('STC_SQL_COMMENTDOCKEYWORD',      'dockey_style'),        # 17
-                 ('STC_SQL_COMMENTDOCKEYWORDERROR', 'error_style'),         # 18
-                 ('STC_SQL_COMMENTLINE',            'comment_style'),       #  2
-                 ('STC_SQL_COMMENTLINEDOC',         'comment_style'),       # 15
-                 ('STC_SQL_IDENTIFIER',             'default_style'),       # 11
-                 ('STC_SQL_NUMBER',                 'number_style'),        #  4
-                 ('STC_SQL_OPERATOR',               'operator_style'),      # 10
-                 ('STC_SQL_QUOTEDIDENTIFIER',       'default_style'),       # 23
-                 ('STC_SQL_SQLPLUS',                'scalar_style'),        #  8
+SYNTAX_ITEMS = [ (stc.STC_SQL_DEFAULT,                'default_style'),       #  0
+                 (stc.STC_SQL_CHARACTER,              'char_style'),          #  7
+                 (stc.STC_SQL_COMMENT,                'comment_style'),       #  1
+                 (stc.STC_SQL_COMMENTDOC,             'comment_style'),       #  3
+                 (stc.STC_SQL_COMMENTDOCKEYWORD,      'dockey_style'),        # 17
+                 (stc.STC_SQL_COMMENTDOCKEYWORDERROR, 'error_style'),         # 18
+                 (stc.STC_SQL_COMMENTLINE,            'comment_style'),       #  2
+                 (stc.STC_SQL_COMMENTLINEDOC,         'comment_style'),       # 15
+                 (stc.STC_SQL_IDENTIFIER,             'default_style'),       # 11
+                 (stc.STC_SQL_NUMBER,                 'number_style'),        #  4
+                 (stc.STC_SQL_OPERATOR,               'operator_style'),      # 10
+                 (stc.STC_SQL_QUOTEDIDENTIFIER,       'default_style'),       # 23
+                 (stc.STC_SQL_SQLPLUS,                'scalar_style'),        #  8
                  #('STC_SQL_SQLPLUS',                'funct_style'),        #  8
-                 ('STC_SQL_SQLPLUS_COMMENT',        'comment_style'),       # 13
-                 ('STC_SQL_SQLPLUS_PROMPT',         'default_style'),       #  9
-                 ('STC_SQL_STRING',                 'string_style'),        #  6
-                 ('STC_SQL_USER1',                  'funct_style'),         # 19
-                 ('STC_SQL_USER2',                  'directive_style'),     # 20
-                 ('STC_SQL_USER3',                  'keyword3_style'),      # 21
-                 ('STC_SQL_USER4',                  'keyword_style'),       # 22
-                 ('STC_SQL_WORD',                   'keyword_style'),       #  5
-                 ('STC_SQL_WORD2',                  'keyword2_style') ]     # 16
+                 (stc.STC_SQL_SQLPLUS_COMMENT,        'comment_style'),       # 13
+                 (stc.STC_SQL_SQLPLUS_PROMPT,         'default_style'),       #  9
+                 (stc.STC_SQL_STRING,                 'string_style'),        #  6
+                 (stc.STC_SQL_USER1,                  'funct_style'),         # 19
+                 (stc.STC_SQL_USER2,                  'directive_style'),     # 20
+                 (stc.STC_SQL_USER3,                  'keyword3_style'),      # 21
+                 (stc.STC_SQL_USER4,                  'keyword_style'),       # 22
+                 (stc.STC_SQL_WORD,                   'keyword_style'),       #  5
+                 (stc.STC_SQL_WORD2,                  'keyword2_style') ]     # 16
 
 #---- Extra Properties ----#
 # found in LexSQL.cxx of Scintilla 1.74

@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _batch.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _batch.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -89,14 +89,14 @@ WINBAT_KEYWORDS = (0, "if then else endif break end return exit next while for "
                       "dirchange direxist")
 
 #---- Language Styling Specs ----#
-SYNTAX_ITEMS = [ ('STC_BAT_DEFAULT', "default_style"),
-                 ('STC_BAT_COMMAND', "class_style"),
-                 ('STC_BAT_COMMENT', "comment_style"),
-                 ('STC_BAT_HIDE', "string_style"),
-                 ('STC_BAT_IDENTIFIER', "scalar_style"),
-                 ('STC_BAT_LABEL', "class_style"),
-                 ('STC_BAT_OPERATOR', "operator_style"),
-                 ('STC_BAT_WORD', "keyword_style") ]
+SYNTAX_ITEMS = [ (stc.STC_BAT_DEFAULT,  "default_style"),
+                 (stc.STC_BAT_COMMAND,  "class_style"),
+                 (stc.STC_BAT_COMMENT,  "comment_style"),
+                 (stc.STC_BAT_HIDE,     "string_style"),
+                 (stc.STC_BAT_IDENTIFIER, "scalar_style"),
+                 (stc.STC_BAT_LABEL,    "class_style"),
+                 (stc.STC_BAT_OPERATOR, "operator_style"),
+                 (stc.STC_BAT_WORD,     "keyword_style") ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

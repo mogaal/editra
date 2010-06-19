@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _forth.py 63255 2010-01-25 02:05:22Z CJP $"
-__revision__ = "$Revision: 63255 $"
+__svnid__ = "$Id: _forth.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -81,18 +81,18 @@ STRING_DEF_KW = (5, "S\" ABORT\" Z\" \" .\" C\"")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [("STC_FORTH_DEFAULT", "default_style"),
-                ("STC_FORTH_COMMENT", "comment_style"),
-                ("STC_FORTH_COMMENT_ML", "comment_style"),
+SYNTAX_ITEMS = [(stc.STC_FORTH_DEFAULT, "default_style"),
+                (stc.STC_FORTH_COMMENT, "comment_style"),
+                (stc.STC_FORTH_COMMENT_ML, "comment_style"),
 #                ("STC_FORTH_CONTROL", ""),
 #                ("STC_FORTH_DEFWORD", ""),
 #                ("STC_FORTH_IDENTIFIER", ""),
-                ("STC_FORTH_KEYWORD", "keyword_style"),
+                (stc.STC_FORTH_KEYWORD, "keyword_style"),
 #                ("STC_FORTH_LOCALE", ""),
-                ("STC_FORTH_NUMBER", "number_style"),
-                ("STC_FORTH_PREWORD1", "keyword2_style"),
-                ("STC_FORTH_PREWORD2", "keyword3_style"),
-                ("STC_FORTH_STRING", "string_style")]
+                (stc.STC_FORTH_NUMBER, "number_style"),
+                (stc.STC_FORTH_PREWORD1, "keyword2_style"),
+                (stc.STC_FORTH_PREWORD2, "keyword3_style"),
+                (stc.STC_FORTH_STRING, "string_style")]
 
 
 #---- Extra Properties ----#

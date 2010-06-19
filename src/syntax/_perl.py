@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _perl.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _perl.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -61,36 +61,36 @@ PERL_KW = (0, "if elseif unless else switch eq ne gt lt ge le cmp not and or "
               "elsif require getgrent ")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_PL_DEFAULT', 'default_style'),
-                 ('STC_PL_ARRAY', 'array_style'),
-                 ('STC_PL_BACKTICKS', 'btick_style'),
-                 ('STC_PL_CHARACTER', 'char_style'),
-                 ('STC_PL_COMMENTLINE', 'comment_style'),
-                 ('STC_PL_DATASECTION', 'default_style'), # STYLE ME
-                 ('STC_PL_ERROR', 'error_style'),
-                 ('STC_PL_HASH', 'global_style'),
-                 ('STC_PL_HERE_DELIM', 'here_style'),
-                 ('STC_PL_HERE_Q', 'here_style'),
-                 ('STC_PL_HERE_QQ', 'here_style'),
-                 ('STC_PL_HERE_QX', 'here_style'),
-                 ('STC_PL_IDENTIFIER', 'default_style'),
-                 ('STC_PL_LONGQUOTE', 'default_style'), # STYLE ME
-                 ('STC_PL_NUMBER', 'number_style'),
-                 ('STC_PL_OPERATOR', 'operator_style'),
-                 ('STC_PL_POD', 'comment_style'),
-                 ('STC_PL_PREPROCESSOR',  'pre_style' ),
-                 ('STC_PL_PUNCTUATION', 'default_style'), # STYLE ME
-                 ('STC_PL_REGEX', 'regex_style'),
-                 ('STC_PL_REGSUBST', 'regex_style'),
-                 ('STC_PL_SCALAR', 'scalar_style'),
-                 ('STC_PL_STRING', 'string_style'),
-                 ('STC_PL_STRING_Q', 'string_style'),
-                 ('STC_PL_STRING_QQ', 'string_style'),
-                 ('STC_PL_STRING_QR', 'string_style'),
-                 ('STC_PL_STRING_QW', 'string_style'),
-                 ('STC_PL_STRING_QX', 'string_style'),
-                 ('STC_PL_SYMBOLTABLE', 'default_style'), # STYLE ME
-                 ('STC_PL_WORD', 'keyword_style') ]
+SYNTAX_ITEMS = [ (stc.STC_PL_DEFAULT, 'default_style'),
+                 (stc.STC_PL_ARRAY, 'array_style'),
+                 (stc.STC_PL_BACKTICKS, 'btick_style'),
+                 (stc.STC_PL_CHARACTER, 'char_style'),
+                 (stc.STC_PL_COMMENTLINE, 'comment_style'),
+                 (stc.STC_PL_DATASECTION, 'default_style'), # STYLE ME
+                 (stc.STC_PL_ERROR, 'error_style'),
+                 (stc.STC_PL_HASH, 'global_style'),
+                 (stc.STC_PL_HERE_DELIM, 'here_style'),
+                 (stc.STC_PL_HERE_Q, 'here_style'),
+                 (stc.STC_PL_HERE_QQ, 'here_style'),
+                 (stc.STC_PL_HERE_QX, 'here_style'),
+                 (stc.STC_PL_IDENTIFIER, 'default_style'),
+                 (stc.STC_PL_LONGQUOTE, 'default_style'), # STYLE ME
+                 (stc.STC_PL_NUMBER, 'number_style'),
+                 (stc.STC_PL_OPERATOR, 'operator_style'),
+                 (stc.STC_PL_POD, 'comment_style'),
+                 (stc.STC_PL_PREPROCESSOR,  'pre_style' ),
+                 (stc.STC_PL_PUNCTUATION, 'default_style'), # STYLE ME
+                 (stc.STC_PL_REGEX, 'regex_style'),
+                 (stc.STC_PL_REGSUBST, 'regex_style'),
+                 (stc.STC_PL_SCALAR, 'scalar_style'),
+                 (stc.STC_PL_STRING, 'string_style'),
+                 (stc.STC_PL_STRING_Q, 'string_style'),
+                 (stc.STC_PL_STRING_QQ, 'string_style'),
+                 (stc.STC_PL_STRING_QR, 'string_style'),
+                 (stc.STC_PL_STRING_QW, 'string_style'),
+                 (stc.STC_PL_STRING_QX, 'string_style'),
+                 (stc.STC_PL_SYMBOLTABLE, 'default_style'), # STYLE ME
+                 (stc.STC_PL_WORD, 'keyword_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

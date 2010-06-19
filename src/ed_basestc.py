@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 63656 2010-03-08 23:58:21Z CJP $"
-__revision__ = "$Revision: 63656 $"
+__svnid__ = "$Id: ed_basestc.py 64558 2010-06-11 11:53:43Z CJP $"
+__revision__ = "$Revision: 64558 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -139,16 +139,18 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
     def AutoIndent(self):
         """Indent from the current position to match the indentation
-        of the previous line.
-        @postcondition: proper type of white space is added from current pos
-                        to match that of indentation in above line
+        of the previous line. Unless the current file type has registered
+        a custom AutoIndenter in which case it will implement its own
+        behavior.
+
         """
         cpos = self.GetCurrentPos()
 
         # Check if a special purpose indenter has been registered
         if self._code['indenter'] is not None:
-            txt = self._code['indenter'](self, cpos, self.GetIndentChar())
-            txt = txt.replace('\n', self.GetEOLChar())
+            self.BeginUndoAction()
+            self._code['indenter'](self, cpos, self.GetIndentChar())
+            self.EndUndoAction()
         else:
             # Default Indenter
             line = self.GetCurrentLine()
@@ -161,8 +163,8 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             i_space = indent / self.GetTabWidth()
             ndent = self.GetEOLChar() + self.GetIndentChar() * i_space
             txt = ndent + ((indent - (self.GetTabWidth() * i_space)) * u' ')
+            self.AddText(txt)
 
-        self.AddText(txt)
         self.EnsureCaretVisible()
 
     def BackTab(self):
@@ -217,16 +219,6 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             # There is a selection
             super(EditraBaseStc, self).BackTab()
 
-    def BraceBadLight(self, pos):
-        """Highlight the character at the given position
-        @param pos: position of character to highlight with STC_STYLE_BRACEBAD
-
-        """
-        # Check if we are still alive or not, as this may be called
-        # after we have been deleted.
-        if isinstance(self, wx.stc.StyledTextCtrl):
-            super(EditraBaseStc, self).BraceBadLight(pos)
-
     def SetBlockCaret(self):
         """Change caret style to block"""
         # XXX: This doesn't seem to be working with this wxPython version.
@@ -239,6 +231,16 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         self.SetCaretWidth(1)
 #        self.SendMsg(2512, 1)
 
+    def BraceBadLight(self, pos):
+        """Highlight the character at the given position
+        @param pos: position of character to highlight with STC_STYLE_BRACEBAD
+
+        """
+        # Check if we are still alive or not, as this may be called
+        # after we have been deleted.
+        if self:
+            super(EditraBaseStc, self).BraceBadLight(pos)
+
     def BraceHighlight(self, pos1, pos2):
         """Highlight characters at pos1 and pos2
         @param pos1: position of char 1
@@ -247,7 +249,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         """
         # Check if we are still alive or not, as this may be called
         # after we have been deleted.
-        if isinstance(self, wx.stc.StyledTextCtrl):
+        if self:
             super(EditraBaseStc, self).BraceHighlight(pos1, pos2)
 
     def CanCopy(self):
@@ -654,6 +656,19 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         sel = self.GetSelection()
         return sel[0] != sel[1]
 
+    def HasMultilineSelection(self):
+        """Is the selection over multiple lines?
+        @return: bool
+
+        """
+        bMulti = False
+        sel = self.GetSelection()
+        if sel[0] != sel[1]:
+            sline = self.LineFromPosition(sel[0])
+            eline = self.LineFromPosition(sel[1])
+            bMulti = sline != eline
+        return bMulti
+
     def HidePopups(self):
         """Hide autocomp/calltip popup windows if any are active"""
         if self.AutoCompActive():
@@ -854,15 +869,6 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
     def SetFileName(self, path):
         """Set the buffers filename attributes from the given path"""
         self.file.SetPath(path)
-
-    def SetFocus(self):
-        """Set the focus to this control
-        @note: overridden as a hack for msw
-
-        """
-        super(EditraBaseStc, self).SetFocus()
-        if wx.Platform == '__WXMSW__':
-            wx.PostEvent(self, wx.FocusEvent(wx.wxEVT_SET_FOCUS, self.GetId()))
 
     def SetKeyWords(self, kw_lst):
         """Sets the keywords from a list of keyword sets

@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _kix.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _kix.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -65,17 +65,17 @@ MACROS = (2, "address build color comment cpu crlf csd curdir date day domain "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_KIX_COMMENT', 'comment_style'),
-                ('STC_KIX_DEFAULT', 'default_style'),
-                ('STC_KIX_FUNCTIONS', 'funct_style'),
-                ('STC_KIX_IDENTIFIER', 'default_style'),
-                ('STC_KIX_KEYWORD', 'keyword_style'),
-                ('STC_KIX_MACRO', 'pre_style'),
-                ('STC_KIX_NUMBER', 'number_style'),
-                ('STC_KIX_OPERATOR', 'operator_style'),
-                ('STC_KIX_STRING1', 'char_style'),
-                ('STC_KIX_STRING2', 'string_style'),
-                ('STC_KIX_VAR', 'scalar_style')]
+SYNTAX_ITEMS = [(stc.STC_KIX_COMMENT, 'comment_style'),
+                (stc.STC_KIX_DEFAULT, 'default_style'),
+                (stc.STC_KIX_FUNCTIONS, 'funct_style'),
+                (stc.STC_KIX_IDENTIFIER, 'default_style'),
+                (stc.STC_KIX_KEYWORD, 'keyword_style'),
+                (stc.STC_KIX_MACRO, 'pre_style'),
+                (stc.STC_KIX_NUMBER, 'number_style'),
+                (stc.STC_KIX_OPERATOR, 'operator_style'),
+                (stc.STC_KIX_STRING1, 'char_style'),
+                (stc.STC_KIX_STRING2, 'string_style'),
+                (stc.STC_KIX_VAR, 'scalar_style')]
 
 #-----------------------------------------------------------------------------#
 

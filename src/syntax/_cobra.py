@@ -13,8 +13,8 @@ Define support for Cobra programming language.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _cobra.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _cobra.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -48,22 +48,22 @@ KEYWORDS = ("abstract adds all and any as assert base be body bool branch "
 KEYWORDS = (0, KEYWORDS)
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_P_DEFAULT', 'default_style'),
-                 ('STC_P_CHARACTER', 'char_style'),
-                 ('STC_P_CLASSNAME', 'class_style'),
-                 ('STC_P_COMMENTBLOCK', 'comment_style'),
-                 ('STC_P_COMMENTLINE', 'comment_style'),
-                 ('STC_P_DECORATOR', 'decor_style'),
-                 ('STC_P_DEFNAME', 'keyword3_style'),
-                 ('STC_P_IDENTIFIER', 'default_style'),
-                 ('STC_P_NUMBER', 'number_style'),
-                 ('STC_P_OPERATOR', 'operator_style'),
-                 ('STC_P_STRING', 'string_style'),
-                 ('STC_P_STRINGEOL', 'stringeol_style'),
-                 ('STC_P_TRIPLE', 'string_style'),
-                 ('STC_P_TRIPLEDOUBLE', 'string_style'),
-                 ('STC_P_WORD', 'keyword_style'),
-                 ('STC_P_WORD2', 'userkw_style')]
+SYNTAX_ITEMS = [ (stc.STC_P_DEFAULT, 'default_style'),
+                 (stc.STC_P_CHARACTER, 'char_style'),
+                 (stc.STC_P_CLASSNAME, 'class_style'),
+                 (stc.STC_P_COMMENTBLOCK, 'comment_style'),
+                 (stc.STC_P_COMMENTLINE, 'comment_style'),
+                 (stc.STC_P_DECORATOR, 'decor_style'),
+                 (stc.STC_P_DEFNAME, 'keyword3_style'),
+                 (stc.STC_P_IDENTIFIER, 'default_style'),
+                 (stc.STC_P_NUMBER, 'number_style'),
+                 (stc.STC_P_OPERATOR, 'operator_style'),
+                 (stc.STC_P_STRING, 'string_style'),
+                 (stc.STC_P_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_P_TRIPLE, 'string_style'),
+                 (stc.STC_P_TRIPLEDOUBLE, 'string_style'),
+                 (stc.STC_P_WORD, 'keyword_style'),
+                 (stc.STC_P_WORD2, 'userkw_style')]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -98,35 +98,36 @@ class SyntaxData(syndata.SyntaxDataBase):
 
 #-----------------------------------------------------------------------------#
 
-def AutoIndenter(stc, pos, ichar):
-    """Auto indent cobra code. uses \n the text buffer will
-    handle any eol character formatting.
-    @param stc: EditraStyledTextCtrl
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent cobra code.
+    @param estc: EditraStyledTextCtrl
     @param pos: current carat position
     @param ichar: Indentation character
-    @return: string
 
     """
     rtxt = u''
-    line = stc.GetCurrentLine()
-    spos = stc.PositionFromLine(line)
-    text = stc.GetTextRange(spos, pos)
-    epos = stc.GetLineEndPosition(line)
+    line = estc.GetCurrentLine()
+    spos = estc.PositionFromLine(line)
+    text = estc.GetTextRange(spos, pos)
+    epos = estc.GetLineEndPosition(line)
+    eolch = estc.GetEOLChar()
     inspace = text.isspace()
 
     # Cursor is in the indent area somewhere
     if inspace:
-        return u"\n" + text
+        estc.AddText(eolch + text)
+        return
 
     # Check if the cursor is in column 0 and just return newline.
     if not len(text):
-        return u"\n"
+        estc.AddText(eolch)
+        return
 
-    indent = stc.GetLineIndentation(line)
+    indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
-        tabw = stc.GetTabWidth()
+        tabw = estc.GetTabWidth()
     else:
-        tabw = stc.GetIndent()
+        tabw = estc.GetIndent()
 
     i_space = indent / tabw
     end_spaces = ((indent - (tabw * i_space)) * u" ")
@@ -141,12 +142,13 @@ def AutoIndenter(stc, pos, ichar):
         elif tokens[-1].endswith(u"\\"):
             i_space += 1
 
-    rval = u"\n" + (ichar * i_space) + end_spaces
+    rval = eolch + (ichar * i_space) + end_spaces
     if inspace and ichar != u"\t":
         rpos = indent - (pos - spos)
         if rpos < len(rval) and rpos > 0:
             rval = rval[:-rpos]
         elif rpos >= len(rval):
-            rval = u"\n"
+            rval = eolch
 
-    return rval
+    # Put text in the buffer
+    estc.AddText(rval)

@@ -20,8 +20,8 @@ U{http://editra.org/?page=docs&doc=ess_spec}.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_style.py 62952 2009-12-20 02:01:47Z CJP $"
-__revision__ = "$Revision: 62952 $"
+__svnid__ = "$Id: ed_style.py 63701 2010-03-18 02:33:00Z CJP $"
+__revision__ = "$Revision: 63701 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -511,7 +511,8 @@ class StyleMgr(object):
 
         """
         if self.HasNamedStyle(name):
-            item = StyleMgr.STYLES[self.style_set][name]
+            scheme = self.GetStyleSet()
+            item = scheme[name]
 
             # Set font value if need be
             ival = unicode(item)
@@ -727,6 +728,7 @@ class StyleMgr(object):
                 style_dict[tag] = value
 
         # Validate leaf values and format into style string
+        rdict = dict()
         for style_def in style_dict:
             if not style_def[0][0].isalpha():
                 self.LOG("[ed_style][err] The style def %s is not a "
@@ -793,9 +795,9 @@ class StyleMgr(object):
                     value = style_str.strip(u",")
                     if isinstance(value, basestring):
                         new_item.SetAttrFromStr(value)
-                    style_dict[style_def] = new_item
+                    rdict[style_def] = new_item
 
-        return style_dict
+        return rdict
 
     def SetGlobalFont(self, fonttag, fontface, size=-1):
         """Sets one of the fonts in the global font set by tag
@@ -860,6 +862,7 @@ class StyleMgr(object):
             for style in style_dict.values():
                 if not isinstance(style, StyleItem):
                     self.LOG("[ed_style][err] Invalid data in style dictionary")
+                    self.style_set = 'default'
                     return False
 
             self.style_set = name

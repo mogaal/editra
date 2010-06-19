@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _lout.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _lout.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -74,17 +74,17 @@ LOUT_KW4 = (3, "fx vx aformat bformat doc eq graph slides tab text tbl")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_LOUT_COMMENT', 'comment_style'),
-                ('STC_LOUT_DEFAULT','default_style'),
-                ('STC_LOUT_IDENTIFIER', 'default_style'),
-                ('STC_LOUT_NUMBER', 'number_style'),
-                ('STC_LOUT_OPERATOR', 'operator_style'),
-                ('STC_LOUT_STRING', 'string_style'),
-                ('STC_LOUT_STRINGEOL', 'stringeol_style'),
-                ('STC_LOUT_WORD', 'scalar_style'),
-                ('STC_LOUT_WORD2', 'keyword2_style'),
-                ('STC_LOUT_WORD3', 'keyword_style'),
-                ('STC_LOUT_WORD4', 'class_style')]
+SYNTAX_ITEMS = [(stc.STC_LOUT_COMMENT, 'comment_style'),
+                (stc.STC_LOUT_DEFAULT,'default_style'),
+                (stc.STC_LOUT_IDENTIFIER, 'default_style'),
+                (stc.STC_LOUT_NUMBER, 'number_style'),
+                (stc.STC_LOUT_OPERATOR, 'operator_style'),
+                (stc.STC_LOUT_STRING, 'string_style'),
+                (stc.STC_LOUT_STRINGEOL, 'stringeol_style'),
+                (stc.STC_LOUT_WORD, 'scalar_style'),
+                (stc.STC_LOUT_WORD2, 'keyword2_style'),
+                (stc.STC_LOUT_WORD3, 'keyword_style'),
+                (stc.STC_LOUT_WORD4, 'class_style')]
 
 #---- Extra Properties ----#
 FOLD_COMPACT = ("fold.compact", '1')

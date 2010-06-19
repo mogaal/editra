@@ -685,7 +685,7 @@ def skiponmac(funct):
     """
     def SkipOnMac(*args, **kwargs):
         if wx.Platform != '__WXMAC__':
-            return funct(*args, **kwargs)
+            funct(*args, **kwargs)
         else:
             pass
 

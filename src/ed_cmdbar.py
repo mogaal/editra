@@ -18,8 +18,8 @@ a gradient using system defined colors.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_cmdbar.py 62452 2009-10-18 19:22:00Z CJP $"
-__revision__ = "$Revision: 62452 $"
+__svnid__ = "$Id: ed_cmdbar.py 64268 2010-05-10 03:25:48Z CJP $"
+__revision__ = "$Revision: 64268 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -764,12 +764,17 @@ class CommandExecuter(eclib.CommandEntryBase):
 
         # We expanded head, so trim the suggestion list of its head
         # so we can add the tail of the suggestion back to the original head
-        candidates = [os.path.basename(p) for p in os.listdir(head)
-                      if p.startswith(tail)]
-        candidates = [append_slash(os.path.join(os.path.dirname(path), cand))
-                      for cand in candidates]
-        if not files:
-            candidates = [cand for cand in candidates if os.path.isdir(cand)]
+        try:
+            candidates = [os.path.basename(p) for p in os.listdir(head)
+                          if p.startswith(tail)]
+            candidates = [append_slash(os.path.join(os.path.dirname(path), cand))
+                          for cand in candidates]
+            if not files:
+                candidates = [cand for cand in candidates if os.path.isdir(cand)]
+        except OSError:
+            ed_msg.PostMessage(ed_msg.EDMSG_UI_SB_TXT,
+                               (ed_glob.SB_INFO, _("Invalid Path")))
+            candidates = list()
 
         return sorted(list(set(candidates)))
 

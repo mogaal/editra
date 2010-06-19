@@ -15,8 +15,8 @@ AUTHOR: Igor Dejanovic
 """
 
 __author__ = "Igor Dejanovic <igor.dejanovic@gmail.com>"
-__svnid__ = "$Id: _xtext.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _xtext.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -120,35 +120,37 @@ def StyleText(stc, start, end):
         if tlen:
             stc.SetStyling(len(txt), style)
 
-def AutoIndenter(stc, pos, ichar):
-    """Auto indent xtext code. uses \n the text buffer will
-    handle any eol character formatting.
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent xtext code.
     This code is based on python AutoIndenter.
-    @param stc: EditraStyledTextCtrl
+    @param estc: EditraStyledTextCtrl
     @param pos: current carat position
     @param ichar: Indentation character
     @return: string
 
     """
     rtxt = u''
-    line = stc.GetCurrentLine()
-    spos = stc.PositionFromLine(line)
-    text = stc.GetTextRange(spos, pos)
+    line = estc.GetCurrentLine()
+    spos = estc.PositionFromLine(line)
+    text = estc.GetTextRange(spos, pos)
+    eolch = estc.GetEOLChar()
     inspace = text.isspace()
 
     # Cursor is in the indent area somewhere or in the column 0.
     if inspace or not len(text):
-        return u"\n" + text
+        estc.AddText(eolch + text)
+        return
 
     text = text.strip()
     if text.endswith(";"):
-        return u"\n"
+        estc.AddText(eolch)
+        return
 
-    indent = stc.GetLineIndentation(line)
+    indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
-        tabw = stc.GetTabWidth()
+        tabw = estc.GetTabWidth()
     else:
-        tabw = stc.GetIndent()
+        tabw = estc.GetIndent()
 
     i_space = indent / tabw
     end_spaces = ((indent - (tabw * i_space)) * u" ")
@@ -156,9 +158,10 @@ def AutoIndenter(stc, pos, ichar):
     if text.endswith(u":"):
         i_space += 1
 
-    rval = u"\n" + ichar * i_space + end_spaces
+    rtxt = eolch + ichar * i_space + end_spaces
 
-    return rval
+    # Put text in the buffer
+    estc.AddText(rtxt)
 
 #-----------------------------------------------------------------------------#
 

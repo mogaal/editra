@@ -15,8 +15,8 @@ AUTHOR: Rob McMullen
 """
 
 __author__ = "Rob McMullen <robm@users.sourceforge.net>"
-__svnid__ = "$Id: _dot.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _dot.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -58,27 +58,27 @@ DOT_TYPES = (1,
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_C_DEFAULT', 'default_style'),
-                 ('STC_C_COMMENT', 'comment_style'),
-                 ('STC_C_COMMENTLINE', 'comment_style'),
-                 ('STC_C_COMMENTDOC', 'comment_style'),
-                 ('STC_C_COMMENTDOCKEYWORD', 'dockey_style'),
-                 ('STC_C_COMMENTDOCKEYWORDERROR', 'error_style'),
-                 ('STC_C_COMMENTLINE', 'comment_style'),
-                 ('STC_C_COMMENTLINEDOC', 'comment_style'),
-                 ('STC_C_CHARACTER', 'char_style'),
-                 ('STC_C_GLOBALCLASS', 'global_style'),
-                 ('STC_C_IDENTIFIER', 'default_style'),
-                 ('STC_C_NUMBER', 'number_style'),
-                 ('STC_C_OPERATOR', 'operator_style'),
-                 ('STC_C_PREPROCESSOR', 'pre_style'),
-                 ('STC_C_REGEX', 'pre_style'),
-                 ('STC_C_STRING', 'string_style'),
-                 ('STC_C_STRINGEOL', 'stringeol_style'),
-                 ('STC_C_UUID', 'pre_style'),
-                 ('STC_C_VERBATIM', "number2_style"),
-                 ('STC_C_WORD', 'keyword_style'),
-                 ('STC_C_WORD2', 'keyword2_style') ]
+SYNTAX_ITEMS = [ (stc.STC_C_DEFAULT, 'default_style'),
+                 (stc.STC_C_COMMENT, 'comment_style'),
+                 (stc.STC_C_COMMENTLINE, 'comment_style'),
+                 (stc.STC_C_COMMENTDOC, 'comment_style'),
+                 (stc.STC_C_COMMENTDOCKEYWORD, 'dockey_style'),
+                 (stc.STC_C_COMMENTDOCKEYWORDERROR, 'error_style'),
+                 (stc.STC_C_COMMENTLINE, 'comment_style'),
+                 (stc.STC_C_COMMENTLINEDOC, 'comment_style'),
+                 (stc.STC_C_CHARACTER, 'char_style'),
+                 (stc.STC_C_GLOBALCLASS, 'global_style'),
+                 (stc.STC_C_IDENTIFIER, 'default_style'),
+                 (stc.STC_C_NUMBER, 'number_style'),
+                 (stc.STC_C_OPERATOR, 'operator_style'),
+                 (stc.STC_C_PREPROCESSOR, 'pre_style'),
+                 (stc.STC_C_REGEX, 'pre_style'),
+                 (stc.STC_C_STRING, 'string_style'),
+                 (stc.STC_C_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_C_UUID, 'pre_style'),
+                 (stc.STC_C_VERBATIM, "number2_style"),
+                 (stc.STC_C_WORD, 'keyword_style'),
+                 (stc.STC_C_WORD2, 'keyword2_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -86,6 +86,7 @@ FOLD_PRE = ("styling.within.preprocessor", "0")
 FOLD_COM = ("fold.comment", "1")
 FOLD_COMP = ("fold.compact", "1")
 FOLD_ELSE = ("fold.at.else", "0")
+
 #-----------------------------------------------------------------------------#
 
 class SyntaxData(syndata.SyntaxDataBase):

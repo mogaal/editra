@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: editra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 18:29-0600\n"
+"POT-Creation-Date: 2010-05-16 14:03-0500\n"
 "PO-Revision-Date: 2009-08-28 16:48+0000\n"
 "Last-Translator: Miro Glavić <glavicmiro@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-09-02 23:32+0000\n"
+"X-Launchpad-Export-Date: 2010-05-16 18:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../src/ed_search.py:429
@@ -32,7 +32,7 @@ msgstr "%d podudarnosti su zamijenjene."
 msgid "%s Source File"
 msgstr "%s Izvorna Datoteka"
 
-#: ../../src/ed_main.py:584
+#: ../../src/ed_main.py:599
 #, python-format
 msgid ""
 "%s could not be found.\n"
@@ -41,12 +41,12 @@ msgstr ""
 "%s nije pronađen.\n"
 "Moguće je da je pomjeren ili obrisan."
 
-#: ../../src/ed_stc.py:1667
+#: ../../src/ed_stc.py:1699
 #, python-format
 msgid "%s does not exist"
 msgstr "%s ne postoji"
 
-#: ../../src/ed_editv.py:445
+#: ../../src/ed_editv.py:442
 #, python-format
 msgid ""
 "%s has been deleted since its last save point.\n"
@@ -57,7 +57,7 @@ msgstr ""
 "\n"
 "Hoćete li ga ponovo spremiti?"
 
-#: ../../src/ed_editv.py:465
+#: ../../src/ed_editv.py:462
 #, python-format
 msgid ""
 "%s has been modified by another application.\n"
@@ -100,7 +100,7 @@ msgstr "&Pismo"
 msgid "&Goto Line"
 msgstr "&Idi na Red"
 
-#: ../../src/ed_main.py:149 ../../src/ed_menu.py:842
+#: ../../src/ed_main.py:149 ../../src/ed_menu.py:843
 msgid "&Help"
 msgstr "&Pomoć"
 
@@ -156,7 +156,7 @@ msgstr "**Alias**"
 msgid "**New Value**"
 msgstr "**Nova Vrijednost**"
 
-#: ../../src/eclib/filterdlg.py:74
+#: ../../src/eclib/filterdlg.py:76
 msgid "<< Remove"
 msgstr ""
 
@@ -173,7 +173,7 @@ msgstr "O"
 msgid "Access Denied: %s"
 msgstr "Pristup Odbijen: %s"
 
-#: ../../src/eclib/filterdlg.py:73
+#: ../../src/eclib/filterdlg.py:75
 msgid "Add >>"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr "ProtuPreklapanje"
 msgid "Appearance"
 msgstr "Izgled"
 
-#: ../../src/prefdlg.py:1767
+#: ../../src/prefdlg.py:1760
 msgid "Apply"
 msgstr "Primijeni"
 
@@ -231,7 +231,7 @@ msgstr "Primijeni"
 msgid "Are you sure want to delete %s?"
 msgstr ""
 
-#: ../../src/plugdlg.py:1058
+#: ../../src/plugdlg.py:1060
 #, python-format
 msgid ""
 "Are you sure you want to uninstall %s?\n"
@@ -246,11 +246,11 @@ msgstr "Atributi"
 msgid "Audible feedback when errors are detected"
 msgstr "Zvučna obavijest kod otkrivanja grešaka"
 
-#: ../../src/ed_main.py:1225
+#: ../../src/ed_main.py:1237
 msgid "Aui Pane Navigator"
 msgstr "Navigator Aui Okna"
 
-#: ../../src/plugdlg.py:948 ../../src/plugdlg.py:1127
+#: ../../src/plugdlg.py:948 ../../src/plugdlg.py:1129
 #, python-format
 msgid "Author: %s"
 msgstr "Autor: %s"
@@ -307,11 +307,11 @@ msgstr "Periodično napravi rezervnu kopiju međuspremnika u datoteku"
 msgid "Base new theme on existing one"
 msgstr "Baziraj novu temu na postojećoj"
 
-#: ../../src/prefdlg.py:1741
+#: ../../src/prefdlg.py:1734
 msgid "Binding"
 msgstr "Povezivanje"
 
-#: ../../src/prefdlg.py:2155
+#: ../../src/prefdlg.py:2148
 msgid "Black/White"
 msgstr "Crno/Bijelo"
 
@@ -331,12 +331,16 @@ msgstr "Označi Srednju Zagradu"
 msgid "Browse"
 msgstr "Pretraži"
 
+#: ../../src/ed_menu.py:838
+msgid "Bug Tracker..."
+msgstr ""
+
 #: ../../src/ed_cmdbar.py:559
 #, python-format
 msgid "Can't change directory to: %s"
 msgstr "Nemoguće promijeniti direktorij u: %s"
 
-#: ../../src/ed_search.py:1241 ../../src/style_editor.py:139
+#: ../../src/ed_search.py:1242 ../../src/style_editor.py:139
 #: ../../src/updater.py:567
 msgid "Cancel"
 msgstr "Poništi"
@@ -402,11 +406,11 @@ msgstr "Odaberi Mapu"
 msgid "Choose Search Folder"
 msgstr "Odaberi Mapu za Pretraživanje"
 
-#: ../../src/ed_main.py:676
+#: ../../src/ed_main.py:688
 msgid "Choose a Save Location"
 msgstr "Odaberi Lokaciju za Spremanje"
 
-#: ../../src/ed_pages.py:166
+#: ../../src/ed_pages.py:168
 msgid "Choose an Encoding"
 msgstr "Odaberi Šifriranje"
 
@@ -418,7 +422,7 @@ msgstr "Odaberi izvršnu"
 msgid "Class Definitions"
 msgstr "Definicije Klase"
 
-#: ../../src/ed_log.py:140 ../../src/ed_search.py:1250
+#: ../../src/ed_log.py:140 ../../src/ed_search.py:1251
 #: ../../plugins/Launch/launch/launch.py:204
 #: ../../plugins/PyShell/PyShell/__init__.py:114
 msgid "Clear"
@@ -428,12 +432,12 @@ msgstr "Očisti"
 msgid "Click on an item to edit"
 msgstr "Klikni na stavku za uređivanje"
 
-#: ../../src/ed_editv.py:282
+#: ../../src/ed_editv.py:230
 #, python-format
 msgid "Close \"%s\""
 msgstr "Zatvori \"%s\""
 
-#: ../../src/ed_editv.py:284
+#: ../../src/ed_editv.py:232
 msgid "Close All"
 msgstr "Zatvori Sve"
 
@@ -445,7 +449,7 @@ msgstr "Zatvori Sve Kartice"
 msgid "Close Current Tab"
 msgstr "Zatvori Trenutnu Karticu"
 
-#: ../../src/ed_editv.py:283
+#: ../../src/ed_editv.py:231
 #, fuzzy
 msgid "Close Other Tabs"
 msgstr "Zatvori Sve Kartice"
@@ -494,11 +498,11 @@ msgstr "Kodna Sintaksa Boje Označavanja"
 msgid "Color Scheme"
 msgstr "Shema Boja"
 
-#: ../../src/prefdlg.py:2157
+#: ../../src/prefdlg.py:2150
 msgid "Colour/Default"
 msgstr "Boja/Zadana"
 
-#: ../../src/prefdlg.py:2156
+#: ../../src/prefdlg.py:2149
 msgid "Colour/White"
 msgstr "Boja/Bijela"
 
@@ -546,7 +550,7 @@ msgstr "Pretvori prorede u kartice u odabranom/cijelom tekstu"
 msgid "Convert tabs to spaces in selected/all text"
 msgstr "Pretvori kartice u prorede u odabranom/cijelom tekstu"
 
-#: ../../src/ed_editv.py:132 ../../src/ed_toolbar.py:85
+#: ../../src/ed_editv.py:363 ../../src/ed_toolbar.py:85
 msgid "Copy"
 msgstr "Kopiraj"
 
@@ -554,7 +558,7 @@ msgstr "Kopiraj"
 msgid "Copy Current Line"
 msgstr "Kopiraj Aktivni Red"
 
-#: ../../src/ed_editv.py:286
+#: ../../src/ed_editv.py:234
 msgid "Copy Full Path"
 msgstr "Kopiraj Cijeli Put"
 
@@ -566,7 +570,7 @@ msgstr "Kopiraj Red"
 msgid "Copy Selected Text to Clipboard"
 msgstr "Kopiraj Odabrani Tekst u Međumemoriju"
 
-#: ../../src/ed_main.py:1531
+#: ../../src/ed_main.py:1545
 msgid "Copyright"
 msgstr "Autorsko pravo"
 
@@ -596,7 +600,7 @@ msgstr "Aktivni Dokument"
 msgid "Customize"
 msgstr ""
 
-#: ../../src/ed_main.py:1421
+#: ../../src/ed_main.py:1433
 msgid "Customize Menu"
 msgstr ""
 
@@ -608,7 +612,7 @@ msgstr ""
 msgid "Customize..."
 msgstr ""
 
-#: ../../src/ed_editv.py:131 ../../src/ed_toolbar.py:83
+#: ../../src/ed_editv.py:362 ../../src/ed_toolbar.py:83
 msgid "Cut"
 msgstr "Izreži"
 
@@ -660,7 +664,7 @@ msgstr "Zadano označavanje za nove dokumente"
 msgid "Defines"
 msgstr "Definira"
 
-#: ../../src/prefdlg.py:1710
+#: ../../src/prefdlg.py:1703
 msgid "Delete"
 msgstr "Obriši"
 
@@ -696,9 +700,8 @@ msgid "Desktop"
 msgstr "Radna površina"
 
 #: ../../src/prefdlg.py:567
-#, fuzzy
 msgid "Dictionary"
-msgstr "Smjer"
+msgstr ""
 
 #: ../../src/eclib/finddlg.py:800
 msgid "Direction"
@@ -716,7 +719,7 @@ msgstr "Prikaži Pismo"
 msgid "Do you wish to exit?"
 msgstr "Želite izaći?"
 
-#: ../../src/ed_pages.py:955
+#: ../../src/ed_pages.py:977
 #, python-format
 msgid ""
 "Do you wish to open all %d files in this directory?\n"
@@ -735,7 +738,7 @@ msgstr "Dokument"
 msgid "Down"
 msgstr "Dolje"
 
-#: ../../src/plugdlg.py:120 ../../src/plugdlg.py:460 ../../src/plugdlg.py:1106
+#: ../../src/plugdlg.py:120 ../../src/plugdlg.py:460 ../../src/plugdlg.py:1108
 #: ../../src/prefdlg.py:1521
 msgid "Download"
 msgstr "Preuzimanje"
@@ -786,12 +789,12 @@ msgstr "I&zlaz"
 msgid "EOL Mode"
 msgstr "EOL Mod"
 
-#: ../../src/ed_main.py:649
+#: ../../src/ed_main.py:664
 #, python-format
 msgid "ERROR: %s"
 msgstr "GREŠKA: %s"
 
-#: ../../src/ed_main.py:692
+#: ../../src/ed_main.py:704
 #, python-format
 msgid "ERROR: Failed to save %s"
 msgstr "GREŠKA: Neuspjeh u spremanju %s"
@@ -841,7 +844,7 @@ msgstr ""
 "Greška:\n"
 "%(errormsg)s"
 
-#: ../../src/ed_main.py:1521
+#: ../../src/ed_main.py:1535
 msgid "Editra is a programmers text editor."
 msgstr "Editra je programerski urednik teksta"
 
@@ -849,12 +852,12 @@ msgstr "Editra je programerski urednik teksta"
 msgid "Editra translations project"
 msgstr "Editra projekt prevođenja"
 
-#: ../../src/ed_main.py:446
+#: ../../src/ed_main.py:461
 #, fuzzy
 msgid "Editra: Open"
 msgstr "Editra Dnevnik"
 
-#: ../../src/ed_pages.py:368
+#: ../../src/ed_pages.py:370
 msgid "Empty File"
 msgstr "Prazna Datoteka"
 
@@ -890,7 +893,7 @@ msgstr "Unesi heks vrijednost boje"
 msgid "Enter style sheet name"
 msgstr "Unesi naziv formatne liste"
 
-#: ../../src/prefdlg.py:1905
+#: ../../src/prefdlg.py:1898
 msgid "Enter the name of the new key profile"
 msgstr "Unesi ime novog ključnog profila"
 
@@ -898,7 +901,7 @@ msgstr "Unesi ime novog ključnog profila"
 msgid "Enter wildcard shell patterns for matching files (*.txt)."
 msgstr "Unesi višeznačne ljušturne uzorke za podudarne datoteke (*.txt)."
 
-#: ../../src/ed_editv.py:241 ../../src/plugdlg.py:838
+#: ../../src/ed_editv.py:189 ../../src/plugdlg.py:838
 msgid "Error"
 msgstr "Greška"
 
@@ -906,7 +909,7 @@ msgstr "Greška"
 msgid "Error Opening File"
 msgstr "Greška u Otvaranju Datoteke"
 
-#: ../../src/ed_pages.py:318
+#: ../../src/ed_pages.py:320
 msgid "Error Saving Session File"
 msgstr "Greška Kod Spremanja Datoteke Sesije"
 
@@ -939,7 +942,7 @@ msgstr ""
 "Pomozite poboljšati Editra klikom na Prijavi Grešku\n"
 "da pošaljete Istražitelja Greške prikazanog ispod."
 
-#: ../../src/ed_main.py:1471
+#: ../../src/ed_main.py:1485
 #, python-format
 msgid "Error: Unable to open %s"
 msgstr "Greška: Nemoguće otvoriti %s"
@@ -980,7 +983,7 @@ msgstr "Izvezi Formatnu Listu"
 msgid "Extended Auto-Comp"
 msgstr "Prošireni Auto-Comp"
 
-#: ../../src/prefdlg.py:2044
+#: ../../src/prefdlg.py:2037
 msgid "Extensions (space separated, no dots)"
 msgstr "Dodaci (odvojeni razmakom, ne točkama)"
 
@@ -1005,7 +1008,7 @@ msgstr "Neuspjelo instaliranje %d priključaka"
 msgid "Failed to load Enchant"
 msgstr ""
 
-#: ../../src/ed_editv.py:239
+#: ../../src/ed_editv.py:187
 #, python-format
 msgid ""
 "Failed to reload %(filename)s:\n"
@@ -1014,7 +1017,7 @@ msgstr ""
 "Neuspjeh kod ponovnog učitavanja %(filename)s:\n"
 "Greška: %(errmsg)s"
 
-#: ../../src/ed_main.py:1206
+#: ../../src/ed_main.py:1218
 #, python-format
 msgid "Failed to reload the file with: %(encoding)s"
 msgstr "Neuspjeh kod ponovnog učitavanja datoteke sa: %(encoding)s"
@@ -1032,7 +1035,7 @@ msgstr ""
 "Greška:\n"
 "%(errormsg)s"
 
-#: ../../src/ed_menu.py:838
+#: ../../src/ed_menu.py:839
 msgid "Feedback"
 msgstr "Povratna informacija"
 
@@ -1048,7 +1051,7 @@ msgstr "Filteri Datoteka:"
 msgid "File History Length"
 msgstr "Dužina Povijesti Datoteke"
 
-#: ../../src/ed_main.py:586
+#: ../../src/ed_main.py:601
 msgid "File Not Found"
 msgstr "Datoteka Nije Pronađena"
 
@@ -1069,11 +1072,11 @@ msgstr "Vrsta Datoteke"
 msgid "File backup performed: %s"
 msgstr "Spremanje rezerve datoteke obavljeno: %s"
 
-#: ../../src/ed_stc.py:1714
+#: ../../src/ed_stc.py:1746
 msgid "File is Read Only and cannot be saved"
 msgstr "Datoteka je samo za čitanje i ne može biti spremljena"
 
-#: ../../src/ed_pages.py:205
+#: ../../src/ed_pages.py:207
 msgid ""
 "File is already open in an existing page.\n"
 "Do you wish to open it again?"
@@ -1082,11 +1085,10 @@ msgstr ""
 "Da li želite da je ponovo otvorite?"
 
 #: ../../src/prefdlg.py:304 ../../src/eclib/filemgrdlg.py:218
-#, fuzzy
 msgid "Files"
-msgstr "&Datoteka"
+msgstr ""
 
-#: ../../src/ed_search.py:1295
+#: ../../src/ed_search.py:1296
 #, python-format
 msgid "Files Searched: %d"
 msgstr "Pretražene Datoteke: %d"
@@ -1175,7 +1177,7 @@ msgstr "Prednji plan"
 msgid "Format"
 msgstr "Format"
 
-#: ../../src/ed_stc.py:1093
+#: ../../src/ed_stc.py:1103
 msgid "Format EOL?"
 msgstr "Formatiraj EOL?"
 
@@ -1286,7 +1288,7 @@ msgstr "Označi pozadinu aktivnog reda"
 msgid "Home directory"
 msgstr "Glavni Direktorij"
 
-#: ../../src/ed_main.py:1523
+#: ../../src/ed_main.py:1537
 msgid "Homepage"
 msgstr "Početna stranica"
 
@@ -1363,8 +1365,13 @@ msgstr "Greška u Instaliranju"
 msgid "Installed Version"
 msgstr "Instalirana Verzija"
 
-#: ../../src/ed_pages.py:347
+#: ../../src/ed_pages.py:349
 msgid "Invalid File"
+msgstr "Nevažeća Datoteka"
+
+#: ../../src/ed_cmdbar.py:776
+#, fuzzy
+msgid "Invalid Path"
 msgstr "Nevažeća Datoteka"
 
 #: ../../src/ed_search.py:349
@@ -1372,16 +1379,16 @@ msgstr "Nevažeća Datoteka"
 msgid "Invalid expression \"%s\""
 msgstr "Nevažeći Izraz \"%s\""
 
-#: ../../src/ed_pages.py:361
+#: ../../src/ed_pages.py:363
 msgid "Invalid file"
 msgstr "Nevažeća datoteka"
 
-#: ../../src/ed_pages.py:939
+#: ../../src/ed_pages.py:961
 #, python-format
 msgid "Invalid file: %s"
 msgstr "Nevažeća datoteka: %s"
 
-#: ../../src/prefdlg.py:2158
+#: ../../src/prefdlg.py:2151
 msgid "Inverse"
 msgstr "Obrnut"
 
@@ -1397,11 +1404,11 @@ msgstr "Sastavi Odabrane Redove"
 msgid "Jump to Saved Path"
 msgstr "Prebaci na Spremljeni Put"
 
-#: ../../src/prefdlg.py:1737
+#: ../../src/prefdlg.py:1730
 msgid "Key"
 msgstr "Ključ"
 
-#: ../../src/prefdlg.py:1706
+#: ../../src/prefdlg.py:1699
 msgid "Key Profile"
 msgstr "Ključni Profil"
 
@@ -1437,7 +1444,7 @@ msgstr "Lansiraj Konfiguraciju"
 msgid "Layout"
 msgstr "Raspored"
 
-#: ../../src/prefdlg.py:2042
+#: ../../src/prefdlg.py:2035
 msgid "Lexer"
 msgstr "Lexer"
 
@@ -1446,11 +1453,10 @@ msgid "Lexers"
 msgstr "Lexers"
 
 #: ../../src/prefdlg.py:647
-#, fuzzy
 msgid "Library Error"
-msgstr "Greška Štampača"
+msgstr ""
 
-#: ../../src/ed_main.py:1525
+#: ../../src/ed_main.py:1539
 msgid "License: wxWindows (see COPYING.txt for full license)"
 msgstr "Dozvola: wxWindows (pogledaj COPYING.txt za kompletnu dozvolu)"
 
@@ -1458,7 +1464,7 @@ msgstr "Dozvola: wxWindows (pogledaj COPYING.txt za kompletnu dozvolu)"
 msgid "Line Edit"
 msgstr "Uređivanje Reda"
 
-#: ../../src/ed_stc.py:690
+#: ../../src/ed_stc.py:700
 #, python-format
 msgid "Line: %(lnum)d  Column: %(cnum)d"
 msgstr "Red: %(lnum)d  Stubac: %(cnum)d"
@@ -1475,11 +1481,11 @@ msgstr "Učitaj Profil"
 msgid "Load Session"
 msgstr "Učitaj Sesiju"
 
-#: ../../src/ed_main.py:732 ../../src/ed_menu.py:544
+#: ../../src/ed_main.py:744 ../../src/ed_menu.py:544
 msgid "Load a Custom Profile"
 msgstr "Učitaj Prilagođeni Profil"
 
-#: ../../src/ed_main.py:783
+#: ../../src/ed_main.py:795
 msgid "Load a Session file"
 msgstr "Učitaj datoteku Sesije"
 
@@ -1499,12 +1505,12 @@ msgstr "Učitaj i spremi podešene esije."
 msgid "Load files from last session on startup"
 msgstr "Učitaj datoteke sa zadnje sesije pri podizanju sustava"
 
-#: ../../src/ed_main.py:739
+#: ../../src/ed_main.py:751
 #, python-format
 msgid "Loaded Profile: %s"
 msgstr "Učitan Profil: %s"
 
-#: ../../src/ed_main.py:797
+#: ../../src/ed_main.py:809
 #, python-format
 msgid "Loaded Session: %s"
 msgstr "Učitana Sesija: %s"
@@ -1553,11 +1559,11 @@ msgstr "Slučaj Podudarnosti"
 msgid "Match case"
 msgstr "Slučaj podudarnosti"
 
-#: ../../src/ed_main.py:1399 ../../src/ed_menu.py:686
+#: ../../src/ed_main.py:1411 ../../src/ed_menu.py:686
 msgid "Maximize Editor"
 msgstr "Urednik Maksimiziranja"
 
-#: ../../src/prefdlg.py:1719
+#: ../../src/prefdlg.py:1712
 msgid "Menu"
 msgstr "Izbornik"
 
@@ -1569,7 +1575,7 @@ msgstr "Razno"
 msgid "Missing session files"
 msgstr "Nedostaju datoteke sesije"
 
-#: ../../src/ed_stc.py:1090
+#: ../../src/ed_stc.py:1100
 msgid ""
 "Mixed EOL characters detected.\n"
 "\n"
@@ -1583,11 +1589,11 @@ msgstr ""
 msgid "Modified"
 msgstr "Promijenjeno"
 
-#: ../../src/prefdlg.py:1729
+#: ../../src/prefdlg.py:1722
 msgid "Modifier 1"
 msgstr "Modifikator 1"
 
-#: ../../src/prefdlg.py:1733
+#: ../../src/prefdlg.py:1726
 msgid "Modifier 2"
 msgstr "Modifikator 2"
 
@@ -1603,7 +1609,7 @@ msgstr "Pomakni Aktivni Red Dolje"
 msgid "Move Current Line Up"
 msgstr "Pomakni Aktivni Red Gore"
 
-#: ../../src/ed_editv.py:279
+#: ../../src/ed_editv.py:227
 msgid "Move Tab to New Window"
 msgstr "Pomjeri Karticu na Novi Prozor"
 
@@ -1635,7 +1641,7 @@ msgstr "Prostori za ime"
 msgid "Network"
 msgstr "Mreža"
 
-#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1709
+#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1702
 #: ../../src/style_editor.py:198
 msgid "New"
 msgstr "Novi"
@@ -1660,11 +1666,11 @@ msgstr "Novi Red Iza"
 msgid "New Line Before"
 msgstr "Novi Red Ispred"
 
-#: ../../src/prefdlg.py:1904
+#: ../../src/prefdlg.py:1897
 msgid "New Profile"
 msgstr "Novi Profil"
 
-#: ../../src/ed_editv.py:278
+#: ../../src/ed_editv.py:226
 msgid "New Tab"
 msgstr "Nova Kartica"
 
@@ -1684,20 +1690,19 @@ msgstr "Slijedeća Pozicija"
 msgid "No Description Available"
 msgstr "Nema Raspoloživog Opisa"
 
-#: ../../src/ed_editv.py:160
-#, fuzzy
+#: ../../src/ed_editv.py:392
 msgid "No Suggestions"
-msgstr "Sekcije"
+msgstr ""
 
-#: ../../src/ed_pages.py:949
+#: ../../src/ed_pages.py:971
 msgid "No Valid Files to Open"
 msgstr "Nema Važećih Datoteka za Otvoriti"
 
-#: ../../src/prefdlg.py:1803
+#: ../../src/prefdlg.py:1796
 msgid "None"
 msgstr "Nijedan"
 
-#: ../../src/prefdlg.py:2159
+#: ../../src/prefdlg.py:2152
 msgid "Normal"
 msgstr "Normalno"
 
@@ -1709,7 +1714,7 @@ msgstr "Nije implementirano"
 msgid "Ok"
 msgstr "U redu"
 
-#: ../../src/ed_glob.py:380 ../../src/ed_mdlg.py:137
+#: ../../src/ed_glob.py:382 ../../src/ed_mdlg.py:137
 msgid "Old Machintosh (\\r)"
 msgstr "Stari Mackintosh (\\r)"
 
@@ -1741,7 +1746,7 @@ msgstr "Otvori Python Ljušturu"
 msgid "Open Code Browser Sidepanel"
 msgstr "Otvori Bočni Panel Pretraživača Koda"
 
-#: ../../src/ed_pages.py:960
+#: ../../src/ed_pages.py:982
 msgid "Open Directory?"
 msgstr "Otvori Direktorij?"
 
@@ -1749,7 +1754,7 @@ msgstr "Otvori Direktorij?"
 msgid "Open Documents"
 msgstr "Otvori Dokumente"
 
-#: ../../src/ed_pages.py:207
+#: ../../src/ed_pages.py:209
 msgid "Open File"
 msgstr "Otvori Datoteku"
 
@@ -1769,12 +1774,12 @@ msgstr "Otvori Traku za Brzo Pronalaženje"
 msgid "Open with "
 msgstr "Otvori sa "
 
-#: ../../src/ed_pages.py:980
+#: ../../src/ed_pages.py:1002
 #, python-format
 msgid "Opened file: %s"
 msgstr "Otvorena datoteka: %s"
 
-#: ../../src/ed_main.py:1468
+#: ../../src/ed_main.py:1482
 #, python-format
 msgid "Opening %s"
 msgstr "Otvaranje %s"
@@ -1804,7 +1809,7 @@ msgstr "Navigator Okna"
 msgid "Password"
 msgstr "Lozinka"
 
-#: ../../src/ed_editv.py:133 ../../src/ed_toolbar.py:87
+#: ../../src/ed_editv.py:364 ../../src/ed_toolbar.py:87
 msgid "Paste"
 msgstr "Zalijepi"
 
@@ -1844,19 +1849,19 @@ msgstr "Prepektive"
 msgid "Plain Text"
 msgstr "Običan tekst"
 
-#: ../../src/ed_main.py:1524
+#: ../../src/ed_main.py:1538
 msgid "Platform Info"
 msgstr "Podaci o Platformi"
 
-#: ../../src/Editra.py:884
+#: ../../src/Editra.py:889
 msgid "Please check the preferences dialog to check your preferences"
 msgstr "Molimo pogledajte dijalog povlastica da provjerite vaše povlastice"
 
-#: ../../src/Editra.py:1093
+#: ../../src/Editra.py:1098
 msgid "Please check the preferences dialog to verify your preferences"
 msgstr "Molimo provjerite dijalog povlastica za verificiranje povlastica."
 
-#: ../../src/ed_main.py:1057 ../../src/ed_menu.py:806
+#: ../../src/ed_main.py:1069 ../../src/ed_menu.py:806
 msgid "Plugin Manager"
 msgstr "Upravitelj Priključaka"
 
@@ -1932,16 +1937,16 @@ msgstr "Mod Pisača"
 msgid "Procedure Definitions"
 msgstr "Definicije Procedura"
 
-#: ../../src/ed_main.py:713 ../../src/ed_main.py:734 ../../src/ed_menu.py:545
+#: ../../src/ed_main.py:725 ../../src/ed_main.py:746 ../../src/ed_menu.py:545
 msgid "Profile"
 msgstr "Profil"
 
-#: ../../src/ed_main.py:718
+#: ../../src/ed_main.py:730
 #, python-format
 msgid "Profile Saved as: %s"
 msgstr "Profil Spremljen kao: %s"
 
-#: ../../src/Editra.py:886 ../../src/Editra.py:1095
+#: ../../src/Editra.py:891 ../../src/Editra.py:1100
 msgid "Profile Updated"
 msgstr "Profil Ažuriran"
 
@@ -1990,7 +1995,7 @@ msgstr "Brzina: %.2f Kb/s"
 msgid "Re-run the last run program"
 msgstr "Ponovo izvedi zadnji izvedeni program"
 
-#: ../../src/ed_stc.py:1715
+#: ../../src/ed_stc.py:1747
 msgid "Read Only"
 msgstr "Samo za Čitanje"
 
@@ -2002,15 +2007,15 @@ msgstr "Skorašnje Pretrage"
 msgid "Recently Opened Files"
 msgstr "Nedavno Otvorene Datoteke"
 
-#: ../../src/ed_stc.py:1361
+#: ../../src/ed_stc.py:1371
 msgid "Recording Finished"
 msgstr "Snimanje Završeno"
 
-#: ../../src/ed_stc.py:1348
+#: ../../src/ed_stc.py:1358
 msgid "Recording Macro"
 msgstr "Snimanje Makro"
 
-#: ../../src/ed_editv.py:129 ../../src/ed_menu.py:577
+#: ../../src/ed_editv.py:360 ../../src/ed_menu.py:577
 #: ../../src/ed_toolbar.py:81
 msgid "Redo"
 msgstr "Ponovi"
@@ -2031,7 +2036,7 @@ msgstr "Regularni Izraz"
 msgid "Regular expression"
 msgstr "Regularni izraz"
 
-#: ../../src/ed_editv.py:468
+#: ../../src/ed_editv.py:465
 msgid "Reload File?"
 msgstr "Ponovo Učitaj Datoteku?"
 
@@ -2039,7 +2044,7 @@ msgstr "Ponovo Učitaj Datoteku?"
 msgid "Reload the file with a specified encoding"
 msgstr "Ponovo učitaj datoteku sa specificiranim šifriranjem"
 
-#: ../../src/ed_main.py:1194
+#: ../../src/ed_main.py:1206
 msgid "Reload with Encoding"
 msgstr "Ponovo Učitaj sa Šifriranjem"
 
@@ -2103,11 +2108,11 @@ msgstr "Zamijeni sa"
 msgid "Report Error"
 msgstr "Greška u Izvješću"
 
-#: ../../src/ed_editv.py:448
+#: ../../src/ed_editv.py:445
 msgid "Resave File?"
 msgstr "Ponovo Spremi Datoteku?"
 
-#: ../../src/ed_main.py:1401
+#: ../../src/ed_main.py:1413
 msgid "Restore Editor"
 msgstr "Restauriraj Urednika"
 
@@ -2123,7 +2128,7 @@ msgstr "Objavi u "
 msgid "Revert file to last save point"
 msgstr "Vrati datoteku u trenutak zadnjeg spremanja"
 
-#: ../../src/prefdlg.py:1103 ../../src/prefdlg.py:1765
+#: ../../src/prefdlg.py:1103 ../../src/prefdlg.py:1758
 msgid "Revert to Default"
 msgstr "Vrati na Zadanu Vrijednost"
 
@@ -2153,7 +2158,7 @@ msgstr "Izvedi datoteku pridruženu aktivnom međuspremniku u Launch"
 msgid "Save"
 msgstr "Spremi"
 
-#: ../../src/ed_editv.py:281
+#: ../../src/ed_editv.py:229
 #, python-format
 msgid "Save \"%s\""
 msgstr "Spremi \"%s\""
@@ -2170,7 +2175,7 @@ msgstr "Spremi Sve"
 msgid "Save As"
 msgstr "Spremi Kao"
 
-#: ../../src/ed_editv.py:504
+#: ../../src/ed_editv.py:501
 msgid "Save Changes?"
 msgstr "Spremi Promjene?"
 
@@ -2222,12 +2227,12 @@ msgstr "Spremi aktivnu sesiju."
 msgid "Save the current window layout"
 msgstr "Spremi izgled aktivnog prozora"
 
-#: ../../src/ed_main.py:695
+#: ../../src/ed_main.py:707
 #, python-format
 msgid "Saved File As: %s"
 msgstr "Spremi Datoteku Kao: %s"
 
-#: ../../src/ed_main.py:646
+#: ../../src/ed_main.py:661
 #, python-format
 msgid "Saved File: %s"
 msgstr "Spremi Datoteku: %s"
@@ -2236,7 +2241,7 @@ msgstr "Spremi Datoteku: %s"
 msgid "Script Arguments"
 msgstr "Argumenti Skripte"
 
-#: ../../src/ed_search.py:1294
+#: ../../src/ed_search.py:1295
 #, python-format
 msgid "Search Complete: %d matching lines where found."
 msgstr "Pretraga Završena: %d podudarnih redova pronađeno."
@@ -2245,11 +2250,11 @@ msgstr "Pretraga Završena: %d podudarnih redova pronađeno."
 msgid "Search Recursively"
 msgstr "Pretražuj Suvratno"
 
-#: ../../src/ed_search.py:1268
+#: ../../src/ed_search.py:1269
 msgid "Search Started"
 msgstr "Pretraga Započeta"
 
-#: ../../src/ed_search.py:1287
+#: ../../src/ed_search.py:1288
 msgid "Search complete"
 msgstr "Pretraga Završena"
 
@@ -2269,7 +2274,7 @@ msgstr "Pretraga omotana na dno"
 msgid "Search wrapped to top"
 msgstr "Pretraga omotana na vrh"
 
-#: ../../src/ed_search.py:1378
+#: ../../src/ed_search.py:1379
 #, python-format
 msgid "Searching in: %s"
 msgstr "Pretraživanje u: %s"
@@ -2286,7 +2291,7 @@ msgstr "Sekcije"
 msgid "Select &All"
 msgstr "Odaberi &Sve"
 
-#: ../../src/ed_editv.py:138
+#: ../../src/ed_editv.py:369
 msgid "Select All"
 msgstr "Odaberi Sve"
 
@@ -2294,7 +2299,7 @@ msgstr "Odaberi Sve"
 msgid "Select All Text in Document"
 msgstr "Odaberi Sav Tekst u Dokumentu"
 
-#: ../../src/ed_main.py:1193
+#: ../../src/ed_main.py:1205
 msgid "Select an encoding to reload the file with"
 msgstr "Odaberi šifriranje za ponovno učitavanje datoteke"
 
@@ -2306,28 +2311,28 @@ msgstr "Odaberi priključke za preuzimanje"
 msgid "Selected Text"
 msgstr "Odabrani Tekst"
 
-#: ../../src/ed_pages.py:362
+#: ../../src/ed_pages.py:364
 msgid "Selected file is not a valid session file"
 msgstr "Odabrana datoteka nije važeća datoteka sesije"
 
-#: ../../src/ed_menu.py:839
+#: ../../src/ed_menu.py:840
 msgid "Send bug reports and suggestions"
 msgstr "Pošalji izvještaje o greškama i sugestije"
 
-#: ../../src/ed_main.py:758 ../../src/ed_main.py:785
+#: ../../src/ed_main.py:770 ../../src/ed_main.py:797
 msgid "Session"
 msgstr "Sesija"
 
-#: ../../src/ed_main.py:773
+#: ../../src/ed_main.py:785
 #, python-format
 msgid "Session Saved as: %s"
 msgstr "Sesija Spremljena kao: %s"
 
-#: ../../src/ed_pages.py:347
+#: ../../src/ed_pages.py:349
 msgid "Session file doesn't exist."
 msgstr "Datoteka sesije ne postoji."
 
-#: ../../src/ed_pages.py:368
+#: ../../src/ed_pages.py:370
 msgid "Session file is empty."
 msgstr "Datoteka sesije je prazna."
 
@@ -2387,7 +2392,7 @@ msgstr "Prikaži Marginu Rednog Broja"
 msgid "Show Line Numbers"
 msgstr "Prikaži Redne Brojeve"
 
-#: ../../src/ed_shelf.py:346
+#: ../../src/ed_shelf.py:349
 msgid "Show Shelf"
 msgstr "Prikaži Policu"
 
@@ -2415,7 +2420,7 @@ msgstr "Prikaži Oznake Praznine"
 msgid "Show output from"
 msgstr "Prikaži izlaz iz"
 
-#: ../../src/ed_shelf.py:348
+#: ../../src/ed_shelf.py:351
 msgid "Show the Shelf"
 msgstr "Prikaži Policu"
 
@@ -2423,7 +2428,7 @@ msgstr "Prikaži Policu"
 msgid "Show the edge column guide"
 msgstr "U"
 
-#: ../../src/style_editor.py:698 ../../src/eclib/infodlg.py:189
+#: ../../src/style_editor.py:702 ../../src/eclib/infodlg.py:189
 msgid "Size"
 msgstr "Veličina"
 
@@ -2468,9 +2473,8 @@ msgid "Start in Normal Mode"
 msgstr "Počni u Normalnom Modu"
 
 #: ../../src/prefdlg.py:303
-#, fuzzy
 msgid "Startup"
-msgstr "Postavke Podizanja"
+msgstr ""
 
 #: ../../src/prefdlg.py:426
 msgid "Startup Settings"
@@ -2505,7 +2509,7 @@ msgstr "Podrutine"
 msgid "Successfully Installed Plugins"
 msgstr "Uspješno Instalirani Priključci"
 
-#: ../../src/ed_menu.py:477 ../../src/syntax/syntax.py:317
+#: ../../src/ed_menu.py:477 ../../src/syntax/syntax.py:315
 #, python-format
 msgid "Switch Lexer to %s"
 msgstr "Zamijeni Lexer u %s"
@@ -2542,7 +2546,7 @@ msgstr "Boje Teksta"
 msgid "Text Document"
 msgstr "Tekstualni Dokument"
 
-#: ../../src/ed_pages.py:156
+#: ../../src/ed_pages.py:158
 #, python-format
 msgid ""
 "The correct encoding of '%s' could not be determined.\n"
@@ -2555,7 +2559,7 @@ msgstr ""
 "Odaberite šifriranje i kliknite Ok da otvorite datoteku sa odabranim šifriranjem.\n"
 "Kliknite Cancel da prekinete otvaranje datoteke."
 
-#: ../../src/ed_editv.py:501
+#: ../../src/ed_editv.py:498
 #, python-format
 msgid ""
 "The file: \"%s\" has been modified since the last save point.\n"
@@ -2575,7 +2579,7 @@ msgstr ""
 msgid "The search term '%(term)s' was found %(count)d times."
 msgstr "Izraz za pretragu '%(term)s' je pronađen %(count)d puta."
 
-#: ../../src/ed_pages.py:947
+#: ../../src/ed_pages.py:969
 #, python-format
 msgid "There are no files that Editra can open in %s"
 msgstr "Nema datoteka koje Editra može otvoriti u %s"
@@ -2592,15 +2596,15 @@ msgstr ""
 msgid "This plugin requires a newer version of Editra."
 msgstr "Ovaj priključak zahtijeva noviju Editra inačicu."
 
-#: ../../src/plugdlg.py:1064
+#: ../../src/plugdlg.py:1066
 msgid "This plugin will be uninstalled on next program launch."
 msgstr ""
 
-#: ../../src/ed_editv.py:136
+#: ../../src/ed_editv.py:367
 msgid "To Lowercase"
 msgstr "Na Mala Slova"
 
-#: ../../src/ed_editv.py:135
+#: ../../src/ed_editv.py:366
 msgid "To Uppercase"
 msgstr "Na Velika Slova"
 
@@ -2708,7 +2712,7 @@ msgstr "Nemoguće pronaći listu priključaka"
 msgid "Unable to retrieve version info"
 msgstr "Nemoguće pronaći podatke o inačici"
 
-#: ../../src/ed_editv.py:128 ../../src/ed_toolbar.py:80
+#: ../../src/ed_editv.py:359 ../../src/ed_toolbar.py:80
 msgid "Undo"
 msgstr "Vrati"
 
@@ -2725,15 +2729,14 @@ msgid "Unindent the selected lines"
 msgstr "Ukloni odabrane uvučene redove"
 
 #: ../../src/plugdlg.py:952
-#, fuzzy
 msgid "Uninstall"
-msgstr "Instaliraj"
+msgstr ""
 
-#: ../../src/plugdlg.py:1060
+#: ../../src/plugdlg.py:1062
 msgid "Uninstall Plugin"
 msgstr ""
 
-#: ../../src/ed_glob.py:381 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:759
+#: ../../src/ed_glob.py:383 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:759
 #: ../../src/ed_menu.py:761 ../../src/prefdlg.py:752
 msgid "Unix (\\n)"
 msgstr "Unix (\\n)"
@@ -2845,11 +2848,11 @@ msgstr "Prijedlozi upozorenja će uključiti rezultate nebitne za sadržaj"
 msgid "Where"
 msgstr "Gdje"
 
-#: ../../src/ed_main.py:711
+#: ../../src/ed_main.py:723
 msgid "Where to Save Profile?"
 msgstr "Gdje Spremiti Profil?"
 
-#: ../../src/ed_main.py:756
+#: ../../src/ed_main.py:768
 msgid "Where to Save Session?"
 msgstr "Gdje Spremiti Sesiju?"
 
@@ -2862,15 +2865,14 @@ msgid "Whitespace formating commands"
 msgstr "Naredbe formatiranja praznine"
 
 #: ../../src/ed_cmdbar.py:290
-#, fuzzy
 msgid "Whole Word"
-msgstr "Cijela riječ"
+msgstr ""
 
 #: ../../src/eclib/finddlg.py:813
 msgid "Whole word"
 msgstr "Cijela riječ"
 
-#: ../../src/ed_glob.py:382 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:762
+#: ../../src/ed_glob.py:384 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:762
 #: ../../src/ed_menu.py:764 ../../src/prefdlg.py:753
 msgid "Windows (\\r\\n)"
 msgstr "Windows (\\r\\n)"
@@ -2883,7 +2885,7 @@ msgstr "Omatanje Teksta"
 msgid "Wrap Text Horizontally"
 msgstr "Omotaj Tekst Horizontalno"
 
-#: ../../src/ed_main.py:1522
+#: ../../src/ed_main.py:1536
 #, python-format
 msgid "Written in 100%% Python."
 msgstr "Napisano u 100%% Python."
@@ -2892,7 +2894,7 @@ msgstr "Napisano u 100%% Python."
 msgid "You must restart Editra before your changes will take full affect."
 msgstr "Morate ponovo pokrenuti Editra da bi promjene imale pun efekt."
 
-#: ../../src/Editra.py:882 ../../src/Editra.py:1091
+#: ../../src/Editra.py:887 ../../src/Editra.py:1096
 msgid "Your profile has been updated to the latest version"
 msgstr "Vaš profil je ažuriran do najnovije inačice"
 
@@ -2916,7 +2918,7 @@ msgstr "argumenti"
 msgid "bold"
 msgstr "podebljano"
 
-#: ../../src/ed_cmdbar.py:866
+#: ../../src/ed_cmdbar.py:871
 msgid "cwd: "
 msgstr "cwd: "
 
@@ -2936,12 +2938,12 @@ msgstr "kurziv"
 msgid "underline"
 msgstr "podcrtaj"
 
-#: ../../src/ed_pages.py:228
+#: ../../src/ed_pages.py:230
 #, fuzzy
 msgid "untitled"
 msgstr "Bez naslova - %d"
 
-#: ../../src/ed_pages.py:226
+#: ../../src/ed_pages.py:228
 #, fuzzy, python-format
 msgid "untitled %d"
 msgstr "Bez naslova - %d"
@@ -2951,6 +2953,3 @@ msgstr "Bez naslova - %d"
 
 #~ msgid "Choose a File"
 #~ msgstr "Odaberi Datoteku"
-
-#~ msgid "Error/Crash Reporter"
-#~ msgstr "Izvjestitelj Greške/Kraha"

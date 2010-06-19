@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _flagship.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _flagship.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -127,30 +127,30 @@ FS_CLASS = (3, "class instance export hidden protect prototype")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_FS_ASM', ''),
-                ('STC_FS_BINNUMBER', 'number_style'),
-                ('STC_FS_COMMENT', 'comment_style'),
-                ('STC_FS_COMMENTDOC', 'dockey_style'),
-                ('STC_FS_COMMENTDOCKEYWORD', 'dockey_style'),
-                ('STC_FS_COMMENTDOCKEYWORDERROR', 'error_style'),
-                ('STC_FS_COMMENTLINE', 'comment_style'),
-                ('STC_FS_COMMENTLINEDOC', 'comment_style'),
-                ('STC_FS_CONSTANT', 'default_style'),
-                ('STC_FS_DATE', 'default_style'),
-                ('STC_FS_DEFAULT', 'default_style'),
-                ('STC_FS_ERROR', 'error_style'),
-                ('STC_FS_HEXNUMBER', 'number_style'),
-                ('STC_FS_IDENTIFIER', 'default_style'),
-                ('STC_FS_KEYWORD', 'keyword_style'),
-                ('STC_FS_KEYWORD2', 'keyword2_style'),
-                ('STC_FS_KEYWORD3', 'keyword3_style'),
-                ('STC_FS_KEYWORD4', 'keyword4_style'),
-                ('STC_FS_LABEL', 'default_style'),
-                ('STC_FS_NUMBER', 'number_style'),
-                ('STC_FS_OPERATOR', 'operator_style'),
-                ('STC_FS_PREPROCESSOR', 'pre_style'),
-                ('STC_FS_STRING', 'string_style'),
-                ('STC_FS_STRINGEOL', 'stringeol_style')]
+SYNTAX_ITEMS = [(stc.STC_FS_ASM, ''),
+                (stc.STC_FS_BINNUMBER, 'number_style'),
+                (stc.STC_FS_COMMENT, 'comment_style'),
+                (stc.STC_FS_COMMENTDOC, 'dockey_style'),
+                (stc.STC_FS_COMMENTDOCKEYWORD, 'dockey_style'),
+                (stc.STC_FS_COMMENTDOCKEYWORDERROR, 'error_style'),
+                (stc.STC_FS_COMMENTLINE, 'comment_style'),
+                (stc.STC_FS_COMMENTLINEDOC, 'comment_style'),
+                (stc.STC_FS_CONSTANT, 'default_style'),
+                (stc.STC_FS_DATE, 'default_style'),
+                (stc.STC_FS_DEFAULT, 'default_style'),
+                (stc.STC_FS_ERROR, 'error_style'),
+                (stc.STC_FS_HEXNUMBER, 'number_style'),
+                (stc.STC_FS_IDENTIFIER, 'default_style'),
+                (stc.STC_FS_KEYWORD, 'keyword_style'),
+                (stc.STC_FS_KEYWORD2, 'keyword2_style'),
+                (stc.STC_FS_KEYWORD3, 'keyword3_style'),
+                (stc.STC_FS_KEYWORD4, 'keyword4_style'),
+                (stc.STC_FS_LABEL, 'default_style'),
+                (stc.STC_FS_NUMBER, 'number_style'),
+                (stc.STC_FS_OPERATOR, 'operator_style'),
+                (stc.STC_FS_PREPROCESSOR, 'pre_style'),
+                (stc.STC_FS_STRING, 'string_style'),
+                (stc.STC_FS_STRINGEOL, 'stringeol_style')]
 
 #---- Extra Properties ----#
 FOLD = ('fold', '1')

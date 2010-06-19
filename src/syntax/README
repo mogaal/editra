@@ -90,14 +90,10 @@ Currently Supported Features:
         PARAM: current_pos The current position of the caret in the buffer
         PARAM: indent_char Prefered character to use for indentation 
                ("\t" or " " * tabwidth)
-        RETURN: Text to insert at current_pos
         SPECIFICATIONS: Called when the Return key is hit. Note that the new
                         line character is not sent to the buffer so it needs
-                        to be handled by this method. For any new line lines
-                        that need to be inserted use a '\n' character. The
-                        buffer will handle any necessary conversions on
-                        platforms that use other characters or for preferences
-                        set at the user level.
+                        to be handled by this method. This method must also
+                        call AddText to add the new whitespace to the buffer.
 
                         Register with the synglob.FEATURE_AUTOINDENT id
 

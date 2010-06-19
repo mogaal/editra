@@ -15,8 +15,8 @@ main Ui component of the editor that contains all the other components.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_main.py 63651 2010-03-07 16:36:26Z CJP $"
-__revision__ = "$Revision: 63651 $"
+__svnid__ = "$Id: ed_main.py 64516 2010-06-06 20:23:58Z CJP $"
+__revision__ = "$Revision: 64516 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -108,14 +108,14 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
 
         #---- End Statusbar Setup ----#
 
-        #---- Notebook that contains the editting buffers ----#
+        #---- Notebook that contains the editing buffers ----#
         self._mpane = ed_mpane.MainPanel(self)
         self.nb = self._mpane.GetWindow()
         self._mgr.AddPane(self._mpane, wx.aui.AuiPaneInfo(). \
                           Name("EditPane").Center().Layer(1).Dockable(False). \
                           CloseButton(False).MaximizeButton(False). \
                           CaptionVisible(False))
-        self._mpane.InitCommandBar() # <- required due to nb dependancies...
+        self._mpane.InitCommandBar() # <- required due to nb dependencies...
 
         #---- Command Bar ----#
         self._mpane.HideCommandBar()
@@ -312,6 +312,9 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
 
     __name__ = u"MainWindow"
 
+    def __del__(self):
+        ed_msg.Unsubscribe(self.OnUpdateFileHistory)
+
     #---- End Private Member Functions/Variables ----#
 
     #---- Begin Public Member Function ----#
@@ -390,7 +393,11 @@ class MainWindow(wx.Frame, viewmgr.PerspectiveManager):
         @param msg: Message object (data == filename)
 
         """
-        self.filehistory.AddFileToHistory(msg.GetData())
+        try:
+            self.filehistory.AddFileToHistory(msg.GetData())
+        except wx.PyAssertionError:
+            # ignore errors that wxMac sometimes raises about unicode data
+            pass
 
     def AddFileToHistory(self, fname):
         """Add a file to the windows file history as well as any

@@ -29,8 +29,8 @@
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 63513 2010-02-18 19:32:50Z CJP $"
-__revision__ = "$Revision: 63513 $"
+__svnid__ = "$Id: setup.py 64522 2010-06-07 19:05:44Z CJP $"
+__revision__ = "$Revision: 64522 $"
 
 #---- Imports ----#
 import os
@@ -151,6 +151,7 @@ def GenerateBinPackageFiles():
         data.append("pixmaps/editra_doc.icns")
         pixlist.extend(["pixmaps/editra.icns", "pixmaps/editra_doc.icns"])
     elif sys.platform.startswith("win"):
+        data.extend(glob.glob("include/windows/*.*"))
         pixlist.append("pixmaps/editra.ico")
 
     data.append(("pixmaps", pixlist))
@@ -232,7 +233,7 @@ INCLUDES = ['syntax.*', 'ed_log', 'shutil', 'subprocess', 'zipfile',
             'pygments.filters.*', 'pygments.styles.*', 'ftplib',
             'extern.flatnotebook'] # temporary till all references can be removed
 if sys.platform.startswith('win'):
-    INCLUDES.extend(['ctypes'])
+    INCLUDES.extend(['ctypes', 'ctypes.wintypes'])
 else:
     INCLUDES.extend(['pty', 'tty'])
 
@@ -244,17 +245,38 @@ URL = "http://editra.org"
 
 VERSION = info.VERSION
 
-MANIFEST_TEMPLATE = '''
+MANIFEST_TEMPLATE = """
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-<assemblyIdentity
+  <assemblyIdentity
     version="5.0.0.0"
     processorArchitecture="x86"
     name="%(prog)s"
     type="win32"
-/>
-<description>%(prog)s</description>
-<dependency>
+  />
+  <description>%(prog)s</description>
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel
+            level="asInvoker"
+            uiAccess="false">
+        </requestedExecutionLevel>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+            type="win32"
+            name="Microsoft.VC90.CRT"
+            version="9.0.21022.8"
+            processorArchitecture="x86"
+            publicKeyToken="1fc8b3b9a1e18e3b">
+      </assemblyIdentity>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly>
         <assemblyIdentity
             type="win32"
@@ -265,9 +287,9 @@ MANIFEST_TEMPLATE = '''
             language="*"
         />
     </dependentAssembly>
-</dependency>
+  </dependency>
 </assembly>
-'''
+"""
 
 RT_MANIFEST = 24
 #---- End Global Settings ----#
@@ -304,7 +326,8 @@ def BuildPy2Exe():
                                "optimize" : 1,
                                "bundle_files" : 2,
                                "includes" : INCLUDES,
-                               "excludes" : ["Tkinter",] }},
+                               "excludes" : ["Tkinter",],
+                               "dll_excludes": [ "MSVCP90.dll" ] }},
         windows = [{"script": "src/Editra.py",
                     "icon_resources": [(0, ICON['Win'])],
                     "other_resources" : [(RT_MANIFEST, 1,

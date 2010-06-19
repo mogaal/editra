@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _ruby.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _ruby.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -41,39 +41,39 @@ RUBY_KW = (0, "__FILE__ and def end in or self unless __LINE__ begin defined "
               "protected private")
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ ('STC_RB_BACKTICKS', 'scalar_style'),
-                 ('STC_RB_CHARACTER', 'char_style'),
-                 ('STC_RB_CLASSNAME', 'class_style'),
-                 ('STC_RB_CLASS_VAR', 'default_style'), # STYLE ME
-                 ('STC_RB_COMMENTLINE', 'comment_style'),
-                 ('STC_RB_DATASECTION', 'default_style'), # STYLE ME
-                 ('STC_RB_DEFAULT', 'default_style'),
-                 ('STC_RB_DEFNAME', 'keyword3_style'), # STYLE ME
-                 ('STC_RB_ERROR', 'error_style'),
-                 ('STC_RB_GLOBAL', 'global_style'),
-                 ('STC_RB_HERE_DELIM', 'default_style'), # STYLE ME
-                 ('STC_RB_HERE_Q', 'here_style'),
-                 ('STC_RB_HERE_QQ', 'here_style'),
-                 ('STC_RB_HERE_QX', 'here_style'),
-                 ('STC_RB_IDENTIFIER', 'default_style'),
-                 ('STC_RB_INSTANCE_VAR', 'scalar2_style'),
-                 ('STC_RB_MODULE_NAME', 'global_style'), # STYLE ME
-                 ('STC_RB_NUMBER', 'number_style'),
-                 ('STC_RB_OPERATOR', 'operator_style'),
-                 ('STC_RB_POD', 'default_style'), # STYLE ME
-                 ('STC_RB_REGEX', 'regex_style'), # STYLE ME
-                 ('STC_RB_STDIN', 'default_style'), # STYLE ME
-                 ('STC_RB_STDOUT', 'default_style'), # STYLE ME
-                 ('STC_RB_STRING', 'string_style'),
-                 ('STC_RB_STRING_Q', 'default_style'), # STYLE ME
-                 ('STC_RB_STRING_QQ', 'default_style'), # STYLE ME
-                 ('STC_RB_STRING_QR', 'default_style'), # STYLE ME
-                 ('STC_RB_STRING_QW', 'default_style'), # STYLE ME
-                 ('STC_RB_STRING_QX', 'default_style'), # STYLE ME
-                 ('STC_RB_SYMBOL', 'default_style'), # STYLE ME
-                 ('STC_RB_UPPER_BOUND', 'default_style'), # STYLE ME
-                 ('STC_RB_WORD', 'keyword_style'),
-                 ('STC_RB_WORD_DEMOTED', 'keyword2_style') ]
+SYNTAX_ITEMS = [ (stc.STC_RB_BACKTICKS, 'scalar_style'),
+                 (stc.STC_RB_CHARACTER, 'char_style'),
+                 (stc.STC_RB_CLASSNAME, 'class_style'),
+                 (stc.STC_RB_CLASS_VAR, 'default_style'), # STYLE ME
+                 (stc.STC_RB_COMMENTLINE, 'comment_style'),
+                 (stc.STC_RB_DATASECTION, 'default_style'), # STYLE ME
+                 (stc.STC_RB_DEFAULT, 'default_style'),
+                 (stc.STC_RB_DEFNAME, 'keyword3_style'), # STYLE ME
+                 (stc.STC_RB_ERROR, 'error_style'),
+                 (stc.STC_RB_GLOBAL, 'global_style'),
+                 (stc.STC_RB_HERE_DELIM, 'default_style'), # STYLE ME
+                 (stc.STC_RB_HERE_Q, 'here_style'),
+                 (stc.STC_RB_HERE_QQ, 'here_style'),
+                 (stc.STC_RB_HERE_QX, 'here_style'),
+                 (stc.STC_RB_IDENTIFIER, 'default_style'),
+                 (stc.STC_RB_INSTANCE_VAR, 'scalar2_style'),
+                 (stc.STC_RB_MODULE_NAME, 'global_style'), # STYLE ME
+                 (stc.STC_RB_NUMBER, 'number_style'),
+                 (stc.STC_RB_OPERATOR, 'operator_style'),
+                 (stc.STC_RB_POD, 'default_style'), # STYLE ME
+                 (stc.STC_RB_REGEX, 'regex_style'), # STYLE ME
+                 (stc.STC_RB_STDIN, 'default_style'), # STYLE ME
+                 (stc.STC_RB_STDOUT, 'default_style'), # STYLE ME
+                 (stc.STC_RB_STRING, 'string_style'),
+                 (stc.STC_RB_STRING_Q, 'default_style'), # STYLE ME
+                 (stc.STC_RB_STRING_QQ, 'default_style'), # STYLE ME
+                 (stc.STC_RB_STRING_QR, 'default_style'), # STYLE ME
+                 (stc.STC_RB_STRING_QW, 'default_style'), # STYLE ME
+                 (stc.STC_RB_STRING_QX, 'default_style'), # STYLE ME
+                 (stc.STC_RB_SYMBOL, 'default_style'), # STYLE ME
+                 (stc.STC_RB_UPPER_BOUND, 'default_style'), # STYLE ME
+                 (stc.STC_RB_WORD, 'keyword_style'),
+                 (stc.STC_RB_WORD_DEMOTED, 'keyword2_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -108,28 +108,26 @@ class SyntaxData(syndata.SyntaxDataBase):
 
 #-----------------------------------------------------------------------------#
 
-def AutoIndenter(stc, pos, ichar):
-    """Auto indent cpp code. uses \n the text buffer will handle any
-    eol character formatting.
-
-    @param stc: EditraStyledTextCtrl
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent cpp code.
+    @param estc: EditraStyledTextCtrl
     @param pos: current carat position
     @param ichar: Indentation character
-    @return: string
 
     """
     rtxt = u''
-    line = stc.GetCurrentLine()
-    text = stc.GetTextRange(stc.PositionFromLine(line), pos)
+    line = estc.GetCurrentLine()
+    text = estc.GetTextRange(estc.PositionFromLine(line), pos)
+    eolch = estc.GetEOLChar()
 
-    indent = stc.GetLineIndentation(line)
+    indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
-        tabw = stc.GetTabWidth()
+        tabw = estc.GetTabWidth()
     else:
-        tabw = stc.GetIndent()
+        tabw = estc.GetIndent()
 
     i_space = indent / tabw
-    ndent = u"\n" + ichar * i_space
+    ndent = eolch + ichar * i_space
     rtxt = ndent + ((indent - (tabw * i_space)) * u' ')
 
     def_pat = re.compile('\s*(class|def)\s+[a-zA-Z_][a-zA-Z0-9_]*')
@@ -137,7 +135,8 @@ def AutoIndenter(stc, pos, ichar):
     if text.endswith('{') or def_pat.match(text):
         rtxt += ichar
 
-    return rtxt
+    # Put text in the buffer
+    estc.AddText(rtxt)
 
 #---- Syntax Modules Internal Functions ----#
 def KeywordString(option=0):

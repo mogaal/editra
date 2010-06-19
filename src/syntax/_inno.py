@@ -14,8 +14,8 @@ AUTHOR: Cody Preord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _inno.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _inno.py 64561 2010-06-12 01:49:05Z CJP $"
+__revision__ = "$Revision: 64561 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -92,19 +92,19 @@ USER_DEF = (5, "")
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_INNO_COMMENT', 'comment_style'),
-                ('STC_INNO_COMMENT_PASCAL', 'comment_style'),
-                ('STC_INNO_DEFAULT', 'default_style'),
-                ('STC_INNO_IDENTIFIER', 'default_style'),
-                ('STC_INNO_KEYWORD', 'keyword_style'),
-                ('STC_INNO_KEYWORD_PASCAL', 'keyword4_style'),
-                ('STC_INNO_KEYWORD_USER', 'default_style'),
-                ('STC_INNO_PARAMETER', 'keyword2_style'),
-                ('STC_INNO_PREPROC', 'pre_style'),
-                ('STC_INNO_PREPROC_INLINE', 'pre_style'),
-                ('STC_INNO_SECTION', 'scalar_style'),
-                ('STC_INNO_STRING_DOUBLE', 'string_style'),
-                ('STC_INNO_STRING_SINGLE', 'char_style')]
+SYNTAX_ITEMS = [(stc.STC_INNO_COMMENT, 'comment_style'),
+                (stc.STC_INNO_COMMENT_PASCAL, 'comment_style'),
+                (stc.STC_INNO_DEFAULT, 'default_style'),
+                (stc.STC_INNO_IDENTIFIER, 'default_style'),
+                (stc.STC_INNO_KEYWORD, 'keyword_style'),
+                (stc.STC_INNO_KEYWORD_PASCAL, 'keyword4_style'),
+                (stc.STC_INNO_KEYWORD_USER, 'default_style'),
+                (stc.STC_INNO_PARAMETER, 'keyword2_style'),
+                (stc.STC_INNO_PREPROC, 'pre_style'),
+                (stc.STC_INNO_PREPROC_INLINE, 'pre_style'),
+                (stc.STC_INNO_SECTION, 'scalar_style'),
+                (stc.STC_INNO_STRING_DOUBLE, 'string_style'),
+                (stc.STC_INNO_STRING_SINGLE, 'char_style')]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -140,27 +140,26 @@ class SyntaxData(syndata.SyntaxDataBase):
 
 #-----------------------------------------------------------------------------#
 
-def AutoIndenter(stc, pos, ichar):
-    """Auto indent Inno Setup Scripts. uses \n the text buffer will
-    handle any eol character formatting.
-    @param stc: EditraStyledTextCtrl
+def AutoIndenter(estc, pos, ichar):
+    """Auto indent Inno Setup Scripts.
+    @param estc: EditraStyledTextCtrl
     @param pos: current carat position
     @param ichar: Indentation character
-    @return: string
 
     """
     rtxt = u''
-    line = stc.GetCurrentLine()
-    text = stc.GetTextRange(stc.PositionFromLine(line), pos)
+    line = estc.GetCurrentLine()
+    text = estc.GetTextRange(estc.PositionFromLine(line), pos)
+    eolch = estc.GetEOLChar()
 
-    indent = stc.GetLineIndentation(line)
+    indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
-        tabw = stc.GetTabWidth()
+        tabw = estc.GetTabWidth()
     else:
-        tabw = stc.GetIndent()
+        tabw = estc.GetIndent()
 
     i_space = indent / tabw
-    ndent = u"\n" + ichar * i_space
+    ndent = eolch + ichar * i_space
     rtxt = ndent + ((indent - (tabw * i_space)) * u' ')
 
     if_pat = re.compile('if\s+.*\sthen')
@@ -168,4 +167,5 @@ def AutoIndenter(stc, pos, ichar):
     if text == u'begin' or if_pat.match(text):
         rtxt += ichar
 
-    return rtxt
+    # Put text in the buffer
+    estc.AddText(rtxt)

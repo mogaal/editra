@@ -1,13 +1,70 @@
 # encoding: utf-8
 Editra
 Author: Cody Precord
-Copyright: (c) Cody Precord 2005-2009
+Copyright: (c) Cody Precord 2005-2010
 License: wxWindows
 
 Change Log:
 
 #-----------------------------------------------------------------------------#
 Changes since last release:
+
+VERSION 0.5.70
+DATE 06/12/2010
+35th Alpha Release
+
+NEWS:
+
+NEW: [features/improvements]
++Improved TCL/Tk Highlighting
++Updated CodeBrowser Plugin 1.1 (improved Tcl/Tk, C, and CSS Support)
++Update Launch Plugin 1.7 (word wrap and lock file options)
++Improved AutoIndent functionality for HTML/XML
++Improve behavior of HTML autocomp
+
+LIBRARY:
++Syntax modules that provide AutoIndenters are now responsible for adding the
+text to the buffers them self instead of returning a string to the EditraStc.
+
+BUG FIXES:
++Fix braces not getting un-highlighted when toggling setting on and off.
++Fix incorrect handling of xml in IPC server (patch from rqsall)
++Fix file open from commandline not respecting open files in new windows option.
++Fix incorrect closer notifications that could occur when using the close tab shortcut.
++Fix crash that could occur due to Python autocompletion executing a SystemExit exception.
++Fix Shelf tabs not updating when show icons on tab option is toggled.
+
+#-----------------------------------------------------------------------------#
+
+VERSION 0.5.60
+DATE 05/16/2010
+34th Alpha Release
+
+NEWS:
+This is primarily a bug fix release to address a number of issues from the
+big tab control change in the previous release as well as some other standing
+issues. This is a suggested update for all users of the previous release.
+
+NEW: [features/improvements]
++Improvements to Verilog and SysVerilog highlighting (patch from akhailtash)
+
+BUG FIXES:
++Fix issue with tab selection events not being sent in split notebook.
++Fix page change notifications not being sent under certain tab close scenarios.
++Unsubscribe from file history messages on window deletion.
++Fix issue in handling invalid data in custom style sheets.
++Fix issue with search being incremented when control key was pressed.
++Fix crash that could occur when iterating syntax globals during startup.
++Fix issue with portable profiles not loading when install directory path changes.
++Fix crash that could occur when tab menu handler is called with no context manager.
++Handle errors that can occur when adding items to file history.
++Fix crash from selecting invalid register when using vim mode.
++Ctrl+Tab functionality for switching tabs has been restored.
++Double click on split notebook sash now properly unsplits the notebook on OSX.
++Fix Python auto-indenter not indenting after 'with' statements.
++Fix handling of improper paths when typing in command mode.
+
+#-----------------------------------------------------------------------------#
 
 VERSION 0.5.51
 DATE 03/14/2010

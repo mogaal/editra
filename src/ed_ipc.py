@@ -43,8 +43,8 @@ Message Format:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_ipc.py 63657 2010-03-09 01:45:25Z CJP $"
-__revision__ = "$Revision: 63657 $"
+__svnid__ = "$Id: ed_ipc.py 64478 2010-06-03 20:51:39Z CJP $"
+__revision__ = "$Revision: 64478 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -56,6 +56,7 @@ import time
 #import select
 
 # Editra Libs
+import util
 import syntax
 import ebmlib
 
@@ -172,15 +173,23 @@ class EdIpcServer(threading.Thread):
                 # If message key is correct and the message is ended, process
                 # the input and dispatch to the app.
                 if recieved.startswith(self.__key) and recieved.endswith(MSGEND):
+                    # Strip the key
                     recieved = recieved.replace(self.__key, u'', 1)
+                    # Strip the end token
+                    xmlstr = recieved.rstrip(MSGEND).strip(u";")
 
                     # Parse the xml
                     exml = IPCCommand()
                     try:
-                        xmlstr = recieved.rstrip(MSGEND).strip(u";")
+                        # Well formed xml must be utf-8 string not unicode
+                        xmlstr = xmlstr.encode('utf-8')
                         exml.LoadFromString(xmlstr)
                     except Exception, msg:
-                        # ignore parsing errors
+                        # Log and ignore parsing errors
+                        logmsg = "[ed_ipc][err] Parsing failed: %s\n" % msg
+                        xmlstr = xmlstr.replace('\n', '').strip()
+                        logmsg += "Bad xml was: %s" % repr(xmlstr)
+                        util.Log(logmsg)
                         continue
 
                     evt = IpcServerEvent(edEVT_COMMAND_RECV, wx.ID_ANY, exml)

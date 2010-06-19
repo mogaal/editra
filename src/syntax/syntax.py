@@ -34,8 +34,8 @@ objects such as the Extension Register.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: syntax.py 63290 2010-01-28 03:19:54Z CJP $"
-__revision__ = "$Revision: 63290 $"
+__svnid__ = "$Id: syntax.py 63846 2010-04-03 22:57:21Z CJP $"
+__revision__ = "$Revision: 63846 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -195,13 +195,11 @@ class SyntaxMgr(object):
 
         lex_cfg = synglob.LANG_MAP.get(lang, synglob.LANG_MAP[synglob.LANG_TXT])
 
-        if lex_cfg[LANG_ID] == synglob.ID_LANG_TXT:
-            syn_data = syndata.SyntaxDataBase()
-
         # Check if module is loaded and load if necessary
         if not self.LoadModule(lex_cfg[MODULE]):
-            # Bail out as nothing else can be done at this point
-            return syn_data
+            # Bail out and return a default plaintext config as
+            # nothing else can be done at this point
+            return syndata.SyntaxDataBase()
 
         # This little bit of code fetches the keyword/syntax 
         # spec set(s) from the specified module

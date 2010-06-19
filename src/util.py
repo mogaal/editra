@@ -12,8 +12,8 @@ This file contains various helper functions and utilities that the program uses.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: util.py 63289 2010-01-28 03:10:42Z CJP $"
-__revision__ = "$Revision: 63289 $"
+__svnid__ = "$Id: util.py 64250 2010-05-08 16:00:52Z CJP $"
+__revision__ = "$Revision: 64250 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -137,8 +137,8 @@ class DropTargetFT(wx.PyDropTarget):
     def OnDragOver(self, x_cord, y_cord, drag_result):
         """Called when the cursor is moved during a drag action
         @return: result of drag over
-        @todo: For some reason the carrat postion changes which can be seen
-               by the brackets getting highlighted. However the actual carrat
+        @todo: For some reason the caret position changes which can be seen
+               by the brackets getting highlighted. However the actual caret
                is not moved.
 
         """

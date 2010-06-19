@@ -10,13 +10,12 @@
 FILE: javascript.py
 AUTHOR: Cody Precord
 @summary: Lexer configuration module for JavaScript.
-@todo: Having trouble with getting html embeded js to highlight
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _javascript.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _javascript.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -42,32 +41,32 @@ JS_KEYWORDS = (0, "abstract break boolean byte case const continue catch "
                   "try true typeof var void volatile with while")
 
 #---- Syntax Style Spec ----#
-SYNTAX_ITEMS = [ ('STC_HJ_COMMENT', 'comment_style'),
-                 ('STC_HJ_COMMENTDOC', 'dockey_style'),
-                 ('STC_HJ_COMMENTLINE', 'comment_style'),
-                 ('STC_HJ_DEFAULT', 'default_style'),
-                 ('STC_HJ_DOUBLESTRING', 'string_style'),
-                 ('STC_HJ_KEYWORD', 'keyword_style'),
-                 ('STC_HJ_NUMBER', 'number_style'),
-                 ('STC_HJ_REGEX', 'scalar_style'), # STYLE ME
-                 ('STC_HJ_SINGLESTRING', 'string_style'),
-                 ('STC_HJ_START', 'scalar_style'),
-                 ('STC_HJ_STRINGEOL', 'stringeol_style'),
-                 ('STC_HJ_SYMBOLS', 'array_style'),
-                 ('STC_HJ_WORD', 'class_style'),
-                 ('STC_HJA_COMMENT', 'comment_style'),
-                 ('STC_HJA_COMMENTDOC', 'dockey_style'),
-                 ('STC_HJA_COMMENTLINE', 'comment_style'),
-                 ('STC_HJA_DEFAULT', 'default_style'),
-                 ('STC_HJA_DOUBLESTRING', 'string_style'),
-                 ('STC_HJA_KEYWORD', 'keyword_style'),
-                 ('STC_HJA_NUMBER', 'number_style'),
-                 ('STC_HJA_REGEX', 'scalar_style'), # STYLE ME
-                 ('STC_HJA_SINGLESTRING', 'string_style'),
-                 ('STC_HJA_START', 'scalar_style'),
-                 ('STC_HJA_STRINGEOL', 'stringeol_style'),
-                 ('STC_HJA_SYMBOLS', 'array_style'),
-                 ('STC_HJA_WORD', 'class_style') ]
+SYNTAX_ITEMS = [ (stc.STC_HJ_COMMENT, 'comment_style'),
+                 (stc.STC_HJ_COMMENTDOC, 'dockey_style'),
+                 (stc.STC_HJ_COMMENTLINE, 'comment_style'),
+                 (stc.STC_HJ_DEFAULT, 'default_style'),
+                 (stc.STC_HJ_DOUBLESTRING, 'string_style'),
+                 (stc.STC_HJ_KEYWORD, 'keyword_style'),
+                 (stc.STC_HJ_NUMBER, 'number_style'),
+                 (stc.STC_HJ_REGEX, 'scalar_style'), # STYLE ME
+                 (stc.STC_HJ_SINGLESTRING, 'string_style'),
+                 (stc.STC_HJ_START, 'scalar_style'),
+                 (stc.STC_HJ_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_HJ_SYMBOLS, 'array_style'),
+                 (stc.STC_HJ_WORD, 'class_style'),
+                 (stc.STC_HJA_COMMENT, 'comment_style'),
+                 (stc.STC_HJA_COMMENTDOC, 'dockey_style'),
+                 (stc.STC_HJA_COMMENTLINE, 'comment_style'),
+                 (stc.STC_HJA_DEFAULT, 'default_style'),
+                 (stc.STC_HJA_DOUBLESTRING, 'string_style'),
+                 (stc.STC_HJA_KEYWORD, 'keyword_style'),
+                 (stc.STC_HJA_NUMBER, 'number_style'),
+                 (stc.STC_HJA_REGEX, 'scalar_style'), # STYLE ME
+                 (stc.STC_HJA_SINGLESTRING, 'string_style'),
+                 (stc.STC_HJA_START, 'scalar_style'),
+                 (stc.STC_HJA_STRINGEOL, 'stringeol_style'),
+                 (stc.STC_HJA_SYMBOLS, 'array_style'),
+                 (stc.STC_HJA_WORD, 'class_style') ]
 
 #-----------------------------------------------------------------------------#
 

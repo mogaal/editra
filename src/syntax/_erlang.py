@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _erlang.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _erlang.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -39,21 +39,21 @@ KEYWORDS = (0, "compile define else endif export file ifdef ifndef import "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_ERLANG_ATOM', 'default_style'),       # need new tag
-                ('STC_ERLANG_CHARACTER', 'char_style'),
-                ('STC_ERLANG_COMMENT', 'comment_style'),
-                ('STC_ERLANG_DEFAULT', 'default_style'),
-                ('STC_ERLANG_FUNCTION_NAME', 'funct_style'),
-                ('STC_ERLANG_KEYWORD', 'keyword_style'),
-                ('STC_ERLANG_MACRO', 'pre_style'),
-                ('STC_ERLANG_NODE_NAME', 'string_style'),   # maybe change
-                ('STC_ERLANG_NUMBER', 'number_style'),
-                ('STC_ERLANG_OPERATOR', 'operator_style'),
-                ('STC_ERLANG_RECORD', 'keyword2_style'),
-                ('STC_ERLANG_SEPARATOR', 'default_style'),  # need style?
-                ('STC_ERLANG_STRING', 'string_style'),
-                ('STC_ERLANG_UNKNOWN', 'unknown_style'),
-                ('STC_ERLANG_VARIABLE', 'default_style')]   # need custom?
+SYNTAX_ITEMS = [(stc.STC_ERLANG_ATOM, 'default_style'),       # need new tag
+                (stc.STC_ERLANG_CHARACTER, 'char_style'),
+                (stc.STC_ERLANG_COMMENT, 'comment_style'),
+                (stc.STC_ERLANG_DEFAULT, 'default_style'),
+                (stc.STC_ERLANG_FUNCTION_NAME, 'funct_style'),
+                (stc.STC_ERLANG_KEYWORD, 'keyword_style'),
+                (stc.STC_ERLANG_MACRO, 'pre_style'),
+                (stc.STC_ERLANG_NODE_NAME, 'string_style'),   # maybe change
+                (stc.STC_ERLANG_NUMBER, 'number_style'),
+                (stc.STC_ERLANG_OPERATOR, 'operator_style'),
+                (stc.STC_ERLANG_RECORD, 'keyword2_style'),
+                (stc.STC_ERLANG_SEPARATOR, 'default_style'),  # need style?
+                (stc.STC_ERLANG_STRING, 'string_style'),
+                (stc.STC_ERLANG_UNKNOWN, 'unknown_style'),
+                (stc.STC_ERLANG_VARIABLE, 'default_style')]   # need custom?
 
 #---- Extra Properties ----#
 FOLD = ('fold', '1')

@@ -14,8 +14,8 @@ access point for all common variables in the project.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_glob.py 63532 2010-02-21 21:45:16Z CJP $"
-__revision__ = "$Revision: 63532 $"
+__svnid__ = "$Id: ed_glob.py 63791 2010-03-30 02:57:15Z CJP $"
+__revision__ = "$Revision: 63791 $"
 
 __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_CLOSE', 'ID_CLOSEALL', 'ID_SAVE', 'ID_SAVEAS', 'ID_SAVEALL',
@@ -66,6 +66,7 @@ import wxcompat
 #---- Configuration Locations ----#
 # Values set when main loads
 CONFIG = {
+          'ISLOCAL'     : False, # Using local config (no abs path)
           'CONFIG_BASE' : None, # Set if config base is in nonstandard location
           'INSTALL_DIR' : "",   # Instal directory
           'CONFIG_DIR'  : "",   # Root configration directory

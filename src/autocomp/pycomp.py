@@ -16,8 +16,8 @@ deduct the requested information.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: pycomp.py 63256 2010-01-25 02:34:08Z CJP $"
-__revision__ = "$Revision: 63256 $"
+__cvsid__ = "$Id: pycomp.py 64524 2010-06-08 13:05:23Z CJP $"
+__revision__ = "$Revision: 64524 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -120,7 +120,7 @@ class Completer(completer.BaseCompleter):
                 sigs.sort(lambda x, y: cmp(x.Name.upper(), y.Name.upper()))
                 return sigs
 
-        except Exception, msg:
+        except BaseException, msg:
             self._log("[pycomp][err] _GetCompletionInfo: %s, %s" % \
                       (sys.exc_info()[0], sys.exc_info()[1]))
             if calltip:

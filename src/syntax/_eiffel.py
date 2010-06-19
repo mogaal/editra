@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _eiffel.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _eiffel.py 63834 2010-04-03 06:04:33Z CJP $"
+__revision__ = "$Revision: 63834 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -41,15 +41,15 @@ EIFFEL_KW = (0, "alias all and any as bit boolean check class character clone "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [('STC_EIFFEL_CHARACTER', 'char_style'),
-                ('STC_EIFFEL_COMMENTLINE', 'comment_style'),
-                ('STC_EIFFEL_DEFAULT', 'default_style'),
-                ('STC_EIFFEL_IDENTIFIER', 'default_style'),
-                ('STC_EIFFEL_NUMBER', 'number_style'),
-                ('STC_EIFFEL_OPERATOR', 'operator_style'),
-                ('STC_EIFFEL_STRING', 'string_style'),
-                ('STC_EIFFEL_STRINGEOL', 'stringeol_style'),
-                ('STC_EIFFEL_WORD', 'keyword_style')]
+SYNTAX_ITEMS = [(stc.STC_EIFFEL_CHARACTER, 'char_style'),
+                (stc.STC_EIFFEL_COMMENTLINE, 'comment_style'),
+                (stc.STC_EIFFEL_DEFAULT, 'default_style'),
+                (stc.STC_EIFFEL_IDENTIFIER, 'default_style'),
+                (stc.STC_EIFFEL_NUMBER, 'number_style'),
+                (stc.STC_EIFFEL_OPERATOR, 'operator_style'),
+                (stc.STC_EIFFEL_STRING, 'string_style'),
+                (stc.STC_EIFFEL_STRINGEOL, 'stringeol_style'),
+                (stc.STC_EIFFEL_WORD, 'keyword_style')]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

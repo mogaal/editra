@@ -2,20 +2,20 @@
 # Name: cmenumgr.py                                                           #
 # Purpose: ContextMenu Manager                                                #
 # Author: Cody Precord <cprecord@editra.org>                                  #
-# Copyright: (c) 2009 Cody Precord <staff@editra.org>                         #
+# Copyright: (c) 2010 Cody Precord <staff@editra.org>                         #
 # Licence: wxWindows Licence                                                  #
 ###############################################################################
 
 """
-Editra Buisness Model Library: ContextMenuManager
+Editra Business Model Library: ContextMenuManager
 
 Helper class for managing context menu callbacks
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: cmenumgr.py 63568 2010-02-27 18:52:47Z CJP $"
-__revision__ = "$Revision: 63568 $"
+__cvsid__ = "$Id: cmenumgr.py 63787 2010-03-30 01:14:36Z CJP $"
+__revision__ = "$Revision: 63787 $"
 
 __all__ = [ 'ContextMenuManager', ]
 

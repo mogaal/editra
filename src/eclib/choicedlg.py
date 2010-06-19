@@ -16,8 +16,8 @@ A generic choice dialog that uses a wx.Choice control to display its choices.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: choicedlg.py 59552 2009-03-15 06:31:10Z CJP $"
-__revision__ = "$Revision: 59552 $"
+__svnid__ = "$Id: choicedlg.py 63820 2010-04-01 21:46:22Z CJP $"
+__revision__ = "$Revision: 63820 $"
 
 __all__ = ['ChoiceDialog',]
 
@@ -284,12 +284,3 @@ class ChoicePanel(wx.Panel):
         self._selidx = self._choices.GetSelection()
 
 #--------------------------------------------------------------------------#
-
-# Test
-if __name__ == '__main__':
-    app = wx.App(False)
-    dlg = ChoiceDialog(None, msg="Choose an letter",
-                       title="letters", choices=['a', 'b', 'c', 'd'],
-                       default="c", style=wx.OK|wx.CANCEL|wx.ICON_WARNING)
-    dlg.ShowModal()
-    print dlg, dlg.GetSelection()
