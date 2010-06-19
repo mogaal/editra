@@ -1,6 +1,7 @@
 editra (0.5.70-1) unstable; urgency=low
 
   * New upstream release (Closes: #585204) 
+  * Fix in d/rules extra-license-file (was not working).
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 19 Jun 2010 16:11:33 -0430
 
