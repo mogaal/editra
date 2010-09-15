@@ -234,12 +234,12 @@ License: wxwindows
   code and/or adjust the licensing conditions notice accordingly.
 
 License: GPL-3+
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    On Debian systems, the complete text of the GNU General
-    Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  On Debian systems, the complete text of the GNU General
+  Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
 
 License: BSD
    Redistribution and use in source and binary forms, with or without
