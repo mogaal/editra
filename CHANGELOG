@@ -9,6 +9,20 @@ Change Log:
 #-----------------------------------------------------------------------------#
 Changes since last release:
 
+VERSION 0.5.72
+DATE 06/24/2010
+36th Alpha Release
+
+NEWS:
+This release addresses a critical bug in the handling of HTML/XML files.
+
+BUG FIXES:
++Fix error in HTML autocompletion.
++Fix application icon not showing up on Windows Vista and 7.
++Fix spellchecker dependencies missing in Windows binary builds.
+
+#-----------------------------------------------------------------------------#
+
 VERSION 0.5.70
 DATE 06/12/2010
 35th Alpha Release

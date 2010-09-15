@@ -21,8 +21,8 @@ LANGUAGE: Python
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synextreg.py 63844 2010-04-03 17:31:54Z CJP $"
-__revision__ = "$Revision: 63844 $"
+__svnid__ = "$Id: synextreg.py 64581 2010-06-13 13:55:57Z CJP $"
+__revision__ = "$Revision: 64581 $"
 
 #-----------------------------------------------------------------------------#
 import os
@@ -374,7 +374,7 @@ EXT_MAP = {
            'bas cls ctl frm vb' : LANG_VB,
            'vbs dsm'            : LANG_VBSCRIPT,
            'v'                  : LANG_VERILOG,
-           'vh vhdl'            : LANG_VHDL,
+           'vh vhdl vhd'        : LANG_VHDL,
            'axl dtd plist rdf svg xml xrc xsd xsl xslt xul' : LANG_XML,
            'yaml yml'           : LANG_YAML,
            'groovy'             : LANG_GROOVY,

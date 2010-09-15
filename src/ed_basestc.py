@@ -15,14 +15,13 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 64558 2010-06-11 11:53:43Z CJP $"
-__revision__ = "$Revision: 64558 $"
+__svnid__ = "$Id: ed_basestc.py 64591 2010-06-15 04:00:50Z CJP $"
+__revision__ = "$Revision: 64591 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import wx
 import wx.stc
-import types
 
 # Editra Imports
 import ed_glob
@@ -466,6 +465,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
     @property
     def File(self):
+        """Reference to this buffers file object"""
         return self.file
 
     def FindLexer(self, set_ext=u''):

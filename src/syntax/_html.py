@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _html.py 64561 2010-06-12 01:49:05Z CJP $"
-__revision__ = "$Revision: 64561 $"
+__svnid__ = "$Id: _html.py 64591 2010-06-15 04:00:50Z CJP $"
+__revision__ = "$Revision: 64591 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -240,13 +240,12 @@ def AutoIndenter(estc, pos, ichar):
     line = estc.GetCurrentLine()
     spos = estc.PositionFromLine(line)
     text = estc.GetTextRange(spos, pos)
-    epos = estc.GetLineEndPosition(line)
     eolch = estc.GetEOLChar()
     inspace = text.isspace()
 
     # Cursor is in the indent area somewhere
     if inspace:
-        estc.AddText(eolch + txt)
+        estc.AddText(eolch + text)
         return
 
     # Check if the cursor is in column 0 and just return newline.

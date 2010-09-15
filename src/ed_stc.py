@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 64395 2010-05-26 02:46:49Z CJP $"
-__revision__ = "$Revision: 64395 $"
+__svnid__ = "$Id: ed_stc.py 64591 2010-06-15 04:00:50Z CJP $"
+__revision__ = "$Revision: 64591 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -59,6 +59,7 @@ OPERATORS = "./\?[]{}<>!@#$%^&*():=-+\"';,"
 def jumpaction(func):
     """Decorator method to notify clients about jump actions"""
     def WrapJump(*args, **kwargs):
+        """Wrapper for capturing before/after pos of a jump action"""
         stc = args[0]
         pos = stc.GetCurrentPos()
         line = stc.GetCurrentLine()
@@ -287,7 +288,8 @@ class EditraStc(ed_basestc.EditraBaseStc):
         @return: list of line numbers
 
         """
-        return [mark for mark in xrange(self.GetLineCount()) if self.MarkerGet(mark)]
+        return [mark for mark in xrange(self.GetLineCount())
+                if self.MarkerGet(mark)]
 
     def DoBraceHighlight(self):
         """Perform a brace matching highlight
@@ -735,7 +737,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         else:
             evt.Skip()
 
-    def ParaDown(self):
+    def ParaDown(self): # pylint: disable-msg=W0221
         """Move the caret one paragraph down
         @note: overrides the default function to set caret at end
                of paragraph instead of jumping to start of next
@@ -747,7 +749,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             self.WordPartLeft()
             self.GotoPos(self.GetCurrentPos() + len(self.GetEOLChar()))
 
-    def ParaDownExtend(self):
+    def ParaDownExtend(self): # pylint: disable-msg=W0221
         """Extend the selection a paragraph down
         @note: overrides the default function to set selection at end
                of paragraph instead of jumping to start of next so that
@@ -1223,7 +1225,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """
         return self.recording
 
-    def LineDelete(self):
+    def LineDelete(self): # pylint: disable-msg=W0221
         """Delete the selected lines without modifying the clipboard"""
         sline = self.LineFromPosition(self.GetSelectionStart())
         eline = self.LineFromPosition(self.GetSelectionEnd())
@@ -1240,7 +1242,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         self.ReplaceTarget(u'')
         self.EndUndoAction()
 
-    def LinesJoin(self):
+    def LinesJoin(self): # pylint: disable-msg=W0221
         """Join lines in target and compress whitespace
         @note: overrides default function to allow for leading
                whitespace in joined lines to be compressed to 1 space
@@ -1295,7 +1297,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             self.GotoColumn(col)
             self.EndUndoAction()
 
-    def LineTranspose(self):
+    def LineTranspose(self): # pylint: disable-msg=W0221
         """Switch the current line with the previous one
         @note: overrides base stc method to do transpose in single undo action
 
@@ -1354,7 +1356,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         else:
             self.SetEdgeMode(wx.stc.STC_EDGE_NONE)
 
-    def StartRecord(self):
+    def StartRecord(self): # pylint: disable-msg=W0221
         """Starts recording all events
         @return: None
 
@@ -1366,7 +1368,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         wx.PostEvent(self.GetTopLevelParent(), evt)
         super(EditraStc, self).StartRecord()
 
-    def StopRecord(self):
+    def StopRecord(self): # pylint: disable-msg=W0221
         """Stops the recording and builds the macro script
         @postcondition: macro recording is stopped
 
@@ -1474,7 +1476,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             self.UpdateBaseStyles()
         return 0
 
-    def Tab(self):
+    def Tab(self): # pylint: disable-msg=W0221
         """Override base method to ensure that folded blocks get unfolded
         prior to changing the indentation.
 
@@ -1532,7 +1534,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             lineNum = self.GetCurrentLine()
         super(EditraStc, self).ToggleFold(lineNum)
 
-    def WordLeft(self):
+    def WordLeft(self): # pylint: disable-msg=W0221
         """Move caret to beginning of previous word
         @note: override builtin to include extra characters in word
 
@@ -1544,7 +1546,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             super(EditraStc, self).WordLeft()
         self.SetWordChars('')
 
-    def WordLeftExtend(self):
+    def WordLeftExtend(self): # pylint: disable-msg=W0221
         """Extend selection to beginning of previous word
         @note: override builtin to include extra characters in word
 
@@ -1556,7 +1558,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             super(EditraStc, self).WordLeftExtend()
         self.SetWordChars('')
 
-    def WordPartLeft(self):
+    def WordPartLeft(self): # pylint: disable-msg=W0221
         """Move the caret left to the next change in capitalization/punctuation
         @note: overrides default function to not count whitespace as words
 
@@ -1566,8 +1568,9 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if self.GetTextRange(cpos, cpos + 1) in SPACECHARS:
             super(EditraStc, self).WordPartLeft()
 
-    def WordPartLeftExtend(self):
-        """Extend selection left to the next change in capitalization/punctuation
+    def WordPartLeftExtend(self): # pylint: disable-msg=W0221
+        """Extend selection left to the next change in c
+        apitalization/punctuation.
         @note: overrides default function to not count whitespace as words
 
         """
@@ -1576,7 +1579,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if self.GetTextRange(cpos, cpos + 1) in SPACECHARS:
             super(EditraStc, self).WordPartLeftExtend()
 
-    def WordPartRight(self):
+    def WordPartRight(self): # pylint: disable-msg=W0221
         """Move the caret to the start of the next word part to the right
         @note: overrides default function to exclude white space
 
@@ -1586,7 +1589,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if self.GetTextRange(cpos, cpos + 1) in SPACECHARS:
             super(EditraStc, self).WordPartRight()
 
-    def WordPartRightEnd(self):
+    def WordPartRightEnd(self): # pylint: disable-msg=W0221
         """Move caret to end of next change in capitalization/punctuation
         @postcondition: caret is moved
 
@@ -1597,7 +1600,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if self.GetTextRange(cpos, cpos - 1) in SPACECHARS:
             self.CharLeft()
 
-    def WordPartRightEndExtend(self):
+    def WordPartRightEndExtend(self): # pylint: disable-msg=W0221
         """Extend selection to end of next change in capitalization/punctuation
         @postcondition: selection is extended
 
@@ -1608,8 +1611,9 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if self.GetTextRange(cpos, cpos - 1) in SPACECHARS:
             self.CharLeftExtend()
 
-    def WordPartRightExtend(self):
-        """Extend selection to start of next change in capitalization/punctuation
+    def WordPartRightExtend(self): # pylint: disable-msg=W0221
+        """Extend selection to start of next change in 
+        capitalization/punctuation
         @postcondition: selection is extended
 
         """
@@ -1618,7 +1622,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         if self.GetTextRange(cpos, cpos + 1) in SPACECHARS:
             super(EditraStc, self).WordPartRightExtend()
 
-    def WordRight(self):
+    def WordRight(self): # pylint: disable-msg=W0221
         """Move caret to beginning of next word
         @note: override builtin to include extra characters in word
 
@@ -1630,7 +1634,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             super(EditraStc, self).WordRight()
         self.SetWordChars('')
 
-    def WordRightEnd(self):
+    def WordRightEnd(self): # pylint: disable-msg=W0221
         """Move caret to end of next change in word
         @note: override builtin to include extra characters in word
 
@@ -1642,7 +1646,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             super(EditraStc, self).WordRightEnd()
         self.SetWordChars('')
 
-    def WordRightExtend(self):
+    def WordRightExtend(self): # pylint: disable-msg=W0221
         """Extend selection to beginning of next word
         @note: override builtin to include extra characters in word
 
@@ -1663,9 +1667,6 @@ class EditraStc(ed_basestc.EditraBaseStc):
 
         """
         fsize = ebmlib.GetFileSize(path)
-        tlw = self.GetTopLevelParent()
-        pid = tlw.GetId()
-
         if fsize < 1048576: # 1MB
             return super(EditraStc, self).LoadFile(path)
         else:
