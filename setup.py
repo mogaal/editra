@@ -29,8 +29,8 @@
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 64522 2010-06-07 19:05:44Z CJP $"
-__revision__ = "$Revision: 64522 $"
+__svnid__ = "$Id: setup.py 64745 2010-06-25 23:13:12Z CJP $"
+__revision__ = "$Revision: 64745 $"
 
 #---- Imports ----#
 import os
@@ -329,7 +329,7 @@ def BuildPy2Exe():
                                "excludes" : ["Tkinter",],
                                "dll_excludes": [ "MSVCP90.dll" ] }},
         windows = [{"script": "src/Editra.py",
-                    "icon_resources": [(0, ICON['Win'])],
+                    "icon_resources": [(1, ICON['Win'])],
                     "other_resources" : [(RT_MANIFEST, 1,
                                           MANIFEST_TEMPLATE % dict(prog=NAME))],
                   }],

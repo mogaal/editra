@@ -15,15 +15,14 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _nsis.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _nsis.py 64591 2010-06-15 04:00:50Z CJP $"
+__revision__ = "$Revision: 64591 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import wx.stc as stc
 
 # Local Imports
-import synglob
 import syndata
 
 #-----------------------------------------------------------------------------#

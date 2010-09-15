@@ -13,8 +13,8 @@ Define support for Cobra programming language.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _cobra.py 64561 2010-06-12 01:49:05Z CJP $"
-__revision__ = "$Revision: 64561 $"
+__svnid__ = "$Id: _cobra.py 64591 2010-06-15 04:00:50Z CJP $"
+__revision__ = "$Revision: 64591 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -27,7 +27,7 @@ import syndata
 #-----------------------------------------------------------------------------#
 
 # Indenter keywords
-INDENT_KW = (u"body", u"branch",u"class", u"cue", u"def", u"else", u"except", 
+INDENT_KW = (u"body", u"branch", u"class", u"cue", u"def", u"else", u"except", 
              u"expect", u"finally", u"for", u"if", u"invariant", u"namespace",
              u"on" u"post", u"shared", u"success", u"test", u"try", u"while")
 
@@ -82,7 +82,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     def GetKeywords(self):
         """Returns Specified Keywords List """
-        return [KEYWORDS,]
+        return [KEYWORDS, ]
 
     def GetSyntaxSpec(self):
         """Syntax Specifications """
@@ -94,7 +94,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     def GetCommentPattern(self):
         """Returns a list of characters used to comment a block of code """
-        return [u'#',]
+        return [u'#', ]
 
 #-----------------------------------------------------------------------------#
 
@@ -105,11 +105,9 @@ def AutoIndenter(estc, pos, ichar):
     @param ichar: Indentation character
 
     """
-    rtxt = u''
     line = estc.GetCurrentLine()
     spos = estc.PositionFromLine(line)
     text = estc.GetTextRange(spos, pos)
-    epos = estc.GetLineEndPosition(line)
     eolch = estc.GetEOLChar()
     inspace = text.isspace()
 
