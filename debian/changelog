@@ -1,3 +1,10 @@
+editra (0.5.72-1) unstable; urgency=low
+
+  * New upstream release 
+  * Update Standards-Version field.
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
+
 editra (0.5.70-1) unstable; urgency=low
 
   * New upstream release. 
