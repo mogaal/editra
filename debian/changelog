@@ -3,6 +3,10 @@ editra (0.6.58-1) unstable; urgency=low
   * New upstream release 
   * Update Standards-Version field.
   * d/rules: Delete override_dh_auto_install, its not needed
+  * Add transition to dh_python2.
+  * Remove d/pycompat file (not needed in dh_python2)
+  * Replace XS-Python-Version by X-Python-Version because is preferred by 
+    transition to dh_python2 (following debian wiki)
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
 

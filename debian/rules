@@ -5,12 +5,9 @@ TMP     = $(CURDIR)/debian/$(PACKAGE)
 %:
 	dh $@ --with python2
 
-#override_dh_auto_configure:
-#	find . -name '*\.pyc' -delete
-#	dh_auto_configure
-	
 override_dh_fixperms:
 	dh_fixperms
 	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING
 	rm -f $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING
+	find . -type d -empty -delete
 	find . -name '*\.egg' -delete
