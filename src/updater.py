@@ -14,15 +14,16 @@ is the L{UpdateProgress} bar it displays the progress of the network action and
 provides a higher level interface into the L{UpdateService}.
 
 @summary: Utilities and controls for updating Editra
+@todo: This module could benefit from a bit of a re-write...
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: updater.py 60249 2009-04-20 01:18:29Z CJP $"
-__revision__ = "$Revision: 60249 $"
+__svnid__ = "$Id: updater.py 66703 2011-01-17 23:07:45Z CJP $"
+__revision__ = "$Revision: 66703 $"
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Dependencies
 import os
 import sys
 import stat
@@ -58,14 +59,14 @@ class UpdateService(object):
     """Defines an updater service object for Editra"""
     def __init__(self):
         """Initializes the Updater Object"""
-        object.__init__(self)
+        super(UpdateService, self).__init__()
         self._abort = False
         self._progress = (0, 100)
 
     def __GetUrlHandle(self, url):
         """Gets a file handle for the given url. The caller is responsible for
         closing the handle.
-        @requires: network conection
+        @requires: network connection
         @param url: url to get page from
         @return: all text from the given url
 
@@ -131,7 +132,7 @@ class UpdateService(object):
         """Parses the project website front page for the most
         recent version of the program.
         @requires: network connection
-        @return: verision number of latest available program
+        @return: version number of latest available program
 
         """
         page = self.GetPageText(ed_glob.HOME_PAGE + "/version.php?check=True")
@@ -141,7 +142,8 @@ class UpdateService(object):
         else:
             util.Log("[updater][warn] UpdateService.GetCurrentVersionStr "
                      "Failed to get version info.")
-            return _("Unable to retrieve version info")
+            # TODO: GetTranslation is not threadsafe!!!
+            return "Unable to retrieve version info"
 
     def GetFileSize(self, url):
         """Gets the size of a file by address
@@ -247,7 +249,7 @@ class UpdateThread(threading.Thread):
         @param jobId: job identification id will be set as event id on finish
 
         """
-        threading.Thread.__init__(self)
+        super(UpdateThread, self).__init__()
 
         # Attributes
         self.parent = parent
@@ -264,7 +266,7 @@ class UpdateThread(threading.Thread):
 
         evt = ed_event.NotificationEvent(ed_event.edEVT_NOTIFY,
                                          self.id, (isupdate, result))
-        wx.CallAfter(wx.PostEvent, self.parent, evt)
+        wx.PostEvent(self.parent, evt)
 
 #-----------------------------------------------------------------------------#
 
@@ -294,19 +296,22 @@ class UpdateProgress(wx.Gauge, UpdateService):
             self.SetWindowVariant(wx.WINDOW_VARIANT_LARGE)
 
         #---- Bind Events ----#
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
         self.Bind(wx.EVT_TIMER, self.OnUpdate, id = self.ID_TIMER)
 
         # Disable bar till caller is ready to use it
         self.Disable()
 
-    def __del__(self):
+    def OnDestroy(self, evt):
         """Cleans up when the control is destroyed
         @postcondition: if timer is running it is stopped before deletion
 
         """
-        if self._timer.IsRunning():
-            self.LOG("[updater][info]UpdateProgress: __del__, stopped timer")
-            self._timer.Stop()
+        if evt.GetId() == self.GetId():
+            if self._timer.IsRunning():
+                self.LOG("[updater][info]UpdateProgress: __del__, stopped timer")
+                self._timer.Stop()
+        evt.Skip()
 
     def Abort(self):
         """Overides the UpdateService abort function
@@ -317,6 +322,7 @@ class UpdateProgress(wx.Gauge, UpdateService):
         UpdateService.Abort(self)
         if self._timer.IsRunning():
             self._timer.Stop()
+        self.SetValue(0)
 
     def CheckForUpdates(self):
         """Checks for updates and activates the bar. In order to keep the
@@ -420,6 +426,9 @@ class UpdateProgress(wx.Gauge, UpdateService):
 
         """
         mode = self.GetMode()
+        if mode not in (self.ID_CHECKING, self.ID_DOWNLOADING):
+            return
+
         progress = self.GetProgress()
         prange = self.GetRange()
         if mode == self.ID_CHECKING:
@@ -454,6 +463,7 @@ class UpdateProgress(wx.Gauge, UpdateService):
         if not self._timer.IsRunning():
             self.LOG('[updater][info] UpdateProgress: Starting Timer')
             self.Enable()
+            self.SetValue(0)
             self._timer.Start(msec)
         else:
             pass
@@ -467,30 +477,34 @@ class UpdateProgress(wx.Gauge, UpdateService):
             self.LOG('[updater][info] UpdateProgress: Stopping Clock')
             self._timer.Stop()
             self._mode = 0
+            self.SetValue(self.GetRange())
         else:
             pass
-        self.SetValue(0)
-        self.Disable()
+        self.Enable(False)
+
+    def Pulse(self):
+        if self._mode == 0:
+            return
+        super(UpdateProgress, self).Pulse()
 
     #--- Protected Member Functions ---#
     def _DownloadThread(self, *args):
         """Processes the download and checks that the file has been downloaded
-        properly. Then returns either True if the download was succesfull or
+        properly. Then returns either True if the download was successful or
         False if it failed in some way.
         @return: success status of download
 
         """
-        dl_ok = self.GetUpdateFiles("".join(args))
+        dl_ok = self.GetUpdateFiles(u"".join(args))
         return dl_ok
 
     def _ResultNotifier(self, delayedResult):
-        """Recieves the return from the result of the worker thread and
+        """Receives the return from the result of the worker thread and
         notifies the interested party with the result.
         @param delayedResult:  value from worker thread
 
         """
         jid = delayedResult.getJobID()
-
         try:
             self.LOG("[updater][info] UpdateProgress: Worker thread exited. ID = %d" % jid)
             self._checking = self._downloading = False # Work has finished
@@ -502,6 +516,7 @@ class UpdateProgress(wx.Gauge, UpdateService):
                 mevt = ed_event.UpdateTextEvent(ed_event.edEVT_UPDATE_TEXT, \
                                                 self.ID_CHECKING)
                 wx.PostEvent(self.GetParent(), mevt)
+                self.SetValue(self.GetRange())
             elif jid == self.ID_DOWNLOADING:
                 result = delayedResult.get()
                 self._dl_result = result
@@ -552,7 +567,7 @@ class DownloadDialog(wx.Frame):
         @param title: Title of dialog
 
         """
-        wx.Frame.__init__(self, parent, id_, title, style=style)
+        super(DownloadDialog, self).__init__(parent, id_, title, style=style)
         util.SetWindowIcon(self)
 
         #---- Attributes/Objects ----#
@@ -605,16 +620,19 @@ class DownloadDialog(wx.Frame):
         #---- Bind Events ----#
         self.Bind(wx.EVT_BUTTON, self.OnButton)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
         self.Bind(wx.EVT_TIMER, self.OnUpdate, id=self.ID_TIMER)
 
-    def __del__(self):
+    def OnDestroy(self, evt):
         """Cleans up on exit
         @postcondition: if timer was running it is stopped
 
         """
-        if self._timer.IsRunning():
-            self.LOG('[updater][info] DownloadDialog: __del__ Timer Stopped')
-            self._timer.Stop()
+        if evt.GetId() == self.GetId():
+            if self._timer.IsRunning():
+                self.LOG('[updater][info] DownloadDialog: __del__ Timer Stopped')
+                self._timer.Stop()
+        evt.Skip()
 
     def CalcDownRate(self):
         """Calculates and returns the approximate download rate
@@ -697,4 +715,4 @@ class DownloadDialog(wx.Frame):
         wx.GetApp().RegisterWindow(repr(self), self, True)
         self._timer.Start(1000) # One pulse every second
         self._progress.DownloadUpdates()
-        wx.Frame.Show(self)
+        super(DownloadDialog, self).Show()

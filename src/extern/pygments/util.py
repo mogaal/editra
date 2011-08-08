@@ -5,10 +5,13 @@
 
     Utility functions.
 
-    :copyright: 2006-2008 by Georg Brandl.
-    :license: BSD, see LICENSE for more details.
+    :copyright: Copyright 2006-2010 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
 """
+
 import re
+import sys
+import codecs
 
 
 split_path_re = re.compile(r'[/\\ ]')
@@ -107,10 +110,16 @@ def make_analysator(f):
     returns float values.
     """
     def text_analyse(text):
-        rv = f(text)
+        try:
+            rv = f(text)
+        except Exception:
+            return 0.0
         if not rv:
             return 0.0
-        return min(1.0, max(0.0, float(rv)))
+        try:
+            return min(1.0, max(0.0, float(rv)))
+        except ValueError:
+            return 0.0
     text_analyse.__doc__ = f.__doc__
     return staticmethod(text_analyse)
 
@@ -196,3 +205,28 @@ def looks_like_xml(text):
         rv = tag_re.search(text[:1000]) is not None
         _looks_like_xml_cache[key] = rv
         return rv
+
+# Python 2/3 compatibility
+
+if sys.version_info < (3,0):
+    b = bytes = str
+    u_prefix = 'u'
+    import StringIO, cStringIO
+    BytesIO = cStringIO.StringIO
+    StringIO = StringIO.StringIO
+    uni_open = codecs.open
+else:
+    import builtins
+    bytes = builtins.bytes
+    u_prefix = ''
+    def b(s):
+        if isinstance(s, str):
+            return bytes(map(ord, s))
+        elif isinstance(s, bytes):
+            return s
+        else:
+            raise TypeError("Invalid argument %r for b()" % (s,))
+    import io
+    BytesIO = io.BytesIO
+    StringIO = io.StringIO
+    uni_open = builtins.open

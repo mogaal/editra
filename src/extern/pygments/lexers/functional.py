@@ -5,25 +5,19 @@
 
     Lexers for functional languages.
 
-    :copyright: 2006-2008 by Georg Brandl, Marek Kubica,
-                Adam Blinkinsop <blinks@acm.org>, Matteo Sasso.
-    :license: BSD, see LICENSE for more details.
+    :copyright: Copyright 2006-2010 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
 """
 
 import re
-try:
-    set
-except NameError:
-    from sets import Set as set
 
-from pygments.lexer import Lexer, RegexLexer, bygroups, using, this, include, \
-     do_insertions
+from pygments.lexer import Lexer, RegexLexer, bygroups, include, do_insertions
 from pygments.token import Text, Comment, Operator, Keyword, Name, \
-     String, Number, Punctuation, Literal
+     String, Number, Punctuation, Literal, Generic
 
 
 __all__ = ['SchemeLexer', 'CommonLispLexer', 'HaskellLexer', 'LiterateHaskellLexer',
-           'OcamlLexer', 'ErlangLexer']
+           'OcamlLexer', 'ErlangLexer', 'ErlangShellLexer']
 
 
 class SchemeLexer(RegexLexer):
@@ -247,7 +241,7 @@ class CommonLispLexer(RegexLexer):
             (r'#\d*Y.*$', Comment.Special),
 
             # strings and characters
-            (r'"(\\.|[^"])*"', String),
+            (r'"(\\.|[^"\\])*"', String),
             # quoting
             (r":" + symbol, String.Symbol),
             (r"'" + symbol, String.Symbol),
@@ -354,7 +348,7 @@ class HaskellLexer(RegexLexer):
             # Whitespace:
             (r'\s+', Text),
             #(r'--\s*|.*$', Comment.Doc),
-            (r'--.*$', Comment.Single),
+            (r'--(?![!#$%&*+./<=>?@\^|_~]).*?$', Comment.Single),
             (r'{-', Comment.Multiline, 'comment'),
             # Lexemes:
             #  Identifiers
@@ -387,6 +381,7 @@ class HaskellLexer(RegexLexer):
         'import': [
             # Import statements
             (r'\s+', Text),
+            (r'"', String, 'string'),
             # after "funclist" state
             (r'\)', Punctuation, '#pop'),
             (r'qualified\b', Keyword),
@@ -445,7 +440,7 @@ class HaskellLexer(RegexLexer):
             (r'o[0-7]+', String.Escape, '#pop'),
             (r'x[\da-fA-F]+', String.Escape, '#pop'),
             (r'\d+', String.Escape, '#pop'),
-            (r'\n\s+\\', String.Escape, '#pop'),
+            (r'\s+\\', String.Escape, '#pop'),
         ],
     }
 
@@ -476,7 +471,7 @@ class LiterateHaskellLexer(Lexer):
 
         style = self.options.get('litstyle')
         if style is None:
-            style = (text.lstrip()[0] in '%\\') and 'latex' or 'bird'
+            style = (text.lstrip()[0:1] in '%\\') and 'latex' or 'bird'
 
         code = ''
         insertions = []
@@ -486,7 +481,8 @@ class LiterateHaskellLexer(Lexer):
                 line = match.group()
                 m = bird_re.match(line)
                 if m:
-                    insertions.append((len(code), [(0, Comment.Special, m.group(1))]))
+                    insertions.append((len(code),
+                                       [(0, Comment.Special, m.group(1))]))
                     code += m.group(2)
                 else:
                     insertions.append((len(code), [(0, Text, line)]))
@@ -555,7 +551,7 @@ class OcamlLexer(RegexLexer):
 
     tokens = {
         'escape-sequence': [
-            (r'\\[\"\'ntbr]', String.Escape),
+            (r'\\[\\\"\'ntbr]', String.Escape),
             (r'\\[0-9]{3}', String.Escape),
             (r'\\x[0-9a-fA-F]{2}', String.Escape),
         ],
@@ -606,7 +602,7 @@ class OcamlLexer(RegexLexer):
             (r'\.', Punctuation),
             (r'[A-Z][A-Za-z0-9_\']*(?=\s*\.)', Name.Namespace),
             (r'[A-Z][A-Za-z0-9_\']*', Name.Class, '#pop'),
-            (r'[a-z][a-z0-9_\']*', Name, '#pop'),
+            (r'[a-z_][A-Za-z0-9_\']*', Name, '#pop'),
         ],
     }
 
@@ -670,7 +666,7 @@ class ErlangLexer(RegexLexer):
 
     variable_re = r'(?:[A-Z_][a-zA-Z0-9_]*)'
 
-    escape_re = r'(?:\\(?:[bdefnrstv\'"\\]|[0-7][0-7]?[0-7]?|\^[a-zA-Z]))'
+    escape_re = r'(?:\\(?:[bdefnrstv\'"\\/]|[0-7][0-7]?[0-7]?|\^[a-zA-Z]))'
 
     macro_re = r'(?:'+variable_re+r'|'+atom_re+r')'
 
@@ -693,7 +689,7 @@ class ErlangLexer(RegexLexer):
             (r'[+-]?'+base_re+r'#[0-9a-zA-Z]+', Number.Integer),
             (r'[+-]?\d+', Number.Integer),
             (r'[+-]?\d+.\d+', Number.Float),
-            (r'[][:_@\".{}()|;,]', Punctuation),
+            (r'[]\[:_@\".{}()|;,]', Punctuation),
             (variable_re, Name.Variable),
             (atom_re, Name),
             (r'\?'+macro_re, Name.Constant),
@@ -703,8 +699,9 @@ class ErlangLexer(RegexLexer):
         'string': [
             (escape_re, String.Escape),
             (r'"', String, '#pop'),
-            (r'~[0-9.*]*[~#+bBcefginpPswWxX]', String.Interpol),
-            (r'[^"\~]+', String),
+            (r'~[0-9.*]*[~#+bBcdefginpPswWxX]', String.Interpol),
+            (r'[^"\\~]+', String),
+            (r'~', String),
             ],
         'directive': [
             (r'(define)(\s*)(\()('+macro_re+r')',
@@ -714,3 +711,47 @@ class ErlangLexer(RegexLexer):
             (atom_re, Name.Entity, '#pop'),
             ],
         }
+
+
+class ErlangShellLexer(Lexer):
+    """
+    Shell sessions in erl (for Erlang code).
+
+    *New in Pygments 1.1.*
+    """
+    name = 'Erlang erl session'
+    aliases = ['erl']
+    filenames = ['*.erl-sh']
+    mimetypes = ['text/x-erl-shellsession']
+
+    _prompt_re = re.compile(r'\d+>(?=\s|\Z)')
+
+    def get_tokens_unprocessed(self, text):
+        erlexer = ErlangLexer(**self.options)
+
+        curcode = ''
+        insertions = []
+        for match in line_re.finditer(text):
+            line = match.group()
+            m = self._prompt_re.match(line)
+            if m is not None:
+                end = m.end()
+                insertions.append((len(curcode),
+                                   [(0, Generic.Prompt, line[:end])]))
+                curcode += line[end:]
+            else:
+                if curcode:
+                    for item in do_insertions(insertions,
+                                    erlexer.get_tokens_unprocessed(curcode)):
+                        yield item
+                    curcode = ''
+                    insertions = []
+                if line.startswith('*'):
+                    yield match.start(), Generic.Traceback, line
+                else:
+                    yield match.start(), Generic.Output, line
+        if curcode:
+            for item in do_insertions(insertions,
+                                      erlexer.get_tokens_unprocessed(curcode)):
+                yield item
+

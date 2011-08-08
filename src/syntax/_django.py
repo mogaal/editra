@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _django.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _django.py 65146 2010-07-31 05:25:02Z CJP $"
+__revision__ = "$Revision: 65146 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -100,6 +100,14 @@ def StyleText(stc, start, end):
     lexer = get_lexer_by_name("html+django")
     doctxt = stc.GetTextRange(0, end)
     wineol = stc.GetEOLChar() == "\r\n"
+
+    # Need to convert to UTF-8 in order to calculate
+    # correct positions in STC.
+    try:
+        doctxt = doctxt.encode('utf-8')
+    except:
+        pass
+
     for token, txt in lexer.get_tokens(doctxt):
 #        print token, txt
         style = TOKEN_MAP.get(token, STC_DJANGO_DEFAULT)

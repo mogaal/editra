@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _d.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _d.py 66108 2010-11-10 21:04:54Z CJP $"
+__revision__ = "$Revision: 66108 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -59,48 +59,52 @@ DOC_KEYWORDS = (2, "TODO FIXME XXX \\author \\brief \\bug \\callgraph "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [ (stc.STC_C_DEFAULT, 'default_style'),
-                 (stc.STC_C_COMMENT, 'comment_style'),
-                 (stc.STC_C_COMMENTLINE, 'comment_style'),
-                 (stc.STC_C_COMMENTDOC, 'comment_style'),
-                 (stc.STC_C_COMMENTDOCKEYWORD, 'dockey_style'),
-                 (stc.STC_C_COMMENTDOCKEYWORDERROR, 'error_style'),
-                 (stc.STC_C_COMMENTLINE, 'comment_style'),
-                 (stc.STC_C_COMMENTLINEDOC, 'comment_style'),
-                 (stc.STC_C_CHARACTER, 'char_style'),
-                 (stc.STC_C_GLOBALCLASS, 'global_style'),
-                 (stc.STC_C_IDENTIFIER, 'default_style'),
-                 (stc.STC_C_NUMBER, 'number_style'),
-                 (stc.STC_C_OPERATOR, 'operator_style'),
-                 (stc.STC_C_PREPROCESSOR, 'pre_style'),
-                 (stc.STC_C_REGEX, 'pre_style'),
-                 (stc.STC_C_STRING, 'string_style'),
-                 (stc.STC_C_STRINGEOL, 'stringeol_style'),
-                 (stc.STC_C_UUID, 'pre_style'),
-                 (stc.STC_C_VERBATIM, 'number2_style'),
-                 (stc.STC_C_WORD, 'keyword_style'),
-                 (stc.STC_C_WORD2, 'keyword2_style') ]
-
-# For 2.9
-# TODO
-SYNTAX_ITEMS2 = [ ('STC_D_CHARACTER', 'char_style'),
-                  ('STC_D_COMMENT', 'comment_style'),
-                  ('STC_D_COMMENTDOC', 'comment_style'),
-                  ('STC_D_COMMENTDOCKEYWORD', 'dockey_style'),
-                  ('STC_D_COMMENTDOCKEYWORDERROR', 'error_style'),
-                  ('STC_D_COMMENTLINE', 'comment_style'),
-                  ('STC_D_COMMENTLINEDOC', 'comment_style'),
-                  ('STC_D_COMMENTNESTED', 'comment_style'),
-                  ('STC_D_DEFAULT', 'default_style'),
-                  ('STC_D_IDENTIFIER', 'default_style'),
-                  ('STC_D_NUMBER', 'number_style'),
-                  ('STC_D_OPERATOR', 'operator_style'),
-                  ('STC_D_STRING', 'string_style'),
-                  ('STC_D_STRINGEOL', 'stringeol_style'),
-                  ('STC_D_TYPEDEF', 'default_style'), # NEEDS STYLE
-                  ('STC_D_WORD', 'keyword_style'),
-                  ('STC_D_WORD2', 'keyword2_style'),
-                  ('STC_D_WORD3', 'keyword3_style') ]
+if wx.VERSION >= (2, 9, 0, 0, ''):
+    SYNTAX_ITEMS2 = [ (stc.STC_D_CHARACTER, 'char_style'),
+                      (stc.STC_D_COMMENT, 'comment_style'),
+                      (stc.STC_D_COMMENTDOC, 'comment_style'),
+                      (stc.STC_D_COMMENTDOCKEYWORD, 'dockey_style'),
+                      (stc.STC_D_COMMENTDOCKEYWORDERROR, 'error_style'),
+                      (stc.STC_D_COMMENTLINE, 'comment_style'),
+                      (stc.STC_D_COMMENTLINEDOC, 'comment_style'),
+                      (stc.STC_D_COMMENTNESTED, 'comment_style'),
+                      (stc.STC_D_DEFAULT, 'default_style'),
+                      (stc.STC_D_IDENTIFIER, 'default_style'),
+                      (stc.STC_D_NUMBER, 'number_style'),
+                      (stc.STC_D_OPERATOR, 'operator_style'),
+                      (stc.STC_D_STRING, 'string_style'),
+                      (stc.STC_D_STRINGB, 'string_style'), #TODO
+                      (stc.STC_D_STRINGEOL, 'stringeol_style'),
+                      (stc.STC_D_STRINGR, 'string_style'), #TODO
+                      (stc.STC_D_TYPEDEF, 'default_style'), # NEEDS STYLE
+                      (stc.STC_D_WORD, 'keyword_style'),
+                      (stc.STC_D_WORD2, 'keyword2_style'),
+                      (stc.STC_D_WORD3, 'keyword3_style'),
+                      (stc.STC_D_WORD5, 'default_style'), #TODO
+                      (stc.STC_D_WORD6, 'default_style'), #TODO
+                      (stc.STC_D_WORD7, 'default_style')] #TODO
+else:
+    SYNTAX_ITEMS = [ (stc.STC_C_DEFAULT, 'default_style'),
+                     (stc.STC_C_COMMENT, 'comment_style'),
+                     (stc.STC_C_COMMENTLINE, 'comment_style'),
+                     (stc.STC_C_COMMENTDOC, 'comment_style'),
+                     (stc.STC_C_COMMENTDOCKEYWORD, 'dockey_style'),
+                     (stc.STC_C_COMMENTDOCKEYWORDERROR, 'error_style'),
+                     (stc.STC_C_COMMENTLINE, 'comment_style'),
+                     (stc.STC_C_COMMENTLINEDOC, 'comment_style'),
+                     (stc.STC_C_CHARACTER, 'char_style'),
+                     (stc.STC_C_GLOBALCLASS, 'global_style'),
+                     (stc.STC_C_IDENTIFIER, 'default_style'),
+                     (stc.STC_C_NUMBER, 'number_style'),
+                     (stc.STC_C_OPERATOR, 'operator_style'),
+                     (stc.STC_C_PREPROCESSOR, 'pre_style'),
+                     (stc.STC_C_REGEX, 'pre_style'),
+                     (stc.STC_C_STRING, 'string_style'),
+                     (stc.STC_C_STRINGEOL, 'stringeol_style'),
+                     (stc.STC_C_UUID, 'pre_style'),
+                     (stc.STC_C_VERBATIM, 'number2_style'),
+                     (stc.STC_C_WORD, 'keyword_style'),
+                     (stc.STC_C_WORD2, 'keyword2_style') ]
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
@@ -114,7 +118,7 @@ FOLD_ELSE = ("fold.at.else", "0")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for D""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         if wx.VERSION >= (2, 9, 0, 0, ''):

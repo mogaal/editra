@@ -17,8 +17,8 @@ resource providers for the ArtProvider.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: ed_art.py 59175 2009-02-27 03:10:09Z CJP $"
-__revision__ = "$Revision: 59175 $"
+__cvsid__ = "$Id: ed_art.py 66815 2011-01-29 20:46:20Z CJP $"
+__revision__ = "$Revision: 66815 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -81,7 +81,7 @@ class EditraArt(wx.ArtProvider):
     """
     def __init__(self):
         """Initializes Editra's art provider"""
-        wx.ArtProvider.__init__(self)
+        super(EditraArt, self).__init__()
         self._library = ed_theme.BitmapProvider(wx.GetApp().GetPluginManager())
 
     def CreateBitmap(self, art_id, client, size):

@@ -12,8 +12,8 @@ Provides helper functions and classes for managing documents and their services.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: doctools.py 63349 2010-02-01 22:13:57Z CJP $"
-__revision__ = "$Revision: 63349 $"
+__svnid__ = "$Id: doctools.py 66159 2010-11-15 02:24:06Z CJP $"
+__revision__ = "$Revision: 66159 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -38,10 +38,8 @@ class DocPositionMgr(object):
     _poscache = ebmlib.HistoryCache(100)
 
     def __init__(self):
-        """Creates the position manager object
-
-        """
-        object.__init__(self)
+        """Creates the position manager object"""
+        super(DocPositionMgr, self).__init__()
 
         # Attributes
         self._init = False
@@ -60,12 +58,12 @@ class DocPositionMgr(object):
 
     @classmethod
     def AddNaviPosition(cls, fname, pos):
-        """Add a new postion to the navigation cache
+        """Add a new position to the navigation cache
         @param fname: file name
         @param pos: position
 
         """
-        # Don't put two identical positions in the cache next to eachother
+        # Don't put two identical positions in the cache next to each other
         pre = cls._poscache.PeekPrevious()
         next = cls._poscache.PeekNext()
         if (fname, pos) in (pre, next):
@@ -76,7 +74,7 @@ class DocPositionMgr(object):
     def AddRecord(self, vals):
         """Adds a record to the dictionary from a list of the
         filename vals[0] and the position value vals[1].
-        @param vals: file path, cursor postion
+        @param vals: file path, cursor position
         @type vals: tuple (str, int)
 
         """
@@ -147,7 +145,7 @@ class DocPositionMgr(object):
     def GetPos(self, name):
         """Get the position record for a given filename
         returns 0 if record is not found.
-        @return: postion value for the given filename
+        @return: position value for the given filename
 
         """
         return self._records.get(name, 0)
@@ -215,7 +213,6 @@ class DocPositionMgr(object):
         """
         if pre:
             if cls._poscache.HasPrevious():
-                print "DO PREVIOUS!!"
                 return cls._poscache.PeekPrevious()
         else:
             if cls._poscache.HasNext():

@@ -14,11 +14,12 @@ AUTHOR: Cody Preord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _inno.py 64561 2010-06-12 01:49:05Z CJP $"
-__revision__ = "$Revision: 64561 $"
+__svnid__ = "$Id: _inno.py 66104 2010-11-10 20:18:29Z CJP $"
+__revision__ = "$Revision: 66104 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import wx
 import wx.stc as stc
 import re
 
@@ -101,10 +102,14 @@ SYNTAX_ITEMS = [(stc.STC_INNO_COMMENT, 'comment_style'),
                 (stc.STC_INNO_KEYWORD_USER, 'default_style'),
                 (stc.STC_INNO_PARAMETER, 'keyword2_style'),
                 (stc.STC_INNO_PREPROC, 'pre_style'),
-                (stc.STC_INNO_PREPROC_INLINE, 'pre_style'),
                 (stc.STC_INNO_SECTION, 'scalar_style'),
                 (stc.STC_INNO_STRING_DOUBLE, 'string_style'),
                 (stc.STC_INNO_STRING_SINGLE, 'char_style')]
+
+if wx.VERSION >= (2, 9, 0, 0, ''):
+    SYNTAX_ITEMS.append((stc.STC_INNO_INLINE_EXPANSION, 'default_style')) #TODO
+else:
+    SYNTAX_ITEMS.append((stc.STC_INNO_PREPROC_INLINE, 'pre_style'))
 
 #---- Extra Properties ----#
 FOLD = ("fold", "1")

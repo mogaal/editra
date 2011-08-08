@@ -9,8 +9,8 @@
 """Unittest cases for testing the icon theme provider interface"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testTheme.py 61520 2009-07-25 02:08:49Z CJP $"
-__revision__ = "$Revision: 61520 $"
+__svnid__ = "$Id: testTheme.py 65165 2010-08-02 22:04:37Z CJP $"
+__revision__ = "$Revision: 65165 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -32,12 +32,11 @@ class ThemeTest(unittest.TestCase):
     """Tests the BitmapProvier class"""
     def setUp(self):
         ed_glob.CONFIG['THEME_DIR'] = common.GetThemeDir()
-        self.app = common.EdApp(False)
-        pmgr = self.app.GetPluginManager()
+        pmgr = wx.GetApp().GetPluginManager()
         self.bmpprov = ed_theme.BitmapProvider(pmgr)
 
     def tearDown(self):
-        self.app.Exit()
+        pass
 
     #---- Test Cases ----#
 

@@ -5,15 +5,15 @@
 
     Pygments formatters.
 
-    :copyright: 2006-2007 by Georg Brandl, Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
+    :copyright: Copyright 2006-2010 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
 """
 import os.path
 import fnmatch
 
 from pygments.formatters._mapping import FORMATTERS
 from pygments.plugin import find_plugin_formatters
-from pygments.util import docstring_headline, ClassNotFound
+from pygments.util import ClassNotFound
 
 ns = globals()
 for fcls in FORMATTERS:

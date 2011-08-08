@@ -20,8 +20,8 @@ happen during run time.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: profiler.py 63791 2010-03-30 02:57:15Z CJP $"
-__revision__ = "$Revision: 63791 $"
+__svnid__ = "$Id: profiler.py 67855 2011-06-04 20:11:21Z CJP $"
+__revision__ = "$Revision: 67855 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -68,7 +68,7 @@ _DEFAULTS = {
            'GUIDES'     : False,            # Use Indentation guides
            'HLCARETLINE': False,            # Highlight Caret Line
            'ICONS'      : 'Tango',          # Icon Theme
-           'ICON_SZ'    : (24, 24),         # Toolbar Icon Size
+           'ICON_SZ'    : (16, 16),         # Toolbar Icon Size
            'INDENTWIDTH': 4,                # Default indent width
            'ISBINARY'   : False,            # Is this instance a binary
            'KEY_PROFILE': None,             # Keybinding profile
@@ -105,6 +105,7 @@ _DEFAULTS = {
            'TOOLBAR'    : True,             # Show Toolbar
            'USETABS'    : False,            # Use tabs instead of spaces
            'USE_PROXY'  : False,            # Use Proxy server settings?
+           'VIEWVERTSPACE' : False,         # Allow extra virtual space in buffer
            'VI_EMU'     : False,            # Use Vi emulation mode
            'VI_NORMAL_DEFAULT' : False,     # Use Normal mode by default
            'WARN_EOL'   : True,             # Warn about mixed eol characters
@@ -280,30 +281,9 @@ TheProfile = Profile()
 
 #-----------------------------------------------------------------------------#
 # Profile convenience functions
-def Profile_Del(item):
-    """Removes an item from the profile
-    @param item: items key name
-
-    """
-    TheProfile.DeleteItem(item)
-
-def Profile_Get(index, fmt=None, default=None):
-    """Convenience for Profile().Get()
-    @param index: profile index to retrieve
-    @keyword fmt: format to get value as
-    @keyword default: default value to return if not found
-
-    """
-    return TheProfile.Get(index, fmt, default)
-
-def Profile_Set(index, val, fmt=None):
-    """Convenience for Profile().Set()
-    @param index: profile index to set
-    @param val: value to set index to
-    @keyword fmt: format to convert object from
-
-    """
-    return TheProfile.Set(index, val, fmt)
+Profile_Del  = TheProfile.DeleteItem
+Profile_Get = TheProfile.Get
+Profile_Set = TheProfile.Set
 
 def _FromObject(val, fmt):
     """Convert the given value to a to a profile compatible value
@@ -355,17 +335,6 @@ def _ToObject(index, val, fmt):
     return rval
 
 #---- Begin Function Definitions ----#
-def AddFileHistoryToProfile(file_history):
-    """Manages work of adding a file from the profile in order
-    to allow the top files from the history to be available
-    the next time the user opens the program.
-    @param file_history: add saved files to history list
-
-    """
-    files = list()
-    for fnum in xrange(file_history.GetNoHistoryFiles()):
-        files.append(file_history.GetHistoryFile(fnum))
-    Profile_Set('FHIST', files)
 
 def CalcVersionValue(ver_str="0.0.0"):
     """Calculates a version value from the provided dot-formated string
@@ -398,12 +367,8 @@ def GetLoader():
            should be.
 
     """
-    cbase = CONFIG['CONFIG_BASE']
-    if cbase is None:
-        cbase = wx.StandardPaths_Get().GetUserDataDir()
-
+    cbase = util.GetUserConfigBase()
     loader = os.path.join(cbase, u"profiles", u".loader2")
-
     return loader
 
 def GetProfileStr():
@@ -420,6 +385,8 @@ def GetProfileStr():
     profile = reader.readline()
     profile = profile.split("\n")[0] # strip newline from end
     reader.close()
+    if not os.path.isabs(profile):
+        profile = CONFIG['PROFILE_DIR'] + profile
     return profile
 
 def ProfileIsCurrent():
@@ -483,8 +450,7 @@ def UpdateProfileLoader():
         Profile_Set('MYPROFILE', prof_name)
 
     # Use just the relative profile name for local(portable) config paths
-    if CONFIG['ISLOCAL']:
-        prof_name = os.path.basename(prof_name)
+    prof_name = os.path.basename(prof_name)
 
     writer.write(prof_name)
     writer.write(u"\nVERSION\t" + VERSION)

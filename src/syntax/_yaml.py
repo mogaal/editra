@@ -15,11 +15,12 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _yaml.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _yaml.py 66106 2010-11-10 20:23:27Z CJP $"
+__revision__ = "$Revision: 66106 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import wx
 import wx.stc as stc
 
 # Local Imports
@@ -42,6 +43,9 @@ SYNTAX_ITEMS = [(stc.STC_YAML_COMMENT, 'comment_style'),
                 (stc.STC_YAML_NUMBER, 'number_style'),
                 (stc.STC_YAML_REFERENCE, 'global_style'),
                 (stc.STC_YAML_TEXT, 'default_style')] # Different style maybe
+
+if wx.VERSION >= (2, 9, 0, 0, ''):
+    SYNTAX_ITEMS.append((stc.STC_YAML_OPERATOR, 'operator_style'))
 
 #---- Extra Properties ----#
 FOLD_COMMENT = ("fold.comment.yaml", "1")

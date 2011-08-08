@@ -9,8 +9,8 @@
 """Unittests for ebmlib.FileObjectImpl class"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileImpl.py 61504 2009-07-23 03:39:28Z CJP $"
-__revision__ = "$Revision: 61504 $"
+__svnid__ = "$Id: testFileImpl.py 65714 2010-10-01 19:15:39Z CJP $"
+__revision__ = "$Revision: 65714 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -62,6 +62,16 @@ class FileImplTest(unittest.TestCase):
     def testGetLastError(self):
         """Test fetching last file op error"""
         self.assertEquals(self.file.GetLastError(), u"None")
+
+        # Test that errors come back as Unicode
+        self.file.SetLastError("OS CALL FAILED")
+        errmsg = self.file.GetLastError()
+        self.assertTrue(ebmlib.IsUnicode(errmsg), "Error not decoded properly!")
+
+        # Tests path for error message that is already Unicode
+        self.file.SetLastError(u"FAIL!")
+        errmsg = self.file.GetLastError()
+        self.assertEquals(errmsg, u"FAIL!")
 
     def testGetPath(self):
         """Test getting the files path"""

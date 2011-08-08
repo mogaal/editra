@@ -15,8 +15,8 @@ Provides a dialog for downloading, installing and configuring plugins or Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: plugdlg.py 63588 2010-02-28 16:33:16Z CJP $"
-__revision__ = "$Revision: 63588 $"
+__cvsid__ = "$Id: plugdlg.py 67856 2011-06-04 21:14:06Z CJP $"
+__revision__ = "$Revision: 67856 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -101,8 +101,8 @@ class PluginDialog(wx.Frame):
 
     """
     def __init__(self, parent, id=wx.ID_ANY, title=u'', size=wx.DefaultSize):
-        wx.Frame.__init__(self, parent, title=title, size=size,
-                              style=wx.DEFAULT_FRAME_STYLE)
+        super(PluginDialog, self).__init__(parent, title=title, size=size,
+                                           style=wx.DEFAULT_FRAME_STYLE)
         util.SetWindowIcon(self)
 
         # Attributes
@@ -138,12 +138,15 @@ class PluginDialog(wx.Frame):
         # Event Handlers
         self.Bind(eclib.EVT_SB_PAGE_CHANGING, self.OnPageChanging)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
 
         # Message Handlers
         ed_msg.Subscribe(self.OnThemeChange, ed_msg.EDMSG_THEME_CHANGED)
 
-    def __del__(self):
-        ed_msg.Unsubscribe(self.OnThemeChange)
+    def OnDestroy(self, evt):
+        if evt.GetId() == self.GetId():
+            ed_msg.Unsubscribe(self.OnThemeChange)
+        evt.Skip()
 
     def __InitImageList(self):
         """Initialize the segmentbooks image list"""
@@ -268,14 +271,7 @@ class ConfigPanel(eclib.ControlBox):
         else:
             self.PopulateErrors()
 
-#        cbar = self.CreateControlBar(wx.BOTTOM)
-#        cbar.SetVMargin(1, 2)
-#        cbar.AddStretchSpacer()
-#        btn = wx.Button(cbar, id=ConfigPanel.ID_UNINSTALL, label=_("Uninstall"))
-#        cbar.AddControl(btn, wx.ALIGN_RIGHT)
-
-        # Event handlers
-#        self.Bind(wx.EVT_BUTTON, self.OnUninstall, id=ConfigPanel.ID_UNINSTALL)
+        # Event Handlers
         self.Bind(ed_event.EVT_NOTIFY, self.OnNotify)
 
     def ConfigChanged(self):
@@ -367,7 +363,9 @@ class ConfigPanel(eclib.ControlBox):
 
             pdata = PluginData()
             pdata.SetName(item)
-            desc = getattr(mod, '__doc__', _("No Description Available"))
+            desc = getattr(mod, '__doc__', None)
+            if not isinstance(desc, basestring):
+                desc = _("No Description Available")
             pdata.SetDescription(desc.strip())
             pdata.SetAuthor(getattr(mod, '__author__', _("Unknown")))
             pdata.SetVersion(version)
@@ -416,14 +414,14 @@ class ConfigPanel(eclib.ControlBox):
                 item = dist.project_name
                 version = dist.version
             else:
-                version = str(getattr(mod, '__version__', _("Unknown")))
+                version = unicode(getattr(mod, '__version__', _("Unknown")))
 
             pin = PluginData()
             pin.SetName(item)
             pin.SetAuthor(getattr(mod, '__author__', _("Unknown")))
             pin.SetVersion(version)
             pin.SetDist(dist)
-            pbi = PluginErrorItem(self._list, pin, bmp, item)
+            pbi = PluginErrorItem(self._list, pin, msg, bmp=bmp)
 
             self._list.AppendItem(pbi)
             self._list.Thaw()
@@ -951,10 +949,12 @@ class PBPluginItem(eclib.PanelBoxItemBase):
         bmp = wx.ArtProvider.GetBitmap(str(ed_glob.ID_DELETE), wx.ART_MENU)
         self._uninstall = eclib.PlateButton(self, label=_("Uninstall"), bmp=bmp,
                                             style=eclib.PB_STYLE_NOBG)
+        self._uninstall.Unbind(wx.EVT_ERASE_BACKGROUND)
         bmp = wx.ArtProvider.GetBitmap(str(ed_glob.ID_PREF), wx.ART_MENU)
         self._config = eclib.PlateButton(self,
                                          label=_("Configure"), bmp=bmp,
                                          style=eclib.PB_STYLE_NOBG)
+        self._config.Unbind(wx.EVT_ERASE_BACKGROUND)
         self._config.Enable(enabled)
 
         # Setup
@@ -1112,21 +1112,22 @@ class PBDownloadItem(PBPluginItem):
 
 class PluginErrorItem(eclib.PanelBoxItemBase):
     """PanelBox Item to display configuration information about a plugin."""
-    def __init__(self, parent, bmp,
-                 title=u'Plugin Name', version=u'0.0',
-                 msg=u'Description', auth='John Doe'):
+    def __init__(self, parent, pdata, msg, bmp):
         """Create the PanelBoxItem
         @param parent: L{PanelBox}
+        @param pdata: PluginData
+        @param msg: error msg
+        @param bmp: Bitmap
 
         """
         super(PluginErrorItem, self).__init__(parent)
 
         # Attributes
         self._bmp = bmp
-        self._title = wx.StaticText(self, label=title)
-        self._version = wx.StaticText(self, label=version)
+        self._title = wx.StaticText(self, label=pdata.GetName())
+        self._version = wx.StaticText(self, label=pdata.GetVersion())
         self._msg = wx.StaticText(self, label=msg)
-        self._auth = wx.StaticText(self, label=_("Author: %s") % auth)
+        self._auth = wx.StaticText(self, label=_("Author: %s") % pdata.GetAuthor())
 
         # Setup
         font = self._title.GetFont()

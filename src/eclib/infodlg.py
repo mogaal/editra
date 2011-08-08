@@ -20,8 +20,8 @@ Displays information on:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: infodlg.py 61808 2009-09-02 15:57:55Z CJP $"
-__revision__ = "$Revision: 61808 $"
+__svnid__ = "$Id: infodlg.py 66025 2010-11-05 19:18:08Z CJP $"
+__revision__ = "$Revision: 66025 $"
 
 __all__ = ["FileInfoDlg", "CalcSize", "GetFileType"]
 
@@ -54,9 +54,9 @@ class FileInfoDlg(wx.MiniFrame):
 
         """
         self._fname = fname.split(os.path.sep)[-1]
-        wx.MiniFrame.__init__(self, parent,
-                              title="%s  %s" % (self._fname, _("Info")),
-                              style=wx.DEFAULT_DIALOG_STYLE)
+        super(FileInfoDlg, self).__init__(parent,
+                                          title="%s  %s" % (self._fname, _("Info")),
+                                          style=wx.DEFAULT_DIALOG_STYLE)
 
         # Attributes
         self._file = fname
@@ -178,7 +178,7 @@ class FileInfoDlg(wx.MiniFrame):
                      ((12, 12)), (lblsize, 0, wx.ALIGN_LEFT), ((5, 5))])
 
         # Central Info
-        center = wx.FlexGridSizer(5, 2, 3, 5)
+        center = wx.FlexGridSizer(6, 2, 3, 5)
         tlbl = wx.StaticText(self.panel, label=_("Kind") + ":")
 
         if self._ftype is None:

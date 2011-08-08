@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 64591 2010-06-15 04:00:50Z CJP $"
-__revision__ = "$Revision: 64591 $"
+__svnid__ = "$Id: ed_basestc.py 67626 2011-04-27 02:51:39Z CJP $"
+__revision__ = "$Revision: 67626 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -38,6 +38,7 @@ from profiler import Profile_Get
 import plugin
 import iface
 import util
+import ed_marker
 
 #-----------------------------------------------------------------------------#
 
@@ -45,6 +46,9 @@ import util
 MARK_MARGIN = 0
 NUM_MARGIN  = 1
 FOLD_MARGIN = 2
+
+# Markers (3rd party)
+MARKER_VERT_EDIT = ed_marker.NewMarkerId()
 
 # Key code additions
 ALT_SHIFT = wx.stc.STC_SCMOD_ALT|wx.stc.STC_SCMOD_SHIFT
@@ -58,7 +62,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
 
     """
     ED_STC_MASK_MARKERS = ~wx.stc.STC_MASK_FOLDERS
-    def __init__(self, parent, id_,
+    def __init__(self, parent, id_=wx.ID_ANY,
                  pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
         wx.stc.StyledTextCtrl.__init__(self, parent, id_, pos, size, style)
         ed_style.StyleMgr.__init__(self, self.GetStyleSheet())
@@ -73,15 +77,16 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
                           indenter=None,    # Auto indenter
                           lang_id=0)        # Language ID from syntax module
 
-        self.vert_edit = vertedit.VertEdit(self)
+        self.vert_edit = vertedit.VertEdit(self, markerNumber=MARKER_VERT_EDIT)
         self._line_num = True # Show line numbers
+        self._last_cwidth = 1 # one pixel
 
         # Set Up Margins
         ## Outer Left Margin Bookmarks
         self.SetMarginType(MARK_MARGIN, wx.stc.STC_MARGIN_SYMBOL)
-        self.SetMarginMask(MARK_MARGIN, self.ED_STC_MASK_MARKERS)
+        self.SetMarginMask(MARK_MARGIN, EditraBaseStc.ED_STC_MASK_MARKERS)
         self.SetMarginSensitive(MARK_MARGIN, True)
-        self.SetMarginWidth(MARK_MARGIN, 12)
+        self.SetMarginWidth(MARK_MARGIN, 16)
 
         ## Middle Left Margin Line Number Indication
         self.SetMarginType(NUM_MARGIN, wx.stc.STC_MARGIN_NUMBER)
@@ -97,26 +102,106 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             for keys in _GetMacKeyBindings():
                 self.CmdKeyAssign(*keys)
 
-        # Setup Autocomp images
+        # Setup Auto-comp images
         # TODO: should be called on theme change messages
         self.RegisterImages()
 
         # Event Handlers
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
         self.Bind(wx.stc.EVT_STC_CHANGE, self.OnChanged)
         self.Bind(wx.stc.EVT_STC_MODIFIED, self.OnModified)
         self.Bind(wx.stc.EVT_STC_AUTOCOMP_SELECTION, self.OnAutoCompSel)
 
-    def __del__(self):
-        # Cleanup the file object callbacks
-        self.file.RemoveModifiedCallback(self.FireModified)
-        self.file.CleanUp()
+    def OnDestroy(self, evt):
+        if evt.GetId() == self.GetId():
+            # Cleanup the file object callbacks
+            self.file.RemoveModifiedCallback(self.FireModified)
+            self.file.CleanUp()
+        evt.Skip()
 
     #---- Public Methods ----#
 
-    def AddBookmark(self):
-        """Add a bookmark and return its handle"""
-        cline = self.GetCurrentLine()
-        return self.MarkerAdd(cline, MARK_MARGIN)
+    # General marker api
+    def AddMarker(self, marker, line=-1):
+        """Add a bookmark and return its handle
+        @param marker: ed_marker.Marker instance
+        @keyword line: if < 0 bookmark will be added to current line
+
+        """
+        assert isinstance(marker, ed_marker.Marker)
+        if line < 0:
+            line = self.GetCurrentLine()
+        marker.Set(self, line)
+        return marker.Handle
+
+    def RemoveMarker(self, marker, line):
+        """Remove the book mark from the given line
+        @param marker: ed_marker.Marker instance
+        @param line: int
+
+        """
+        assert isinstance(marker, ed_marker.Marker)
+        marker.Set(self, line, delete=True)
+
+    def RemoveAllMarkers(self, marker):
+        """Remove all the bookmarks in the buffer
+        @param marker: ed_marker.Marker instance
+
+        """
+        assert isinstance(marker, ed_marker.Marker)
+        marker.DeleteAll(self)
+
+    #-- Breakpoint marker api --#
+    def DeleteAllBreakpoints(self):
+        """Delete all the breakpoints in the buffer"""
+        ed_marker.Breakpoint().DeleteAll(self)
+        ed_marker.BreakpointDisabled().DeleteAll(self)
+        ed_marker.BreakpointStep().DeleteAll(self)
+
+    def DeleteBreakpoint(self, line):
+        """Delete the breakpoint from the given line"""
+        ed_marker.Breakpoint().Set(self, line, delete=True)
+        ed_marker.BreakpointDisabled().Set(self, line, delete=True)
+
+    def _SetBreakpoint(self, mobj, line=-1):
+        """Set the breakpoint state
+        @param mtype: Marker object
+        @return: int (-1 if already set)
+
+        """
+        handle = -1
+        if line < 0:
+            line = self.GetCurrentLine()
+        if not mobj.IsSet(self, line):
+            # Clear other set breakpoint marker states on same line
+            ed_marker.Breakpoint().Set(self, line, delete=True)
+            ed_marker.BreakpointDisabled().Set(self, line, delete=True)
+            mobj.Set(self, line, delete=False)
+            handle = mobj.Handle
+        return handle
+
+    def SetBreakpoint(self, line=-1, disabled=False):
+        """Set a breakpoint marker on the given line
+        @keyword line: line number
+        @keyword disabled: bool
+        @return: breakpoint handle
+
+        """
+        if not disabled:
+            handle = self._SetBreakpoint(ed_marker.Breakpoint(), line)
+        else:
+            handle = self._SetBreakpoint(ed_marker.BreakpointDisabled(), line)
+        return handle
+
+    def ShowStepMarker(self, line=-1, show=True):
+        """Show the step (arrow) marker to the given line."""
+        if line < 0:
+            line = self.GetCurrentLine()
+        mark = ed_marker.BreakpointStep()
+        if show:
+            mark.Set(self, line, delete=False)
+        else:
+            mark.DeleteAll(self)
 
     def AddLine(self, before=False, indent=False):
         """Add a new line to the document
@@ -374,10 +459,8 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         @postcondition: all margin markers are defined
 
         """
+        # Get the colours for the various markers
         style = self.GetItemByName('foldmargin_style')
-        # The foreground/background settings for the marker column seem to
-        # backwards from what the parameters take so use our Fore color for
-        # the stcs back and visa versa for our Back color.
         back = style.GetFore()
         rgb = eclib.HexToRGB(back[1:])
         back = wx.Colour(red=rgb[0], green=rgb[1], blue=rgb[2])
@@ -386,23 +469,40 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         rgb = eclib.HexToRGB(fore[1:])
         fore = wx.Colour(red=rgb[0], green=rgb[1], blue=rgb[2])
 
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPEN,
-                          wx.stc.STC_MARK_BOXMINUS, fore, back)
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDER,
-                          wx.stc.STC_MARK_BOXPLUS,  fore, back)
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERSUB,
-                          wx.stc.STC_MARK_VLINE, fore, back)
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERTAIL,
-                          wx.stc.STC_MARK_LCORNER, fore, back)
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEREND,
-                          wx.stc.STC_MARK_BOXPLUSCONNECTED, fore, back)
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPENMID,
-                          wx.stc.STC_MARK_BOXMINUSCONNECTED, fore, back)
-        self.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERMIDTAIL,
-                          wx.stc.STC_MARK_TCORNER, fore, back)
-        self.MarkerDefine(0, wx.stc.STC_MARK_SHORTARROW, fore, back)
-        self.SetFoldMarginHiColour(True, fore)
-        self.SetFoldMarginColour(True, fore)
+        # Buffer background highlight
+        caret_line = self.GetItemByName('caret_line').GetBack()
+        rgb = eclib.HexToRGB(caret_line[1:])
+        clback = wx.Colour(*rgb)
+
+        # Code Folding markers
+        folder = ed_marker.FoldMarker()
+        folder.Foreground = fore
+        folder.Background = back
+        folder.RegisterWithStc(self)
+
+        # Bookmarks
+        ed_marker.Bookmark().RegisterWithStc(self)
+
+        # Breakpoints
+        ed_marker.Breakpoint().RegisterWithStc(self)
+        ed_marker.BreakpointDisabled().RegisterWithStc(self)
+        step = ed_marker.BreakpointStep()
+        step.Background = clback
+        step.RegisterWithStc(self)
+        ed_marker.StackMarker().RegisterWithStc(self)
+
+        # Other markers
+        errmk = ed_marker.ErrorMarker()
+        errsty = self.GetItemByName('error_style')
+        rgb = eclib.HexToRGB(errsty.GetBack()[1:])
+        errmk.Background = wx.Colour(*rgb)
+        rgb = eclib.HexToRGB(errsty.GetFore()[1:])
+        errmk.Foreground = wx.Colour(*rgb)
+        errmk.RegisterWithStc(self)
+        # Lint Marker
+        ed_marker.LintMarker().RegisterWithStc(self)
+        ed_marker.LintMarkerWarning().RegisterWithStc(self)
+        ed_marker.LintMarkerError().RegisterWithStc(self)
 
     def DoZoom(self, mode):
         """Zoom control in or out
@@ -477,7 +577,12 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         if set_ext != u'':
             ext = set_ext.lower()
         else:
-            ext = self.file.GetExtension()
+            ext = self.file.GetExtension().lower()
+
+        if ext == u'':
+            fname = self.GetFileName()
+            ext = ebmlib.GetFileName(fname).lower()
+
         self.ClearDocumentStyle()
 
         # Configure Lexer from File Extension
@@ -490,12 +595,15 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             if interp != wx.EmptyString:
                 interp = interp.split(u"/")[-1]
                 interp = interp.strip().split()
-                if len(interp) and interp[-1][0] != "-":
+                if len(interp) and interp[-1][0] != u"-":
                     interp = interp[-1]
                 elif len(interp):
                     interp = interp[0]
                 else:
                     interp = u''
+                # TODO: should check user config to ensure the explict
+                #       extension is still associated with the expected
+                #       file type.
                 ex_map = { "python" : "py", "wish" : "tcl", "ruby" : "rb",
                            "bash" : "sh", "csh" : "csh", "perl" : "pl",
                            "ksh" : "ksh", "php" : "php", "booi" : "boo",
@@ -508,17 +616,21 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         self.OnChanged(wx.stc.StyledTextEvent(wx.stc.wxEVT_STC_CHANGE,
                                               self.GetId()))
 
-    def GetCommandStr(self):
+    def GetCommandStr(self, line=None, col=None):
         """Gets the command string to the left of the autocomp
         activation character.
+        @keyword line: optional if None current cursor position used
+        @keyword col: optional if None current cursor position used
         @return: the command string to the left of the autocomp char
         @todo: fillups are currently disabled. See note in Configure.
 
         """
-        # NOTE: the column position returned by GetCurLine is not correct
-        #       for multibyte characters.
-        line, col = self.GetCurLine()
-        col = self.GetColumn(self.GetCurrentPos())
+        if None in (line, col):
+            # NOTE: the column position returned by GetCurLine is not correct
+            #       for multibyte characters.
+            line, col = self.GetCurLine()
+            col = self.GetColumn(self.GetCurrentPos())
+        line = line.expandtabs(self.GetTabWidth())
         cmd_lmt = list(self._code['compsvc'].GetAutoCompStops() + \
                        self._code['compsvc'].GetAutoCompFillups())
         for key in self._code['compsvc'].GetAutoCompKeys():
@@ -648,6 +760,15 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         pos = max(0, pos-1)
         return 'comment' in self.FindTagById(self.GetStyleAt(pos))
 
+    def HasMarker(self, line, marker):
+        """Check if the given line has the given marker set
+        @param line: line number
+        @param marker: marker id
+
+        """
+        mask = self.MarkerGet(line)
+        return bool(1<<marker & mask)
+
     def HasSelection(self):
         """Check if there is a selection in the buffer
         @return: bool
@@ -669,13 +790,26 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             bMulti = sline != eline
         return bMulti
 
+    def CallTipCancel(self):
+        """Cancel any active calltip(s)"""
+        if self.CallTipActive():
+            super(EditraBaseStc, self).CallTipCancel()
+
+    def CallTipShow(self, position, tip):
+        """Show a calltip at the given position in the control
+        @param position: int
+        @param tip: unicode
+
+        """
+        self.CallTipCancel()
+        super(EditraBaseStc, self).CallTipShow(position, tip)
+
     def HidePopups(self):
         """Hide autocomp/calltip popup windows if any are active"""
         if self.AutoCompActive():
             self.AutoCompCancel()
 
-        if self.CallTipActive():
-            self.CallTipCancel()
+        self.CallTipCancel()
 
     def InitCompleter(self):
         """(Re)Initialize a completer object for this buffer
@@ -975,8 +1109,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         @param command: command to  look for calltips for
 
         """
-        if self.CallTipActive():
-            self.CallTipCancel()
+        self.CallTipCancel()
 
         tip = self._code['compsvc'].GetCallTip(command)
         if len(tip):
@@ -1035,6 +1168,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         return self.vert_edit
 
     #---- Style Function Definitions ----#
+
     def RefreshStyles(self):
         """Refreshes the colorization of the window by reloading any
         style tags that may have been modified.
@@ -1058,7 +1192,7 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             sback = sback.GetBack()
         else:
             sback = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
-        self.vert_edit.SetBlockColor(sback)
+        self.VertEdit.SetBlockColor(sback)
         self.DefineMarkers()
 
 #-----------------------------------------------------------------------------#

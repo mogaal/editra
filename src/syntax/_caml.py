@@ -14,11 +14,12 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _caml.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _caml.py 66108 2010-11-10 21:04:54Z CJP $"
+__revision__ = "$Revision: 66108 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import wx
 import wx.stc as stc
 
 # Local Imports
@@ -61,6 +62,9 @@ SYNTAX_ITEMS = [(stc.STC_CAML_CHAR, 'char_style'),
                 (stc.STC_CAML_STRING, 'string_style'),
                 (stc.STC_CAML_TAGNAME, 'directive_style')] #STYLE ME
 
+if wx.VERSION >= (2, 9, 0, 0, ''):
+    SYNTAX_ITEMS.append((stc.STC_CAML_WHITE, 'default_style')) #TODO
+
 #---- Extra Properties ----#
 FOLD = ('fold', '1')
 
@@ -69,7 +73,7 @@ FOLD = ('fold', '1')
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for Caml""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CAML)

@@ -24,13 +24,13 @@ which can be used to remove a listener from recieving messages.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_msg.py 63626 2010-03-05 03:54:27Z CJP $"
-__revision__ = "$Revision: 63626 $"
+__svnid__ = "$Id: ed_msg.py 67571 2011-04-22 01:10:57Z CJP $"
+__revision__ = "$Revision: 67571 $"
 
 __all__ = ['PostMessage', 'Subscribe', 'Unsubscribe']
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Imports
 from wx import PyDeadObjectError
 from extern.pubsub import Publisher
 
@@ -207,6 +207,30 @@ EDMSG_UI_STC_CONTEXT_MENU = EDMSG_UI_STC_ALL + ('custommenu',)
 # msgdata == dict(ltype=int, text=string, stc=EditraStc)
 EDMSG_UI_STC_USERLIST_SEL = EDMSG_UI_STC_ALL + ('userlistsel',)
 
+# Mouse Dwell Start
+# mdata = dict(stc=self, pos=position,
+#              line=line_number,
+#              word=word_under_cursor
+#              rdata="")
+# If the handler for this method wants to show a calltip
+# it should set the rdata value
+EDMSG_UI_STC_DWELL_START = EDMSG_UI_STC_ALL + ('dwellstart',)
+
+# Mouse Dwell End
+# mdata = None
+EDMSG_UI_STC_DWELL_END = EDMSG_UI_STC_ALL + ('dwellend',)
+
+# Bookmark (added/deleted)
+# mdata = dict(stc=EditraStc, added=bool, line=line, handle=bookmarkhandle)
+# NOTE: if line < 0, then all bookmarks removed
+EDMSG_UI_STC_BOOKMARK = EDMSG_UI_STC_ALL + ('bookmark',)
+
+# Margin Click
+# mdata = dict(stc=EditraStc, line=line, handled=bool)
+# handled is an out param in the message data. Set to True
+# to indicate that the click was handled.
+EDMSG_UI_STC_MARGIN_CLICK = EDMSG_UI_STC_ALL + ('marginclick',)
+
 #---- End UI Action Messages ----#
 
 #---- Menu Messages ----#
@@ -259,6 +283,7 @@ EDMSG_ADD_FILE_HISTORY = EDMSG_ALL + ('filehistory',)
 
 #--------------------------------------------------------------------------#
 # Public Api
+_ThePublisher = Publisher()
 
 def PostMessage(msgtype, msgdata=None, context=None):
     """Post a message containing the msgdata to all listeners that are
@@ -270,7 +295,7 @@ def PostMessage(msgtype, msgdata=None, context=None):
     @keyword context: Context of the message.
 
     """
-    Publisher().sendMessage(msgtype, msgdata, context=context)
+    _ThePublisher.sendMessage(msgtype, msgdata, context=context)
             
 def Subscribe(callback, msgtype=EDMSG_ALL):
     """Subscribe your listener function to listen for an action of type msgtype.
@@ -294,7 +319,7 @@ def Subscribe(callback, msgtype=EDMSG_ALL):
     @keyword msgtype: Message to subscribe to (default to all)
 
     """
-    Publisher().subscribe(callback, msgtype)
+    _ThePublisher.subscribe(callback, msgtype)
 
 def Unsubscribe(callback, messages=None):
     """Remove a listener so that it doesn't get sent messages for msgtype. If
@@ -322,8 +347,12 @@ def mwcontext(func):
         context of the main window or no context was specified.
 
         """
-        assert hasattr(self, 'GetMainWindow'), "Must declare a GetMainWindow method"
-        mw = self.GetMainWindow()
+        if hasattr(self, 'GetMainWindow'):
+            mw = self.GetMainWindow()
+        elif hasattr(self, 'MainWindow'):
+            mw = self.MainWindow
+        else:
+            assert False, "Must declare a GetMainWindow method"
         context = msg.GetContext()
         if context is None or mw.GetId() == context:
             func(self, msg)

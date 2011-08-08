@@ -5,14 +5,14 @@
  */
 
 default_style {
-		fore: #FFFFFF;
-		back: #000000;
-		face: %(primary)s;
-		size: %(size)d;
+        fore: #FFFFFF;
+        back: #000000;
+        face: %(primary)s;
+        size: %(size)d;
 }
 
 array_style {
-		fore: #EE8B02 bold;
+        fore: #EE8B02 bold;
 }
 
 brace_good {
@@ -25,7 +25,7 @@ brace_bad {
 }
 
 btick_style {
-		fore: #8959F6 bold;
+        fore: #8959F6 bold;
 }
 
 calltip { 
@@ -38,26 +38,26 @@ caret_line {
 }
 
 char_style {
-		fore: #FF3AFF;
+        fore: #FF3AFF;
 }
 
 class_style {
-		fore: #2E8B57 bold;
+        fore: #2E8B57 bold;
 }
 
 class2_style {
-		fore: #2E8B57 bold;
+        fore: #2E8B57 bold;
 }
 
 ctrl_char {
-		fore: #FFFFFF;
-		back: #000000;
-		face: %(primary)s;
+        fore: #FFFFFF;
+        back: #000000;
+        face: %(primary)s;
 }
 
 comment_style {
-		fore: #0033CC;
-		face: %(primary)s;
+        fore: #0033CC;
+        face: %(primary)s;
 }
 
 decor_style {
@@ -66,23 +66,23 @@ decor_style {
 }
 
 directive_style {
-		fore: #0000FF bold;
+        fore: #0000FF bold;
 }
 
 dockey_style {
-		fore: #00A6FF;
+        fore: #00A6FF;
 }
 
 error_style {
-		fore: #DD0101;
+        fore: #FE5252;
 }
 
 funct_style {
-		fore: #008B8B italic;
+        fore: #008B8B italic;
 }
 
 global_style {
-		fore: #007F7F bold;
+        fore: #007F7F bold;
 }
 
 guide_style {
@@ -90,47 +90,47 @@ guide_style {
 }
 
 here_style {
-		fore: #CA61CA bold;
+        fore: #CA61CA bold;
 }
 
 ideol_style {
-		fore: #E0C0E0;
+        fore: #E0C0E0;
 }
 
 keyword_style {
-		fore: #A52B2B bold;
+        fore: #A52B2B bold;
 }
 
 keyword2_style {
-		fore: #2E8B57 bold;
+        fore: #2E8B57 bold;
 }
 
 keyword3_style {
-		fore: #008B8B bold;
+        fore: #008B8B bold;
 }
 
 keyword4_style {
-		fore: #9D2424;
+        fore: #9D2424;
 }
 
 line_num {
-		size: %(size3)d;
+        size: %(size3)d;
 }
 
 number_style {
-		fore: #DD0101;
+        fore: #DD0101;
 }
 
 number2_style {
-		fore: #DD0101 bold;
+        fore: #DD0101 bold;
 }
 
 operator_style {
-		fore: #FFFFFF bold;
+        fore: #FFFFFF bold;
 }
 
 pre_style {
-		fore: #AB39F2 bold;
+        fore: #AB39F2 bold;
 }
 
 pre2_style {
@@ -139,15 +139,15 @@ pre2_style {
 }
 
 regex_style {
-		fore: #008B8B bold;
+        fore: #008B8B bold;
 }
 
 scalar_style {
-		fore: #AB37F2 bold;
+        fore: #AB37F2 bold;
 }
 
 scalar2_style {
-		fore: #AB37F2;
+        fore: #AB37F2;
 }
 
 select_style {
@@ -155,18 +155,18 @@ select_style {
 }
 
 string_style {
-		fore: #FF3AFF bold;
+        fore: #FF3AFF bold;
 }
 
 stringeol_style {
-		fore: #000000 bold;
-		back: #EEC0EE;
-		size: %(size)d eol;
+        fore: #000000 bold;
+        back: #EEC0EE;
+        size: %(size)d eol;
 }
 
 unknown_style {
-		fore: #FFFFFF bold;
-		back: #DD0101 eol;
+        fore: #FFFFFF bold;
+        back: #DD0101 eol;
 }
 
 whitespace_style {

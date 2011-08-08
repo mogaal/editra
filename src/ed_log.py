@@ -16,8 +16,8 @@ displaying a L{LogViewer} in the Shelf.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_log.py 62723 2009-11-26 18:43:20Z CJP $"
-__revision__ = "$Revision: 62723 $"
+__svnid__ = "$Id: ed_log.py 67177 2011-03-12 23:28:35Z CJP $"
+__revision__ = "$Revision: 67177 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -32,6 +32,7 @@ import iface
 import plugin
 from profiler import Profile_Get
 import ed_glob
+import ed_basewin
 
 #-----------------------------------------------------------------------------#
 # Globals
@@ -91,40 +92,41 @@ class EdLogViewer(plugin.Plugin):
 #-----------------------------------------------------------------------------#
 
 # LogViewer Ui Implementation
-class LogViewer(eclib.ControlBox):
+class LogViewer(ed_basewin.EdBaseCtrlBox):
     """LogViewer is a control for displaying and working with output
     from Editra's log.
 
     """
     def __init__(self, parent):
-        eclib.ControlBox.__init__(self, parent)
+        super(LogViewer, self).__init__(parent)
 
         # Attributes
         self._buffer = LogBuffer(self)
         self.SetWindow(self._buffer)
         self._srcfilter = None
+        self._clear = None
 
         # Layout
         self.__DoLayout()
 
         # Event Handlers
         self.Bind(wx.EVT_BUTTON,
-                  lambda evt: self._buffer.Clear(), id=wx.ID_CLEAR)
+                  lambda evt: self._buffer.Clear(), self._clear)
         self.Bind(wx.EVT_CHOICE, self.OnChoice, self._srcfilter)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
 
         # Message Handlers
         ed_msg.Subscribe(self.OnThemeChange, ed_msg.EDMSG_THEME_CHANGED)
 
-    def __del__(self):
+    def OnDestroy(self, evt):
         """Cleanup and unsubscribe from messages"""
-        ed_msg.Unsubscribe(self.OnThemeChange)
+        if evt.GetId() == self.GetId():
+            ed_msg.Unsubscribe(self.OnThemeChange)
 
     def __DoLayout(self):
         """Layout the log viewer window"""
         # Setup ControlBar
-        ctrlbar = eclib.ControlBar(self, style=eclib.CTRLBAR_STYLE_GRADIENT)
-        if wx.Platform == '__WXGTK__':
-            ctrlbar.SetWindowStyle(eclib.CTRLBAR_STYLE_DEFAULT)
+        ctrlbar = self.CreateControlBar(wx.TOP)
 
         # View Choice
         self._srcfilter = wx.Choice(ctrlbar, wx.ID_ANY, choices=[])
@@ -134,14 +136,8 @@ class LogViewer(eclib.ControlBox):
 
         # Clear Button
         ctrlbar.AddStretchSpacer()
-        cbmp = wx.ArtProvider.GetBitmap(str(ed_glob.ID_DELETE), wx.ART_MENU)
-        if cbmp.IsNull() or not cbmp.IsOk():
-            cbmp = None
-        clear = eclib.PlateButton(ctrlbar, wx.ID_CLEAR, _("Clear"),
-                                     cbmp, style=eclib.PB_STYLE_NOBG)
-        ctrlbar.AddControl(clear, wx.ALIGN_RIGHT)
-        ctrlbar.SetVMargin(1, 1)
-        self.SetControlBar(ctrlbar)
+        self._clear = self.AddPlateButton(_("Clear"), ed_glob.ID_DELETE,
+                                          wx.ALIGN_RIGHT)
         
     def OnChoice(self, evt):
         """Set the filter based on the choice controls value
@@ -155,10 +151,9 @@ class LogViewer(eclib.ControlBox):
         @param msg: Message Object
 
         """
-        clear = self.FindWindowById(wx.ID_CLEAR)
         cbmp = wx.ArtProvider.GetBitmap(str(ed_glob.ID_DELETE), wx.ART_MENU)
-        clear.SetBitmap(cbmp)
-        clear.Refresh()
+        self._clear.SetBitmap(cbmp)
+        self._clear.Refresh()
 
     def SetSources(self, srclist):
         """Set the list of available log sources in the choice control
@@ -183,7 +178,7 @@ class LogBuffer(eclib.OutputBuffer):
     ERROR_STYLE = eclib.OPB_STYLE_MAX + 1
 
     def __init__(self, parent):
-        eclib.OutputBuffer.__init__(self, parent)
+        super(LogBuffer, self).__init__(parent)
 
         # Attributes
         self._filter = SHOW_ALL_MSG
@@ -199,13 +194,17 @@ class LogBuffer(eclib.OutputBuffer):
         self.StyleSetSpec(LogBuffer.ERROR_STYLE,
                           "face:%s,size:%d,fore:#FFFFFF,back:%s" % style)
 
+        # Event Handlers
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
+
         # Subscribe to Editra's Log
         ed_msg.Subscribe(self.UpdateLog, ed_msg.EDMSG_LOG_ALL)
 
-    def __del__(self):
-        """Unregister from recieving any more log messages"""
-        ed_msg.Unsubscribe(self.UpdateLog, ed_msg.EDMSG_LOG_ALL)
-        super(LogBuffer, self).__del__()
+    def OnDestroy(self, evt):
+        """Unregister from receiving any more log messages"""
+        if evt.GetId() == self.GetId():
+            ed_msg.Unsubscribe(self.UpdateLog)
+        evt.Skip()
 
     def AddFilter(self, src):
         """Add a new filter source
@@ -253,9 +252,15 @@ class LogBuffer(eclib.OutputBuffer):
         @param msg: Message Object containing a LogMsg
 
         """
+        if wx.Thread_IsMain():
+            self.DoUpdateLog(msg)
+        else:
+            # Delegate to main thread
+            wx.CallAfter(self.DoUpdateLog, msg)
+
+    def DoUpdateLog(self, msg):
         if not self.IsRunning():
-            if wx.Thread_IsMain():
-                self.Start(150)
+            self.Start(150)
 
         # Check filters
         logmsg = msg.GetData()

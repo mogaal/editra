@@ -7,20 +7,20 @@
 ###############################################################################
 
 """
-Editra Buisness Model Library: File Utilities
+Editra Business Model Library: File Utilities
 
 Utility functions for managing and working with files.
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: fileutil.py 63002 2009-12-27 21:19:53Z CJP $"
-__revision__ = "$Revision: 63002 $"
+__svnid__ = "$Id: fileutil.py 67396 2011-04-05 20:01:01Z CJP $"
+__revision__ = "$Revision: 67396 $"
 
 __all__ = [ 'GetAbsPath', 'GetFileExtension', 'GetFileModTime', 'GetFileName',
             'GetFileSize', 'GetPathName', 'GetPathFromURI', 'GetUniqueName', 
             'IsLink', 'MakeNewFile', 'MakeNewFolder', 'PathExists',
-            'ResolveRealPath']
+            'ResolveRealPath', 'IsExecutable', 'Which', 'ComparePaths']
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -63,6 +63,20 @@ def uri2path(func):
     return WrapURI
 
 #-----------------------------------------------------------------------------#
+
+def ComparePaths(path1, path2):
+    """Determine whether the two given paths are equivalent
+    @param path1: unicode
+    @param path2: unicode
+    @return: bool
+
+    """
+    path1 = GetAbsPath(path1)
+    path2 = GetAbsPath(path2)
+    if WIN:
+        path1 = path1.lower()
+        path2 = path2.lower()
+    return path1 == path2
 
 @uri2path
 def GetAbsPath(path):
@@ -171,6 +185,15 @@ def PathExists(path):
     return os.path.exists(path)
 
 @uri2path
+def IsExecutable(path):
+    """Is the file at the given path an executable file
+    @param path: file path
+    @return: bool
+
+    """
+    return os.path.isfile(path) and os.access(path, os.X_OK)
+
+@uri2path
 def ResolveRealPath(link):
     """Return the real path of the link file
     @param link: path of link file
@@ -186,6 +209,23 @@ def ResolveRealPath(link):
     else:
         realpath = os.path.realpath(link)
     return realpath
+
+def Which(program):
+    """Find the path of the given executable
+    @param program: executable name (i.e 'python')
+    @return: executable path or None
+
+    """
+    # Check local directory first
+    if IsExecutable(program):
+        return program
+    else:
+        # Start looking on the $PATH
+        for path in os.environ["PATH"].split(os.pathsep):
+            exe_file = os.path.join(path, program)
+            if IsExecutable(exe_file):
+                return exe_file        
+    return None
 
 #-----------------------------------------------------------------------------#
 

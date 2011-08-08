@@ -16,11 +16,11 @@ configuration and presentation options.
 The following items are the options that the AdvancedFindReplaceDialog offers
 over the basic FindReplaceDialog.
 
-  * Hide/Show each option or section indvidually (basic dialog only disables them)
+  * Hide/Show each option or section individually (basic dialog only disables them)
   * Multi-Find/Replace event action for Find All / Replace All actions
   * Switch dialog from Find mode to Replace mode or visa-versa once its already
     been created.
-  * Options for specifiying the location to look in.
+  * Options for specifying the location to look in.
   * Regular Expression option
   * Use standard dialog or a floating MiniFrame (default)
 
@@ -35,8 +35,8 @@ eclib.ctrlbox
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: finddlg.py 62424 2009-10-16 02:05:13Z CJP $"
-__revision__ = "$Revision: 62424 $"
+__svnid__ = "$Id: finddlg.py 68232 2011-07-12 02:08:53Z CJP $"
+__revision__ = "$Revision: 68232 $"
 
 __all__ = ["FindBox", "FindEvent", "FindPanel", "FindReplaceDlg",
            "MiniFindReplaceDlg", "AdvFindReplaceDlg",
@@ -51,7 +51,8 @@ __all__ = ["FindBox", "FindEvent", "FindPanel", "FindReplaceDlg",
            "AFR_SIMPLE",
 
            "LOCATION_CURRENT_DOC", "LOCATION_IN_SELECTION",
-           "LOCATION_OPEN_DOCS", "LOCATION_IN_FILES", "LOCATION_MAX",
+           "LOCATION_OPEN_DOCS", "LOCATION_IN_CURRENT_DIR",
+           "LOCATION_IN_FILES", "LOCATION_MAX",
 
            "edEVT_FIND_CLOSE", "EVT_FIND_CLOSE", "edEVT_FIND", "EVT_FIND",
            "edEVT_FIND_NEXT", "EVT_FIND_NEXT", "edEVT_FIND_ALL", "EVT_FIND_ALL",
@@ -98,11 +99,12 @@ AFR_SIMPLE = (AFR_NOLOOKIN | AFR_NOOPTIONS | AFR_NOUPDOWN | \
               AFR_NO_COUNT | AFR_NO_ALL_BTN)
 
 # Search Location Parameters (NOTE: must be kept in sync with Lookin List)
-LOCATION_CURRENT_DOC  = 0
-LOCATION_IN_SELECTION = 1
-LOCATION_OPEN_DOCS    = 2
-LOCATION_IN_FILES     = 3
-LOCATION_MAX          = 3
+LOCATION_CURRENT_DOC    = 0
+LOCATION_IN_SELECTION   = 1
+LOCATION_OPEN_DOCS      = 2
+LOCATION_IN_CURRENT_DIR = 3
+LOCATION_IN_FILES       = 4
+LOCATION_MAX            = LOCATION_IN_CURRENT_DIR
 
 # Control Names
 FindBoxName = "EdFindBox"
@@ -180,7 +182,7 @@ class FindEvent(wx.PyCommandEvent):
         @keyword flags: Find/Replace flags
 
         """
-        wx.PyCommandEvent.__init__(self, etype, eid)
+        super(FindEvent, self).__init__(etype, eid)
 
         # Attributes
         self._flags = flags
@@ -620,8 +622,8 @@ class FindBox(ctrlbox.ControlBox):
         @param fdata: wx.FindReplaceData
 
         """
-        ctrlbox.ControlBox.__init__(self, parent, id, pos, size,
-                                    wx.TAB_TRAVERSAL|wx.NO_BORDER, name)
+        super(FindBox, self).__init__(parent, id, pos, size,
+                                      wx.TAB_TRAVERSAL|wx.NO_BORDER, name)
 
         # Attributes
         self._fpanel = FindPanel(self, fdata, style=style)
@@ -698,8 +700,8 @@ class FindPanel(wx.Panel):
         @param fdata: wx.FindReplaceData
 
         """
-        wx.Panel.__init__(self, parent, id, pos, size,
-                          wx.TAB_TRAVERSAL|wx.NO_BORDER, name)
+        super(FindPanel, self).__init__(parent, id, pos, size,
+                                        wx.TAB_TRAVERSAL|wx.NO_BORDER, name)
 
         # Attributes
         # TODO: change to editable combo box when wxMac has native widget
@@ -708,7 +710,7 @@ class FindPanel(wx.Panel):
         self._ftxt = wx.TextCtrl(self, value=fdata.GetFindString())
         self._rtxt = wx.TextCtrl(self, value=fdata.GetReplaceString())
         locations = [_("Current Document"), _("Selected Text"),
-                     _("Open Documents")]
+                     _("Open Documents"), _("Current Directory")]
         self._lookin = wx.Choice(self, ID_LOOKIN, choices=locations)
         self._lookin.SetSelection(0)
         self._filterlbl = wx.StaticText(self, label=_("File Filters:"))

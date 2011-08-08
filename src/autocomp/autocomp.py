@@ -20,8 +20,8 @@ makes the calls to the other support objects/functions in this library.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: autocomp.py 62975 2009-12-22 22:41:12Z CJP $"
-__revision__ = "$Revision: 62975 $"
+__svnid__ = "$Id: autocomp.py 66207 2010-11-18 15:56:19Z CJP $"
+__revision__ = "$Revision: 66207 $"
 __all__ = ['AutoCompService',]
 
 #--------------------------------------------------------------------------#
@@ -43,7 +43,7 @@ class AutoCompService(object):
     """
     def __init__(self):
         """Initializes the autocompletion service"""
-        object.__init__(self)
+        super(AutoCompService, self).__init__()
 
     @staticmethod
     def GetCompleter(buff, extended=False):

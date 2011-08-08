@@ -216,6 +216,10 @@ cannot be dragged far enough outside of the notebook to become
 floating pages. """
 AUI_NB_DRAW_DND_TAB        = 1 << 20
 """ Draws an image representation of a tab while dragging. """
+AUI_NB_ORDER_BY_ACCESS     = 1 << 21
+""" Tab navigation order by last access time. """
+AUI_NB_NO_TAB_FOCUS        = 1 << 22
+""" Don't draw tab focus rectangle. """
 
 AUI_NB_DEFAULT_STYLE = AUI_NB_TOP | AUI_NB_TAB_SPLIT | AUI_NB_TAB_MOVE | \
                        AUI_NB_SCROLL_BUTTONS | AUI_NB_CLOSE_ON_ACTIVE_TAB | \
@@ -290,6 +294,9 @@ AUI_MGR_SMOOTH_DOCKING           = 1 << 13
 AUI_MGR_USE_NATIVE_MINIFRAMES    = 1 << 14
 """ Use miniframes with native caption bar as floating panes instead or custom
 drawn caption bars (forced on wxMac). """
+AUI_MGR_AUTONB_NO_CAPTION        = 1 << 15
+""" Panes that merge into an automatic notebook will not have the pane
+caption visible. """
 
 
 AUI_MGR_DEFAULT = AUI_MGR_ALLOW_FLOATING | AUI_MGR_TRANSPARENT_HINT | \

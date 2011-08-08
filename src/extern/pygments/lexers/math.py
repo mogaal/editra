@@ -5,25 +5,20 @@
 
     Lexers for math languages.
 
-    :copyright: 2007-2008 by Christopher Creutzig, Ken Schutte, Stou Sandalski,
-                Laurent Gautier <lgautier@gmail.com>.
-    :license: BSD, see LICENSE for more details.
+    :copyright: Copyright 2006-2010 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
 """
 
 import re
-try:
-    set
-except NameError:
-    from sets import Set as set
 
-from pygments.lexer import Lexer, RegexLexer, bygroups, include
+from pygments.lexer import Lexer, RegexLexer, bygroups, include, do_insertions
 from pygments.token import Comment, String, Punctuation, Keyword, Name, \
     Operator, Number, Text, Generic
 
 from pygments.lexers.agile import PythonLexer
 
 __all__ = ['MuPADLexer', 'MatlabLexer', 'MatlabSessionLexer', 'NumPyLexer',
-           'SLexer']
+           'RConsoleLexer', 'SLexer']
 
 
 class MuPADLexer(RegexLexer):
@@ -158,15 +153,15 @@ class MatlabLexer(RegexLexer):
             (r'%.*$', Comment),
             (r'^\s*function', Keyword, 'deffunc'),
 
-            # from 'iskeyword' on version 7.4.0.336 (R2007a):
-            (r'break|case|catch|classdef|continue|else|elseif|end|for|function|'
-             r'global|if|otherwise|parfor|persistent|return|switch|try|while',
-             Keyword),
+            # from 'iskeyword' on version 7.11 (R2010):
+            (r'(break|case|catch|classdef|continue|else|elseif|end|enumerated|'
+             r'events|for|function|global|if|methods|otherwise|parfor|'
+             r'persistent|properties|return|spmd|switch|try|while)\b', Keyword),
 
-            ("|".join(elfun+specfun+elmat), Name.Builtin),
+            ("(" + "|".join(elfun+specfun+elmat) + r')\b',  Name.Builtin),
 
             # operators:
-            (r'-|==|~=|<|>|<=|>=|&&|&|~', Operator),
+            (r'-|==|~=|<|>|<=|>=|&&|&|~|\|\|?', Operator),
             # operators requiring escape for re:
             (r'\.\*|\*|\+|\.\^|\.\\|\.\/|\/|\\', Operator),
 
@@ -175,22 +170,30 @@ class MatlabLexer(RegexLexer):
             (r'=|:|;', Punctuation),
 
             # quote can be transpose, instead of string:
-            (r'(\w+)(\')', bygroups(Text, Operator)),
+            # (not great, but handles common cases...)
+            (r'(?<=[\w\)\]])\'', Operator),
 
-            (r'\'', String, 'string'),
+            (r'(?<![\w\)\]])\'', String, 'string'),
+            ('[a-zA-Z_][a-zA-Z0-9_]*', Name),
             (r'.', Text),
         ],
         'string': [
             (r'[^\']*\'', String, '#pop')
         ],
         'deffunc': [
-            (r'(\s*)(.+)(\s*)(=)(\s*)(.+)(\()(.*)(\))(\s*)',
+            (r'(\s*)(?:(.+)(\s*)(=)(\s*))?(.+)(\()(.*)(\))(\s*)',
              bygroups(Text.Whitespace, Text, Text.Whitespace, Punctuation,
                       Text.Whitespace, Name.Function, Punctuation, Text,
                       Punctuation, Text.Whitespace), '#pop'),
         ],
     }
 
+    def analyse_text(text):
+        if re.match('^\s*%', text, re.M): # comment
+            return 0.9
+        elif re.match('^!\w+', text, re.M): # system cmd
+            return 0.9
+        return 0.1
 
 line_re  = re.compile('.*?\n')
 
@@ -225,7 +228,7 @@ class MatlabSessionLexer(Lexer):
                 # without is showing error on same line as before...?
                 line = "\n" + line
                 token = (0, Generic.Traceback, line)
-                insertions.append(  (idx, [token,]) )
+                insertions.append((idx, [token]))
 
             else:
                 if curcode:
@@ -333,6 +336,52 @@ class NumPyLexer(PythonLexer):
                 yield index, token, value
 
 
+class RConsoleLexer(Lexer):
+    """
+    For R console transcripts or R CMD BATCH output files.
+    """
+
+    name = 'RConsole'
+    aliases = ['rconsole', 'rout']
+    filenames = ['*.Rout']
+
+    def get_tokens_unprocessed(self, text):
+        slexer = SLexer(**self.options)
+
+        current_code_block = ''
+        insertions = []
+
+        for match in line_re.finditer(text):
+            line = match.group()
+            if line.startswith('>') or line.startswith('+'):
+                # Colorize the prompt as such,
+                # then put rest of line into current_code_block
+                insertions.append((len(current_code_block),
+                                   [(0, Generic.Prompt, line[:2])]))
+                current_code_block += line[2:]
+            else:
+                # We have reached a non-prompt line!
+                # If we have stored prompt lines, need to process them first.
+                if current_code_block:
+                    # Weave together the prompts and highlight code.
+                    for item in do_insertions(insertions,
+                          slexer.get_tokens_unprocessed(current_code_block)):
+                        yield item
+                    # Reset vars for next code block.
+                    current_code_block = ''
+                    insertions = []
+                # Now process the actual line itself, this is output from R.
+                yield match.start(), Generic.Output, line
+
+        # If we happen to end on a code block with nothing after it, need to
+        # process the last code block. This is neither elegant nor DRY so
+        # should be changed.
+        if current_code_block:
+            for item in do_insertions(insertions,
+                    slexer.get_tokens_unprocessed(current_code_block)):
+                yield item
+
+
 class SLexer(RegexLexer):
     """
     For S, S-plus, and R source code.
@@ -362,21 +411,24 @@ class SLexer(RegexLexer):
              Keyword.Reserved)
         ],
         'operators': [
-            (r'<-|-|==|<=|>=|<|>|&&|&|!=', Operator),
+            (r'<-|-|==|<=|>=|<|>|&&|&|!=|\|\|?', Operator),
             (r'\*|\+|\^|/|%%|%/%|=', Operator),
             (r'%in%|%*%', Operator)
         ],
         'builtin_symbols': [
-            (r'NULL|NA|TRUE|FALSE', Keyword.Constant),
+            (r'(NULL|NA|TRUE|FALSE|NaN)\b', Keyword.Constant),
+            (r'(T|F)\b', Keyword.Variable),
         ],
         'numbers': [
             (r'(?<![0-9a-zA-Z\)\}\]`\"])(?=\s*)[-\+]?[0-9]+'
              r'(\.[0-9]*)?(E[0-9][-\+]?(\.[0-9]*)?)?', Number),
+            (r'\.[0-9]*(E[0-9][-\+]?(\.[0-9]*)?)?', Number),
         ],
         'statements': [
             include('comments'),
             # whitespaces
             (r'\s+', Text),
+            (r'\'', String, 'string_squote'),
             (r'\"', String, 'string_dquote'),
             include('builtin_symbols'),
             include('numbers'),
@@ -397,7 +449,13 @@ class SLexer(RegexLexer):
         #    ('\{', Punctuation, '#push'),
         #    ('\}', Punctuation, '#pop')
         #],
+        'string_squote': [
+            (r'[^\']*\'', String, '#pop'),
+        ],
         'string_dquote': [
             (r'[^\"]*\"', String, '#pop'),
         ],
     }
+
+    def analyse_text(text):
+        return '<-' in text

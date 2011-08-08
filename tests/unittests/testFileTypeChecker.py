@@ -6,13 +6,11 @@
 # License: wxWindows License                                                  #
 ###############################################################################
 
-"""Unittest cases for testing the FileTypeChecker class
-
-"""
+"""Unittest cases for testing the FileTypeChecker class """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileTypeChecker.py 62145 2009-09-26 14:29:57Z CJP $"
-__revision__ = "$Revision: 62145 $"
+__svnid__ = "$Id: testFileTypeChecker.py 65165 2010-08-02 22:04:37Z CJP $"
+__revision__ = "$Revision: 65165 $"
 
 #-----------------------------------------------------------------------------#
 # Imports

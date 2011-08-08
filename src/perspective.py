@@ -13,15 +13,19 @@ perspectives in the MainWindow.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: perspective.py 63183 2010-01-19 01:24:02Z CJP $"
-__revision__ = "$Revision: 63183 $"
+__cvsid__ = "$Id: perspective.py 68263 2011-07-14 03:00:36Z CJP $"
+__revision__ = "$Revision: 68263 $"
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Dependencies
 import os
 import wx
+import wx.aui as aui
+
+# Editra Imports
 import util
 import ed_menu
+import ed_fmgr
 from profiler import Profile_Get, Profile_Set
 
 #--------------------------------------------------------------------------#
@@ -42,22 +46,31 @@ _ = wx.GetTranslation
 class PerspectiveManager(object):
     """Creates a perspective manager for the given aui managed window.
     It supports saving and loading of on disk perspectives as created by
-    calling SavePerspective from the AuiManager.
+    calling SavePerspective from the AuiManager. Mixin class for a wx.Frame.
 
     """
-    def __init__(self, auimgr, base):
+    def __init__(self, base):
         """Initializes the perspective manager. The auimgr parameter is
         a reference to the windows AuiManager instance, base is the base
         path to where perspectives should be loaded from and saved to.
-        @param auimgr: AuiManager to use
         @param base: path to configuration cache
 
         """
-        object.__init__(self)
+        super(PerspectiveManager, self).__init__()
+
+        hint = aui.AUI_MGR_TRANSPARENT_HINT
+        if wx.Platform == '__WXGTK__':
+            # Use venetian blinds style as transparent can cause crashes
+            # on linux when desktop compositing is used.
+            hint = aui.AUI_MGR_VENETIAN_BLINDS_HINT
+
+        self._mgr = ed_fmgr.EdFrameManager(flags=aui.AUI_MGR_DEFAULT |
+                                                 aui.AUI_MGR_TRANSPARENT_DRAG |
+                                                 hint |
+                                                 aui.AUI_MGR_ALLOW_ACTIVE_PANE)
+        self._mgr.SetManagedWindow(self)
 
         # Attributes
-        self._window = auimgr.GetManagedWindow()    # Managed Window
-        self._mgr = auimgr                          # Window Manager
         self._ids = list()                          # List of menu ids
         self._base = os.path.join(base, DATA_FILE)  # Path to config
         self._viewset = dict()                      # Set of Views
@@ -83,23 +96,27 @@ class PerspectiveManager(object):
             # Ensure window is on screen
             if not self.IsPositionOnScreen(pos):
                 pos = self.GetPrimaryDisplayOrigin()
-            self._window.SetPosition(pos)
+            self.SetPosition(pos)
 
         # Event Handlers
-        self._window.Bind(wx.EVT_MENU, self.OnPerspectiveMenu)
+        self.Bind(wx.EVT_MENU, self.OnPerspectiveMenu)
+
+    #---- Properties ----#
+    PanelMgr = property(lambda self: self._mgr)
 
     def AddPerspective(self, name, p_data=None):
         """Add a perspective to the view set. If the p_data parameter
         is not set then the current view will be added with the given name.
         @param name: name for new perspective
         @keyword p_data: perspective data from auimgr
+        @return: bool (True == Added, False == Not Added)
 
         """
         # Don't allow empty keys or ones that override the automatic
         # settings to be added
         name = name.strip()
         if not len(name) or name == AUTO_PERSPECTIVE:
-            return
+            return False
 
         domenu = not self.HasPerspective(name)
         if p_data is None:
@@ -112,20 +129,30 @@ class PerspectiveManager(object):
             self.AddPerspectiveMenuEntry(name)
 
         self.SavePerspectives()
+        return True
 
     def AddPerspectiveMenuEntry(self, name):
-        """Adds an entry to list of perpectives in the menu for this manager.
+        """Adds an entry to list of perspectives in the menu for this manager.
         @param name: name of perspective to add to menu
+        @return: bool (added or not)
 
         """
         name = name.strip()
         if not len(name) or name == AUTO_PERSPECTIVE:
-            return
+            return False
 
         per_id = wx.NewId()
         self._ids.append(per_id)
         self._menu.InsertAlpha(per_id, name, _("Change view to \"%s\"") % name,
                                kind=wx.ITEM_CHECK, after=ID_AUTO_PERSPECTIVE)
+        return True
+
+    def GetFrameManager(self):
+        """Returns the manager for this frame
+        @return: Reference to the AuiMgr of this window
+
+        """
+        return self._mgr
 
     def GetPerspectiveControls(self):
         """Returns the control menu for the manager
@@ -195,7 +222,7 @@ class PerspectiveManager(object):
         level = max(100, Profile_Get('ALPHA', default=255))
         # Only set the transparency if it is not opaque
         if level != 255:
-            self._window.SetTransparent(level)
+            self.SetTransparent(level)
 
     def IsPositionOnScreen(self, pos):
         """Check if the given position is on any of the connected displays
@@ -256,7 +283,7 @@ class PerspectiveManager(object):
                 # It may make sense to update all windows to use this
                 # perspective at this point but it may be an unexpected
                 # event to happen when there is many windows open. Will
-                # leave this to future concideration.
+                # leave this to future consideration.
                 for mainw in wx.GetApp().GetMainWindows():
                     mainw.AddPerspective(name, self._viewset[name])
 
@@ -278,7 +305,7 @@ class PerspectiveManager(object):
             for mainw in wx.GetApp().GetMainWindows():
                 mainw.LoadPerspectives()
 
-        elif e_id in self._ids:
+        elif e_id in self._ids + [ID_AUTO_PERSPECTIVE]:
             if e_id == ID_AUTO_PERSPECTIVE:
                 Profile_Set('DEFAULT_VIEW', AUTO_PERSPECTIVE)
                 self.SetAutoPerspective()
@@ -310,7 +337,7 @@ class PerspectiveManager(object):
                 self._ids.remove(rem_id)
 
     def SetAutoPerspective(self):
-        """Set the current perspective mangagement into automatic mode
+        """Set the current perspective management into automatic mode
         @postcondition: window is set into
 
         """
@@ -321,7 +348,7 @@ class PerspectiveManager(object):
         """Writes the perspectives out to disk. Returns
         True if all data was written and False if there
         was an error.
-        @return: whether save was successfull
+        @return: whether save was successful
         @rtype: bool
 
         """
@@ -344,16 +371,12 @@ class PerspectiveManager(object):
     def SetPerspective(self, name):
         """Sets the perspective of the managed window, returns
         True on success and False on failure.
-        @param name: name of perspectve to set
+        @param name: name of perspective to set
         @return: whether perspective was set or not
         @rtype: bool
 
         """
         if name in self._viewset:
-
-            if name == AUTO_PERSPECTIVE:
-                self._viewset[AUTO_PERSPECTIVE] = self._viewset[self._currview]
-
             self._mgr.LoadPerspective(self._viewset[name])
             self._mgr.Update()
 
@@ -373,7 +396,7 @@ class PerspectiveManager(object):
 
         """
         name = None
-        for pos in xrange(self._menu.GetMenuItemCount()):
+        for pos in range(self._menu.GetMenuItemCount()):
             item = self._menu.FindItemByPosition(pos)
             if per_id == item.GetId():
                 name = item.GetLabel()

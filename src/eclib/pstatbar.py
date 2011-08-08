@@ -22,8 +22,8 @@ after creating the bar to change it.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: pstatbar.py 62723 2009-11-26 18:43:20Z CJP $"
-__revision__ = "$Revision: 62723 $"
+__svnid__ = "$Id: pstatbar.py 66840 2011-02-03 21:05:28Z CJP $"
+__revision__ = "$Revision: 66840 $"
 
 __all__ = ["ProgressStatusBar",]
 
@@ -46,7 +46,7 @@ class ProgressStatusBar(wx.StatusBar):
         @param parent: Frame this status bar belongs to
 
         """
-        wx.StatusBar.__init__(self, parent, id_, style, name)
+        super(ProgressStatusBar, self).__init__(parent, id_, style, name)
   
         # Attributes
         self._changed = False   # position has changed ?
@@ -87,6 +87,30 @@ class ProgressStatusBar(wx.StatusBar):
             self.prog.SetSize((rect.width - 8, rect.height - 4))
         self._changed = False
 
+    def _UpdateRange(self, range):
+        """Update the internal progress gauges range
+        @param range: int
+
+        """
+        self.range = range
+        try:
+            self.prog.SetRange(range)
+        except OverflowError:
+            # range too large, scale everything to 100
+            self.prog.SetRange(100)
+
+    def _UpdateValue(self, value):
+        """Update the internal progress gauges value
+        @param range: int
+
+        """
+        # Ensure value is within range
+        range = self.prog.GetRange()
+        if range != self.range: # need to scale value
+            value = int((float(value) / float(range)) * 100)
+        self.progress = value
+        self.prog.SetValue(value)
+
     #---- Public Methods ----#
 
     def Destroy(self):
@@ -94,7 +118,7 @@ class ProgressStatusBar(wx.StatusBar):
         if self.timer.IsRunning():
             self.timer.Stop()
         del self.timer
-        wx.StatusBar.Destroy(self)
+        super(ProgressStatusBar, self).Destroy()
 
     def DoStop(self):
         """Stop any progress indication action and hide the bar"""
@@ -162,13 +186,13 @@ class ProgressStatusBar(wx.StatusBar):
         if self.busy or self.progress < 0:
             self.prog.Pulse()
         else:
-            # Update the Rqnge if it has changed
+            # Update the Range if it has changed
             if self.range >= 0 and self.range != self.prog.GetRange():
-                self.prog.SetRange(self.range)
+                self._UpdateRange(self.range)
 
             # Update the progress value if it is less than the range
             if self.progress <= self.range:
-                self.prog.SetValue(self.progress)
+                self._UpdateValue(self.progress)
 
     def Run(self, rate=100):
         """Start the bar's timer to check for updates to progress
@@ -188,7 +212,7 @@ class ProgressStatusBar(wx.StatusBar):
         """
         self.progress = val
         if val > 0 and wx.Thread_IsMain():
-            self.prog.SetValue(val)
+            self._UpdateValue(val)
 
     def SetRange(self, val):
         """Set the what the range of the progress bar is. This method can safely
@@ -198,7 +222,7 @@ class ProgressStatusBar(wx.StatusBar):
         """
         self.range = val
         if val > 0 and wx.Thread_IsMain():
-            self.prog.SetRange(val)
+            self._UpdateRange(val)
 
     def ShowProgress(self, show=True):
         """Manually show or hide the progress bar
@@ -241,7 +265,7 @@ class ProgressStatusBar(wx.StatusBar):
         self.tmp = self.GetStatusText(bfield)
         # Clear the progress field so the text doesn't show behind
         # the progress indicator.
-        super(ProgressStatusBar, self).SetStatusText('', bfield)
+        super(ProgressStatusBar, self).SetStatusText(u'', bfield)
         self.stop = False
         self.ShowProgress(True)
         self.Run(rate)

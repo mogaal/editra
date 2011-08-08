@@ -12,8 +12,8 @@ Simple Generic autocompleter for completing words found in the current buffer.
 """
 
 __author__ = "Giuseppe \"Cowo\" Corbelli"
-__cvsid__ = "$Id: simplecomp.py 63130 2010-01-10 03:29:46Z CJP $"
-__revision__ = "$Revision: 63130 $"
+__cvsid__ = "$Id: simplecomp.py 67123 2011-03-04 00:02:35Z CJP $"
+__revision__ = "$Revision: 67123 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -26,11 +26,11 @@ import completer
 #--------------------------------------------------------------------------#
 
 class Completer(completer.BaseCompleter):
-    """Code completer provider"""
+    """Generic word completer provider"""
     wordCharacters = "".join(['_', string.letters])
 
     def __init__(self, stc_buffer):
-        completer.BaseCompleter.__init__(self, stc_buffer)
+        super(Completer, self).__init__(stc_buffer)
 
         # Setup
         self.SetAutoCompKeys([])

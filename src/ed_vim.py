@@ -13,8 +13,8 @@ text buffer.
 """
 
 __author__ = "Hasan Aljudy"
-__cvsid__ = "$Id: ed_vim.py 63851 2010-04-04 15:39:50Z CJP $"
-__revision__ = "$Revision: 63851 $"
+__cvsid__ = "$Id: ed_vim.py 66867 2011-02-08 23:52:17Z CJP $"
+__revision__ = "$Revision: 66867 $"
 
 # ---------------------------------------------------------------------------- #
 # Imports
@@ -75,6 +75,7 @@ class EditraCommander(object):
 
     """
     def __init__(self, keyprocessor):
+        super(EditraCommander, self).__init__()
 
         # Attributes
         self.keyprocessor = keyprocessor
@@ -87,6 +88,10 @@ class EditraCommander(object):
         self.ScrollStack = []
         self.LastFindChar = None
         self._Bookmarks = {}
+
+    @property
+    def STC(self):
+        return self.stc
 
     def InsertMode(self):
         """Put editor in insert mode"""
@@ -119,6 +124,18 @@ class EditraCommander(object):
             self.RepeatChangeCommand(self.InsertRepeat - 1)
             self.InsertRepeat = 1
 
+    def IsAtLineEnd(self):
+        lnum = self.stc.GetCurrentLine()
+        epos = self.stc.GetLineEndPosition(lnum)
+        return epos == self._GetPos()
+
+    def IsAtLineStart(self):
+        """Is the cursor currently at the start of a line
+        @return: bool
+
+        """
+        return self._GetCol() == 0
+
     def Undo(self, repeat):
         """Undo actions in the buffer
         @param repeat: int
@@ -141,7 +158,7 @@ class EditraCommander(object):
 
     def _SetPos(self, pos):
         """Set caret position"""
-        return self.stc.GotoPos(pos)
+        self.stc.GotoPos(pos)
 
     def SelectLines(self, repeat):
         """Select specified number of lines starting with current line
@@ -149,9 +166,14 @@ class EditraCommander(object):
         @param repeat: int
 
         """
+        cline = self.stc.GetCurrentLine()
+        lline = self.stc.GetLineCount() - 1
         self.GotoLineStart()
+        if cline == lline:
+            cpos = self.stc.GetCurrentPos() - len(self.stc.GetEOLChar())
+            cpos = max(0, cpos)
+            self.stc.GotoPos(cpos)
         self.PushCaret()
-        self.GotoLineStart()
         self.MoveDown(repeat)
         self.StartSelection()
         self.PopCaret()
@@ -179,7 +201,6 @@ class EditraCommander(object):
 
     def PopColumn(self, restore=True):
         """Pop caret position, and optionally discard it
-
         @keyword restore: if set to False, column will be discarded
 
         """
@@ -243,7 +264,7 @@ class EditraCommander(object):
 
     def EndSelection(self):
         """Set the selection to start from the starting position as it was set
-        by StartSeletion to the current caret position
+        by StartSelection to the current caret position
 
         It doesn't matter whether the starting position is before or after the
         ending position
@@ -337,11 +358,11 @@ class EditraCommander(object):
         self.stc.MoveCaretPos(-repeat)
 
     def MoveForward(self, repeat=1):
-        # TODO: move left for RTL mode
+        """Move the caret position to the right"""
         self.MoveRight(repeat)
 
     def MoveBack(self, repeat=1):
-        # TODO: move right for RTL mode
+        """Move the caret position to the left"""
         self.MoveLeft(repeat)
 
     def NextWord(self, repeat=1):
@@ -520,7 +541,7 @@ class EditraCommander(object):
         self._NextIdent(repeat)
 
     def PrevIdent(self, repeat=1):
-        """Find the previos occurance of identifier under cursor"""
+        """Find the previous occurrence of identifier under cursor"""
         self._NextIdent(repeat, back=True)
 
     def InsertText(self, text):
@@ -601,12 +622,25 @@ class EditraCommander(object):
     def DeleteSelection(self):
         """Yank selection and delete it"""
         start, end = self._GetSelectionRange()
+        self.stc.BeginUndoAction()
         self.YankSelection()
         self.stc.Clear()
         self._SetPos(start)
+        self.stc.EndUndoAction()
 
     def ChangeSelection(self):
         """Yank selection, delete it, and enter insert mode"""
+        # HACK: need to adjust selection behavior for change command
+        #       to better match vi behavior by not including trailing
+        #       whitespace in the selection from the motion.
+        stext = self.STC.GetSelectedText()
+        clen = len(stext)
+        slen = len(stext.rstrip())
+        if slen < clen and slen > 0:
+            start, end = self._GetSelectionRange()
+            new_end = end - (clen - slen)
+            self.STC.SetSelectionStart(start)
+            self.STC.SetSelectionEnd(new_end)
         self.DeleteSelection()
         self.InsertMode()
 
@@ -624,16 +658,19 @@ class EditraCommander(object):
         if not text:
             return
 
-        if self._IsLine(text):
+        bIsLine = self._IsLine(text)
+        if bIsLine:
             self.GotoLineStart()
             if not before:
                 self.MoveDown()
 
+        self.BeginUndoAction()
         if self.HasSelection():
             # paste over selection, if any
             self.stc.Clear()
+        elif not bIsLine:
+            self.stc.CharRight()
 
-        self.BeginUndoAction()
         for i in range(repeat):
             self.InsertText(text)
         self.EndUndoAction()
@@ -734,6 +771,7 @@ class EditraCommander(object):
         """Goto the position of the bookmark associated with the given
         character label.
         @param mark: the character label of the book mark
+        @todo: hook into Bookmark Manager ed_bookmark?
 
         """
         if not mark in self._Bookmarks:
@@ -970,7 +1008,7 @@ def Dot(editor, repeat, cmd):
     if editor.IsInsertMode():
         editor.NormalMode() # in case it was a 'c' command
 
-@vim_parser('hjkl', is_motion=True)
+@vim_parser(u'hjkl\r \x08\u013c\u013a', is_motion=True)
 def Arrows(editor, repeat, cmd):
     """Basic arrow movement in vim.
     @see: vim_parser
@@ -981,8 +1019,20 @@ def Arrows(editor, repeat, cmd):
             u'j': editor.MoveDown,
             u'k': editor.MoveUp,
             u'l': editor.MoveRight,
+            u'\r': editor.MoveDown,
+            u' ' : editor.MoveRight,
+            u'\x08' : editor.MoveLeft
           }
-    cmd_map[cmd](repeat)
+    if cmd in cmd_map:
+        cmd_map[cmd](repeat)
+    else:
+        # Handle motion for actual arrow keys
+        if cmd == u'\u013c' and not editor.IsAtLineEnd():
+            # Right arrow
+            editor.MoveRight()
+        elif cmd == u'\u013a' and not editor.IsAtLineStart():
+            # Left Arrow
+            editor.MoveLeft()
 
 @vim_parser('wbeWBE[]', is_motion=True)
 def Words(editor,repeat, cmd):
@@ -1118,9 +1168,11 @@ def Change(editor, repeat, cmd):
         cmd, motion = cmd[0], cmd[1:]
         if motion.isdigit():
             return ret(NeedMore)
+
         motion_repeat, motion_cmd = SplitRepeat(motion)
         if motion_repeat:
             repeat = repeat * motion_repeat
+
         if motion_cmd == cmd:
             # Operate on whole line
             line_motion = True
@@ -1160,13 +1212,11 @@ def Change(editor, repeat, cmd):
     restore_x = cmd in (u'y', u'<', u'>') or cmd == u'd' and line_motion
     editor.PopColumn(restore_x)
 
-    # XXX:Some special case handling
-    #     Not the most elegant way though ..
+    # XXX: Some special case handling
+    #      Not the most elegant way though ..
     if cmd == u'c':
-        if line_motion:
-            editor.OpenLineUp()
-
-    if cmd not in u'c':
+        pass
+    else:
         # Repeating delete/yank/indent commands doesn't insert any text
         editor.SetLastInsertedText(u'')
         # Applying them in visual mode ends visual mode
@@ -1176,7 +1226,7 @@ def Change(editor, repeat, cmd):
         # Remember this command as last change
         # However, if we're operating on a selection, then remembering
         # doesn't make much sense
-        editor.SetLastChangeCommand(lambda: Change(editor, repeat, cmd+motion))
+        editor.SetLastChangeCommand(lambda : Change(editor, repeat, cmd+motion))
 
 @vim_parser(u'pP')
 def Put(editor, repeat, cmd):

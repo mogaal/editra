@@ -14,13 +14,14 @@
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: syndata.py 63843 2010-04-03 16:19:09Z CJP $"
-__revision__ = "$Revision: 63843 $"
+__svnid__ = "$Id: syndata.py 67392 2011-04-04 21:06:43Z CJP $"
+__revision__ = "$Revision: 67392 $"
 
 __all__ = ['SyntaxDataBase',]
 
 #-----------------------------------------------------------------------------#
 # Imports
+import collections
 import wx.stc as stc
 
 # Local Imports
@@ -102,6 +103,7 @@ class SyntaxDataBase(object):
     def GetSyntaxSpec(self):
         """Get the the syntax specification list
         @return: list of tuples [(int, 'style_tag'),]
+        @note: required override for subclasses
 
         """
         raise NotImplementedError
@@ -122,7 +124,7 @@ class SyntaxDataBase(object):
         @param funct: callable
 
         """
-        assert callable(funct), "funct must be callable object"
+        assert isinstance(funct, collections.Callable), "funct must be callable object"
         self._features[name] = funct
 
     def SetLexer(self, lex):

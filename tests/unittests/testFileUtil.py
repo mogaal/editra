@@ -9,8 +9,8 @@
 """Unittest cases for testing the fileutil functions"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileUtil.py 62860 2009-12-12 03:11:23Z CJP $"
-__revision__ = "$Revision: 62860 $"
+__svnid__ = "$Id: testFileUtil.py 67147 2011-03-07 20:33:37Z CJP $"
+__revision__ = "$Revision: 67147 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -42,6 +42,22 @@ class FileUtilTest(unittest.TestCase):
         common.CleanTempDir()
 
     #---- Tests ----#
+
+    def testComparePaths(self):
+        """Test functionality of ComparePaths function"""
+        # Test case sensitivity
+        if ISWINDOWS:
+            self.assertTrue(ebmlib.ComparePaths("C:\\Windows", "C:\\WINDOWS"))
+            self.assertTrue(ebmlib.ComparePaths("C:\\Windows", "C:\\Windows"))
+        else:
+            self.assertFalse(ebmlib.ComparePaths("/usr/bin", "/usr/BIN"))
+            self.assertTrue(ebmlib.ComparePaths("/usr/bin", "/usr/bin"))
+
+        # Test wacky path strings
+        if ISWINDOWS:
+            self.assertTrue(ebmlib.ComparePaths("C:\\Windows\\..\\", "C:\\"))
+        else:
+            self.assertTrue(ebmlib.ComparePaths("/usr/../", "/"))
 
     def testGetAbsPath(self):
         """Test getting a files absolute path"""
@@ -159,3 +175,13 @@ class FileUtilTest(unittest.TestCase):
         result2 = ebmlib.MakeNewFolder(self.tdir, u'test_new_folder')
         self.assertTrue(result2[1])
         self.assertTrue(result[1] != result2[1])
+
+    def testWhich(self):
+        """Test the Which function"""
+        # NOTE: this may produce false positives on some systems
+        if ISWINDOWS:
+            prog = 'ping.exe'
+        else:
+            prog = 'ping'
+        exe = ebmlib.Which(prog)
+        self.assertNotEqual(exe, None)
