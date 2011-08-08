@@ -5,16 +5,16 @@ TMP     = $(CURDIR)/debian/$(PACKAGE)
 %:
 	dh $@
 
-override_dh_auto_configure:
-	find . -name '*\.pyc' -delete
-	dh_auto_configure
+#override_dh_auto_configure:
+#	find . -name '*\.pyc' -delete
+#	dh_auto_configure
 	
-override_dh_auto_install:
-	dh_auto_install
-	rm -f $(TMP)/usr/bin/Editra.pyw
+#override_dh_auto_install:
+#	dh_auto_install
+#	rm -f $(TMP)/usr/bin/Editra.pyw
 
-override_dh_fixperms:
-	dh_fixperms
-	chmod +x $(TMP)/usr/share/pyshared/Editra/Editra
-	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING
-	rm -f $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING
+#override_dh_fixperms:
+#	dh_fixperms
+#	chmod +x $(TMP)/usr/share/pyshared/Editra/Editra
+#	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING
+#	rm -f $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING
