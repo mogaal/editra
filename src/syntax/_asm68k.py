@@ -1,6 +1,6 @@
 ###############################################################################
 # Name: asm68k.py                                                             #
-# Purpose: Define 68k assembly syntax for highlighting and other features     #
+# Purpose: Define 68k/56k assembly syntax for highlighting and other features #
 # Author: Cody Precord <cprecord@editra.org>                                  #
 # Copyright: (c) 2007 Cody Precord <staff@editra.org>                         #
 # License: wxWindows License                                                  #
@@ -9,14 +9,14 @@
 """
 FILE: asm68k.py
 AUTHOR: Cody Precord
-@summary: Lexer configuration file 68k Assembly Code
+@summary: Lexer configuration file 68k/56k Assembly Code
 @todo: more color configuration
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _asm68k.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _asm68k.py 64857 2010-07-09 14:06:38Z CJP $"
+__revision__ = "$Revision: 64857 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -28,7 +28,7 @@ import syndata
 
 #-----------------------------------------------------------------------------#
 
-#---- Keyword Definitions ----#
+#---- 68K Keyword Definitions ----#
 
 ASM_CPU_INST = (0, "andi and as b beq bg b bl bne bge bpl bchg bclr bfchg "
                    "bfclr bfexts bfextu bfffo bfins bfset bftst bkpt bra bset "
@@ -55,6 +55,40 @@ ASM_DIRECTIVES = (3, "ALIGN CHIP COMLINE COMMON DC DCB DS END EQU FEQU FAIL "
                      "FOPT IDNT LLEN MASK2 NAME NOOBJ OFFSET OPT ORG PLEN REG "
                      "RESTORE SAVE SECT SECTION SET SPC TTL XCOM XDEF XREF")
 
+#---- 56K Keywords ----#
+
+ASM56K_CPU_INST = (0, "adc addl addr and andi asl asr bchg bclr bra "
+                      "brclr brset bsclr bset bsr bsset btst bcc bcs bec beq "
+                      "bes bge bgt blc ble bls blt bmi bne bnr bpl bnn brkcc "
+                      "brkcs brkec brkeq brkes brkge brkgt brklc brkle brkls "
+                      "brklt brkmi brkne brknr brkpl brknn bscc bscs bsec bseq "
+                      "bses bsge bsgt bslc bsle bsls bslt bsmi bsne bsnr bspl "
+                      "bsnn clb clr cmp cmpm cmpu debug dmac do "
+                      "forever dor enddo eor extract extractu illegal inc "
+                      "insert jclr jmp jsclr jset jsr jsset jcc jcs jec jeq "
+                      "jes jge jgt jlc jle jls jlt jmi jne jnr jpl jnn jscc "
+                      "jscs jsec jseq jses jsge jsgt jslc jsle jsls jslt jsmi "
+                      "jsne jsnr jspl jsnn lra lsl lsr lua mac maci macr macri "
+                      "max maxm merge move movem movec movep mpy mpyi mpyr "
+                      "mpyri nop norm normf not or ori pflush pflushun "
+                      "pfree plock plockr punlock punlockr rep reset rnd rol "
+                      "ror rti rts sbc stop tcc tfr trap trapcc "
+                      "trapcs trapec trapeq trapes trapge trapgt traplc traple "
+                      "trapls traplt trapmi trapne trapnr trappl trapnn tst "
+                      "vsl wait")
+
+ASM56K_MATH_INST = (1, "abs add dec div neg sub subl subr")
+
+ASM56K_REGISTERS = (2, "pc mr ccr sr eom com omr sz sc vba la lc sp ssh ssl ss "
+                       "a a2 a1 a0 b b2 b1 b0 x x0 x1 y y0 y1 r0 r1 r2 r3 r4 "
+                       "r5 r6 r7 m0 m1 m2 m3 m4 m5 m6 m7 n0 n1 n2 n3 n4 n5 n6 "
+                       "n7 ")
+
+ASM56K_DIRECTIVES = (3, "org equ page tabs list nolist if endif else opt title "
+                        "macro endm dup dupa dupc dupf baddr bsb bsc bsm dc "
+                        "dcb ds dsm dsr buffer endbuf section endsec global "
+                        "local xdef xref mode ")
+
 #---- Language Styling Specs ----#
 SYNTAX_ITEMS = [ (stc.STC_ASM_DEFAULT, 'default_style'),
                  (stc.STC_ASM_CHARACTER, 'char_style'),
@@ -80,12 +114,16 @@ class SyntaxData(syndata.SyntaxDataBase):
         syndata.SyntaxDataBase.__init__(self, langid)
 
         # Setup
-        # synglob.ID_LANG_68K
+        # synglob.ID_LANG_68K, synglob.ID_LANG_DSP56K
         self.SetLexer(stc.STC_LEX_ASM)
 
     def GetKeywords(self):
         """Returns Specified Keywords List"""
-        return [ASM_CPU_INST, ASM_MATH_INST, ASM_REGISTER, ASM_DIRECTIVES]
+        if self.LangId == synglob.ID_LANG_68K:
+            return [ASM_CPU_INST, ASM_MATH_INST, ASM_REGISTER, ASM_DIRECTIVES]
+        else:
+            return [ASM56K_CPU_INST, ASM56K_MATH_INST,
+                    ASM56K_REGISTERS, ASM56K_DIRECTIVES]
 
     def GetSyntaxSpec(self):
         """Syntax Specifications"""

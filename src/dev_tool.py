@@ -12,15 +12,14 @@ Tools and Utilities for debugging and helping with development of Editra.
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: dev_tool.py 61794 2009-08-31 04:03:04Z CJP $"
-__revision__ = "$Revision: 61794 $"
+__svnid__ = "$Id: dev_tool.py 67571 2011-04-22 01:10:57Z CJP $"
+__revision__ = "$Revision: 67571 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import os
 import sys
 import re
-import platform
 import traceback
 import time
 import urllib2
@@ -33,7 +32,7 @@ import wx
 import ed_glob
 import ed_msg
 import eclib
-from ebmlib import IsUnicode
+from ebmlib import IsUnicode, LogFile
 
 #-----------------------------------------------------------------------------#
 # Globals
@@ -50,8 +49,7 @@ except (LookupError, TypeError):
 PYTHONW = 'pythonw' in sys.executable.lower()
 
 #-----------------------------------------------------------------------------#
-# General Debuging Helper Functions
-
+# General Debugging Helper Functions
 def DEBUGP(statement):
     """Prints debug messages and broadcasts them on the log message channel.
     Subscribing a listener with any of the EDMSG_LOG_* types will recieve its
@@ -89,23 +87,30 @@ def DEBUGP(statement):
 
     # Only print to stdout when DEBUG is active
     # Cant print to stdio if using pythonw
-    if ed_glob.DEBUG and not PYTHONW:
+    msg_type = msg.Type
+    if ed_glob.DEBUG:
+        logfile = EdLogFile()
         mstr = unicode(msg)
-        print mstr.encode('utf-8', 'replace')
+        mstr = mstr.encode('utf-8', 'replace')
+        if not PYTHONW:
+            print(mstr)
+        # Write to log file
+        logfile.WriteMessage(mstr)
 
         # Check for trapped exceptions to print
-        if ed_glob.VDEBUG and msg.Type in ('err', 'error'):
+        if ed_glob.VDEBUG and msg_type in ('err', 'error'):
             traceback.print_exc()
+            logfile.WriteMessage(traceback.format_exc())
 
-    # Dispatch message to all interested parties
-    if msg.Type in ('err', 'error'):
+    # Dispatch message to all observers
+    if msg_type in ('err', 'error'):
         mtype = ed_msg.EDMSG_LOG_ERROR
         if ed_glob.VDEBUG:
             msg = LogMsg(msg.Value + os.linesep + traceback.format_exc(),
                          msg.Origin, msg.Type)
-    elif msg.Type in ('warn', 'warning'):
+    elif msg_type in ('warn', 'warning'):
         mtype = ed_msg.EDMSG_LOG_WARN
-    elif msg.Type in ('evt', 'event'):
+    elif msg_type in ('evt', 'event'):
         mtype = ed_msg.EDMSG_LOG_EVENT
     elif msg.Type in ('info', 'information'):
         mtype = ed_msg.EDMSG_LOG_INFO
@@ -130,7 +135,7 @@ class LogMsg(object):
         @keyword level: Priority of the message
 
         """
-        object.__init__(self)
+        super(LogMsg, self).__init__()
 
         # Attributes
         self._msg = dict(mstr=msg, msrc=msrc, lvl=level, tstamp=time.time())
@@ -164,7 +169,7 @@ class LogMsg(object):
         """Returns a nice formatted string version of the message"""
         statement = DecodeString(self._msg['mstr'])
         s_lst = [u"[%s][%s][%s]%s" % (self.ClockTime, self._msg['msrc'],
-                                      self._msg['lvl'], msg) 
+                                      self._msg['lvl'], msg.rstrip()) 
                  for msg in statement.split(u"\n")
                  if len(msg.strip())]
         out = os.linesep.join(s_lst)
@@ -210,6 +215,19 @@ class LogMsg(object):
 
 #-----------------------------------------------------------------------------#
 
+class EdLogFile(LogFile):
+    """Transient log file object"""
+    def __init__(self):
+        super(EdLogFile, self).__init__("editra")
+
+    def PurgeOldLogs(self, days):
+        try:
+            super(EdLogFile, self).PurgeOldLogs(days)
+        except OSError, msg:
+            DEBUGP("[dev_tool][err] PurgeOldLogs: %s" % msg)
+
+#-----------------------------------------------------------------------------#
+
 def DecodeString(string, encoding=None):
     """Decode the given string to Unicode using the provided
     encoding or the DEFAULT_ENCODING if None is provided.
@@ -233,8 +251,10 @@ def DecodeString(string, encoding=None):
 #-----------------------------------------------------------------------------#
 
 class EdErrorDialog(eclib.ErrorDialog):
+    """Error reporter dialog"""
     def __init__(self, msg):
-        eclib.ErrorDialog.__init__(self, None, title="Error Report", message=msg)
+        super(EdErrorDialog, self).__init__(None, title="Error Report",
+                                            message=msg)
 
         # Setup
         self.SetDescriptionLabel(_("Error: Something unexpected happend\n"

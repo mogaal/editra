@@ -676,20 +676,3 @@ def CopyAttributes(newArt, oldArt):
 
     return newArt            
 
-
-def skiponmac(funct):
-    """
-    Decorator method to skip performing an action on wxMac
-
-    :param `funct`: function definition
-    """
-    def SkipOnMac(*args, **kwargs):
-        if wx.Platform != '__WXMAC__':
-            funct(*args, **kwargs)
-        else:
-            pass
-
-    SkipOnMac.__name__ = funct.__name__
-    SkipOnMac.__doc__ = funct.__doc__
-    return SkipOnMac
-

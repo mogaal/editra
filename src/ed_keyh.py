@@ -15,8 +15,8 @@ main text editting buffer.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_keyh.py 60682 2009-05-19 00:44:55Z CJP $"
-__revision__ = "$Revision: 60682 $"
+__svnid__ = "$Id: ed_keyh.py 66736 2011-01-23 18:26:50Z CJP $"
+__revision__ = "$Revision: 66736 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -37,9 +37,12 @@ import ed_vim
 # called upon by the active buffer when ever a key press event happens. The
 # handler then has the responsibility of deciding what to do with the key.
 #
-class KeyHandler:
+class KeyHandler(object):
     """KeyHandler base class"""
     def __init__(self, stc):
+        super(KeyHandler, self).__init__()
+
+        # Attributes
         self.stc = stc
 
     def ClearMode(self):
@@ -86,7 +89,7 @@ class KeyHandler:
 
 class ViKeyHandler(KeyHandler):
     """Defines a key handler for Vi emulation
-    @summary: Handles keypresses according to Vi emulation.
+    @summary: Handles key presses according to Vi emulation.
 
     """
 
@@ -97,7 +100,7 @@ class ViKeyHandler(KeyHandler):
         = range(3)
 
     def __init__(self, stc, use_normal_default=False):
-        KeyHandler.__init__(self, stc)
+        super(ViKeyHandler, self).__init__(stc)
 
         # Attributes
         self.mode = 0
@@ -201,12 +204,14 @@ class ViKeyHandler(KeyHandler):
         elif (ctrldown or cmddown) and key_code == ord('['):
             self.NormalMode()
             return True
-        elif key_code == wx.WXK_RETURN and not self.IsInsertMode():
+        elif key_code in (wx.WXK_RETURN, wx.WXK_BACK,
+                          wx.WXK_RIGHT, wx.WXK_LEFT) and \
+             not self.IsInsertMode():
             # swallow enter key in normal and visual modes
             # HACK: we have to do it form here because ProcessKey
             #       is only called on Char events, not Key events,
             #       and the Enter key does not generate a Char event.
-            self._ProcessKey(key_code)
+            self.ProcessKey(key_code)
             return True
         else:
             return False

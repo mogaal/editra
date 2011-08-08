@@ -14,10 +14,10 @@ Utility functions for managing and working with text.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: txtutil.py 62571 2009-11-08 17:53:27Z CJP $"
-__revision__ = "$Revision: 62571 $"
+__svnid__ = "$Id: txtutil.py 67991 2011-06-20 23:48:01Z CJP $"
+__revision__ = "$Revision: 67991 $"
 
-__all__ = [ 'IsUnicode', ]
+__all__ = [ 'IsUnicode', 'DecodeString']
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -32,3 +32,15 @@ def IsUnicode(txt):
 
     """
     return isinstance(txt, types.UnicodeType)
+
+def DecodeString(txt, enc):
+    """Decode the given string with the given encoding,
+    only attempts to decode if the given txt is not already Unicode
+    @param txt: string
+    @param enc: encoding 'utf-8'
+    @return: unicode
+
+    """
+    if IsUnicode(txt):
+        txt = txt.decode(enc)
+    return txt

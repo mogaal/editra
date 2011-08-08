@@ -14,8 +14,8 @@ Clipboard helper class
 """
 
 __author__ = "Hasan Aljudy"
-__cvsid__ = "$Id: clipboard.py 63851 2010-04-04 15:39:50Z CJP $"
-__revision__ = "$Revision: 63851 $"
+__cvsid__ = "$Id: clipboard.py 67123 2011-03-04 00:02:35Z CJP $"
+__revision__ = "$Revision: 67123 $"
 
 __all__ = [ 'Clipboard', 'ClipboardException']
 
@@ -26,6 +26,7 @@ import wx
 #-----------------------------------------------------------------------------#
 
 class ClipboardException(Exception):
+    """Thrown for errors in the Clipboard class"""
     pass
 
 #-----------------------------------------------------------------------------#

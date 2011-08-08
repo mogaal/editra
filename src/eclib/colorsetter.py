@@ -16,8 +16,8 @@ choice dialog.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: colorsetter.py 63185 2010-01-19 03:59:18Z CJP $"
-__revision__ = "$Revision: 63185 $"
+__svnid__ = "$Id: colorsetter.py 65202 2010-08-06 15:49:23Z CJP $"
+__revision__ = "$Revision: 65202 $"
 
 __all__ = ["ColorSetter", "ColorSetterEvent",
            "EVT_COLORSETTER", "csEVT_COLORSETTER"]
@@ -66,7 +66,7 @@ class ColorSetter(wx.Panel):
         @keyword label: the hex string value to go in the text portion
 
         """
-        wx.Panel.__init__(self, parent, id_)
+        super(ColorSetter, self).__init__(parent, id_)
 
         if isinstance(color, tuple):
             color = wx.Colour(*color)
@@ -222,7 +222,7 @@ class HexValidator(wx.PyValidator):
         """Initialize the validator
 
         """
-        wx.PyValidator.__init__(self)
+        super(HexValidator, self).__init__()
 
         # Event Handlers
         self.Bind(wx.EVT_CHAR, self.OnChar)

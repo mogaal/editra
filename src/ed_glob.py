@@ -8,14 +8,14 @@
 
 """
 This file contains variables that are or may be used in multiple files and
-libraries within the project. Its pupose is to create a globally accessable
+libraries within the project. Its purpose is to create a globally accessible
 access point for all common variables in the project.
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_glob.py 63791 2010-03-30 02:57:15Z CJP $"
-__revision__ = "$Revision: 63791 $"
+__svnid__ = "$Id: ed_glob.py 67594 2011-04-24 15:24:40Z CJP $"
+__revision__ = "$Revision: 67594 $"
 
 __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_CLOSE', 'ID_CLOSEALL', 'ID_SAVE', 'ID_SAVEAS', 'ID_SAVEALL',
@@ -44,7 +44,8 @@ __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_COLUMN_MODE', 'ID_PANELIST', 'ID_MAXIMIZE_EDITOR',
             'ID_NEW_WINDOW', 'ID_TOGGLE_FOLD', 'ID_TOGGLE_ALL_FOLDS',
             'ID_SAVE_SESSION', 'ID_LOAD_SESSION', 'ID_NEXT_POS', 'ID_PRE_POS',
-            'ID_CYCLE_CLIPBOARD', 'ID_LEXER_CUSTOM']
+            'ID_CYCLE_CLIPBOARD', 'ID_LEXER_CUSTOM', 'ID_SHOW_AUTOCOMP',
+            'ID_SHOW_CALLTIP' ]
 
 #---- Project Info ----#
 # The project info was moved to another module so it could be accessed
@@ -123,7 +124,7 @@ ID_SELECTALL     = wx.ID_SELECTALL
 ID_COLUMN_MODE   = wx.NewId()
 ID_LINE_EDIT     = wx.NewId()
 ID_BOOKMARK      = wx.NewId()
-ID_ADD_BM        = wx.ID_ADD
+ID_ADD_BM        = wx.NewId()
 ID_DEL_BM        = wx.ID_REMOVE # Not used in menu anymore
 ID_DEL_ALL_BM    = wx.NewId()
 ID_LINE_AFTER    = wx.NewId()
@@ -136,6 +137,8 @@ ID_JOIN_LINES    = wx.NewId()
 ID_TRANSPOSE     = wx.NewId()
 ID_LINE_MOVE_UP  = wx.NewId()
 ID_LINE_MOVE_DOWN= wx.NewId()
+ID_SHOW_AUTOCOMP = wx.NewId()
+ID_SHOW_CALLTIP  = wx.NewId()
 ID_FIND          = wx.ID_FIND
 ID_FIND_PREVIOUS = wx.NewId()
 ID_FIND_NEXT     = wx.NewId()
@@ -178,6 +181,7 @@ ID_PRINT_MODE    = wx.NewId()
 ID_TRANSPARENCY  = wx.NewId()
 ID_PREF_SPOS     = wx.NewId()
 ID_PREF_UPDATE_BAR = wx.NewId()
+ID_PREF_VIRT_SPACE = wx.NewId()
 ID_PREF_WARN_EOL = wx.NewId()
 ID_SESSION       = wx.NewId()
 
@@ -259,6 +263,7 @@ ID_CONTACT       = wx.NewId()
 ID_BUG_TRACKER   = wx.NewId()
 
 # Misc IDs
+ID_ADD               = wx.ID_ADD
 ID_ADVANCED          = wx.NewId()
 ID_APP_SPLASH        = wx.NewId()
 ID_BACKWARD          = wx.ID_BACKWARD
@@ -267,6 +272,7 @@ ID_CDROM             = wx.NewId()
 ID_COMMAND_LINE_OPEN = wx.NewId()
 ID_COMPUTER          = wx.NewId()
 ID_COPY_PATH         = wx.NewId()
+ID_COPY_FILE         = wx.NewId()
 ID_DELETE            = wx.NewId()
 ID_DOCPROP           = wx.NewId()
 ID_DOWN              = wx.ID_DOWN
@@ -279,10 +285,12 @@ ID_FORWARD           = wx.ID_FORWARD
 ID_HARDDISK          = wx.NewId()
 ID_KEY_PROFILES      = wx.NewId()
 ID_LOGGER            = wx.NewId()
+ID_BOOKMARK_MGR      = wx.NewId()
 ID_MOVE_TAB          = wx.NewId()
 ID_PACKAGE           = wx.NewId()
 ID_PYSHELL           = wx.NewId()
 ID_REFRESH           = wx.ID_REFRESH
+ID_REMOVE            = wx.ID_REMOVE
 ID_REPORTER          = wx.NewId()
 ID_STOP              = wx.ID_STOP
 ID_THEME             = wx.NewId()
@@ -367,6 +375,7 @@ ID_2_PROF = {
              ID_PREF_TABW         : 'TABWIDTH',
              ID_VIEW_TOOL         : 'TOOLBAR',
              ID_PREF_TABS         : 'USETABS',
+             ID_PREF_VIRT_SPACE   : 'VIEWVERTSPACE',
              ID_VI_MODE           : 'VI_EMU',
              ID_VI_NORMAL_DEFAULT : 'VI_NORMAL_DEFAULT',
              ID_PREF_WARN_EOL     : 'WARN_EOL',
@@ -386,4 +395,4 @@ def EOLModeMap():
 # Default Plugins
 DEFAULT_PLUGINS = ("generator.Html", "generator.LaTeX", "generator.Rtf",
                    "iface.Shelf", "ed_theme.TangoTheme", "ed_log.EdLogViewer",
-                   "ed_search.EdFindResults")
+                   "ed_search.EdFindResults", "ed_bookmark.EdBookmarks")

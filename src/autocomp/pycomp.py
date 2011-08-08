@@ -16,13 +16,14 @@ deduct the requested information.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: pycomp.py 64524 2010-06-08 13:05:23Z CJP $"
-__revision__ = "$Revision: 64524 $"
+__cvsid__ = "$Id: pycomp.py 67703 2011-05-05 14:47:55Z CJP $"
+__revision__ = "$Revision: 67703 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
 import os
 import sys
+import time
 import tokenize
 import types
 from token import NAME, DEDENT, STRING
@@ -30,10 +31,6 @@ from token import NAME, DEDENT, STRING
 import wx
 from wx.py import introspect
 
-# It would be nice to use cStringIO here for the better performance but it
-# doesn't work as uniformly across platfrom as the plain StringIO module. On
-# Linux and python2.4 under all platforms the cStringIO module makes tokens out
-# of each character instead of each actual token which causes the parse to fail.
 from StringIO import StringIO
 
 # Local imports
@@ -42,13 +39,13 @@ import completer
 #--------------------------------------------------------------------------#
 
 class Completer(completer.BaseCompleter):
-    """Code completer provider"""
+    """Python Code completion provider"""
     def __init__(self, stc_buffer):
-        """Initiliazes the completer
+        """Initializes the completer
         @param stc_buffer: buffer that contains code
 
         """
-        completer.BaseCompleter.__init__(self, stc_buffer)
+        super(Completer, self).__init__(stc_buffer)
 
         # Setup
         self.SetAutoCompKeys([ord('.'), ])
@@ -88,36 +85,30 @@ class Completer(completer.BaseCompleter):
                 fpath = os.path.dirname(fname)
                 sys.path.insert(0, fpath)
 
+            t1 = time.time()
             cmpl.evalsource(self._buffer.GetText(),
                             self._buffer.GetCurrentLine())
+            dbg("[pycomp][info] Completion eval time: %f" % (time.time() - t1))
 
             if fname:
                 sys.path.pop(0)
 
             if calltip:
-                return cmpl.get_completions(command + '(', '', calltip)
+                return cmpl.get_completions(command + u'(', u'', calltip)
             else:
                 # Get Auto-completion List
                 complst = cmpl.get_completions(command)
                 sigs = list()
-                type = completer.TYPE_UNKNOWN
+                tmap = {"function" : completer.TYPE_FUNCTION,
+                        "method" : completer.TYPE_METHOD,
+                        "class" : completer.TYPE_CLASS,
+                        "attribute" : completer.TYPE_ATTRIBUTE,
+                        "property" : completer.TYPE_PROPERTY}
                 for sig in complst:
                     word = sig['word'].rstrip(u'(.')
-                    if sig['type'] == "function":
-                        type = completer.TYPE_FUNCTION
-                    elif sig['type'] == "method":
-                        type = completer.TYPE_METHOD
-                    elif sig['type'] == "class":
-                        type = completer.TYPE_CLASS
-                    elif sig['type'] == "attribute":
-                        type = completer.TYPE_ATTRIBUTE
-                    elif sig['type'] == "property":
-                        type = completer.TYPE_PROPERTY
-                    
-                    sigs.append(completer.Symbol(word, type))
-
-#                sigs = [ sig['word'].rstrip('(.') for sig in complst ]
-                sigs.sort(lambda x, y: cmp(x.Name.upper(), y.Name.upper()))
+                    tval = tmap.get(sig['type'], completer.TYPE_UNKNOWN)
+                    sigs.append(completer.Symbol(word, tval))
+                sigs.sort(key=lambda x: x.Name.upper())
                 return sigs
 
         except BaseException, msg:
@@ -126,7 +117,7 @@ class Completer(completer.BaseCompleter):
             if calltip:
                 return u""
             else:
-                return []
+                return list()
         
     def GetAutoCompList(self, command):
         """Returns the list of possible completions for a 
@@ -167,7 +158,16 @@ class Completer(completer.BaseCompleter):
         # present the function signature only (first newline)
         else:
             calltiptext = alltext.split("\n")[0]
-           
+
+        if type(calltiptext) != types.UnicodeType:
+            # Ensure it is unicode
+            try:
+                stcbuff = self.GetBuffer()
+                encoding = stcbuff.GetEncoding()
+                calltiptext = calltiptext.decode(encoding)
+            except Exception, msg:
+                dbg("%s" % msg)
+
         return calltiptext
 
 #-----------------------------------------------------------------------------#
@@ -191,17 +191,25 @@ class PyCompleter(object):
         """
         scope = self.parser.parse(text.replace('\r\n', '\n'), line)
         src = scope.get_code()
-        dbg("[pycomp] Generated source: %s" % src)
+        # Test
+#        f = open('pycompout.py', 'w')
+#        f.write(src)
+#        f.close()
+#        dbg("[pycomp][info] Generated source: %s" % src)
         try: 
             exec src in self.compldict
         except Exception, msg:
             dbg("[pycomp][err] src exec: %s" % msg)
+        else:
+            dbg("[pycomp][info] Successfully executed source code")
 
-        for loc in scope.locals:
+        for loc in [ l[1] for l in scope.locals]:
             try: 
                 exec loc in self.compldict
             except Exception, msg:
                 dbg("[pycomp][err] local exec %s [%s]" % (msg, loc))
+            else:
+                dbg("[pycomp][info] Successfully executed: %s" % loc)
 
     def get_arguments(self, func_obj):
         """Get the arguments of a given function obj
@@ -284,18 +292,21 @@ class PyCompleter(object):
             ridx = stmt.rfind('.')
             if len(stmt) > 0 and stmt[-1] == '(':
                 if ctip:
-                    # Use introspect for calltips for now until some
-                    # issues are sorted out with the main parser
+                    # Try introspect.getCallTip since it is generally
+                    # better at getting tips for c modules
                     tip = introspect.getCallTip(_sanitize(stmt), 
                                                 self.compldict)[2]
                     if not isinstance(tip, basestring):
                         tip = u""
+                    if not tip:
+                        # Internal calltip code
+                        result = eval(_sanitize(stmt.rstrip('(')), self.compldict)
+                        doc = max(getattr(result, '__doc__', ''), ' ')
+                        argval = context + _cleanstr(self.get_arguments(result))
+                        tip = '\n'.join([argval, _cleanstr(doc)])
+                        dbg("[pycomp][info] Used internal calltips")
                     return tip
-                else:
-                    result = eval(_sanitize(stmt[:-1]), self.compldict)
-                    doc = max(getattr(result, '__doc__', ''), ' ')
-                    return [{'word' : _cleanstr(self.get_arguments(result)), 
-                             'info' : _cleanstr(doc)}]
+
             elif ridx == -1:
                 match = stmt
                 compdict = self.compldict
@@ -374,7 +385,7 @@ class PyCompleter(object):
             dbg("[pycomp][err] get_completions: %s [stmt='%s']" % (msg, stmt))
             if ctip:
                 return u""
-            return []
+            return list()
 
 #-----------------------------------------------------------------------------#
 # Code objects
@@ -387,12 +398,38 @@ class Scope(object):
         @param indent: the indentation/level of this scope
 
         """
-        self.subscopes = []
-        self.docstr = ''
-        self.locals = []
+        super(Scope, self).__init__()
+
+        # Attributes
+        self.subscopes = list()
+        self.docstr = u''
+        self.locals = list()
         self.parent = None
         self.name = name
         self.indent = indent
+        self.objid = -1         # Tracks order of declaration
+
+    DocStr = property(lambda self: self.docstr,
+                      lambda self, dstr: setattr(self, 'docstr', dstr))
+    Locals = property(lambda self: self.locals,
+                      lambda self, loc: setattr(self, 'locals', loc))
+    Parent = property(lambda self: self.parent,
+                      lambda self, parent: setattr(self, 'parent', parent))
+
+    def Clone(self, indent=0):
+        """Clone this scope object"""
+        obj = Scope(self.name, indent)
+        obj.DocStr = self.DocStr
+        obj.Locals = list(self.Locals)
+        obj.Parent = self.Parent
+        for scope in self.subscopes:
+            obj.subscopes.append((scope[0], scope[1].Clone(indent + 1)))
+        obj.objid = self.objid
+        return obj
+
+    def NextObjId(self):
+        self.objid += 1
+        return self.objid
 
     def add(self, sub):
         """Push a subscope into this scope
@@ -400,7 +437,7 @@ class Scope(object):
 
         """
         sub.parent = self
-        self.subscopes.append(sub)
+        self.subscopes.append((self.NextObjId(), sub))
         return sub
 
     def doc(self, docstr):
@@ -408,18 +445,15 @@ class Scope(object):
         @param docstr: Docstring to format and set
 
         """
-        dstr = docstr.replace('\n', ' ')
-        dstr = dstr.replace('\t', ' ')
-        dstr = dstr.replace('  ', ' ')
-
+        dstr = docstr
         if len(dstr):
             while len(dstr) and dstr[0] in '"\' ':
                 dstr = dstr[1:]
 
             while len(dstr) and dstr[-1] in '"\' ':
                 dstr = dstr[:-1]
-
-        self.docstr = dstr
+        dstr = '\n'.join([d.lstrip() for d in dstr.split('\n')])
+        self.docstr = dstr.rstrip()
 
     def local(self, loc):
         """Add an object to the scopes locals
@@ -427,26 +461,18 @@ class Scope(object):
 
         """
         self._checkexisting(loc)
-        self.locals.append(loc)
-
-    def copy_decl(self, indent=0):
-        """Copy a scope's declaration only, at the specified indent level 
-        - not local variables
-        @keyword indent: indent level of scope declaration
-
-        """
-        return Scope(self.name, indent)
+        self.locals.append((self.NextObjId(), loc))
 
     def _checkexisting(self, test):
-        """Convienance function... keep out duplicates
-        @param test: assignment statement to check for existance of
+        """Convenience function... keep out duplicates
+        @param test: assignment statement to check for existence of
                      variable in the scopes locals
 
         """
-        if test.find('=') > -1:
+        if '=' in test:
             var = test.split('=')[0].strip()
             for loc in self.locals:
-                if loc.find('=') > -1 and var == loc.split('=')[0].strip():
+                if '=' in loc[1] and var == loc[1].split('=')[0].strip():
                     self.locals.remove(loc)
 
     def get_code(self):
@@ -455,20 +481,24 @@ class Scope(object):
 
         """
         cstr = '"""' + self.docstr + '"""\n'
+        nonimport = list()
         for loc in self.locals:
-            if loc.startswith('import') or loc.startswith('from'):
-                cstr += loc + '\n'
+            if loc[1].startswith('import') or loc[1].startswith('from'):
+                cstr += ("try:\n    %s\nexcept ImportError:\n    pass\n" % loc[1])
+            else:
+                nonimport.append(loc)
 
         # we need to start with this, to fix up broken completions
         # hopefully this name is unique enough...
         cstr += 'class _PyCmplNoType:\n    def __getattr__(self,name):\n        return None\n'
 
-        for sub in self.subscopes:
-            cstr += sub.get_code()
-
-        for loc in self.locals:
-            if not loc.startswith('import'):
-                cstr += loc + '\n'
+        decls = self.subscopes + nonimport
+        decls.sort(key=lambda x: x[0])
+        for decl in [d[1] for d in decls]:
+            if isinstance(decl, Scope):
+                cstr += decl.get_code()
+            else:
+                cstr += decl + '\n'
 
         return cstr
 
@@ -507,19 +537,19 @@ class Class(Scope):
         @param indent: scope of indentation
 
         """
-        Scope.__init__(self, name, indent)
+        super(Class, self).__init__(name, indent)
         self.supers = supers
 
-    def copy_decl(self, indent=0):
-        """Create a copy of the class object with a scope at the
-        given level of indentation.
-        @keyword indent: scope of indentation
-
-        """
-        cls = Class(self.name, self.supers, indent)
+    def Clone(self, indent=0):
+        """Create a clone of this object"""
+        obj = Class(self.name, self.supers, indent)
+        obj.DocStr = self.DocStr
+        obj.Locals = list(self.Locals)
+        obj.Parent = self.Parent
+        obj.objid = self.objid
         for scope in self.subscopes:
-            cls.add(scope.copy_decl(indent + 1))
-        return cls
+            obj.subscopes.append((scope[0], scope[1].Clone(indent + 1)))
+        return obj
 
     def get_code(self):
         """Get the code string representation of the Class object
@@ -533,12 +563,27 @@ class Class(Scope):
         cstr += ':\n'
         if len(self.docstr) > 0:
             cstr += self.childindent() + '"""' + self.docstr + '"""\n'
-        if len(self.subscopes) > 0:
-            for sub in self.subscopes:
-                cstr += sub.get_code()
-        else:
+        need_pass = True
+        decls = self.locals + self.subscopes
+        decls.sort(key=lambda x: x[0])
+        for decl in [d[1] for d in decls]:
+            need_pass = False
+            if isinstance(decl, Scope):
+                cstr += decl.get_code()
+            else:
+                cstr += ('%s%s\n' % (self.childindent(), decl))
+
+        if need_pass:
             cstr += '%spass\n' % self.childindent()
         return cstr
+
+    def local(self, loc):
+        """Add an object to the scopes locals
+        @param loc: local object to add to locals
+
+        """
+        if loc and '.' not in loc:
+            super(Class, self).local(loc)
 
 class Function(Scope):
     """Create a function object for representing a python function
@@ -552,16 +597,23 @@ class Function(Scope):
         @param indent: indentation level of functions declaration (scope)
 
         """
-        Scope.__init__(self, name, indent)
+        super(Function, self).__init__(name, indent)
         self.params = params
 
-    def copy_decl(self, indent=0):
+    def Clone(self, indent=0):
         """Create a copy of the functions declaration at the given
         scope of indentation.
         @keyword indent: indentation level of the declaration
 
         """
-        return Function(self.name, self.params, indent)
+        obj = Function(self.name, self.params, indent)
+        obj.DocStr = self.DocStr
+        obj.Locals = list(self.Locals)
+        obj.Parent = self.Parent
+        for scope in self.subscopes:
+            obj.subscopes.append((scope[0], scope[1].Clone(indent + 1)))
+        obj.objid = self.objid
+        return obj
 
     def get_code(self):
         """Get code string representation of the function object
@@ -578,10 +630,12 @@ class Function(Scope):
 #-----------------------------------------------------------------------------#
 # Main Parser
 
-class PyParser:
+class PyParser(object):
     """Python parsing class"""
     def __init__(self):
         """Initialize and create the PyParser"""
+        super(PyParser, self).__init__()
+
         # Attributes
         self.top = Scope('global', 0)
         self.scope = self.top
@@ -594,8 +648,8 @@ class PyParser:
         @return: tuple of (dottedname, nexttoken)
 
         """
-        name = []
-        if pre == None:
+        name = list()
+        if pre is None:
             tokentype, token = self.next()[:2]
             if tokentype != NAME and token != '*':
                 return ('', token)
@@ -649,8 +703,14 @@ class PyParser:
         while True:
             token = self.next()[1]
             if token in (')', ',') and level == 1:
+                # Remove keyword assignments as they can
+                # cause eval breakage when using undefined
+                # vars.
+                if '=' in name:
+                    name = name.split('=')[0].strip()
                 names.append(name)
                 name = ''
+
             if token == '(':
                 level += 1
             elif token == ')':
@@ -672,16 +732,16 @@ class PyParser:
 
         """
         self.scope = self.scope.pop(indent)
-        tokentype, fname, indent = self.next()
+        tokentype, fname, findent = self.next()
         if tokentype != NAME:
             return None
 
-        tokentype, open_paren, indent = self.next()
+        tokentype, open_paren, tindent = self.next()
         if open_paren != '(':
             return None
 
         params = self._parenparse()
-        tokentype, colon, indent = self.next()
+        tokentype, colon, tindent = self.next()
         if colon != ':':
             return None
 
@@ -708,10 +768,6 @@ class PyParser:
 
         return Class(cname, super_cls, indent)
 
-    # TODO this returns invalid tokens for some assignment statements.
-    #      In order to avoid this from breaking the eval the statements
-    #      are currently compiled to check syntax and filter accordingly. 
-    #      Need to find why the parse is failing on valid code sometimes.
     def _parseassignment(self):
         """Parse a variable assignment to resolve the variables type
         for introspection.
@@ -736,10 +792,12 @@ class PyParser:
                    tokenize.NUMBER : '0', 'ord' : '0', 'id' : '0',
                    'abs' : '0', 'sum' : '0', 'pow' : '0', 'len' : '0',
                    'hash' : '0',
+                   # Property
+                   'property' : 'property()',
                    # String
                    tokenize.STRING : '""', 'str' : '""',
                    'repr' : '""', 'chr' : '""', 'unichr' : '""',
-                   'hex' : '""', 'oct' : '""',
+                   'hex' : '""', 'oct' : '""', "'" : '""', '"' : '""',
                    # Type
                    'type' : 'type(_PyCmplNoType)',
                    # Tuple
@@ -755,10 +813,8 @@ class PyParser:
             # NOTE: This part of the parse is where the problem is happening
             assign += token
             level = 0
-#            tstack = list()
             while True:
                 tokentype, token = self.next()[:-1]
-#                tstack.append((assign, token, level))
                 if token in ('(', '{', '['):
                     level = level + 1
                 elif token in (']', '}', ')'):
@@ -767,26 +823,40 @@ class PyParser:
                         break
                 elif level == 0:
                     # end of line
-                    if token in (';', '\n'):
+                    if token in (';', '\n', '='):
                         break
-                    elif token == ',':
-                        assign = ''
+                    elif token in ('+', '*'):
+                        # Attempt simple type deduction based on 
+                        # operator statement.
+                        if assign.endswith('"') or assign.endswith("'"):
+                            assign = '""'
+                        else:
+                            assign = '0'
+                        break
+                    elif token in ('/', '-'):
+                        # assignment most likely returns an digit type
+                        # this is the best guess we can make
+                        assign = '0'
+                        break
+                    elif token in ('and', 'or', 'in', '==',
+                                   '<', '>', '!=', 'not', '>=', '<='):
+                        # right side of assignment likely evaluates to bool
+                        assign = 'bool'
+                        break
+#                    elif token == ',':
+#                        assign = ''
                     else:
-                        assign += token
+                        if token == '.' or assign.endswith('.'):
+                            assign += token
+                        else:
+                            assign += (" %s" % token)
 
         # Check syntax to filter out bad tokens
-        # NOTE: temporary till parser is improved more
         try:
             compile(assign, '_pycomp', 'eval')
         except:
-#            print ""
-#            for t in tstack:
-#                print t
-#            print assign
-#            print ""
-#            print ""
             dbg("[pycomp][err] parseassignment bad token: %s" % assign)
-            return None
+            return '_PyCmplNoType()'
         else:
             return assign
 
@@ -806,12 +876,17 @@ class PyParser:
 
         """
         newscope = Scope('result', 0)
-        scp = self.currentscope
-        while scp != None:
+        scopes = list()
+        tscp = self.currentscope.parent
+        while tscp != None:
+            scopes.append(tscp)
+            tscp = tscp.parent
+        scopes.append(self.currentscope)
+
+        for scp in scopes:
             if type(scp) == Function:
                 cut = 0
-
-                #Handle 'self' params
+                # Handle 'self' params
                 if scp.parent != None and type(scp.parent) == Class:
                     cut = 1
                     params = scp.params[0]
@@ -824,21 +899,20 @@ class PyParser:
                     ind = param.find('=')
                     if len(param) == 0:
                         continue
-
                     if ind == -1:
                         newscope.local('%s = _PyCmplNoType()' % param)
                     else:
                         newscope.local('%s = %s' % (param[:ind], 
                                                     _sanitize(param[ind+1:])))
 
-            for sub in scp.subscopes:
-                newscope.add(sub.copy_decl(0))
-
-            for loc in scp.locals:
-                newscope.local(loc)
-
-            scp = scp.parent
-
+            decls = scp.subscopes + scp.locals
+            decls.sort(key=lambda x: x[0])
+            for decl in [d[1] for d in decls]:
+                if isinstance(decl, Scope):
+                    newscope.add(decl.Clone(0))
+                else:
+                    newscope.local(decl)
+                
         self.currentscope = newscope
         return self.currentscope
 
@@ -863,14 +937,12 @@ class PyParser:
                 elif token == 'def':
                     func = self._parsefunction(indent)
                     if func == None:
-                        #print "function: syntax error..."
                         continue
                     freshscope = True
                     self.scope = self.scope.add(func)
                 elif token == 'class':
                     cls = self._parseclass(indent)
                     if cls == None:
-                        #print "class: syntax error..."
                         continue
                     freshscope = True
                     self.scope = self.scope.add(cls)
@@ -886,7 +958,6 @@ class PyParser:
                 elif token == 'from':
                     mod, token = self._parsedotname()
                     if not mod or token != "import":
-                        #print "from: syntax error..."
                         continue
                     names = self._parseimportlist()
                     for name, alias in names:
@@ -900,14 +971,14 @@ class PyParser:
                     if freshscope:
                         self.scope.doc(token)
                 elif tokentype == NAME:
-                    name, token = self._parsedotname(token) 
+                    name, token = self._parsedotname(token)
                     if token == '=':
                         stmt = self._parseassignment()
                         dbg("[pycomp] parseassignment: %s = %s" % (name, stmt))
                         if stmt != None:
-                            # XXX Safety Check don't allow assigments to 
+                            # XXX Safety Check don't allow assignments to 
                             # item attributes unless the attribute is self
-                            if u'.' not in name or name.startswith(u'self'):
+                            if u'.' not in name or name.startswith('self.'):
                                 self.scope.local("%s = %s" % (name, stmt))
                     freshscope = False
         except StopIteration: #thrown on EOF

@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 64304 2010-05-13 16:44:35Z CJP $"
-__revision__ = "$Revision: 64304 $"
+__svnid__ = "$Id: ed_editv.py 67834 2011-06-02 02:39:41Z CJP $"
+__revision__ = "$Revision: 67834 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -31,7 +31,8 @@ import ed_tab
 from doctools import DocPositionMgr
 from profiler import Profile_Get
 from util import Log, SetClipboardText
-from ebmlib import GetFileModTime, ContextMenuManager
+import syntax.synglob as synglob
+from ebmlib import GetFileModTime, ContextMenuManager, GetFileName
 
 # External libs
 from extern.stcspellcheck import STCSpellCheck
@@ -65,6 +66,8 @@ def modalcheck(func):
 class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
     """Tab editor view for main notebook control."""
     ID_NO_SUGGEST = wx.NewId()
+    ID_CLOSE_TAB = wx.NewId()
+    ID_CLOSE_ALL_TABS = wx.NewId()
     DOCMGR = DocPositionMgr()
 
     def __init__(self, parent, id_=wx.ID_ANY, pos=wx.DefaultPosition,
@@ -74,11 +77,14 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         ed_tab.EdTabBase.__init__(self)
 
         # Attributes
+        self._ro_img = False
         self._ignore_del = False
         self._has_dlg = False
         self._lprio = 0     # Idle event priority counter
         self._menu = ContextMenuManager()
         self._spell = STCSpellCheck(self, check_region=self.IsNonCode)
+        self._caret_w = 1
+        self._focused = True
         spref = Profile_Get('SPELLCHECK', default=dict())
         self._spell_data = dict(choices=list(),
                                 word=('', -1, -1),
@@ -105,6 +111,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         # TODO: decide on whether this belongs in base class or not
         self.Bind(wx.EVT_KILL_FOCUS, lambda evt: self.HidePopups())
         self.Bind(wx.EVT_LEFT_UP, self.OnSetFocus)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
 
         ed_msg.Subscribe(self.OnConfigMsg,
                          ed_msg.EDMSG_PROFILE_CHANGE + ('SPELLCHECK',))
@@ -115,9 +122,10 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         ed_msg.Subscribe(self.OnConfigMsg,
                          ed_msg.EDMSG_PROFILE_CHANGE + ('SYNTAX',))
 
-    def __del__(self):
-        ed_msg.Unsubscribe(self.OnConfigMsg)
-        super(EdEditorView, self).__del__()
+    def OnDestroy(self, evt):
+        if evt.GetId() == self.GetId():
+            ed_msg.Unsubscribe(self.OnConfigMsg)
+        evt.Skip()
 
     #---- EdTab Methods ----#
 
@@ -135,6 +143,21 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         if self.IsLoading():
             return
 
+        # Handle hiding and showing the caret when the window gets loses focus
+        cfocus = self.FindFocus()
+        if not self._focused and cfocus is self:
+            # Focus has just returned to the window
+            self.SetCaretWidth(self._caret_w)
+            self._focused = True
+        elif self._focused and cfocus is not self:
+            cwidth = self.GetCaretWidth()
+            if cwidth > 0:
+                self._caret_w = cwidth
+            self.SetCaretWidth(0) # Hide the caret when not active
+            self._focused = False
+            self.CallTipCancel()
+
+        # Check for changes to on disk file
         if not self._has_dlg and Profile_Get('CHECKMOD'):
             cfile = self.GetFileName()
             lmod = GetFileModTime(cfile)
@@ -151,18 +174,9 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
                     wx.CallAfter(self.AskToReload, cfile)
 
         # Check for changes to permissions
-        readonly = self._nb.ImageIsReadOnly(self.GetTabIndex())
-        if self.File.IsReadOnly() != readonly:
-            if readonly:
-                # File is no longer read only
-                self._nb.SetPageImage(self.GetTabIndex(),
-                                      str(self.GetLangId()))
-            else:
-                # File has changed to be readonly
-                self._nb.SetPageImage(self.GetTabIndex(),
-                                      ed_glob.ID_READONLY)
+        if self.File.IsReadOnly() != self._ro_img:
+            self._nb.SetPageBitmap(self.GetTabIndex(), self.GetTabImage())
             self._nb.Refresh()
-
         else:
             pass
 
@@ -173,8 +187,12 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
             # Do spell checking
             # TODO: Add generic subscriber hook and move spell checking and
             #       and other low priority idle handling there
-            if self._spell_data['enabled']:
-                self._spell.processCurrentlyVisibleBlock()
+            if self.IsShown():
+                if self._spell_data['enabled']:
+                    self._spell.processCurrentlyVisibleBlock()
+            else:
+                # Ensure calltips are not shown when this is a background tab.
+                self.CallTipCancel()
 
     @modalcheck
     def DoReloadFile(self):
@@ -213,6 +231,22 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         """
         return u"EditraTextCtrl"
 
+    def GetTabImage(self):
+        """Get the Bitmap to use for the tab
+        @return: wx.Bitmap (16x16)
+
+        """
+        if self.GetDocument().ReadOnly:
+            self._ro_img = True
+            bmp = wx.ArtProvider.GetBitmap(str(ed_glob.ID_READONLY), wx.ART_MENU)
+        else:
+            self._ro_img = False
+            lang_id = str(self.GetLangId())
+            bmp = wx.ArtProvider.GetBitmap(lang_id, wx.ART_MENU)
+            if bmp.IsNull():
+                bmp = wx.ArtProvider.GetBitmap(str(synglob.ID_LANG_TXT), wx.ART_MENU)
+        return bmp
+
     def GetTabMenu(self):
         """Get the tab menu
         @return: wx.Menu
@@ -227,10 +261,11 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         menu.Append(ed_glob.ID_MOVE_TAB, _("Move Tab to New Window"))
         menu.AppendSeparator()
         menu.Append(ed_glob.ID_SAVE, _("Save \"%s\"") % ptxt)
-        menu.Append(ed_glob.ID_CLOSE, _("Close \"%s\"") % ptxt)
+        menu.Append(EdEditorView.ID_CLOSE_TAB, _("Close \"%s\"") % ptxt)
         menu.Append(ed_glob.ID_CLOSE_OTHERS, _("Close Other Tabs"))
-        menu.Append(ed_glob.ID_CLOSEALL, _("Close All"))
+        menu.Append(EdEditorView.ID_CLOSE_ALL_TABS, _("Close All"))
         menu.AppendSeparator()
+        menu.Append(ed_glob.ID_COPY_FILE, _("Copy Filename"))
         menu.Append(ed_glob.ID_COPY_PATH, _("Copy Full Path"))
         return menu
 
@@ -298,9 +333,11 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
     def OnTabMenu(self, evt):
         """Tab menu event handler"""
         e_id = evt.GetId()
-        if e_id == ed_glob.ID_COPY_PATH:
+        if e_id in (ed_glob.ID_COPY_PATH, ed_glob.ID_COPY_FILE):
             path = self.GetFileName()
             if path is not None:
+                if e_id == ed_glob.ID_COPY_FILE:
+                    path = GetFileName(path)
                 SetClipboardText(path)
         elif e_id == ed_glob.ID_MOVE_TAB:
             frame = wx.GetApp().OpenNewWindow()
@@ -315,10 +352,11 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
             parent = self.GetParent()
             if hasattr(parent, 'CloseOtherPages'):
                 parent.CloseOtherPages()
-        elif wx.Platform == '__WXGTK__' and \
-             e_id in (ed_glob.ID_CLOSE, ed_glob.ID_CLOSEALL):
+        elif e_id in (EdEditorView.ID_CLOSE_TAB, EdEditorView.ID_CLOSE_ALL_TABS):
             # Need to relay events up to toplevel window on GTK for them to
-            # be processed. On other platforms the propagate by them selves.
+            # be processed. On other platforms the propagate by themselves.
+            evt.SetId({ EdEditorView.ID_CLOSE_TAB : ed_glob.ID_CLOSE,
+                        EdEditorView.ID_CLOSE_ALL_TABS : ed_glob.ID_CLOSEALL}.get(e_id))
             wx.PostEvent(self.GetTopLevelParent(), evt)
         else:
             evt.Skip()
@@ -345,7 +383,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         elif mtype == 'AUTOBACKUP':
             self.EnableAutoBackup(Profile_Get('AUTOBACKUP'))
         elif mtype == 'SYNTHEME':
-            self.UpdateAllStyles()
+            self.UpdateAllStyles(Profile_Get('SYNTHEME'))
         elif mtype == 'SYNTAX':
             self.SyntaxOnOff(Profile_Get('SYNTAX'))
         elif mtype == 'AUTO_COMP_EX':

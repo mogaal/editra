@@ -9,8 +9,8 @@
 """Unittest cases for the SyntaxMgr"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testSyntaxMgr.py 63846 2010-04-03 22:57:21Z CJP $"
-__revision__ = "$Revision: 63846 $"
+__svnid__ = "$Id: testSyntaxMgr.py 66104 2010-11-10 20:18:29Z CJP $"
+__revision__ = "$Revision: 66104 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -80,7 +80,8 @@ class SyntaxMgrTest(unittest.TestCase):
             self.assertTrue(isinstance(spec, list))
             if len(spec):
                 self.assertTrue(isinstance(spec[0], tuple))
-                self.assertTrue(isinstance(spec[0][0], int))
+                self.assertTrue(isinstance(spec[0][0], int),
+                                "Found: %s(%s)" % (type(spec[0][0]), spec[0][0]))
 
             props = data.Properties
             self.assertTrue(isinstance(props, list))

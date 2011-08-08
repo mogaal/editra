@@ -15,8 +15,8 @@ notebook and command bar.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_mpane.py 63387 2010-02-04 15:14:46Z CJP $"
-__revision__ = "$Revision: 63387 $"
+__svnid__ = "$Id: ed_mpane.py 67423 2011-04-09 22:43:57Z CJP $"
+__revision__ = "$Revision: 67423 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -37,10 +37,10 @@ class MainPanel(eclib.ControlBox):
     """
     def __init__(self, parent):
         """Initialize the panel"""
-        eclib.ControlBox.__init__(self, parent)
+        super(MainPanel, self).__init__(parent)
 
         # Attributes
-        self.nb = ed_pages.EdPages(self, wx.ID_ANY)
+        self.nb = ed_pages.EdPages(self)
         self._search = None
         self._line = None
         self._cmd = None

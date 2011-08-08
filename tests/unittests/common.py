@@ -7,12 +7,13 @@
 ###############################################################################
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: common.py 62320 2009-10-07 02:19:45Z CJP $"
-__revision__ = "$Revision: 62320 $"
+__svnid__ = "$Id: common.py 67609 2011-04-26 19:47:25Z CJP $"
+__revision__ = "$Revision: 67609 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import os
+import locale
 import shutil
 import wx
 
@@ -27,6 +28,7 @@ class EdApp(wx.App):
         self.pmgr = plugin.PluginManager()
 
         # Bare minimum profile bootstrap
+        profiler.Profile_Set('ENCODING', locale.getpreferredencoding())
         profiler.Profile_Set('ICONS', 'Tango')
 
         return True
@@ -36,6 +38,11 @@ class EdApp(wx.App):
 
     def GetPluginManager(self):
         return self.pmgr
+
+#-----------------------------------------------------------------------------#
+
+class TestFrame(wx.Frame):
+    pass
 
 #-----------------------------------------------------------------------------#
 
@@ -88,12 +95,26 @@ def GetTempDir():
     path = os.path.join(u'.', u'temp')
     return os.path.abspath(path)
 
+def GetTempFilePath(fname):
+    """Get a path for a file in the temp directory
+    @param fname: File name to get path for
+    @return: string
+
+    """
+    tdir = GetTempDir()
+    return os.path.join(tdir, fname)
+
 def GetThemeDir():
     """Get the packages theme directory path
     @return: string
 
     """
     tpath = os.path.join(u"..", u"..", u"pixmaps", u"theme")
+    tpath = os.path.abspath(tpath)
+    return tpath
+
+def GetStylesDir():
+    tpath = os.path.join(u"..", u"..", u"styles")
     tpath = os.path.abspath(tpath)
     return tpath
 

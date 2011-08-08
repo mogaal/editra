@@ -12,8 +12,8 @@ Unittest for User Profile and settings persistance.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testProfile.py 62162 2009-09-26 21:59:23Z CJP $"
-__revision__ = "$Revision: 62162 $"
+__svnid__ = "$Id: testProfile.py 65165 2010-08-02 22:04:37Z CJP $"
+__revision__ = "$Revision: 65165 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -29,11 +29,13 @@ class ProfileTest(unittest.TestCase):
     def setUp(self):
         # Create the singleton profile object
         self._profile = profiler.TheProfile
+        self._save = self._profile.copy()
         ed_msg.Subscribe(self.OnConfigMsg,
                          ed_msg.EDMSG_PROFILE_CHANGE + ('test',))
 
     def tearDown(self):
         ed_msg.Unsubscribe(self.OnConfigMsg)
+        self._profile.update(self._save)
 
     def OnConfigMsg(self, msg):
         mtype = msg.GetType()
@@ -62,7 +64,7 @@ class ProfileTest(unittest.TestCase):
         # Load the default settings
         self._profile.LoadDefaults()
 
-        # Try retrieving soem values from it
+        # Try retrieving some values from it
         self.assertEquals(self._profile.Get('EDGE'), profiler._DEFAULTS['EDGE'])
 
         # Test a value that doesn't exist

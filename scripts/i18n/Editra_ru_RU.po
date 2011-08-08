@@ -7,32 +7,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: editra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-16 14:03-0500\n"
-"PO-Revision-Date: 2010-04-25 19:47+0000\n"
-"Last-Translator: Ivan Gromov <Unknown>\n"
+"POT-Creation-Date: 2010-12-05 17:02-0600\n"
+"PO-Revision-Date: 2011-05-13 18:39+0000\n"
+"Last-Translator: Vadim Mirkin <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-05-16 18:44+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-05-21 18:52+0000\n"
+"X-Generator: Launchpad (build 13085)\n"
 
 #: ../../src/ed_search.py:429
 #, python-format
 msgid "\"%s\" was not found"
 msgstr "\"%s\" не найден"
 
-#: ../../src/ed_search.py:631
+#: ../../src/ed_search.py:638
 #, python-format
 msgid "%d matches were replaced."
 msgstr "%d замен выполнено"
 
-#: ../../src/util.py:365
+#: ../../src/util.py:369
 #, python-format
 msgid "%s Source File"
 msgstr "%s Исходный файл"
 
-#: ../../src/ed_main.py:599
+#: ../../src/ed_main.py:609
 #, python-format
 msgid ""
 "%s could not be found.\n"
@@ -41,7 +41,7 @@ msgstr ""
 "%s не найдено.\n"
 "Возможно файл был перемещен или удален."
 
-#: ../../src/ed_stc.py:1699
+#: ../../src/ed_stc.py:1794
 #, python-format
 msgid "%s does not exist"
 msgstr "%s не существует"
@@ -100,7 +100,7 @@ msgstr "&Шрифт"
 msgid "&Goto Line"
 msgstr "&Перейти к строке"
 
-#: ../../src/ed_main.py:149 ../../src/ed_menu.py:843
+#: ../../src/ed_main.py:150 ../../src/ed_menu.py:843
 msgid "&Help"
 msgstr "&Справка"
 
@@ -148,19 +148,19 @@ msgstr "&Отменить"
 msgid "&View"
 msgstr "&Вид"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:304
+#: ../../plugins/Launch/launch/cfgdlg.py:306
 msgid "**Alias**"
 msgstr "Псевдоним"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:304
+#: ../../plugins/Launch/launch/cfgdlg.py:306
 msgid "**New Value**"
 msgstr "***Новая переменная***"
 
 #: ../../src/eclib/filterdlg.py:76
 msgid "<< Remove"
-msgstr ""
+msgstr "<< Удалить"
 
-#: ../../src/eclib/errdlg.py:321 ../../plugins/Launch/launch/launch.py:554
+#: ../../src/eclib/errdlg.py:322 ../../plugins/Launch/launch/launch.py:596
 msgid "Abort"
 msgstr "Прервать"
 
@@ -175,9 +175,9 @@ msgstr "Доступ запрещён: %s"
 
 #: ../../src/eclib/filterdlg.py:75
 msgid "Add >>"
-msgstr ""
+msgstr "Добавить >>"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:240
+#: ../../plugins/Launch/launch/cfgdlg.py:242
 msgid "Add a new executable"
 msgstr "Добавить новое приложение"
 
@@ -193,11 +193,15 @@ msgstr "Добавить новую строку перед текущей"
 msgid "Add and remove bookmarks"
 msgstr "Добавить и удалить закладки"
 
-#: ../../src/prefdlg.py:196
+#: ../../src/prefdlg.py:777
+msgid "Adds extra scrolling room after last line"
+msgstr ""
+
+#: ../../src/prefdlg.py:197
 msgid "Advanced"
 msgstr "Дополнительно"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:519
+#: ../../plugins/Launch/launch/cfgdlg.py:527
 msgid "Alias"
 msgstr "Синоним"
 
@@ -205,7 +209,11 @@ msgstr "Синоним"
 msgid "All"
 msgstr "Все"
 
-#: ../../src/Editra.py:588
+#: ../../plugins/codebrowser/codebrowser/cbconfig.py:42
+msgid "Alphabetically"
+msgstr ""
+
+#: ../../src/Editra.py:601
 #, python-format
 msgid ""
 "An updated version of Editra is available\n"
@@ -214,15 +222,15 @@ msgstr ""
 "Доступна новая версия Editra.\n"
 "Скачать новую версию Editra %s сейчас?"
 
-#: ../../src/prefdlg.py:762
+#: ../../src/prefdlg.py:763
 msgid "AntiAliasing"
 msgstr "AntiAliasing"
 
-#: ../../src/prefdlg.py:190
+#: ../../src/prefdlg.py:191
 msgid "Appearance"
 msgstr "Внешний вид"
 
-#: ../../src/prefdlg.py:1760
+#: ../../src/prefdlg.py:1768
 msgid "Apply"
 msgstr "Применить"
 
@@ -240,15 +248,19 @@ msgstr ""
 "Вы уверены, что хотите удалить %s?\n"
 "Это невозможно будет отменить."
 
-#: ../../src/style_editor.py:665
+#: ../../plugins/Launch/launch/launch.py:192
+msgid "Arguments"
+msgstr ""
+
+#: ../../src/style_editor.py:607
 msgid "Attributes"
 msgstr "Атрибуты"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:414
+#: ../../plugins/Launch/launch/cfgdlg.py:416
 msgid "Audible feedback when errors are detected"
 msgstr "Звуковое уведомление, когда обнаружены ошибки"
 
-#: ../../src/ed_main.py:1237
+#: ../../src/ed_main.py:1251
 msgid "Aui Pane Navigator"
 msgstr "Навигационная панель"
 
@@ -257,11 +269,11 @@ msgstr "Навигационная панель"
 msgid "Author: %s"
 msgstr "Автор: %s"
 
-#: ../../src/ed_menu.py:778 ../../src/prefdlg.py:937
+#: ../../src/ed_menu.py:778 ../../src/prefdlg.py:944
 msgid "Auto-Completion"
 msgstr "Автозавершение"
 
-#: ../../src/ed_menu.py:780 ../../src/prefdlg.py:947
+#: ../../src/ed_menu.py:780 ../../src/prefdlg.py:954
 msgid "Auto-Indent"
 msgstr "Автоидентификация"
 
@@ -269,15 +281,15 @@ msgstr "Автоидентификация"
 msgid "Automatic"
 msgstr ""
 
-#: ../../src/prefdlg.py:499
+#: ../../src/prefdlg.py:500
 msgid "Automatically Backup Files"
 msgstr "Создавать резервные копии файлов автоматически"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:411
+#: ../../plugins/Launch/launch/cfgdlg.py:413
 msgid "Automatically clear buffer between runs"
 msgstr "Автоматически очищать буфер обмена между запусками"
 
-#: ../../src/prefdlg.py:531
+#: ../../src/prefdlg.py:532
 msgid "Automatically reload files when changes are detected on disk"
 msgstr "Автоматически перезагрузить файлы если они изменились на диске"
 
@@ -285,35 +297,35 @@ msgstr "Автоматически перезагрузить файлы есл�
 msgid "Automatically save/use window state from last session"
 msgstr "Автоматически сохранять/восстанавливать состояние окна из последней сессии"
 
-#: ../../src/prefdlg.py:739
+#: ../../src/prefdlg.py:740
 msgid "Automatically trim whitespace on save"
 msgstr "Автоматически убрать пробелы при сохранении"
 
-#: ../../src/style_editor.py:654 ../../plugins/Launch/launch/cfgdlg.py:431
+#: ../../src/style_editor.py:596 ../../plugins/Launch/launch/cfgdlg.py:436
 msgid "Background"
 msgstr "Фон"
 
-#: ../../src/prefdlg.py:745
+#: ../../src/prefdlg.py:746
 msgid "Backspace Unindents"
 msgstr "Backspace удаляет отступы"
 
-#: ../../src/prefdlg.py:505
+#: ../../src/prefdlg.py:506
 msgid "Backup Path:"
 msgstr ""
 
-#: ../../src/prefdlg.py:502
+#: ../../src/prefdlg.py:503
 msgid "Backup buffer to file periodically"
 msgstr "Периодически сохранять резервную копию буфера в файл"
 
-#: ../../src/style_editor.py:196
+#: ../../src/style_editor.py:171
 msgid "Base new theme on existing one"
 msgstr "Основывать новую тему на существующей"
 
-#: ../../src/prefdlg.py:1734
+#: ../../src/prefdlg.py:1742
 msgid "Binding"
 msgstr "Привязка"
 
-#: ../../src/prefdlg.py:2148
+#: ../../src/prefdlg.py:2156
 msgid "Black/White"
 msgstr "Чёрный/белый"
 
@@ -325,11 +337,11 @@ msgstr "Закладки"
 msgid "Bookmarks"
 msgstr "Закладки"
 
-#: ../../src/ed_menu.py:783 ../../src/prefdlg.py:917
+#: ../../src/ed_menu.py:783 ../../src/prefdlg.py:924
 msgid "Bracket Highlighting"
 msgstr "Кронштейн подсветки"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:538
+#: ../../plugins/Launch/launch/cfgdlg.py:546
 msgid "Browse"
 msgstr "Обзор"
 
@@ -342,41 +354,39 @@ msgstr ""
 msgid "Can't change directory to: %s"
 msgstr "Невозможно изменить путь на: %s"
 
-#: ../../src/ed_search.py:1242 ../../src/style_editor.py:139
-#: ../../src/updater.py:567
+#: ../../src/ed_search.py:1248 ../../src/style_editor.py:131
+#: ../../src/updater.py:568
 msgid "Cancel"
 msgstr "Отменить"
 
-#: ../../src/updater.py:644
+#: ../../src/updater.py:645
 msgid "Canceled"
 msgstr "Отменено"
 
-#: ../../src/ed_statbar.py:183
-#, fuzzy
+#: ../../src/ed_statbar.py:186
 msgid "Change Encoding"
-msgstr "Выбрать кодировку"
+msgstr ""
 
 #: ../../src/ed_menu.py:720
 msgid "Change Font Settings"
 msgstr "Сменить настройки шрифта"
 
-#: ../../src/ed_statbar.py:60 ../../src/ed_statbar.py:62
-#: ../../src/ed_statbar.py:64
+#: ../../src/ed_statbar.py:60 ../../src/ed_statbar.py:63
+#: ../../src/ed_statbar.py:66
 #, python-format
 msgid "Change line endings to %s"
 msgstr "Изменить окончание строки %s"
 
-#: ../../src/ed_statbar.py:182
-#, fuzzy
+#: ../../src/ed_statbar.py:185
 msgid "Change the encoding of the current document."
-msgstr "Генерировать %s версию текущего документа"
+msgstr ""
 
-#: ../../src/perspective.py:127
+#: ../../src/perspective.py:130
 #, python-format
 msgid "Change view to \"%s\""
 msgstr "Сменить вид на \"%s\""
 
-#: ../../src/prefdlg.py:281
+#: ../../src/prefdlg.py:282
 msgid "Changes made in this dialog are saved in your current profile. Some Items such as Language require the program to be restarted before taking effect."
 msgstr "Изменения, сделанные в этом диалоге, сохранятся в текущем профиле. Изменение некоторых пунктов, таких как Язык, потребует перезапуска программы."
 
@@ -384,53 +394,53 @@ msgstr "Изменения, сделанные в этом диалоге, со�
 msgid "Changes will take affect once the program has been restarted"
 msgstr "Изменения вступят в силу после перезапуска программы"
 
-#: ../../src/prefdlg.py:1526
+#: ../../src/prefdlg.py:1534
 msgid "Check"
 msgstr "Проверить"
 
-#: ../../src/prefdlg.py:411
+#: ../../src/prefdlg.py:412
 msgid "Check for updates on startup"
 msgstr "Проверить обновления при запуске"
 
-#: ../../src/prefdlg.py:526
+#: ../../src/prefdlg.py:527
 msgid "Check if on disk file has been modified by others"
 msgstr "Проверить, что на диске файл изменен другим"
 
-#: ../../src/prefdlg.py:560
+#: ../../src/prefdlg.py:561
 msgid "Check spelling while typing"
 msgstr "Проверять правописание при наборе"
 
-#: ../../src/eclib/finddlg.py:788
+#: ../../src/eclib/finddlg.py:790
 msgid "Choose Folder"
 msgstr "Выберите каталог"
 
-#: ../../src/eclib/finddlg.py:1116
+#: ../../src/eclib/finddlg.py:1118
 msgid "Choose Search Folder"
 msgstr "Поиск в директории"
 
-#: ../../src/ed_main.py:688
+#: ../../src/ed_main.py:698
 msgid "Choose a Save Location"
 msgstr "Выбрать Местное сохранение"
 
-#: ../../src/ed_pages.py:168
+#: ../../src/ed_pages.py:175
 msgid "Choose an Encoding"
 msgstr "Выбрать кодировку"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:547
+#: ../../plugins/Launch/launch/cfgdlg.py:555
 msgid "Choose and executable"
 msgstr "Выбрать и исполнить"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:49
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
 msgid "Class Definitions"
 msgstr "Определение Класса"
 
-#: ../../src/ed_log.py:140 ../../src/ed_search.py:1251
-#: ../../plugins/Launch/launch/launch.py:204
+#: ../../src/ed_log.py:140 ../../src/ed_search.py:1257
+#: ../../plugins/Launch/launch/launch.py:210
 #: ../../plugins/PyShell/PyShell/__init__.py:114
 msgid "Clear"
 msgstr "Очистить"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:516
+#: ../../plugins/Launch/launch/cfgdlg.py:524
 msgid "Click on an item to edit"
 msgstr "Выберите редактируемый элемент"
 
@@ -452,9 +462,8 @@ msgid "Close Current Tab"
 msgstr "Закрыть текущую вкладку"
 
 #: ../../src/ed_editv.py:231
-#, fuzzy
 msgid "Close Other Tabs"
-msgstr "Закрыть все вкладки"
+msgstr ""
 
 #: ../../src/ed_menu.py:524
 msgid "Close Window"
@@ -468,15 +477,15 @@ msgstr "Закрыть все открытые вкладки"
 msgid "Close the current window"
 msgstr "Закрыть текущее окно"
 
-#: ../../src/prefdlg.py:675
+#: ../../src/prefdlg.py:676
 msgid "Code"
 msgstr "Код"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:89
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:90
 msgid "Code Browser"
 msgstr "Просмотр кода"
 
-#: ../../src/ed_menu.py:680 ../../src/ed_menu.py:785 ../../src/prefdlg.py:919
+#: ../../src/ed_menu.py:680 ../../src/ed_menu.py:785 ../../src/prefdlg.py:926
 msgid "Code Folding"
 msgstr "Сворачивание блоков кода"
 
@@ -485,10 +494,11 @@ msgid "Code folding toggle actions"
 msgstr "Действия для свертки кода"
 
 #: ../../plugins/codebrowser/codebrowser/__init__.py:48
+#: ../../plugins/codebrowser/codebrowser/__init__.py:95
 msgid "CodeBrowser"
 msgstr "Обозреватель кода"
 
-#: ../../src/style_editor.py:638
+#: ../../src/style_editor.py:579
 msgid "Color"
 msgstr "Цвет"
 
@@ -496,15 +506,15 @@ msgstr "Цвет"
 msgid "Color Highlight Code Syntax"
 msgstr "Цвет подсветки синтаксиса кода"
 
-#: ../../src/prefdlg.py:1092 ../../plugins/PyShell/PyShell/__init__.py:109
+#: ../../src/prefdlg.py:1100 ../../plugins/PyShell/PyShell/__init__.py:109
 msgid "Color Scheme"
 msgstr "Цветовая схема"
 
-#: ../../src/prefdlg.py:2150
+#: ../../src/prefdlg.py:2158
 msgid "Colour/Default"
 msgstr "По умолчанию"
 
-#: ../../src/prefdlg.py:2149
+#: ../../src/prefdlg.py:2157
 msgid "Colour/White"
 msgstr "Белый"
 
@@ -520,7 +530,7 @@ msgstr "Команда"
 msgid "Commands that affect an entire line"
 msgstr "Команды, которые затрагивают целую строку"
 
-#: ../../src/prefdlg.py:1336
+#: ../../src/prefdlg.py:1344
 msgid "Configuration"
 msgstr "Конфигурация"
 
@@ -572,11 +582,11 @@ msgstr "Копировать строку"
 msgid "Copy Selected Text to Clipboard"
 msgstr "Копировать выбранный текст в буфер обмена"
 
-#: ../../src/ed_main.py:1545
+#: ../../src/ed_main.py:1562
 msgid "Copyright"
 msgstr "Копирайт"
 
-#: ../../src/eclib/finddlg.py:843
+#: ../../src/eclib/finddlg.py:845
 msgid "Count"
 msgstr "Количество"
 
@@ -594,7 +604,12 @@ msgstr "Создан"
 msgid "Cu&t"
 msgstr "&Вырезать"
 
-#: ../../src/eclib/finddlg.py:710
+#: ../../src/eclib/finddlg.py:713
+#, fuzzy
+msgid "Current Directory"
+msgstr "Открыть каталог?"
+
+#: ../../src/eclib/finddlg.py:712
 msgid "Current Document"
 msgstr "Текущий документ"
 
@@ -602,19 +617,17 @@ msgstr "Текущий документ"
 msgid "Customize"
 msgstr "Настроить"
 
-#: ../../src/ed_main.py:1433
-#, fuzzy
+#: ../../src/ed_main.py:1450
 msgid "Customize Menu"
-msgstr "Настроить"
+msgstr ""
 
 #: ../../src/ed_menu.py:471
 msgid "Customize the items shown in this menu."
 msgstr ""
 
 #: ../../src/ed_menu.py:470
-#, fuzzy
 msgid "Customize..."
-msgstr "Настроить"
+msgstr ""
 
 #: ../../src/ed_editv.py:362 ../../src/ed_toolbar.py:83
 msgid "Cut"
@@ -644,49 +657,47 @@ msgstr "Цикл через текстовой буфер обмена"
 msgid "DECODING ERROR"
 msgstr "Ошибка декодирования"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:226
+#: ../../plugins/Launch/launch/cfgdlg.py:228
 msgid "Default"
 msgstr "По умолчанию"
 
-#: ../../src/prefdlg.py:757
+#: ../../src/prefdlg.py:758
 msgid "Default EOL Mode"
 msgstr "По умолчанию EOL Режим"
 
-#: ../../src/prefdlg.py:910
+#: ../../src/prefdlg.py:917
 msgid "Default Lexer"
 msgstr "Лексический анализатор по умолчанию"
 
-#: ../../src/prefdlg.py:1194
+#: ../../src/prefdlg.py:1202
 msgid "Default Perspective"
 msgstr "Перспектива по умолчанию"
 
-#: ../../src/prefdlg.py:908
+#: ../../src/prefdlg.py:915
 msgid "Default highlighing for new documents"
 msgstr "Стандартная подсветка кода для новых документов"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:49
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
 msgid "Defines"
 msgstr "Определения"
 
-#: ../../src/prefdlg.py:1703
+#: ../../src/prefdlg.py:1711
 msgid "Delete"
 msgstr "Удалить"
 
 #: ../../src/eclib/filemgrdlg.py:175
-#, fuzzy
 msgid "Delete Error"
-msgstr "Удалить"
+msgstr "Удалить Ошибку"
 
 #: ../../src/eclib/filemgrdlg.py:168
-#, fuzzy
 msgid "Delete File?"
-msgstr "Удалить линию"
+msgstr "Удалить файл?"
 
 #: ../../src/ed_menu.py:603
 msgid "Delete Line"
 msgstr "Удалить линию"
 
-#: ../../src/perspective.py:267
+#: ../../src/perspective.py:271
 msgid "Delete Perspective"
 msgstr "Удалить перспективу"
 
@@ -703,19 +714,19 @@ msgstr "Удалить выбранную линию/линии"
 msgid "Desktop"
 msgstr "Рабочий стол"
 
-#: ../../src/prefdlg.py:567
+#: ../../src/prefdlg.py:568
 msgid "Dictionary"
 msgstr "Словарь"
 
-#: ../../src/eclib/finddlg.py:800
+#: ../../src/eclib/finddlg.py:802
 msgid "Direction"
 msgstr "Направление письма"
 
-#: ../../src/prefdlg.py:398
+#: ../../src/prefdlg.py:399
 msgid "Disable Error Reporter"
 msgstr "Отключить отчёт об ошибках"
 
-#: ../../src/prefdlg.py:1236
+#: ../../src/prefdlg.py:1244
 msgid "Display Font"
 msgstr "Экранный шрифт"
 
@@ -723,7 +734,7 @@ msgstr "Экранный шрифт"
 msgid "Do you wish to exit?"
 msgstr "Вы действительно хотите выйти?"
 
-#: ../../src/ed_pages.py:977
+#: ../../src/ed_pages.py:988
 #, python-format
 msgid ""
 "Do you wish to open all %d files in this directory?\n"
@@ -734,16 +745,16 @@ msgstr ""
 "\n"
 "Внимание: открытие большого количества файлов может привести к замедлению работы редактора."
 
-#: ../../src/prefdlg.py:192
+#: ../../src/prefdlg.py:193
 msgid "Document"
 msgstr "Документ"
 
-#: ../../src/eclib/finddlg.py:804
+#: ../../src/eclib/finddlg.py:806
 msgid "Down"
 msgstr "Вниз"
 
 #: ../../src/plugdlg.py:120 ../../src/plugdlg.py:460 ../../src/plugdlg.py:1108
-#: ../../src/prefdlg.py:1521
+#: ../../src/prefdlg.py:1529
 msgid "Download"
 msgstr "Загрузить"
 
@@ -751,20 +762,20 @@ msgstr "Загрузить"
 msgid "Downloaded"
 msgstr "Загруженно"
 
-#: ../../src/plugdlg.py:595 ../../src/updater.py:603
+#: ../../src/plugdlg.py:595 ../../src/updater.py:604
 msgid "Downloading"
 msgstr "Загрузка данных"
 
-#: ../../src/updater.py:566
+#: ../../src/updater.py:567
 #, python-format
 msgid "Downloading To: %s"
 msgstr "Загрузка данных с: %s"
 
-#: ../../src/Editra.py:594 ../../src/prefdlg.py:1562
+#: ../../src/Editra.py:607 ../../src/prefdlg.py:1570
 msgid "Downloading Update"
 msgstr "Загрузка обновления"
 
-#: ../../src/updater.py:564
+#: ../../src/updater.py:565
 #, python-format
 msgid "Downloading: %s"
 msgstr "Загрузка: %s"
@@ -793,17 +804,17 @@ msgstr "В&ыход"
 msgid "EOL Mode"
 msgstr "EOL Режим"
 
-#: ../../src/ed_main.py:664
+#: ../../src/ed_main.py:674
 #, python-format
 msgid "ERROR: %s"
 msgstr "ОШИБКА: %s"
 
-#: ../../src/ed_main.py:704
+#: ../../src/ed_main.py:714
 #, python-format
 msgid "ERROR: Failed to save %s"
 msgstr "ОШИБКА: Ошибка при сохранении %s"
 
-#: ../../src/prefdlg.py:921
+#: ../../src/prefdlg.py:928
 msgid "Edge Guide"
 msgstr "Руководство по ошибкам"
 
@@ -827,7 +838,7 @@ msgstr "Редактор"
 msgid "Editor Command"
 msgstr "Редактор команды"
 
-#: ../../src/prefdlg.py:382
+#: ../../src/prefdlg.py:383
 msgid "Editor Mode"
 msgstr "Редактор режима"
 
@@ -848,7 +859,7 @@ msgstr ""
 "Ошибка:\n"
 "%(errormsg)s"
 
-#: ../../src/ed_main.py:1535
+#: ../../src/ed_main.py:1552
 msgid "Editra is a programmers text editor."
 msgstr "Editra - это текстовой редактор для программистов."
 
@@ -856,12 +867,15 @@ msgstr "Editra - это текстовой редактор для програ�
 msgid "Editra translations project"
 msgstr "Проект перевода Editra"
 
-#: ../../src/ed_main.py:461
-#, fuzzy
+#: ../../src/ed_main.py:439
 msgid "Editra: Open"
-msgstr "Журнал Editra"
+msgstr ""
 
-#: ../../src/ed_pages.py:370
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:57
+msgid "Elements"
+msgstr ""
+
+#: ../../src/ed_pages.py:377
 msgid "Empty File"
 msgstr "Пустой файл"
 
@@ -869,7 +883,7 @@ msgstr "Пустой файл"
 msgid "Enable"
 msgstr "Включить"
 
-#: ../../src/prefdlg.py:949
+#: ../../src/prefdlg.py:956
 msgid "Enable Vi Emulation"
 msgstr "Включить эмуляцию Vi"
 
@@ -877,11 +891,11 @@ msgstr "Включить эмуляцию Vi"
 msgid "Enable column edit mode."
 msgstr "Включить режим редактирования столбцов."
 
-#: ../../src/prefdlg.py:577
+#: ../../src/prefdlg.py:578
 msgid "Enchant Path"
 msgstr ""
 
-#: ../../src/prefdlg.py:493
+#: ../../src/prefdlg.py:494
 msgid "Encoding to try when auto detection fails"
 msgstr "Выбирать эту кодировку, если автораспознавание не выполнено"
 
@@ -893,15 +907,15 @@ msgstr "Характер форматирования конца строки"
 msgid "Enter a hex color value"
 msgstr "Введите шестнадцатеричный цвет"
 
-#: ../../src/style_editor.py:292
+#: ../../src/style_editor.py:260
 msgid "Enter style sheet name"
 msgstr "Введите имя таблицы стилей"
 
-#: ../../src/prefdlg.py:1898
+#: ../../src/prefdlg.py:1906
 msgid "Enter the name of the new key profile"
 msgstr "Введите новое имя для нового профиля"
 
-#: ../../src/eclib/finddlg.py:821
+#: ../../src/eclib/finddlg.py:823
 msgid "Enter wildcard shell patterns for matching files (*.txt)."
 msgstr "Введите шаблон, соответствующий файлам (*.txt)."
 
@@ -913,19 +927,19 @@ msgstr "Ошибка"
 msgid "Error Opening File"
 msgstr "Ошибка открытия файла"
 
-#: ../../src/ed_pages.py:320
+#: ../../src/ed_pages.py:327
 msgid "Error Saving Session File"
 msgstr "Ошибка сохранения файла сеанса"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:441
+#: ../../plugins/Launch/launch/cfgdlg.py:446
 msgid "Error Text"
 msgstr "Текст Ошибки"
 
-#: ../../src/eclib/errdlg.py:317
+#: ../../src/eclib/errdlg.py:318
 msgid "Error Traceback:"
 msgstr "Error Traceback:"
 
-#: ../../src/ed_search.py:537 ../../src/ed_search.py:698
+#: ../../src/ed_search.py:544 ../../src/ed_search.py:705
 #, python-format
 msgid ""
 "Error in regular expression expansion.The replace action cannot be completed.\n"
@@ -936,7 +950,7 @@ msgstr ""
 "\n"
 "Сообщение об ошибке: %s"
 
-#: ../../src/dev_tool.py:240
+#: ../../src/dev_tool.py:252
 msgid ""
 "Error: Something unexpected happend\n"
 "Help improve Editra by clicking on Report Error\n"
@@ -946,7 +960,7 @@ msgstr ""
 "Помогите улучшить Editra нажав на Сообщить об ошибке,\n"
 "чтобы выслать отчёт, который показан ниже."
 
-#: ../../src/ed_main.py:1485
+#: ../../src/ed_main.py:1502
 #, python-format
 msgid "Error: Unable to open %s"
 msgstr "Ошибка: Нельза открыть файл %s"
@@ -955,15 +969,15 @@ msgstr "Ошибка: Нельза открыть файл %s"
 msgid "Errors"
 msgstr "Ошибки"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:520
+#: ../../plugins/Launch/launch/cfgdlg.py:528
 msgid "Executable Commands"
 msgstr "Исполняемые команды"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:211
+#: ../../plugins/Launch/launch/cfgdlg.py:213
 msgid "Executables"
 msgstr "Выполняемые"
 
-#: ../../plugins/Launch/launch/launch.py:706
+#: ../../plugins/Launch/launch/launch.py:749
 msgid "Exit Code"
 msgstr "Код выхода"
 
@@ -971,23 +985,23 @@ msgstr "Код выхода"
 msgid "Exit the Program"
 msgstr "Покинуть программу"
 
-#: ../../src/eclib/errdlg.py:322
+#: ../../src/eclib/errdlg.py:323
 msgid "Exit the application"
 msgstr "Выйти из программы"
 
-#: ../../src/style_editor.py:141
+#: ../../src/style_editor.py:133
 msgid "Export"
 msgstr "Экспорт"
 
-#: ../../src/style_editor.py:293
+#: ../../src/style_editor.py:261
 msgid "Export Style Sheet"
 msgstr "Экспортировать стиль"
 
-#: ../../src/prefdlg.py:940
+#: ../../src/prefdlg.py:947
 msgid "Extended Auto-Comp"
 msgstr "Расширенная авто-замена"
 
-#: ../../src/prefdlg.py:2037
+#: ../../src/prefdlg.py:2045
 msgid "Extensions (space separated, no dots)"
 msgstr "Расширения (разделены пробелами, без точек)"
 
@@ -995,7 +1009,7 @@ msgstr "Расширения (разделены пробелами, без то
 msgid "F&ormat"
 msgstr "&Формат"
 
-#: ../../src/updater.py:682
+#: ../../src/updater.py:683
 msgid "Failed"
 msgstr "Произошёл сбой"
 
@@ -1008,7 +1022,7 @@ msgstr "Ошибка при подготовке предварительног�
 msgid "Failed to install %d plugins"
 msgstr "Ошибка при установки %d плагинов"
 
-#: ../../src/prefdlg.py:646
+#: ../../src/prefdlg.py:647
 msgid "Failed to load Enchant"
 msgstr ""
 
@@ -1021,7 +1035,7 @@ msgstr ""
 "Ошибка загрузки %(filename)s:\n"
 "Ошибка: %(errmsg)s"
 
-#: ../../src/ed_main.py:1218
+#: ../../src/ed_main.py:1232
 #, python-format
 msgid "Failed to reload the file with: %(encoding)s"
 msgstr ""
@@ -1047,19 +1061,19 @@ msgstr "Обратная связь"
 msgid "File Browser"
 msgstr "Файловый браузер"
 
-#: ../../src/eclib/finddlg.py:714
+#: ../../src/eclib/finddlg.py:716
 msgid "File Filters:"
 msgstr "Фильтр"
 
-#: ../../src/prefdlg.py:474
+#: ../../src/prefdlg.py:475
 msgid "File History Length"
 msgstr "File History Length"
 
-#: ../../src/ed_main.py:601
+#: ../../src/ed_main.py:611
 msgid "File Not Found"
 msgstr "Файл не найден"
 
-#: ../../src/prefdlg.py:542
+#: ../../src/prefdlg.py:543
 msgid "File Settings"
 msgstr "Файловые установки"
 
@@ -1067,20 +1081,20 @@ msgstr "Файловые установки"
 msgid "File Stat Failed"
 msgstr ""
 
-#: ../../plugins/Launch/launch/cfgdlg.py:206
+#: ../../plugins/Launch/launch/cfgdlg.py:208
 msgid "File Type"
 msgstr "Тип файла"
 
-#: ../../src/ed_stc.py:561
+#: ../../src/ed_stc.py:612
 #, python-format
 msgid "File backup performed: %s"
 msgstr "Резервное копирование завершено: %s"
 
-#: ../../src/ed_stc.py:1746
+#: ../../src/ed_stc.py:1841
 msgid "File is Read Only and cannot be saved"
 msgstr "сохранение не возможно"
 
-#: ../../src/ed_pages.py:207
+#: ../../src/ed_pages.py:214
 msgid ""
 "File is already open in an existing page.\n"
 "Do you wish to open it again?"
@@ -1088,27 +1102,27 @@ msgstr ""
 "Файл уже открыт в существующей странице.\n"
 "Хотите открыть его снова?"
 
-#: ../../src/prefdlg.py:304 ../../src/eclib/filemgrdlg.py:218
+#: ../../src/prefdlg.py:305 ../../src/eclib/filemgrdlg.py:218
 msgid "Files"
 msgstr "Файлы"
 
-#: ../../src/ed_search.py:1296
+#: ../../src/ed_search.py:1302
 #, python-format
 msgid "Files Searched: %d"
 msgstr "Найдено файлов: %d"
 
-#: ../../src/prefdlg.py:1086
+#: ../../src/prefdlg.py:1094
 msgid "Filetype Associations"
 msgstr "Ассоциация файлов"
 
 #: ../../src/ed_cmdbar.py:261 ../../src/ed_search.py:147
 #: ../../src/ed_search.py:151 ../../src/ed_toolbar.py:90
-#: ../../src/eclib/finddlg.py:630 ../../src/eclib/finddlg.py:765
-#: ../../src/eclib/finddlg.py:841
+#: ../../src/eclib/finddlg.py:632 ../../src/eclib/finddlg.py:767
+#: ../../src/eclib/finddlg.py:843
 msgid "Find"
 msgstr "Найти"
 
-#: ../../src/ed_cmdbar.py:277 ../../src/eclib/finddlg.py:844
+#: ../../src/ed_cmdbar.py:277 ../../src/eclib/finddlg.py:846
 msgid "Find All"
 msgstr "Найти все"
 
@@ -1120,7 +1134,7 @@ msgstr ""
 msgid "Find Next"
 msgstr "Найти далее"
 
-#: ../../src/eclib/finddlg.py:810
+#: ../../src/eclib/finddlg.py:812
 msgid "Find Options"
 msgstr "Параметры поиска"
 
@@ -1140,7 +1154,7 @@ msgstr "Найти текст"
 msgid "Find and Replace Text"
 msgstr "Найти и заменить текст"
 
-#: ../../src/eclib/finddlg.py:763
+#: ../../src/eclib/finddlg.py:765
 msgid "Find what"
 msgstr "Найти что"
 
@@ -1153,7 +1167,7 @@ msgstr "Найти/Заменить"
 msgid "Find/Replace"
 msgstr "Найти/Заменить"
 
-#: ../../src/updater.py:679
+#: ../../src/updater.py:680
 msgid "Finished"
 msgstr "Готово"
 
@@ -1161,27 +1175,27 @@ msgstr "Готово"
 msgid "Finshed downloading plugins"
 msgstr "Закачка плагинов завершена"
 
-#: ../../src/util.py:353 ../../src/eclib/infodlg.py:292
+#: ../../src/util.py:357 ../../src/eclib/infodlg.py:292
 msgid "Folder"
 msgstr "Каталог"
 
-#: ../../src/style_editor.py:686
+#: ../../src/style_editor.py:628
 msgid "Font"
 msgstr "Шрифт"
 
-#: ../../src/style_editor.py:681
+#: ../../src/style_editor.py:623
 msgid "Font Settings"
 msgstr "Установки шрифтов"
 
-#: ../../src/style_editor.py:642 ../../plugins/Launch/launch/cfgdlg.py:428
+#: ../../src/style_editor.py:584 ../../plugins/Launch/launch/cfgdlg.py:433
 msgid "Foreground"
 msgstr "Передний план"
 
-#: ../../src/prefdlg.py:791
+#: ../../src/prefdlg.py:796
 msgid "Format"
 msgstr "Формат"
 
-#: ../../src/ed_stc.py:1103
+#: ../../src/ed_stc.py:1187
 msgid "Format EOL?"
 msgstr ""
 
@@ -1190,16 +1204,16 @@ msgstr ""
 msgid "Format all EOL characters to %s Mode"
 msgstr "Формат всех EOL символов в %s Режим"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:49
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
 msgid "Function Definitions"
 msgstr "Определения функции"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
 msgid "Functions"
 msgstr "Функции"
 
-#: ../../src/prefdlg.py:188 ../../src/prefdlg.py:674 ../../src/prefdlg.py:961
-#: ../../plugins/Launch/launch/cfgdlg.py:171
+#: ../../src/prefdlg.py:189 ../../src/prefdlg.py:675 ../../src/prefdlg.py:968
+#: ../../plugins/Launch/launch/cfgdlg.py:173
 msgid "General"
 msgstr "Основные"
 
@@ -1231,11 +1245,11 @@ msgstr "Генератор"
 msgid "Get Info"
 msgstr "Получить информацию"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
 msgid "Global Variables"
 msgstr "Глобальные переменные"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:381
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:385
 #, python-format
 msgid "Goto \"%s\""
 msgstr "Перейти \"%s\""
@@ -1272,7 +1286,7 @@ msgstr "Перейти к предыдущему элементу в истор�
 msgid "Goto the next match"
 msgstr "Перейти к следующему совпадению"
 
-#: ../../src/prefdlg.py:925
+#: ../../src/prefdlg.py:932
 msgid "Guide Column"
 msgstr "Направляющие столбцов"
 
@@ -1280,7 +1294,7 @@ msgstr "Направляющие столбцов"
 msgid "Highlight Brackets/Braces"
 msgstr "Подсветка скобок"
 
-#: ../../src/ed_menu.py:660 ../../src/prefdlg.py:930
+#: ../../src/ed_menu.py:660 ../../src/prefdlg.py:937
 msgid "Highlight Caret Line"
 msgstr "Подсветка символа каретки"
 
@@ -1292,32 +1306,31 @@ msgstr "Подсветка фона текущей строки"
 msgid "Home directory"
 msgstr "Домашний каталог"
 
-#: ../../src/ed_main.py:1537
+#: ../../src/ed_main.py:1554
 msgid "Homepage"
 msgstr "Домашняя страница"
 
-#: ../../src/prefdlg.py:1172
+#: ../../src/prefdlg.py:1180
 msgid "Icon Theme"
 msgstr "Тема значков"
 
-#: ../../src/prefdlg.py:1217
+#: ../../src/prefdlg.py:1225
 msgid "Icons"
 msgstr "Значки"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
 msgid "Identities"
 msgstr ""
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
-#, fuzzy
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:57
 msgid "Imports"
-msgstr "Экспорт"
+msgstr ""
 
 #: ../../src/ed_menu.py:726
 msgid "Indent Lines"
 msgstr "Отступ строки"
 
-#: ../../src/prefdlg.py:731
+#: ../../src/prefdlg.py:732
 msgid "Indent Width"
 msgstr "Ширина отступа"
 
@@ -1325,7 +1338,7 @@ msgstr "Ширина отступа"
 msgid "Indent the selected lines"
 msgstr "Отступить выделенные линии"
 
-#: ../../src/ed_menu.py:663 ../../src/prefdlg.py:933
+#: ../../src/ed_menu.py:663 ../../src/prefdlg.py:940
 msgid "Indentation Guides"
 msgstr "Отступы руководства"
 
@@ -1333,11 +1346,11 @@ msgstr "Отступы руководства"
 msgid "Info"
 msgstr "Информация"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:448
+#: ../../plugins/Launch/launch/cfgdlg.py:453
 msgid "Info Text"
 msgstr "Информация"
 
-#: ../../src/prefdlg.py:970
+#: ../../src/prefdlg.py:977
 msgid "Input Helpers"
 msgstr "Ввести помощника"
 
@@ -1365,34 +1378,33 @@ msgstr "Установить плагины только для текущего
 msgid "Installation Error"
 msgstr "Ошибка при установки"
 
-#: ../../src/prefdlg.py:1502
+#: ../../src/prefdlg.py:1510
 msgid "Installed Version"
 msgstr "Версия установлена"
 
-#: ../../src/ed_pages.py:349
+#: ../../src/ed_pages.py:356
 msgid "Invalid File"
 msgstr "Неверный формат файла"
 
 #: ../../src/ed_cmdbar.py:776
-#, fuzzy
 msgid "Invalid Path"
-msgstr "Неверный формат файла"
+msgstr ""
 
 #: ../../src/ed_search.py:349
 #, python-format
 msgid "Invalid expression \"%s\""
 msgstr "Неверное выражение \"%s\""
 
-#: ../../src/ed_pages.py:363
+#: ../../src/ed_pages.py:370
 msgid "Invalid file"
 msgstr "Неверный файл"
 
-#: ../../src/ed_pages.py:961
+#: ../../src/ed_pages.py:972
 #, python-format
 msgid "Invalid file: %s"
 msgstr "Поврежденный файл: %s"
 
-#: ../../src/prefdlg.py:2151
+#: ../../src/prefdlg.py:2159
 msgid "Inverse"
 msgstr "Обратить"
 
@@ -1408,15 +1420,15 @@ msgstr "Объединить выделенные строки"
 msgid "Jump to Saved Path"
 msgstr "Перейти к сохраненному пути"
 
-#: ../../src/prefdlg.py:1730
+#: ../../src/prefdlg.py:1738
 msgid "Key"
 msgstr "Клавиша"
 
-#: ../../src/prefdlg.py:1699
+#: ../../src/prefdlg.py:1707
 msgid "Key Profile"
 msgstr ""
 
-#: ../../src/prefdlg.py:1614
+#: ../../src/prefdlg.py:1622
 msgid "Keybindings"
 msgstr "Сочетание клавиш"
 
@@ -1424,15 +1436,15 @@ msgstr "Сочетание клавиш"
 msgid "Kind"
 msgstr "Тип"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
 msgid "Labels"
 msgstr "Метки"
 
-#: ../../src/prefdlg.py:416
+#: ../../src/prefdlg.py:417
 msgid "Language"
 msgstr "Язык"
 
-#: ../../src/prefdlg.py:1508
+#: ../../src/prefdlg.py:1516
 msgid "Latest Version"
 msgstr "Последняйшая версия"
 
@@ -1440,15 +1452,15 @@ msgstr "Последняйшая версия"
 msgid "Launch"
 msgstr "Запустить"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:111
+#: ../../plugins/Launch/launch/cfgdlg.py:112
 msgid "Launch Configuration"
 msgstr "Запустит Конфигуратцию"
 
-#: ../../src/prefdlg.py:1222
+#: ../../src/prefdlg.py:1230
 msgid "Layout"
 msgstr "Размещение"
 
-#: ../../src/prefdlg.py:2035
+#: ../../src/prefdlg.py:2043
 msgid "Lexer"
 msgstr "Лексер"
 
@@ -1456,11 +1468,11 @@ msgstr "Лексер"
 msgid "Lexers"
 msgstr "Лексеры"
 
-#: ../../src/prefdlg.py:647
+#: ../../src/prefdlg.py:648
 msgid "Library Error"
 msgstr "Ошибка библиотеки"
 
-#: ../../src/ed_main.py:1539
+#: ../../src/ed_main.py:1556
 msgid "License: wxWindows (see COPYING.txt for full license)"
 msgstr "Лицензия: wxWindows (полная версия лицензии находится в COPYING.txt)"
 
@@ -1468,12 +1480,17 @@ msgstr "Лицензия: wxWindows (полная версия лицензии 
 msgid "Line Edit"
 msgstr "Редактировать строку"
 
-#: ../../src/ed_stc.py:700
+#: ../../plugins/codebrowser/codebrowser/cbconfig.py:44
+#, fuzzy
+msgid "Line Number"
+msgstr "Перейти к номеру строки"
+
+#: ../../src/ed_stc.py:752
 #, python-format
 msgid "Line: %(lnum)d  Column: %(cnum)d"
 msgstr "Строка: %(lnum)d Столбец: %(cnum)d"
 
-#: ../../src/prefdlg.py:400
+#: ../../src/prefdlg.py:401
 msgid "Load Last Session"
 msgstr "Загрузить последнюю сессию"
 
@@ -1485,11 +1502,11 @@ msgstr "Загрузить профиль"
 msgid "Load Session"
 msgstr "Загрузить сеанс"
 
-#: ../../src/ed_main.py:744 ../../src/ed_menu.py:544
+#: ../../src/ed_main.py:754 ../../src/ed_menu.py:544
 msgid "Load a Custom Profile"
 msgstr "Загрузить полный профиль"
 
-#: ../../src/ed_main.py:795
+#: ../../src/ed_main.py:804
 msgid "Load a Session file"
 msgstr "Загрузить файл сеанса"
 
@@ -1505,25 +1522,30 @@ msgstr "Загрузка и сохранение индивидуальных п
 msgid "Load and save custom sessions."
 msgstr "Загрузка и сохранение текущей сессии"
 
-#: ../../src/prefdlg.py:402
+#: ../../src/prefdlg.py:403
 msgid "Load files from last session on startup"
 msgstr "Загрузить файлы от последней сессии в автостарт"
 
-#: ../../src/ed_main.py:751
+#: ../../src/ed_main.py:760
 #, python-format
 msgid "Loaded Profile: %s"
 msgstr "Загруженный профиль: %s"
 
-#: ../../src/ed_main.py:809
+#: ../../src/ed_main.py:818
 #, python-format
 msgid "Loaded Session: %s"
 msgstr "Загрузить сессию: %s"
 
-#: ../../src/prefdlg.py:437
+#: ../../src/prefdlg.py:438
 msgid "Locale Settings"
 msgstr "Локальные настройки"
 
-#: ../../src/eclib/finddlg.py:791
+#: ../../plugins/Launch/launch/launch.py:182
+#, fuzzy
+msgid "Lock File"
+msgstr "Просмотр в"
+
+#: ../../src/eclib/finddlg.py:793
 msgid "Look in"
 msgstr "Просмотр в"
 
@@ -1531,7 +1553,7 @@ msgstr "Просмотр в"
 msgid "Lowercase"
 msgstr "Нижний"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
 msgid "Macro Definitions"
 msgstr "Определения макросов"
 
@@ -1539,11 +1561,11 @@ msgstr "Определения макросов"
 msgid "Macro Manager"
 msgstr "Управление макросами"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:50
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
 msgid "Macros"
 msgstr "Макросы"
 
-#: ../../src/prefdlg.py:1212
+#: ../../src/prefdlg.py:1220
 msgid "Main display font for various UI components"
 msgstr ""
 
@@ -1559,27 +1581,27 @@ msgstr "Ручная подстройка Лексера/Синтаксиса"
 msgid "Match Case"
 msgstr "С учётом регистра"
 
-#: ../../src/eclib/finddlg.py:812
+#: ../../src/eclib/finddlg.py:814
 msgid "Match case"
 msgstr "С учётом регистра"
 
-#: ../../src/ed_main.py:1411 ../../src/ed_menu.py:686
+#: ../../src/ed_main.py:1428 ../../src/ed_menu.py:686
 msgid "Maximize Editor"
 msgstr "Развернуть на весь экран"
 
-#: ../../src/prefdlg.py:1712
+#: ../../src/prefdlg.py:1720
 msgid "Menu"
 msgstr "Меню"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:172
+#: ../../plugins/Launch/launch/cfgdlg.py:174
 msgid "Misc"
 msgstr "Разное"
 
-#: ../../src/ed_pages.py:384
+#: ../../src/ed_pages.py:391
 msgid "Missing session files"
 msgstr "Фаилы данной сессии не найдены"
 
-#: ../../src/ed_stc.py:1100
+#: ../../src/ed_stc.py:1184
 msgid ""
 "Mixed EOL characters detected.\n"
 "\n"
@@ -1590,15 +1612,15 @@ msgstr ""
 msgid "Modified"
 msgstr "Изменен"
 
-#: ../../src/prefdlg.py:1722
+#: ../../src/prefdlg.py:1730
 msgid "Modifier 1"
 msgstr ""
 
-#: ../../src/prefdlg.py:1726
+#: ../../src/prefdlg.py:1734
 msgid "Modifier 2"
 msgstr ""
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
 msgid "Modules"
 msgstr "Модули"
 
@@ -1634,16 +1656,16 @@ msgstr "Поместить в корзину"
 msgid "Move to Trash"
 msgstr "Поместить в корзину"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
 msgid "Namespaces"
 msgstr "Пространства имён"
 
-#: ../../src/prefdlg.py:194
+#: ../../src/prefdlg.py:195
 msgid "Network"
 msgstr "Сеть"
 
-#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1702
-#: ../../src/style_editor.py:198
+#: ../../src/ed_toolbar.py:74 ../../src/prefdlg.py:1710
+#: ../../src/style_editor.py:173
 msgid "New"
 msgstr "Создать"
 
@@ -1667,7 +1689,7 @@ msgstr "Новая строка перед"
 msgid "New Line Before"
 msgstr "Новая строка после"
 
-#: ../../src/prefdlg.py:1897
+#: ../../src/prefdlg.py:1905
 msgid "New Profile"
 msgstr "Создать профиль"
 
@@ -1695,31 +1717,31 @@ msgstr "Нет доступного описания"
 msgid "No Suggestions"
 msgstr ""
 
-#: ../../src/ed_pages.py:971
+#: ../../src/ed_pages.py:982
 msgid "No Valid Files to Open"
 msgstr "Нет подходящих файлов для открытия"
 
-#: ../../src/prefdlg.py:1796
+#: ../../src/prefdlg.py:1804
 msgid "None"
 msgstr ""
 
-#: ../../src/prefdlg.py:2152
+#: ../../src/prefdlg.py:2160
 msgid "Normal"
 msgstr ""
 
-#: ../../src/ed_search.py:611
+#: ../../src/ed_search.py:618
 msgid "Not implemented"
 msgstr "Не поддерживается"
 
-#: ../../src/style_editor.py:137
+#: ../../src/style_editor.py:129
 msgid "Ok"
 msgstr "Ok"
 
-#: ../../src/ed_glob.py:382 ../../src/ed_mdlg.py:137
+#: ../../src/ed_glob.py:385 ../../src/ed_mdlg.py:137
 msgid "Old Machintosh (\\r)"
 msgstr ""
 
-#: ../../src/ed_menu.py:756 ../../src/ed_menu.py:758 ../../src/prefdlg.py:752
+#: ../../src/ed_menu.py:756 ../../src/ed_menu.py:758 ../../src/prefdlg.py:753
 msgid "Old Macintosh (\\r)"
 msgstr ""
 
@@ -1743,19 +1765,19 @@ msgstr "Пр&едыдущие документы"
 msgid "Open A Python Shell"
 msgstr "Открыть Python Shell"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:90
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:91
 msgid "Open Code Browser Sidepanel"
 msgstr ""
 
-#: ../../src/ed_pages.py:982
+#: ../../src/ed_pages.py:993
 msgid "Open Directory?"
 msgstr "Открыть каталог?"
 
-#: ../../src/eclib/finddlg.py:711
+#: ../../src/eclib/finddlg.py:713
 msgid "Open Documents"
 msgstr "Открытые документы"
 
-#: ../../src/ed_pages.py:209
+#: ../../src/ed_pages.py:216
 msgid "Open File"
 msgstr "Открыть файл"
 
@@ -1763,7 +1785,7 @@ msgstr "Открыть файл"
 msgid "Open File Browser Sidepanel"
 msgstr "Открыть панель файлового браузера"
 
-#: ../../src/prefdlg.py:520
+#: ../../src/prefdlg.py:521
 msgid "Open files in new windows by default"
 msgstr "Открывать файлы в новом окне по умолчанию"
 
@@ -1775,12 +1797,12 @@ msgstr "Открыть Панель быстрого поиска"
 msgid "Open with "
 msgstr "Открыть с помощью "
 
-#: ../../src/ed_pages.py:1002
+#: ../../src/ed_pages.py:1013
 #, python-format
 msgid "Opened file: %s"
 msgstr "Открыт файл: %s"
 
-#: ../../src/ed_main.py:1482
+#: ../../src/ed_main.py:1499
 #, python-format
 msgid "Opening %s"
 msgstr "Открытие %s"
@@ -1789,7 +1811,7 @@ msgstr "Открытие %s"
 msgid "P&aste After"
 msgstr ""
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:51
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
 msgid "Packages"
 msgstr "Пакеты"
 
@@ -1806,7 +1828,7 @@ msgstr "Страница: %d"
 msgid "Pane Navigator"
 msgstr "Навигационная панель"
 
-#: ../../src/prefdlg.py:1402
+#: ../../src/prefdlg.py:1410
 msgid "Password"
 msgstr "Пароль"
 
@@ -1822,7 +1844,7 @@ msgstr "Вставить текст из буфера обмена в файл"
 msgid "Paste Text from Clipboard to File after the cursor"
 msgstr "Вставить текст из буфера обмена после курсора"
 
-#: ../../src/prefdlg.py:582 ../../src/prefdlg.py:583
+#: ../../src/prefdlg.py:583 ../../src/prefdlg.py:584
 msgid "Path to libenchant"
 msgstr ""
 
@@ -1834,39 +1856,39 @@ msgstr ""
 msgid "Permissions"
 msgstr "Права"
 
-#: ../../src/perspective.py:249
+#: ../../src/perspective.py:253
 msgid "Perspective Name"
 msgstr "Перспективное имя"
 
-#: ../../src/perspective.py:266
+#: ../../src/perspective.py:270
 msgid "Perspective to Delete"
 msgstr "Перспектива на удаление"
 
-#: ../../src/ed_main.py:140
+#: ../../src/ed_main.py:141
 msgid "Perspectives"
 msgstr "Перспективы"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:434
+#: ../../plugins/Launch/launch/cfgdlg.py:439
 msgid "Plain Text"
 msgstr "Обычный текст"
 
-#: ../../src/ed_main.py:1538
+#: ../../src/ed_main.py:1555
 msgid "Platform Info"
 msgstr ""
 
-#: ../../src/Editra.py:889
+#: ../../src/Editra.py:902
 msgid "Please check the preferences dialog to check your preferences"
 msgstr ""
 
-#: ../../src/Editra.py:1098
+#: ../../src/Editra.py:1111
 msgid "Please check the preferences dialog to verify your preferences"
 msgstr ""
 
-#: ../../src/ed_main.py:1069 ../../src/ed_menu.py:806
+#: ../../src/ed_main.py:1083 ../../src/ed_menu.py:806
 msgid "Plugin Manager"
 msgstr "Управление плагинами"
 
-#: ../../src/prefdlg.py:1387
+#: ../../src/prefdlg.py:1395
 msgid "Port Number"
 msgstr "Номер порта"
 
@@ -1874,7 +1896,7 @@ msgstr "Номер порта"
 msgid "Pr&eferences"
 msgstr "&Параметры"
 
-#: ../../src/prefdlg.py:495
+#: ../../src/prefdlg.py:496
 msgid "Prefered Encoding"
 msgstr "Основная кодировка"
 
@@ -1882,8 +1904,9 @@ msgstr "Основная кодировка"
 msgid "Preferences - Editra"
 msgstr "Настройки - Editra"
 
-#: ../../src/style_editor.py:130
-msgid "Preview"
+#: ../../src/style_editor.py:694
+#, fuzzy
+msgid "Preview File"
 msgstr "Предпросмотр"
 
 #: ../../src/ed_menu.py:561
@@ -1902,7 +1925,7 @@ msgstr "Предыдущая закладка"
 msgid "Previous Position"
 msgstr "Предыдущая позиция"
 
-#: ../../src/prefdlg.py:806
+#: ../../src/prefdlg.py:812
 msgid "Primary Font"
 msgstr "Основной шрифт"
 
@@ -1930,32 +1953,32 @@ msgstr "Предпросмотр печати"
 msgid "Printer Error"
 msgstr "Ошибка принтера"
 
-#: ../../src/prefdlg.py:390
+#: ../../src/prefdlg.py:391
 msgid "Printer Mode"
 msgstr "Режим принтера"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
 msgid "Procedure Definitions"
 msgstr ""
 
-#: ../../src/ed_main.py:725 ../../src/ed_main.py:746 ../../src/ed_menu.py:545
+#: ../../src/ed_main.py:735 ../../src/ed_main.py:756 ../../src/ed_menu.py:545
 msgid "Profile"
 msgstr "Профиль"
 
-#: ../../src/ed_main.py:730
+#: ../../src/ed_main.py:740
 #, python-format
 msgid "Profile Saved as: %s"
 msgstr "Профиль сохранен как: %s"
 
-#: ../../src/Editra.py:891 ../../src/Editra.py:1100
+#: ../../src/Editra.py:904 ../../src/Editra.py:1113
 msgid "Profile Updated"
 msgstr "Профиль обновлен"
 
-#: ../../plugins/Launch/launch/launch.py:173
+#: ../../plugins/Launch/launch/launch.py:176
 msgid "Program Executable Command"
 msgstr ""
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
 msgid "Programs"
 msgstr "Программы"
 
@@ -1963,31 +1986,31 @@ msgstr "Программы"
 msgid "Project Homepage..."
 msgstr "Сайт проекта..."
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
 msgid "Protocols"
 msgstr "Протоколы"
 
-#: ../../src/prefdlg.py:1373
+#: ../../src/prefdlg.py:1381
 msgid "Proxy Settings"
 msgstr "Настройки прокси"
 
-#: ../../src/prefdlg.py:1383
+#: ../../src/prefdlg.py:1391
 msgid "Proxy URL"
 msgstr "URL прокси"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
 msgid "Public Functions"
 msgstr ""
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:57
 msgid "Public Subroutines"
 msgstr ""
 
-#: ../../src/ed_shelf.py:116
+#: ../../src/ed_shelf.py:117
 msgid "Put an item on the Shelf"
 msgstr "Задавать вопрос о Shelf"
 
-#: ../../src/updater.py:672
+#: ../../src/updater.py:673
 #, python-format
 msgid "Rate: %.2f Kb/s"
 msgstr "Скорость: %.2f Kb/s"
@@ -1996,11 +2019,11 @@ msgstr "Скорость: %.2f Kb/s"
 msgid "Re-run the last run program"
 msgstr "Перезапустить последнюю программу"
 
-#: ../../src/ed_stc.py:1747
+#: ../../src/ed_stc.py:1842
 msgid "Read Only"
 msgstr "Только для чтения"
 
-#: ../../src/ed_search.py:794
+#: ../../src/ed_search.py:801
 msgid "Recent Searches"
 msgstr "Недавние поисковые запросы"
 
@@ -2008,11 +2031,11 @@ msgstr "Недавние поисковые запросы"
 msgid "Recently Opened Files"
 msgstr "Недавние документы"
 
-#: ../../src/ed_stc.py:1371
+#: ../../src/ed_stc.py:1457
 msgid "Recording Finished"
 msgstr "Запись завершена"
 
-#: ../../src/ed_stc.py:1358
+#: ../../src/ed_stc.py:1444
 msgid "Recording Macro"
 msgstr "Запись макросов"
 
@@ -2033,7 +2056,7 @@ msgstr ""
 msgid "Regular Expression"
 msgstr "Регулярное выражение"
 
-#: ../../src/eclib/finddlg.py:814
+#: ../../src/eclib/finddlg.py:816
 msgid "Regular expression"
 msgstr "Регулярное выражение"
 
@@ -2045,7 +2068,7 @@ msgstr "Перезагрузить файл?"
 msgid "Reload the file with a specified encoding"
 msgstr ""
 
-#: ../../src/ed_main.py:1206
+#: ../../src/ed_main.py:1220
 msgid "Reload with Encoding"
 msgstr "Открыть используя следующую кодировку"
 
@@ -2053,15 +2076,15 @@ msgstr "Открыть используя следующую кодировку"
 msgid "Reload with Encoding..."
 msgstr ""
 
-#: ../../src/prefdlg.py:523
+#: ../../src/prefdlg.py:524
 msgid "Remember File Position"
 msgstr "Запомнить позицию в файле"
 
-#: ../../src/prefdlg.py:1202
+#: ../../src/prefdlg.py:1210
 msgid "Remember Window Position on Exit"
 msgstr "Запомнить позицию окна при выходе"
 
-#: ../../src/prefdlg.py:1199
+#: ../../src/prefdlg.py:1207
 msgid "Remember Window Size on Exit"
 msgstr "Запомнить размеры окна при выходе"
 
@@ -2077,7 +2100,7 @@ msgstr "Удалить сохраненный путь"
 msgid "Remove all bookmarks from the current document"
 msgstr "Удалить все закладки для текущего документа"
 
-#: ../../plugins/Launch/launch/cfgdlg.py:242
+#: ../../plugins/Launch/launch/cfgdlg.py:244
 msgid "Remove selection from list"
 msgstr "Удалить из списка"
 
@@ -2089,23 +2112,23 @@ msgstr "Удалить в конце"
 msgid "Rename"
 msgstr "Переименовать"
 
-#: ../../src/eclib/finddlg.py:633 ../../src/eclib/finddlg.py:842
+#: ../../src/eclib/finddlg.py:635 ../../src/eclib/finddlg.py:844
 msgid "Replace"
 msgstr "Заменить"
 
-#: ../../src/eclib/finddlg.py:845
+#: ../../src/eclib/finddlg.py:847
 msgid "Replace All"
 msgstr "Заменить всё"
 
-#: ../../src/ed_search.py:540 ../../src/ed_search.py:701
+#: ../../src/ed_search.py:547 ../../src/ed_search.py:708
 msgid "Replace Error"
 msgstr ""
 
-#: ../../src/eclib/finddlg.py:776
+#: ../../src/eclib/finddlg.py:778
 msgid "Replace with"
 msgstr "Заменить на"
 
-#: ../../src/eclib/errdlg.py:323
+#: ../../src/eclib/errdlg.py:324
 msgid "Report Error"
 msgstr "Сообщить об ошибке"
 
@@ -2113,7 +2136,7 @@ msgstr "Сообщить об ошибке"
 msgid "Resave File?"
 msgstr "Пересохранить файл?"
 
-#: ../../src/ed_main.py:1413
+#: ../../src/ed_main.py:1430
 msgid "Restore Editor"
 msgstr ""
 
@@ -2129,7 +2152,7 @@ msgstr ""
 msgid "Revert file to last save point"
 msgstr ""
 
-#: ../../src/prefdlg.py:1103 ../../src/prefdlg.py:1758
+#: ../../src/prefdlg.py:1111 ../../src/prefdlg.py:1766
 msgid "Revert to Default"
 msgstr "Вернуть по умолчанию"
 
@@ -2138,8 +2161,8 @@ msgid "Revert to Saved"
 msgstr ""
 
 #: ../../plugins/Launch/launch/__init__.py:93
-#: ../../plugins/Launch/launch/launch.py:196
-#: ../../plugins/Launch/launch/launch.py:560
+#: ../../plugins/Launch/launch/launch.py:202
+#: ../../plugins/Launch/launch/launch.py:602
 msgid "Run"
 msgstr "Выполнить"
 
@@ -2196,7 +2219,7 @@ msgstr "Сохранить текущий вид"
 msgid "Save Error"
 msgstr "Сохранить ошибку"
 
-#: ../../src/perspective.py:250
+#: ../../src/perspective.py:254
 msgid "Save Perspective"
 msgstr "Сохранить перспективу"
 
@@ -2212,7 +2235,7 @@ msgstr "Сохранить выделенные пути"
 msgid "Save Session"
 msgstr ""
 
-#: ../../src/style_editor.py:252
+#: ../../src/style_editor.py:220
 msgid "Save Styles"
 msgstr "Сохранить стили"
 
@@ -2228,34 +2251,30 @@ msgstr ""
 msgid "Save the current window layout"
 msgstr "Сохранить текущее окно формы"
 
-#: ../../src/ed_main.py:707
+#: ../../src/ed_main.py:717
 #, python-format
 msgid "Saved File As: %s"
 msgstr "Файл сохранен как: %s"
 
-#: ../../src/ed_main.py:661
+#: ../../src/ed_main.py:671
 #, python-format
 msgid "Saved File: %s"
 msgstr "Файл сохранен: %s"
 
-#: ../../plugins/Launch/launch/launch.py:186
-msgid "Script Arguments"
-msgstr ""
-
-#: ../../src/ed_search.py:1295
+#: ../../src/ed_search.py:1301
 #, python-format
 msgid "Search Complete: %d matching lines where found."
 msgstr ""
 
-#: ../../src/eclib/finddlg.py:815
+#: ../../src/eclib/finddlg.py:817
 msgid "Search Recursively"
 msgstr ""
 
-#: ../../src/ed_search.py:1269
+#: ../../src/ed_search.py:1275
 msgid "Search Started"
 msgstr ""
 
-#: ../../src/ed_search.py:1288
+#: ../../src/ed_search.py:1294
 msgid "Search complete"
 msgstr ""
 
@@ -2275,16 +2294,16 @@ msgstr ""
 msgid "Search wrapped to top"
 msgstr ""
 
-#: ../../src/ed_search.py:1379
+#: ../../src/ed_search.py:1385
 #, python-format
 msgid "Searching in: %s"
 msgstr ""
 
-#: ../../src/prefdlg.py:809
+#: ../../src/prefdlg.py:815
 msgid "Secondary Font"
 msgstr "Вторичный шрифт"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
 msgid "Sections"
 msgstr ""
 
@@ -2300,7 +2319,7 @@ msgstr "Выбрать Все"
 msgid "Select All Text in Document"
 msgstr "Выбрать весь текст в документе"
 
-#: ../../src/ed_main.py:1205
+#: ../../src/ed_main.py:1219
 msgid "Select an encoding to reload the file with"
 msgstr ""
 
@@ -2308,11 +2327,11 @@ msgstr ""
 msgid "Select plugins to download"
 msgstr "Выбрать плагины для загрузки"
 
-#: ../../src/eclib/finddlg.py:710
+#: ../../src/eclib/finddlg.py:712
 msgid "Selected Text"
 msgstr ""
 
-#: ../../src/ed_pages.py:364
+#: ../../src/ed_pages.py:371
 msgid "Selected file is not a valid session file"
 msgstr ""
 
@@ -2320,20 +2339,20 @@ msgstr ""
 msgid "Send bug reports and suggestions"
 msgstr "Послать отчёт об ошибках и свои предложения"
 
-#: ../../src/ed_main.py:770 ../../src/ed_main.py:797
+#: ../../src/ed_main.py:779 ../../src/ed_main.py:806
 msgid "Session"
 msgstr ""
 
-#: ../../src/ed_main.py:785
+#: ../../src/ed_main.py:794
 #, python-format
 msgid "Session Saved as: %s"
 msgstr ""
 
-#: ../../src/ed_pages.py:349
+#: ../../src/ed_pages.py:356
 msgid "Session file doesn't exist."
 msgstr ""
 
-#: ../../src/ed_pages.py:370
+#: ../../src/ed_pages.py:377
 msgid "Session file is empty."
 msgstr ""
 
@@ -2345,27 +2364,27 @@ msgstr ""
 msgid "Set Font"
 msgstr "Установить шрифт"
 
-#: ../../src/style_editor.py:177
+#: ../../src/style_editor.py:697
 msgid "Set the preview file type"
 msgstr "Установить предварительный тип файла"
 
-#: ../../src/prefdlg.py:784
+#: ../../src/prefdlg.py:789
 msgid "Sets a secondary font used for special regions when syntax highlighting is in use"
 msgstr "Устанавливить вторичный шрифт для специальных регионов, когда используется подсветка синтаксиса"
 
-#: ../../src/prefdlg.py:779
+#: ../../src/prefdlg.py:784
 msgid "Sets the main/default font of the document"
 msgstr "Устанавить общие/по умолчанию шрифты в документе"
 
-#: ../../plugins/Launch/launch/launch.py:166
+#: ../../plugins/Launch/launch/launch.py:169
 msgid "Settings"
 msgstr "Установки"
 
-#: ../../src/ed_shelf.py:115
+#: ../../src/ed_shelf.py:116
 msgid "Shelf"
 msgstr ""
 
-#: ../../src/ed_menu.py:667 ../../src/ed_menu.py:668 ../../src/prefdlg.py:764
+#: ../../src/ed_menu.py:667 ../../src/ed_menu.py:668 ../../src/prefdlg.py:765
 msgid "Show EOL Markers"
 msgstr "Показать EOL Метки"
 
@@ -2377,7 +2396,7 @@ msgstr "Показать Edge-руководство"
 msgid "Show Hidden Files"
 msgstr "Показать скрытые файлы"
 
-#: ../../src/prefdlg.py:1183
+#: ../../src/prefdlg.py:1191
 msgid "Show Icons on Tabs"
 msgstr "Показывать Иконки Вкладок"
 
@@ -2389,27 +2408,27 @@ msgstr "Показать отступы табуляции"
 msgid "Show Line Number Margin"
 msgstr "Показывать строку с номером поля"
 
-#: ../../src/ed_menu.py:669 ../../src/prefdlg.py:766
+#: ../../src/ed_menu.py:669 ../../src/prefdlg.py:767
 msgid "Show Line Numbers"
 msgstr "Показывать номера строки"
 
-#: ../../src/ed_shelf.py:349
+#: ../../src/ed_shelf.py:369
 msgid "Show Shelf"
 msgstr "Показывать полку"
 
-#: ../../src/prefdlg.py:404
+#: ../../src/prefdlg.py:405
 msgid "Show Splash Screen"
 msgstr "Показывать загрузочную заставку"
 
-#: ../../src/ed_menu.py:705 ../../src/prefdlg.py:1204
+#: ../../src/ed_menu.py:705 ../../src/prefdlg.py:1212
 msgid "Show Status Bar"
 msgstr "Строка состояния"
 
-#: ../../src/ed_menu.py:707 ../../src/prefdlg.py:1206
+#: ../../src/ed_menu.py:707 ../../src/prefdlg.py:1214
 msgid "Show Toolbar"
 msgstr "Показывать Панель инструментов"
 
-#: ../../src/ed_menu.py:671 ../../src/prefdlg.py:768
+#: ../../src/ed_menu.py:671 ../../src/prefdlg.py:769
 msgid "Show Whitespace"
 msgstr "Показать пробелы"
 
@@ -2421,7 +2440,7 @@ msgstr "Показать символы пробелов"
 msgid "Show output from"
 msgstr ""
 
-#: ../../src/ed_shelf.py:351
+#: ../../src/ed_shelf.py:371
 msgid "Show the Shelf"
 msgstr "Показывать эту полку"
 
@@ -2429,27 +2448,33 @@ msgstr "Показывать эту полку"
 msgid "Show the edge column guide"
 msgstr "Показать границы столбцов"
 
-#: ../../src/style_editor.py:702 ../../src/eclib/infodlg.py:189
+#: ../../src/style_editor.py:644 ../../src/eclib/infodlg.py:189
 msgid "Size"
 msgstr "Размер"
 
-#: ../../src/ed_pages.py:385
+#: ../../src/ed_pages.py:392
 msgid "Some files in saved session could not be found on disk:\n"
 msgstr ""
 
-#: ../../src/style_editor.py:250
+#: ../../src/style_editor.py:218
 msgid "Some styles have been changed would you like to save before exiting?"
 msgstr "Некоторые стили были внесены изменены. Вы хотели бы сохраниться перед выходом?"
 
-#: ../../src/ed_search.py:610
-msgid "Sorry will be ready for next version"
+#: ../../src/ed_search.py:617
+#, fuzzy
+msgid "Sorry will be ready for future version"
 msgstr "Извините, будет доступно в следующей версии"
+
+#: ../../plugins/codebrowser/codebrowser/cbconfig.py:40
+#, fuzzy
+msgid "Sorting"
+msgstr "Установки"
 
 #: ../../src/ed_menu.py:745
 msgid "Spaces to Tabs"
 msgstr "Пробелы в табуляции"
 
-#: ../../src/prefdlg.py:556
+#: ../../src/prefdlg.py:557
 msgid "Spell Checking"
 msgstr ""
 
@@ -2457,7 +2482,7 @@ msgstr ""
 msgid "Start a New File"
 msgstr "Создать новый файл"
 
-#: ../../src/style_editor.py:199
+#: ../../src/style_editor.py:174
 msgid "Start a blank new style"
 msgstr "Начать новый пустой стиль"
 
@@ -2469,19 +2494,19 @@ msgstr "Начать новый файл в новой вкладки"
 msgid "Start a new file in a new window"
 msgstr "Начать новый файл в новом окне"
 
-#: ../../src/prefdlg.py:952
+#: ../../src/prefdlg.py:959
 msgid "Start in Normal Mode"
 msgstr ""
 
-#: ../../src/prefdlg.py:303
+#: ../../src/prefdlg.py:304
 msgid "Startup"
 msgstr ""
 
-#: ../../src/prefdlg.py:426
+#: ../../src/prefdlg.py:427
 msgid "Startup Settings"
 msgstr "Настройка автозапуска"
 
-#: ../../src/updater.py:289
+#: ../../src/updater.py:290
 msgid "Status Unknown"
 msgstr "Статус не известен"
 
@@ -2489,20 +2514,20 @@ msgstr "Статус не известен"
 msgid "Style Editor"
 msgstr "Редактор стилей"
 
-#: ../../src/style_editor.py:216
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+#: ../../src/style_editor.py:190
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
 msgid "Style Tags"
 msgstr "Стиль Меток"
 
-#: ../../src/style_editor.py:192
+#: ../../src/style_editor.py:166
 msgid "Style Theme"
 msgstr "Стиль Темы"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
 msgid "Subroutine Declarations"
 msgstr ""
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
 msgid "Subroutines"
 msgstr ""
 
@@ -2515,11 +2540,7 @@ msgstr "Плагины успешно установлены"
 msgid "Switch Lexer to %s"
 msgstr "Lexer переключен на %s"
 
-#: ../../src/style_editor.py:174
-msgid "Syntax Files"
-msgstr "Файлы синтаксиса"
-
-#: ../../src/ed_menu.py:787 ../../src/prefdlg.py:676 ../../src/prefdlg.py:1077
+#: ../../src/ed_menu.py:787 ../../src/prefdlg.py:677 ../../src/prefdlg.py:1084
 msgid "Syntax Highlighting"
 msgstr "Подсветка синтаксиса"
 
@@ -2527,7 +2548,7 @@ msgstr "Подсветка синтаксиса"
 msgid "System Directory"
 msgstr "Системный каталог"
 
-#: ../../src/prefdlg.py:723
+#: ../../src/prefdlg.py:724
 msgid "Tab Width"
 msgstr "Ширина вкладки"
 
@@ -2535,19 +2556,19 @@ msgstr "Ширина вкладки"
 msgid "Tabs to Spaces"
 msgstr "Табуляции в пробелы"
 
-#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
 msgid "Task Definitions"
 msgstr ""
 
-#: ../../plugins/Launch/launch/cfgdlg.py:403
+#: ../../plugins/Launch/launch/cfgdlg.py:405
 msgid "Text Colors"
 msgstr ""
 
-#: ../../src/util.py:357
+#: ../../src/util.py:361
 msgid "Text Document"
 msgstr "Текстовый документ"
 
-#: ../../src/ed_pages.py:158
+#: ../../src/ed_pages.py:165
 #, python-format
 msgid ""
 "The correct encoding of '%s' could not be determined.\n"
@@ -2567,7 +2588,7 @@ msgstr ""
 "\n"
 "Вы хотите сохранить изменения?"
 
-#: ../../plugins/Launch/launch/launch.py:692
+#: ../../plugins/Launch/launch/launch.py:735
 msgid "The requested command could not be executed."
 msgstr ""
 
@@ -2576,7 +2597,7 @@ msgstr ""
 msgid "The search term '%(term)s' was found %(count)d times."
 msgstr ""
 
-#: ../../src/ed_pages.py:969
+#: ../../src/ed_pages.py:980
 #, python-format
 msgid "There are no files that Editra can open in %s"
 msgstr "Нет файлов, которые может открыть Editra в %s"
@@ -2662,7 +2683,7 @@ msgstr ""
 msgid "Toggle fold"
 msgstr ""
 
-#: ../../src/prefdlg.py:1177
+#: ../../src/prefdlg.py:1185
 msgid "Toolbar Icon Size"
 msgstr "Размер значков панели"
 
@@ -2670,7 +2691,7 @@ msgstr "Размер значков панели"
 msgid "Translate Editra..."
 msgstr ""
 
-#: ../../src/prefdlg.py:1230
+#: ../../src/prefdlg.py:1238
 msgid "Transparency"
 msgstr "Прозрачность"
 
@@ -2686,26 +2707,22 @@ msgstr "Перенести текущую строку с предыдущей"
 msgid "Trim Trailing Whitespace"
 msgstr "Обрезка концов пробелов"
 
-#: ../../src/prefdlg.py:772
+#: ../../src/prefdlg.py:773
 msgid "Turn off for better performance"
 msgstr "Выключить для лучшей производительности"
 
-#: ../../src/util.py:180
+#: ../../src/util.py:184
 msgid "Unable to accept dropped file or text"
 msgstr ""
 
 #: ../../src/eclib/filemgrdlg.py:174
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to delete %s"
-msgstr "Ошибка: Нельза открыть файл %s"
+msgstr ""
 
 #: ../../src/plugdlg.py:506
 msgid "Unable to retrieve plugin list"
 msgstr "Не удается получить список плагинов"
-
-#: ../../src/updater.py:144
-msgid "Unable to retrieve version info"
-msgstr "Не удается получить информацию о версии"
 
 #: ../../src/ed_editv.py:359 ../../src/ed_toolbar.py:80
 msgid "Undo"
@@ -2731,13 +2748,13 @@ msgstr ""
 msgid "Uninstall Plugin"
 msgstr ""
 
-#: ../../src/ed_glob.py:383 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:759
-#: ../../src/ed_menu.py:761 ../../src/prefdlg.py:752
+#: ../../src/ed_glob.py:386 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:759
+#: ../../src/ed_menu.py:761 ../../src/prefdlg.py:753
 msgid "Unix (\\n)"
 msgstr "Unix (\\n)"
 
 #: ../../src/plugdlg.py:366 ../../src/plugdlg.py:372 ../../src/plugdlg.py:419
-#: ../../src/plugdlg.py:423 ../../src/plugin.py:722 ../../src/util.py:363
+#: ../../src/plugdlg.py:423 ../../src/plugin.py:722 ../../src/util.py:367
 #: ../../src/eclib/infodlg.py:298
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -2750,15 +2767,15 @@ msgstr ""
 msgid "Untitled_Folder"
 msgstr ""
 
-#: ../../src/eclib/finddlg.py:802
+#: ../../src/eclib/finddlg.py:804
 msgid "Up"
 msgstr "Наверх"
 
-#: ../../src/prefdlg.py:1340
+#: ../../src/prefdlg.py:1348
 msgid "Update"
 msgstr "Обновить"
 
-#: ../../src/Editra.py:590
+#: ../../src/Editra.py:603
 msgid "Update Available"
 msgstr "Обновление доступно"
 
@@ -2770,7 +2787,7 @@ msgstr "Верхний"
 msgid "Use Auto Completion when available"
 msgstr "Использовать автозавершение, когда доступно"
 
-#: ../../src/prefdlg.py:1378
+#: ../../src/prefdlg.py:1386
 msgid "Use Proxy"
 msgstr "Использовать прокси"
 
@@ -2778,11 +2795,11 @@ msgstr "Использовать прокси"
 msgid "Use Soft Tabs"
 msgstr ""
 
-#: ../../src/prefdlg.py:742
+#: ../../src/prefdlg.py:743
 msgid "Use Tabs Instead of Spaces"
 msgstr "Использовать вкладки вместо пространств"
 
-#: ../../src/prefdlg.py:510
+#: ../../src/prefdlg.py:511
 msgid "Used to set a custom backup path. If not specified the backup will be put in the same directory as the file."
 msgstr ""
 
@@ -2790,7 +2807,7 @@ msgstr ""
 msgid "User Directory"
 msgstr "Пользователь каталога"
 
-#: ../../src/prefdlg.py:1395
+#: ../../src/prefdlg.py:1403
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -2806,9 +2823,13 @@ msgstr "Просмотреть строки следующей закладки"
 msgid "View Line of Previous Bookmark"
 msgstr "Просмотреть строки предыдущей закладки"
 
-#: ../../src/prefdlg.py:799
+#: ../../src/prefdlg.py:804
 msgid "View Options"
 msgstr "Просмотреть опции"
+
+#: ../../src/prefdlg.py:775
+msgid "View Virtual Space After Last Line"
+msgstr ""
 
 #: ../../src/ed_script.py:202
 msgid "View and Edit Macros"
@@ -2823,19 +2844,19 @@ msgstr ""
 msgid "Visit the project homepage %s"
 msgstr "Посетить домашнюю страницу проекта %s"
 
-#: ../../src/prefdlg.py:915
+#: ../../src/prefdlg.py:922
 msgid "Visual Helpers"
 msgstr "Графический помощник"
 
-#: ../../src/prefdlg.py:536
+#: ../../src/prefdlg.py:537
 msgid "Warn when mixed eol characters are detected"
 msgstr ""
 
-#: ../../plugins/Launch/launch/cfgdlg.py:455
+#: ../../plugins/Launch/launch/cfgdlg.py:460
 msgid "Warning Text"
 msgstr ""
 
-#: ../../src/prefdlg.py:943
+#: ../../src/prefdlg.py:950
 msgid "Warning suggestions will include context insensitive results"
 msgstr ""
 
@@ -2843,11 +2864,11 @@ msgstr ""
 msgid "Where"
 msgstr "Где"
 
-#: ../../src/ed_main.py:723
+#: ../../src/ed_main.py:733
 msgid "Where to Save Profile?"
 msgstr "Где сохранить профиль?"
 
-#: ../../src/ed_main.py:768
+#: ../../src/ed_main.py:777
 msgid "Where to Save Session?"
 msgstr ""
 
@@ -2863,16 +2884,16 @@ msgstr "Команды форматирования пробелов"
 msgid "Whole Word"
 msgstr ""
 
-#: ../../src/eclib/finddlg.py:813
+#: ../../src/eclib/finddlg.py:815
 msgid "Whole word"
 msgstr ""
 
-#: ../../src/ed_glob.py:384 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:762
-#: ../../src/ed_menu.py:764 ../../src/prefdlg.py:753
+#: ../../src/ed_glob.py:387 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:762
+#: ../../src/ed_menu.py:764 ../../src/prefdlg.py:754
 msgid "Windows (\\r\\n)"
 msgstr "Окна (\\r\\n)"
 
-#: ../../src/ed_menu.py:739 ../../src/prefdlg.py:770
+#: ../../src/ed_menu.py:739 ../../src/prefdlg.py:771
 msgid "Word Wrap"
 msgstr "Переносить слова"
 
@@ -2880,7 +2901,11 @@ msgstr "Переносить слова"
 msgid "Wrap Text Horizontally"
 msgstr "Переносить текст по горизонтали"
 
-#: ../../src/ed_main.py:1536
+#: ../../plugins/Launch/launch/cfgdlg.py:419
+msgid "Wrap lines in output buffer"
+msgstr ""
+
+#: ../../src/ed_main.py:1553
 #, python-format
 msgid "Written in 100%% Python."
 msgstr ""
@@ -2889,7 +2914,7 @@ msgstr ""
 msgid "You must restart Editra before your changes will take full affect."
 msgstr ""
 
-#: ../../src/Editra.py:887 ../../src/Editra.py:1096
+#: ../../src/Editra.py:900 ../../src/Editra.py:1109
 msgid "Your profile has been updated to the latest version"
 msgstr "Ваш профиль был обновлен до последней версии"
 
@@ -2905,11 +2930,11 @@ msgstr "Приблизить"
 msgid "Zoom Out"
 msgstr "Отдалить"
 
-#: ../../plugins/Launch/launch/launch.py:183
+#: ../../plugins/Launch/launch/launch.py:189
 msgid "args"
 msgstr ""
 
-#: ../../src/style_editor.py:669
+#: ../../src/style_editor.py:611
 msgid "bold"
 msgstr "жирный"
 
@@ -2917,33 +2942,94 @@ msgstr "жирный"
 msgid "cwd: "
 msgstr ""
 
-#: ../../src/style_editor.py:670
+#: ../../src/style_editor.py:612
 msgid "eol"
 msgstr "eol"
 
-#: ../../plugins/Launch/launch/launch.py:170
+#: ../../plugins/Launch/launch/launch.py:173
 msgid "exec"
 msgstr "запуск"
 
-#: ../../src/style_editor.py:671
+#: ../../src/style_editor.py:613
 msgid "italic"
 msgstr "курсив"
 
-#: ../../src/style_editor.py:672
+#: ../../src/style_editor.py:614
 msgid "underline"
 msgstr "подчеркивание"
 
-#: ../../src/ed_pages.py:230
+#: ../../src/ed_pages.py:237
 msgid "untitled"
 msgstr ""
 
-#: ../../src/ed_pages.py:228
+#: ../../src/ed_pages.py:235
 #, python-format
 msgid "untitled %d"
 msgstr ""
+
+#~ msgid ""
+#~ "%s could not be found\n"
+#~ "Perhaps its been moved or deleted"
+#~ msgstr ""
+#~ "%s не может быть найден\n"
+#~ "Возможно он был перемещен или удален"
+
+#~ msgid ""
+#~ "%s has been modified by another application.\n"
+#~ "\n"
+#~ "Would you like to Reload it?"
+#~ msgstr ""
+#~ "%s был изменен другим приложением.\n"
+#~ "\n"
+#~ "Хотите перезагрузить его?"
+
+#~ msgid "&About"
+#~ msgstr "&О программе"
 
 #~ msgid "Changed color scheme to %s"
 #~ msgstr "Цветовая схема изменена на %s"
 
 #~ msgid "Choose a File"
 #~ msgstr "Выбрать файл"
+
+#~ msgid ""
+#~ "Do you wish to open all %d files in this directory?\n"
+#~ "\n"
+#~ "Warning opening many files at once may cause the editor to temporarly  freeze."
+#~ msgstr ""
+#~ "Вы хотите открыть все %d файлов(ы) в этом каталоге?\n"
+#~ "\n"
+#~ "Внимание: одновременное открытие множества файлов может стать причиной временного 'замерзания' редактора."
+
+#~ msgid "Error/Crash Reporter"
+#~ msgstr "Отчёт об ошибках/падениях программы"
+
+#~ msgid "Finished Installing Plugins"
+#~ msgstr "Установка плагинов завершена"
+
+#~ msgid "Go to configuration page?"
+#~ msgstr "Начать конфигурация страницы?"
+
+#~ msgid "Online Documentation"
+#~ msgstr "Документация онлайн"
+
+#~ msgid "Project Homepage"
+#~ msgstr "Проект домашней страницы"
+
+#~ msgid "Syntax Files"
+#~ msgstr "Файлы синтаксиса"
+
+#~ msgid "Translate Editra"
+#~ msgstr "Помочь в переводе"
+
+#~ msgid "Unable to retrieve version info"
+#~ msgstr "Не удается получить информацию о версии"
+
+#~ msgid "Unix"
+#~ msgstr "Unix"
+
+#~ msgid "Untitled"
+#~ msgstr "Безымянный"
+
+#~ msgid "Windows"
+#~ msgstr "Окна"

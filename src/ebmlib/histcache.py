@@ -14,8 +14,8 @@ History cache that acts as a stack for managing a history list o
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: histcache.py 62950 2009-12-19 23:56:41Z CJP $"
-__revision__ = "$Revision: 62950 $"
+__cvsid__ = "$Id: histcache.py 67123 2011-03-04 00:02:35Z CJP $"
+__revision__ = "$Revision: 67123 $"
 
 __all__ = [ 'HistoryCache', 'HIST_CACHE_UNLIMITED',
             'CycleCache']
@@ -30,8 +30,14 @@ HIST_CACHE_UNLIMITED = -1
 #-----------------------------------------------------------------------------#
 
 class HistoryCache(object):
+    """Data management cache.
+    Maintains a positional list of objects that remembers the last access 
+    position in the cache.
+
+    """
     def __init__(self, max_size=HIST_CACHE_UNLIMITED):
-        object.__init__(self)
+        """@param max_size: size of history cache (int)"""
+        super(HistoryCache, self).__init__()
 
         # Attributes
         self._list = list()
@@ -70,7 +76,7 @@ class HistoryCache(object):
 
     def GetNextItem(self):
         """Get the next item in the history cache, moving the
-        current postion towards the end of the cache.
+        current position towards the end of the cache.
         @return: object or None if at end of list
 
         """
@@ -82,7 +88,7 @@ class HistoryCache(object):
 
     def GetPreviousItem(self):
         """Get the previous item in the history cache, moving the
-        current postion towards the begining of the cache.
+        current position towards the beginning of the cache.
         @return: object or None if at start of list
 
         """
@@ -115,7 +121,7 @@ class HistoryCache(object):
         return more
 
     def PeekNext(self):
-        """Return the next item in the cache without modifing the
+        """Return the next item in the cache without modifying the
         currently managed position.
         @return: cache object
 
@@ -126,7 +132,7 @@ class HistoryCache(object):
             return None
 
     def PeekPrevious(self):
-        """Return the previous item in the cache without modifing the
+        """Return the previous item in the cache without modifying the
         currently managed position.
         @return: cache object
 
@@ -161,7 +167,7 @@ class HistoryCache(object):
 class CycleCache(object):
     """A simple circular cache. All items are added to the end of the cache
     regardless of the current reference position. As items are accessed from
-    the cache the cache reference pointer is incremeneted, if it passes the
+    the cache the cache reference pointer is incremented, if it passes the
     end it will go back to the beginning.
 
     """
@@ -170,7 +176,7 @@ class CycleCache(object):
         @param size: cache size
 
         """
-        object.__init__(self)
+        super(CycleCache, self).__init__()
 
         # Attributes
         self._list = list()

@@ -14,8 +14,8 @@ Helper class for checking what kind of a content a file contains.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: fchecker.py 62145 2009-09-26 14:29:57Z CJP $"
-__revision__ = "$Revision: 62145 $"
+__cvsid__ = "$Id: fchecker.py 65147 2010-07-31 05:59:58Z CJP $"
+__revision__ = "$Revision: 65147 $"
 
 __all__ = [ 'FileTypeChecker', ]
 
@@ -35,7 +35,7 @@ class FileTypeChecker(object):
         @keyword preread: number of bytes to read for checking file type
 
         """
-        object.__init__(self)
+        super(FileTypeChecker, self).__init__()
 
         # Attributes
         self._preread = preread

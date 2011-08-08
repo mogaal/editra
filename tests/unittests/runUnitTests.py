@@ -16,8 +16,8 @@ This module is mostly copied from the wxPython Unittest Suite.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: runUnitTests.py 63846 2010-04-03 22:57:21Z CJP $"
-__revision__ = "$Revision: 63846 $"
+__svnid__ = "$Id: runUnitTests.py 65165 2010-08-02 22:04:37Z CJP $"
+__revision__ = "$Revision: 65165 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -28,9 +28,12 @@ import time
 import wx
 from optparse import OptionParser
 
-# Put Editra/src on the 
+# Put Editra/src on the path
 sys.path.append(os.path.abspath("../../src"))
 sys.path.append(os.path.abspath("../../src/extern"))
+
+# Local Utilities
+import common
 
 # ----------------- Helper Functions / Classes ---------------------
 
@@ -65,42 +68,8 @@ def _make_clean_opt_string():
         opt_string = "NONE"
     return opt_string
 
-def wiki(string, level=3, reverse=False):
-    if options.wiki and not reverse or not options.wiki and reverse:
-        output(level, string)
-    
-def wiki_title(number, string):
-    if options.wiki:
-        title = "=" * number
-        return title + " " + string + " " + title
-    else:
-        return string
-
-def wiki_bullet():
-    if options.wiki:
-        return " * "
-    else:
-        return ""
-
-def wiki_bold(string):
-    if options.wiki:
-        return "'''" + string + "'''"
-    else:
-        return string
-
-def wiki_summary_item(title, data):
-    # TODO: possible more elegant way with regexes?
-    if options.wiki:
-        # escape the CamelCase for wiki only
-        # ASSUME: max one CamelCase, right after a period
-        i = title.find(".")
-        if i != -1 and title[i+1].isupper():
-            title = title.replace(".", ".!")
-    return wiki_bullet() + wiki_bold(title) + ": %s" % (data)
-        
-def output(level, string):
-    if options.verbosity >= level:
-        print string
+def output(string):
+    print string
 
 #-----------------------------------------------------------------------------#
 
@@ -278,10 +247,6 @@ class UnitTestRunData:
 # Options
 usage = "usage: python %prog [options]"
 parser = OptionParser(usage=usage)
-parser.add_option("-v","--verbosity", default=3,
-                    action="store", type="int", dest="verbosity",
-                    help="An integer [from 0 to 5, default=3] determining " +
-                            "how much test result data will be output.")
 parser.add_option("-o", "--output-filename", default="",
                     action="store", dest="outfilename",
                     metavar="FILE",
@@ -291,14 +256,11 @@ parser.add_option("-f", "--figleaf", default="",
                     help="use the figleaf code-coverage tool, and write figleaf output to " +
                     "FILE. you must have figleaf installed to use this option. " +
                     "using this option will result in a slower test run")
-parser.add_option("-w", "--wiki", default=False,
-                    action="store_true", dest="wiki",
-                    help="write data in wiki-markup format (MoinMoin / wxPyWiki)")
 parser.add_option("-i", "--include-modules", default="",
                     action="store", dest="module_list",
                     help="run only the comma-separated list of modules given. use either " +
-                            "wx class names or the name of the desired test module. " + 
-                            "don't use spaces in the list")
+                         "wx class names or the name of the desired test module. " + 
+                         "don't use spaces in the list")
 parser.add_option("-e", "--exclude-modules", default="",
                     action="store", dest="module_ex_list",
                     help="run all modules excluding those given in the comma-separated " + 
@@ -309,27 +271,6 @@ parser.add_option("-t", "--tests", default="",
                     help="run only a targeted list of tests. give a comma-separated list " +
                             "of strings, and each test whose name or docstring contains " +
                             "one of those given will be run.")
-# TODO: add "--include-methods" and "--exclude-methods" functionality
-(options, args) = parser.parse_args()
-
-# Options error-checking
-if options.module_list != "" and options.module_ex_list != "":
-    parser.error("options --exclude-modules and --include-modules are mutually exclusive")
-# doesn't really matter, but the help screen says it, so enforce it
-if options.verbosity < 0 or options.verbosity > 5:
-    parser.error("verbosity must be between 0 and 5")
-    
-# -----------------------------------------------------------
-# ------------------- Test Running --------------------------
-
-# File redirect
-if options.outfilename != "":
-    origstdout = sys.stdout
-    try:
-        sys.stdout = open(options.outfilename,'w')
-    except IOError:
-        print "Error opening output file, defaulting to original stdout"
-        sys.stdout = origstdout
 
 def runUnitTestsAndOutputResults():   
     unit_test_suite = UnitTestSuite(include=options.module_list,
@@ -343,42 +284,42 @@ def runUnitTestsAndOutputResults():
     
     # -----------------------------------------------------------
     # ------------------- Output Reporting ----------------------
-    output(1, "") # make things easier to read
-    wiki(wiki_title(3, "%s - %s" % (time.asctime(),wx.GetOsDescription())), level=2)
-    output(2, wiki_title(4, "Platform Information"))
-    output(2, wiki_summary_item("Platform [sys.platform]",sys.platform))
-    output(2, wiki_summary_item("Python Version [sys.version]",sys.version))
-    output(2, wiki_summary_item("wx Version [wx.version()]",wx.version()))
-    output(2, wiki_summary_item("OS [wx.GetOsDescription()]",wx.GetOsDescription()))
-    output(2, wiki_summary_item("wx Info [wx.PlatformInfo]",str(wx.PlatformInfo)))
-    output(2, wiki_summary_item("runUnitTests.py options",opt_string))
-    wiki("\n----------------------\n", level=3, reverse=True)
+    output("") # make things easier to read
+    output("%s - %s\n" % (time.asctime(), wx.GetOsDescription()))
+    output("Platform Information")
+    output("Platform [sys.platform]: %s" % sys.platform)
+    output("Python Version [sys.version]: %s" % sys.version)
+    output("wx Version [wx.version()]: %s" % wx.version())
+    output("OS [wx.GetOsDescription()]: %s" % wx.GetOsDescription())
+    output("wx Info [wx.PlatformInfo]: %s" % str(wx.PlatformInfo))
+    output("runUnitTests.py options: %s" % opt_string)
+    output("\n----------------------\n")
     
-    output(1, wiki_title(4, "Summary"))
-    output(2, wiki_bullet() + "Run completed in %.2f seconds" % (result_data.elapsedTime))
-    output(2, wiki_bullet() + "%d classes tested" % (result_data.countSuites))
-    output(1, wiki_bullet() + "%d tests passed in total!" % (result_data.countSuccesses))
+    output("Summary")
+    output("Run completed in %.2f seconds" % (result_data.elapsedTime))
+    output("%d classes tested" % (result_data.countSuites))
+    output("%d tests passed in total!" % (result_data.countSuccesses))
     if result_data.countFailures > 0:
-        output(1, wiki_bullet() + "%d tests failed in total!" % (result_data.countFailures))
+        output("%d tests failed in total!" % (result_data.countFailures))
     if result_data.countErrors > 0:
-        output(1, wiki_bullet() + "%d tests erred in total!" % (result_data.countErrors))
-    wiki("\n----------------------\n", level=3, reverse=True)
+        output("%d tests erred in total!" % (result_data.countErrors))
+    output("\n----------------------\n")
     
     data_items = result_data.rawData.items()
     data_items.sort()
     
-    output(3, wiki_title(4, "Module Data"))
+    output("Module Data")
     for mod_name, results in data_items:
         messages = ["%d passed" % (results["successes"])]
         if results["failures"] > 0:
             messages.append("%d failed" % (results["failures"]))
         if results["errors"] > 0:
             messages.append("%d erred"  % (results["errors"]))
-        output(3, wiki_bullet() + "%s:  %s" % (mod_name, ", ".join(messages)))
-    wiki("\n----------------------\n", level=4, reverse=True)
+        output("%s:  %s" % (mod_name, ", ".join(messages)))
+    output("\n----------------------\n")
     
     if result_data.countFailures + result_data.countErrors > 0:
-        output(4, wiki_title(4,"Failure Data"))
+        output("Failure Data")
     for mod_name, results in data_items:
         # report on it
         for failure in results["failure_data"] + results["error_data"]:
@@ -387,27 +328,27 @@ def runUnitTestsAndOutputResults():
                 type = "Fail: "
             elif failure in results["error_data"]:
                 type = "Error: "
-            if options.wiki:
-                output(4, wiki_bullet() + type + str(failure[0]).replace('.','.!'))
-                output(5," {{{" + str(failure[1]) + "}}}")
-            else:
-                output(4, "   " + type + str(failure[0]))
-                output(5, "      " + str(failure[1]).replace("\n","\n      "))
-
-#-----------------------------------------------------------------------------#
-
-class MyApp(wx.App):
-    def __init__(self):
-        wx.App.__init__(self, redirect=False)
-
-    def OnInit(self):
-        return True
-
-    def GetLog(self):
-        return lambda msg: None
+            output("   " + type + str(failure[0]))
+            output("      " + str(failure[1]).replace("\n","\n      "))
 
 #-----------------------------------------------------------------------------#
 if __name__ == '__main__':
-    app = MyApp()
+    (options, args) = parser.parse_args()
+
+    # Options error-checking
+    if options.module_list != "" and options.module_ex_list != "":
+        parser.error("options --exclude-modules and --include-modules are mutually exclusive")
+        
+    # File redirect
+    if options.outfilename != "":
+        origstdout = sys.stdout
+        try:
+            sys.stdout = open(options.outfilename,'w')
+        except IOError:
+            print "Error opening output file, defaulting to original stdout"
+            sys.stdout = origstdout
+
+    app = common.EdApp(False)
     runUnitTestsAndOutputResults()
-    app.MainLoop()
+#    app.MainLoop()
+

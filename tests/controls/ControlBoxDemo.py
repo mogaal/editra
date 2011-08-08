@@ -12,12 +12,13 @@ Test file for testing the ControlBox, ControlBar, and SegmentBar classes
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ControlBoxDemo.py 61806 2009-09-02 01:31:01Z CJP $"
-__revision__ = "$Revision: 61806 $"
+__svnid__ = "$Id: ControlBoxDemo.py 66765 2011-01-26 04:31:28Z CJP $"
+__revision__ = "$Revision: 66765 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import time
+import random
 import sys
 import os
 import wx
@@ -37,7 +38,7 @@ ID_SHOW_SEGMENT = wx.NewId()
 
 class TestPanel(eclib.ControlBox):
     def __init__(self, parent, log):
-        eclib.ControlBox.__init__(self, parent)
+        super(TestPanel, self).__init__(parent)
 
         # Attributes
         self.log = log
@@ -45,7 +46,7 @@ class TestPanel(eclib.ControlBox):
         # Setup
         self.CreateControlBar()
         cbar = self.GetControlBar()
-        cbar.SetVMargin(2, 2)
+        cbar.SetMargins(2, 2)
         cbar.AddControl(wx.Button(cbar, ID_SHOW_CONTROL, label="Show ControlBar Sample"))
         cbar.AddControl(wx.Button(cbar, ID_SHOW_SEGMENT, label="Show SegmentBar Sample"))
         text = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH2)
@@ -75,7 +76,7 @@ class TestPanel(eclib.ControlBox):
 
 class ControlBarPanel(eclib.ControlBox):
     def __init__(self, parent, log):
-        eclib.ControlBox.__init__(self, parent)
+        super(ControlBarPanel, self).__init__(parent)
 
         # Attributes
         self.log = log
@@ -83,25 +84,37 @@ class ControlBarPanel(eclib.ControlBox):
         self._timer = wx.Timer(self)
 
         # Setup
-        self.CreateControlBar()
+        if random.choice((True, False)):
+            orient1 = wx.TOP
+            orient2 = wx.BOTTOM
+            edgealign = wx.ALIGN_RIGHT
+        else:
+            orient1 = wx.LEFT
+            orient2 = wx.RIGHT
+            edgealign = wx.ALIGN_BOTTOM
 
-        cbar = self.GetControlBar()
+        cbar = self.CreateControlBar(pos=orient1)
+        cbar.SetMargins(1, 1)
         err_bmp = wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_MENU, (16, 16))
         w_bmp = wx.ArtProvider.GetBitmap(wx.ART_WARNING, wx.ART_MENU, (16, 16))
         cbar.AddTool(wx.ID_ANY, err_bmp, "hello world")
         cbar.AddTool(wx.ID_ANY, w_bmp, "warning")
-        cbar.AddStretchSpacer()
-        choice = wx.Choice(cbar, wx.ID_ANY, choices=[str(x) for x in range(10)])
-        cbar.AddControl(choice, wx.ALIGN_RIGHT)
-        cbar.AddControl(wx.Button(cbar, label="New Frame"), wx.ALIGN_RIGHT)
+        # only add other controls in horizontal mode (for aesthetics reasons)
+        if not cbar.IsVerticalMode():
+            cbar.AddStretchSpacer()
+            choice = wx.Choice(cbar, wx.ID_ANY, choices=[str(x) for x in range(10)])
+            cbar.AddControl(choice, edgealign)
+            cbar.AddControl(wx.Button(cbar, label="New Frame"), edgealign)
 
-        self.CreateControlBar(wx.BOTTOM)
-        bbar = self.GetControlBar(wx.BOTTOM)
-        bbar.SetVMargin(1, 1)
+        bbar = self.CreateControlBar(orient2)
+        bbar.SetMargins(1, 1)
         bbar.AddTool(wx.ID_ANY, err_bmp, "HELLO")
-        bbar.AddStretchSpacer()
-        self.gauge = wx.Gauge(bbar, size=(100, 16))
-        bbar.AddControl(self.gauge, wx.ALIGN_RIGHT)
+        # Only add other controls in horizontal mode
+        self.gauge = None
+        if not bbar.IsVerticalMode():
+            bbar.AddStretchSpacer()
+            self.gauge = wx.Gauge(bbar, size=(100, 16))
+            bbar.AddControl(self.gauge, edgealign)
 
         self.SetWindow(wx.TextCtrl(self, style=wx.TE_MULTILINE))
         self.Bind(eclib.EVT_CTRLBAR, self.OnControlBar)
@@ -120,13 +133,14 @@ class ControlBarPanel(eclib.ControlBox):
         frame.Show()
 
     def OnTimer(self, evt):
-        self.gauge.Pulse()
+        if self.gauge:
+            self.gauge.Pulse()
 
 #-----------------------------------------------------------------------------#
 
 class SegmentPanel(eclib.ControlBox):
     def __init__(self, parent, log):
-        eclib.ControlBox.__init__(self, parent)
+        super(SegmentPanel, self).__init__(parent)
 
         # Attributes
         self.log = log
@@ -178,7 +192,7 @@ def MakeTestFrame(caller, title, log, segment=False):
     fsizer.Add(panel, 1, wx.EXPAND)
     frame.SetSizer(fsizer)
 
-    # Adjust Window Postion
+    # Adjust Window Position
     if caller is not None:
         pos = caller.GetScreenPosition()
         frame.SetPosition((pos[0]+22, pos[1]+22))

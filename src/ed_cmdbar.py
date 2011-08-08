@@ -18,8 +18,8 @@ a gradient using system defined colors.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_cmdbar.py 64268 2010-05-10 03:25:48Z CJP $"
-__revision__ = "$Revision: 64268 $"
+__svnid__ = "$Id: ed_cmdbar.py 67402 2011-04-06 13:34:14Z CJP $"
+__revision__ = "$Revision: 67402 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -72,8 +72,8 @@ ID_REGEX = wx.NewId()
 class CommandBarBase(eclib.ControlBar):
     """Base class for control bars"""
     def __init__(self, parent):
-        eclib.ControlBar.__init__(self, parent,
-                                    style=eclib.CTRLBAR_STYLE_GRADIENT)
+        super(CommandBarBase, self).__init__(parent,
+                                             style=eclib.CTRLBAR_STYLE_GRADIENT)
 
         if wx.Platform == '__WXGTK__':
             self.SetWindowStyle(eclib.CTRLBAR_STYLE_DEFAULT)
@@ -200,7 +200,9 @@ class CommandBarBase(eclib.ControlBar):
         super(CommandBarBase, self).Hide()
         self._parent.SendSizeEvent()
         nb = self._parent.GetNotebook()
-        nb.GetCurrentCtrl().SetFocus()
+        ctrl = nb.GetCurrentCtrl()
+        if ctrl:
+            ctrl.SetFocus()
         return True
 
     def ShowControl(self, ctrl_name, show=True):
@@ -250,7 +252,7 @@ class CommandBarBase(eclib.ControlBar):
 class SearchBar(CommandBarBase):
     """Commandbar for searching text in the current buffer."""
     def __init__(self, parent):
-        CommandBarBase.__init__(self, parent)
+        super(SearchBar, self).__init__(parent)
 
         # Attributes
         self.SetControl(ed_search.EdSearchCtrl(self, wx.ID_ANY,
@@ -304,6 +306,7 @@ class SearchBar(CommandBarBase):
             self.ctrl.SetSizeHints(180, 16, 180, 16)
 
         # Event Handlers
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
         self.Bind(wx.EVT_BUTTON, self.OnButton)
         self.Bind(wx.EVT_CHECKBOX, self.OnCheck)
         ed_msg.Subscribe(self.OnThemeChange, ed_msg.EDMSG_THEME_CHANGED)
@@ -314,9 +317,10 @@ class SearchBar(CommandBarBase):
         cfg = state.get(self.GetConfigKey(), dict())
         self.SetControlStates(cfg)
 
-    def __del__(self):
-        ed_msg.Unsubscribe(self.OnThemeChange)
-        self._sctrl.RemoveClient(self)
+    def OnDestroy(self, evt):
+        if evt.GetId() == self.GetId():
+            ed_msg.Unsubscribe(self.OnThemeChange)
+            self._sctrl.RemoveClient(self)
 
     def OnButton(self, evt):
         """Handle button clicks for the next/previous buttons
@@ -398,7 +402,7 @@ class SearchBar(CommandBarBase):
 class CommandEntryBar(CommandBarBase):
     """Commandbar for editor command entry and execution."""
     def __init__(self, parent):
-        CommandBarBase.__init__(self, parent)
+        super(CommandEntryBar, self).__init__(parent)
 
         # Attributes
         self.SetControl(CommandExecuter(self, wx.ID_ANY, size=(150, -1)))
@@ -425,7 +429,7 @@ class CommandEntryBar(CommandBarBase):
 class GotoLineBar(CommandBarBase):
     """Commandbar for Goto Line function"""
     def __init__(self, parent):
-        CommandBarBase.__init__(self, parent)
+        super(GotoLineBar, self).__init__(parent)
 
         # Attributes
         self.SetControl(LineCtrl(self, wx.ID_ANY,
@@ -459,8 +463,8 @@ class CommandExecuter(eclib.CommandEntryBase):
 
     def __init__(self, parent, id_, size=wx.DefaultSize):
         """Initializes the CommandExecuter"""
-        eclib.CommandEntryBase.__init__(self, parent, id_, size=size,
-                                           style=wx.TE_PROCESS_ENTER|wx.WANTS_CHARS)
+        super(CommandExecuter, self).__init__(parent, id_, size=size,
+                                              style=wx.TE_PROCESS_ENTER|wx.WANTS_CHARS)
 
         # Attributes
         self._history = dict(cmds=[''], index=-1, lastval='')
@@ -476,12 +480,17 @@ class CommandExecuter(eclib.CommandEntryBase):
         else:
             self._popup = PopupWinList(self)
 
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
         self.Bind(ed_event.EVT_NOTIFY, self.OnPopupNotify)
+
+        # Message handlers
         ed_msg.Subscribe(self._UpdateCwd, ed_msg.EDMSG_UI_NB_CHANGED)
         ed_msg.Subscribe(self._UpdateCwd, ed_msg.EDMSG_FILE_SAVED)
 
-    def __del__(self):
-        ed_msg.Unsubscribe(self._UpdateCwd)
+    def OnDestroy(self, evt):
+        if evt.GetId() == self.GetId():
+            ed_msg.Unsubscribe(self._UpdateCwd)
+        evt.Skip()
 
     def _AdjustSize(self):
         """Checks width of text as its added and dynamically resizes
@@ -957,9 +966,9 @@ class LineCtrl(eclib.CommandEntryBase):
                         current document.
 
         """
-        eclib.CommandEntryBase.__init__(self, parent, id_, "", size=size,
-                                        style=wx.TE_PROCESS_ENTER,
-                                        validator=util.IntValidator(0, 65535))
+        super(LineCtrl, self).__init__(parent, id_, u"", size=size,
+                                       style=wx.TE_PROCESS_ENTER,
+                                       validator=util.IntValidator(0, 65535))
 
         # Attributes
         self._last = 0

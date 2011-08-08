@@ -19,8 +19,8 @@ Custom font picker control
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ecpickers.py 57348 2008-12-15 02:24:37Z CJP $"
-__revision__ = "$Revision: 57348 $"
+__svnid__ = "$Id: ecpickers.py 67672 2011-05-02 00:01:44Z CJP $"
+__revision__ = "$Revision: 67672 $"
 
 __all__ = ['PyFontPicker', 'FontChangeEvent',
            'EVT_FONT_CHANGED', 'edEVT_FONT_CHANGED']
@@ -37,7 +37,7 @@ EVT_FONT_CHANGED = wx.PyEventBinder(edEVT_FONT_CHANGED, 1)
 class FontChangeEvent(wx.PyCommandEvent):
     """General notification event"""
     def __init__(self, etype, eid, value=None, obj=None):
-        wx.PyCommandEvent.__init__(self, etype, eid)
+        super(FontChangeEvent, self).__init__(etype, eid)
 
         # Attributes
         self._value = value
@@ -65,7 +65,7 @@ class PyFontPicker(wx.Panel):
         @param default: The font to initialize as selected in the control
 
         """
-        wx.Panel.__init__(self, parent, id_, style=wx.NO_BORDER)
+        super(PyFontPicker, self).__init__(parent, id_, style=wx.NO_BORDER)
 
         # Attributes
         if default == wx.NullFont:
@@ -145,8 +145,8 @@ class PyFontPicker(wx.Panel):
         fdata = wx.FontData()
         fdata.SetInitialFont(self._font)
         fdlg = wx.FontDialog(self.GetParent(), fdata)
-        fdlg.ShowModal()
-        fdata = fdlg.GetFontData()
+        if fdlg.ShowModal() == wx.ID_OK:
+            fdata = fdlg.GetFontData()
+            wx.PostEvent(self, wx.FontPickerEvent(self, self.GetId(),
+                                                  fdata.GetChosenFont()))
         fdlg.Destroy()
-        wx.PostEvent(self, wx.FontPickerEvent(self, self.GetId(),
-                                              fdata.GetChosenFont()))

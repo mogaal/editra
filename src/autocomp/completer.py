@@ -14,8 +14,8 @@ Base class for autocompletion providers to implement the completion interface.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: completer.py 63531 2010-02-21 15:48:53Z CJP $"
-__revision__ = "$Revision: 63531 $"
+__svnid__ = "$Id: completer.py 67701 2011-05-04 20:50:14Z CJP $"
+__revision__ = "$Revision: 67701 $"
 
 __all__ = [ 'TYPE_FUNCTION', 'TYPE_METHOD', 'TYPE_CLASS', 'TYPE_ATTRIBUTE',
             'TYPE_VARIABLE', 'TYPE_ELEMENT', 'TYPE_PROPERTY', 'TYPE_UNKNOWN',
@@ -44,53 +44,53 @@ class Symbol(object):
     Symbol hash is based on symbol NAME
     
     """
-    def __init__(self, name, type):
+    # we create lots of these so use slots as a performance tweak
+    __slots__ = ('_name', '_type')
+
+    def __init__(self, name, symtype):
         """ Constructor
-        @param Name: Symbol name
-        @param Type: Symbol type, one of the TYPE_FUNCTION ... TYPE_UNKNOWN range
+        @param name: Symbol name
+        @param symtype: Symbol type, one of the TYPE_FUNCTION ... TYPE_UNKNOWN range
         
         """
-        object.__init__(self)
+        super(Symbol, self).__init__()
 
         # Attributes
-        self.__name = unicode(name)
-        self.__type = type
+        self._name = unicode(name)
+        self._type = symtype
     
     def __eq__(self, other):
-        return (self.__name == other.__name)
+        return (self.Name == other.Name)
 
     def __lt__(self, other):
-        return (self.__name < other.__name)
+        return (self.Name < other.Name)
 
     def __le__(self, other):
-        return (self.__name <= other.__name)
+        return (self.Name <= other.Name)
 
     def __ne__(self, other):
-        return (self.__name != other.__name)
+        return (self.Name != other.Name)
 
     def __gt__(self, other):
-        return (self.__name > other.__name)
+        return (self.Name > other.Name)
 
     def __ge__(self, other):
-        return (self.__name >= other.__name)
+        return (self.Name >= other.Name)
 
     # TODO: this task should probably be delegated to the ui
     def __str__(self):
-        if self.__type != TYPE_UNKNOWN:
-            return u'?'.join([self.__name, unicode(self.__type)])
+        if self.Type != TYPE_UNKNOWN:
+            return u'?'.join([self.Name, unicode(self.Type)])
         else:
             return self.Name
 
     def __hash__(self):
-        return self.__name.__hash__()
-    
-    @property
-    def Name(self):
-        return self.__name
+        return hash(self.Name)
 
-    @property
-    def Type(self):
-        return self.__type
+    Name = property(lambda self: self._name,
+                    lambda self, n: setattr(self, '_name', n))
+    Type = property(lambda self: self._type,
+                    lambda self, t: setattr(self, '_type', t))
 
 #--------------------------------------------------------------------------#
 
@@ -108,11 +108,11 @@ def CreateSymbols(arglst, symtype=TYPE_UNKNOWN):
 class BaseCompleter(object):
     """Base Autocomp provider class"""
     def __init__(self, parent):
-        """Initializes the autocompletion service
+        """Initializes the auto-completion service
         @param parent: parent of this service object
 
         """
-        object.__init__(self)
+        super(BaseCompleter, self).__init__()
 
         # Attributes
         self._buffer = parent
@@ -139,7 +139,7 @@ class BaseCompleter(object):
 
     def GetCallTip(self, command):
         """Returns the calltip string for a command
-        @param command: command to get callip for (string)
+        @param command: command to get calltip for (string)
         @return: string
 
         """
@@ -162,23 +162,6 @@ class BaseCompleter(object):
 
         """
         return self._autocomp_keys
-
-    def IsCallTipEvent(self, evt):
-        """Should a calltip be shown for the given key combo"""
-        if evt.ControlDown() and evt.GetKeyCode() == ord('9'):
-            return True
-        return False
-
-    def IsAutoCompEvent(self, evt):
-        """Is it a key combination that should allow completions to be shown
-        @param evt: wx.KeyEvent
-        @return: bool
-        @todo: this shoud probably be handled in edstc
-
-        """
-        if evt.ControlDown() and evt.GetKeyCode() == wx.WXK_SPACE:
-            return True
-        return False
 
     def SetAutoCompKeys(self, key_list):
         """Set the keys to provide completions on
@@ -286,5 +269,4 @@ class BaseCompleter(object):
         if buff is not None:
             if buff.IsString(cpos) or buff.IsComment(cpos):
                 rval = False
-
         return rval

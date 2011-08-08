@@ -16,8 +16,8 @@ intended as samples for exercising the various control apis.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: demo.py 62892 2009-12-15 14:51:07Z CJP $"
-__revision__ = "$Revision: 62892 $"
+__svnid__ = "$Id: demo.py 65793 2010-10-12 16:46:24Z CJP $"
+__revision__ = "$Revision: 65793 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -60,7 +60,7 @@ class EclibDemoApp(wx.App):
 class EclibDemoFrame(wx.Frame):
     """Demo Main Window"""
     def __init__(self, title=u""):
-        wx.Frame.__init__(self, None, title=title, size=(850, 550))
+        super(EclibDemoFrame, self).__init__(None, title=title, size=(850, 550))
 
         # Attributes
         self.mgr = aui.AuiManager(self, aui.AUI_MGR_ALLOW_ACTIVE_PANE)

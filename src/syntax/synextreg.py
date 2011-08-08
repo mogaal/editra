@@ -21,8 +21,8 @@ LANGUAGE: Python
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synextreg.py 64581 2010-06-13 13:55:57Z CJP $"
-__revision__ = "$Revision: 64581 $"
+__svnid__ = "$Id: synextreg.py 67571 2011-04-22 01:10:57Z CJP $"
+__revision__ = "$Revision: 67571 $"
 
 #-----------------------------------------------------------------------------#
 import os
@@ -51,7 +51,9 @@ LANG_ADA = u'Ada'
 
 #---- Use LEX_ASM ----#
 ID_LANG_ASM  = _NewId()
-LANG_ASM = u'Assembly Code'
+LANG_ASM = u'GNU Assembly'
+ID_LANG_DSP56K = _NewId()
+LANG_DSP56K = u'DSP56K Assembly'
 ID_LANG_68K  = _NewId()
 LANG_68K = u'68k Assembly'
 ID_LANG_MASM = _NewId()
@@ -82,6 +84,8 @@ ID_LANG_AS = _NewId()
 LANG_AS = u'ActionScript'
 ID_LANG_C = _NewId()
 LANG_C = u'C'
+ID_LANG_CILK = _NewId()
+LANG_CILK = u'Cilk'
 ID_LANG_CPP = _NewId()
 LANG_CPP = u'CPP'
 ID_LANG_CSHARP = _NewId()
@@ -100,6 +104,8 @@ ID_LANG_JAVA = _NewId()
 LANG_JAVA = u'Java'
 ID_LANG_OBJC = _NewId()
 LANG_OBJC = u'Objective C'
+ID_LANG_OOC = _NewId()
+LANG_OOC = u'OOC'
 ID_LANG_PIKE = _NewId()
 LANG_PIKE = u'Pike'
 ID_LANG_SQUIRREL = _NewId()
@@ -187,6 +193,10 @@ LANG_LUA = u'Lua'
 # Use LEX_MSSQL (Microsoft SQL)
 ID_LANG_MSSQL = _NewId()
 LANG_MSSQL = u'Microsoft SQL'
+
+# Use LEX_NONMEM
+ID_LANG_NONMEM = _NewId()
+LANG_NONMEM = u'NONMEM Control Stream'
 
 # Use LEX_NSIS
 ID_LANG_NSIS = _NewId()
@@ -299,15 +309,18 @@ LANG_XTEXT = u'Xtext'
 # Default extensions to file type mapping
 EXT_MAP = {
            '4gl'                : LANG_4GL,
+           '56k'                : LANG_DSP56K,
            '68k'                : LANG_68K,
            'ada adb ads a'      : LANG_ADA,
            'conf htaccess'      : LANG_APACHE,
            'as asc mx'          : LANG_AS,
+           'gasm'               : LANG_ASM,
            'bsh sh configure'   : LANG_BASH,
            'bat cmd'            : LANG_BATCH,
            'boo'                : LANG_BOO,
            'c h'                : LANG_C,
            'ml mli'             : LANG_CAML,
+           'cilk cilkh'         : LANG_CILK,
            'cobra'              : LANG_COBRA,
            'cfm cfc cfml dbm'   : LANG_COLDFUSION,
            'cc c++ cpp cxx hh h++ hpp hxx' : LANG_CPP,
@@ -342,15 +355,17 @@ EXT_MAP = {
            'lsp'                : LANG_NEWLISP,
            'lt'                 : LANG_LOUT,
            'lua'                : LANG_LUA,
-           'mak makefile'       : LANG_MAKE,
+           'mak makefile mk'    : LANG_MAKE,
            'mao mako'           : LANG_MAKO,
            'asm masm'           : LANG_MASM,
            'matlab'             : LANG_MATLAB,
            'mssql'              : LANG_MSSQL,
            'nasm'               : LANG_NASM,
+           'ctl nonmem'         : LANG_NONMEM,
            'nsi nsh'            : LANG_NSIS,
            'mm m'               : LANG_OBJC,
            'oct octave'         : LANG_OCTAVE,
+           'ooc'                : LANG_OOC,
            'dfm dpk dpr inc p pas pp' : LANG_PASCAL,
            'cgi pl pm pod'      : LANG_PERL,
            'php php3 phtml phtm' : LANG_PHP,
@@ -371,7 +386,7 @@ EXT_MAP = {
            'itcl tcl tk'        : LANG_TCL,
            'txt'                : LANG_TXT,
            'vala'               : LANG_VALA,
-           'bas cls ctl frm vb' : LANG_VB,
+           'bas cls frm vb'     : LANG_VB,
            'vbs dsm'            : LANG_VBSCRIPT,
            'v'                  : LANG_VERILOG,
            'vh vhdl vhd'        : LANG_VHDL,
@@ -392,12 +407,10 @@ class ExtensionRegister(dict):
 
     """
     instance = None
-    first = True
     config = u'synmap'
     def __init__(self):
         """Initializes the register"""
-        if self.first:
-            self.first = False
+        if not ExtensionRegister.instance:
             self.LoadDefault()
 
     def __new__(cls, *args, **kargs):
@@ -422,6 +435,7 @@ class ExtensionRegister(dict):
         and remove associations from older settings.
         @param i: key to set
         @param y: value to set
+        @throws: TypeError Only accepts list() objects
 
         """
         if not isinstance(y, list):

@@ -13,8 +13,8 @@ Editra Control Library: Base Window Classes
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ecbasewin.py 63046 2010-01-03 18:40:13Z CJP $"
-__revision__ = "$Revision: 63046 $"
+__svnid__ = "$Id: ecbasewin.py 66817 2011-01-29 21:32:20Z CJP $"
+__revision__ = "$Revision: 66817 $"
 
 __all__ = ["ECBaseDlg", "expose"]
 
@@ -32,7 +32,7 @@ class expose(object):
     """
     def __init__(self, cls):
         """@param cls: class to expose the method to"""
-        object.__init__(self)
+        super(expose, self).__init__()
         self.cls = cls
 
     def __call__(self, funct):
@@ -53,7 +53,8 @@ class ECBaseDlg(wx.Dialog):
     def __init__(self, parent, id=wx.ID_ANY, title=u"",
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
                  style=wx.DEFAULT_DIALOG_STYLE, name=u"ECBaseDialog"):
-        wx.Dialog.__init__(self, parent, id, title, pos, size, style, name)
+        super(ECBaseDlg, self).__init__(parent, id, title, pos,
+                                        size, style, name)
 
         # Attributes
         self._panel = None
@@ -62,9 +63,8 @@ class ECBaseDlg(wx.Dialog):
         # Setup
         self.SetSizer(self._sizer)
 
-    @property
-    def Panel(self):
-        return self._panel
+    Panel = property(lambda self: self._panel,
+                     lambda self, val: setattr(self, '_panel', val))
 
     def GetPanel(self):
         """Get the dialogs main panel"""
@@ -77,4 +77,3 @@ class ECBaseDlg(wx.Dialog):
             self._panel.Destroy()
         self._panel = panel
         self._sizer.Add(self._panel, 1, wx.EXPAND)
-

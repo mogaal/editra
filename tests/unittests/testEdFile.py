@@ -9,8 +9,8 @@
 """Unittests for EdFile"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testEdFile.py 61815 2009-09-03 00:42:09Z CJP $"
-__revision__ = "$Revision: 61815 $"
+__svnid__ = "$Id: testEdFile.py 67625 2011-04-27 01:33:05Z CJP $"
+__revision__ = "$Revision: 67625 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -34,12 +34,18 @@ import profiler
 
 class EdFileTest(unittest.TestCase):
     def setUp(self):
-        profiler.Profile_Set('ENCODING', locale.getpreferredencoding())
-
+        # NEED this otherwise GetApp calls fail for some yet to be
+        # determined reason even though an App has been created earlier
+        # in runUnitTests...
         self.app = common.EdApp(False)
+
         self.path = common.GetDataFilePath(u'test_read_utf8.txt')
         self.file = ed_txt.EdFile(self.path)
         self.mtime = ebmlib.GetFileModTime(self.path)
+
+        self.path_utf16 = common.GetDataFilePath(u'test_read_utf16.txt')
+        self.file_utf16 = ed_txt.EdFile(self.path_utf16)
+        self.mtime_utf16 = ebmlib.GetFileModTime(self.path_utf16)
 
         self.rpath = common.GetDataFilePath(u'embedded_nulls.txt')
         self.rfile = ed_txt.EdFile(self.rpath)
@@ -53,13 +59,37 @@ class EdFileTest(unittest.TestCase):
     def tearDown(self):
         self.file.Close()
         self.rfile.Close()
+        common.CleanTempDir()
 
     #---- Tests ----#
+    def testClone(self):
+        """Test making a copy of a file object"""
+        clone = self.file.Clone()
+        self.assertEquals(clone.GetPath(), self.file.GetPath())
+        self.assertEquals(clone.Encoding, self.file.Encoding)
+        self.assertEquals(clone.GetMagic(), self.file.GetMagic())
+        self.assertEquals(clone.HasBom(), self.file.HasBom())
+        self.assertEquals(clone.IsRawBytes(), self.file.IsRawBytes())
+        self.assertEquals(clone.IsReadOnly(), self.file.IsReadOnly())
+
     def testRead(self):
         """Test reading from the file and getting the text"""
         txt = self.file.Read()
         self.assertFalse(self.file.HasBom())
         self.assertTrue(len(txt))
+
+    def testReadNonPrintChars(self):
+        """Test reading a plain text file that has a non printable
+        character in it.
+        """
+        path = common.GetDataFilePath(u'non_print_char.txt')
+        fileobj = ed_txt.EdFile(path)
+        txt = fileobj.Read()
+        self.assertTrue(type(txt) == types.UnicodeType)
+        self.assertFalse(fileobj.IsRawBytes())
+        self.assertFalse(fileobj.IsReadOnly())
+
+    #---- Encoding Tests ----#
 
     def testReadUTF8Bom(self):
         """Test reading a utf8 bom file"""
@@ -72,7 +102,6 @@ class EdFileTest(unittest.TestCase):
         txt = self.utf8_bom_file.Read()
         self.assertTrue(self.utf8_bom_file.HasBom())
 
-        
         new_path = os.path.join(common.GetTempDir(), ebmlib.GetFileName(self.bpath))
         self.utf8_bom_file.SetPath(new_path) # write to test temp dir
         self.utf8_bom_file.Write(txt)
@@ -89,10 +118,38 @@ class EdFileTest(unittest.TestCase):
         tmp = tmp.decode('utf-8')
         self.assertEquals(txt, tmp)
 
+    def testWriteUTF16File(self):
+        """Test that input and output bytes match"""
+        txt = self.file_utf16.Read()
+        self.assertTrue(type(txt) == types.UnicodeType)
+
+        # Get original raw bytes
+        raw_bytes = common.GetFileContents(self.file_utf16.GetPath())
+        
+        # Write the unicode back out to disk
+        out = common.GetTempFilePath('utf_16_output.txt')
+        self.file_utf16.SetPath(out)
+        self.file_utf16.Write(txt)
+
+        # Get raw bytes that were just written
+        new_bytes = common.GetFileContents(out)
+        self.assertEquals(raw_bytes, new_bytes)
+
+    def testReadUTF32Bom(self):
+        """Test reading a file that has a UTF32 BOM"""
+        fname = common.GetDataFilePath('test_read_utf32_bom.txt')
+        fileutf32 = ed_txt.EdFile(fname)
+        data = fileutf32.Read()
+        self.assertTrue(fileutf32.HasBom(), "UTF-32 BOM not detected!")
+        self.assertTrue(fileutf32.Encoding in ("utf-32", "utf_32"),
+                        "Incorrect Encoding detected: %s" % fileutf32.Encoding)
+
     def testGetEncoding(self):
         """Test the encoding detection"""
         txt = self.file.Read()
         self.assertTrue(self.file.GetEncoding() == 'utf-8')
+        txt = self.file_utf16.Read()
+        self.assertTrue(self.file_utf16.GetEncoding() in ('utf_16_le', 'utf-16-le'))
 
     def testGetExtension(self):
         """Test getting the file extension"""
@@ -130,11 +187,11 @@ class EdFileTest(unittest.TestCase):
         self.assertFalse(self.file.IsRawBytes())
 
         txt = self.rfile.Read()
-        self.assertFalse(ebmlib.IsUnicode(txt))
-        self.assertTrue(self.rfile.IsRawBytes())
+        self.assertTrue(ebmlib.IsUnicode(txt))
+        self.assertFalse(self.rfile.IsRawBytes())
 
         bytes = self.img.Read()
-        self.assertTrue(self.rfile.IsRawBytes())
+        self.assertTrue(self.img.IsRawBytes())
 
     def testIsReadOnly(self):
         """Test if the file is read only or not"""

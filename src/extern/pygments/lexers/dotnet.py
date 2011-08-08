@@ -5,18 +5,21 @@
 
     Lexers for .net languages.
 
-    :copyright: 2006-2007 by Georg Brandl, Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
+    :copyright: Copyright 2006-2010 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
 """
 import re
 
-from pygments.lexer import RegexLexer, bygroups, using, this
+from pygments.lexer import RegexLexer, DelegatingLexer, bygroups, using, this
 from pygments.token import Punctuation, \
-     Text, Comment, Operator, Keyword, Name, String, Number, Literal
+     Text, Comment, Operator, Keyword, Name, String, Number, Literal, Other
 from pygments.util import get_choice_opt
 from pygments import unistring as uni
 
-__all__ = ['CSharpLexer', 'BooLexer', 'VbNetLexer']
+from pygments.lexers.web import XmlLexer
+
+__all__ = ['CSharpLexer', 'BooLexer', 'VbNetLexer', 'CSharpAspxLexer',
+           'VbNetAspxLexer']
 
 
 def _escape(st):
@@ -83,11 +86,11 @@ class CSharpLexer(RegexLexer):
                 (r'^\s*\[.*?\]', Name.Attribute),
                 (r'[^\S\n]+', Text),
                 (r'\\\n', Text), # line continuation
-                (r'//.*?\n', Comment),
-                (r'/[*](.|\n)*?[*]/', Comment),
+                (r'//.*?\n', Comment.Single),
+                (r'/[*](.|\n)*?[*]/', Comment.Multiline),
                 (r'\n', Text),
                 (r'[~!%^&*()+=|\[\]:;,.<>/?-]', Punctuation),
-                (r'[{}]', Keyword),
+                (r'[{}]', Punctuation),
                 (r'@"(\\\\|\\"|[^"])*"', String),
                 (r'"(\\\\|\\"|[^"\n])*["\n]', String),
                 (r"'\\.'|'[^\\]'", String.Char),
@@ -148,8 +151,8 @@ class BooLexer(RegexLexer):
     tokens = {
         'root': [
             (r'\s+', Text),
-            (r'(#|//).*$', Comment),
-            (r'/[*]', Comment, 'comment'),
+            (r'(#|//).*$', Comment.Single),
+            (r'/[*]', Comment.Multiline, 'comment'),
             (r'[]{}:(),.;[]', Punctuation),
             (r'\\\n', Text),
             (r'\\', Text),
@@ -231,28 +234,30 @@ class VbNetLexer(RegexLexer):
              r'(On|Off|Binary|Text)', Keyword.Declaration),
             (r'(?<!\.)(AddHandler|Alias|'
              r'ByRef|ByVal|Call|Case|Catch|CBool|CByte|CChar|CDate|'
-             r'CDec|CDbl|CInt|CLng|CObj|Const|Continue|CSByte|CShort|'
+             r'CDec|CDbl|CInt|CLng|CObj|Continue|CSByte|CShort|'
              r'CSng|CStr|CType|CUInt|CULng|CUShort|Declare|'
-             r'Default|Delegate|Dim|DirectCast|Do|Each|Else|ElseIf|'
-             r'End|EndIf|Enum|Erase|Error|Event|Exit|False|Finally|For|'
-             r'Friend|Function|Get|Global|GoSub|GoTo|Handles|If|'
-             r'Implements|Imports|Inherits|Interface|'
-             r'Let|Lib|Loop|Me|Module|MustInherit|'
-             r'MustOverride|MyBase|MyClass|Namespace|Narrowing|New|Next|'
+             r'Default|Delegate|DirectCast|Do|Each|Else|ElseIf|'
+             r'EndIf|Erase|Error|Event|Exit|False|Finally|For|'
+             r'Friend|Get|Global|GoSub|GoTo|Handles|If|'
+             r'Implements|Inherits|Interface|'
+             r'Let|Lib|Loop|Me|MustInherit|'
+             r'MustOverride|MyBase|MyClass|Narrowing|New|Next|'
              r'Not|Nothing|NotInheritable|NotOverridable|Of|On|'
              r'Operator|Option|Optional|Overloads|Overridable|'
-             r'Overrides|ParamArray|Partial|Private|Property|Protected|'
+             r'Overrides|ParamArray|Partial|Private|Protected|'
              r'Public|RaiseEvent|ReadOnly|ReDim|RemoveHandler|Resume|'
              r'Return|Select|Set|Shadows|Shared|Single|'
-             r'Static|Step|Stop|Structure|Sub|SyncLock|Then|'
+             r'Static|Step|Stop|SyncLock|Then|'
              r'Throw|To|True|Try|TryCast|Wend|'
              r'Using|When|While|Widening|With|WithEvents|'
              r'WriteOnly)\b', Keyword),
+            (r'(?<!\.)End\b', Keyword, 'end'),
+            (r'(?<!\.)(Dim|Const)\b', Keyword, 'dim'),
             (r'(?<!\.)(Function|Sub|Property)(\s+)',
              bygroups(Keyword, Text), 'funcname'),
             (r'(?<!\.)(Class|Structure|Enum)(\s+)',
              bygroups(Keyword, Text), 'classname'),
-            (r'(?<!\.)(Namespace|Imports)(\s+)',
+            (r'(?<!\.)(Module|Namespace|Imports)(\s+)',
              bygroups(Keyword, Text), 'namespace'),
             (r'(?<!\.)(Boolean|Byte|Char|Date|Decimal|Double|Integer|Long|'
              r'Object|SByte|Short|Single|String|Variant|UInteger|ULong|'
@@ -276,13 +281,87 @@ class VbNetLexer(RegexLexer):
             (r'"C?', String, '#pop'),
             (r'[^"]+', String),
         ],
+        'dim': [
+            (r'[a-z_][a-z0-9_]*', Name.Variable, '#pop'),
+            (r'', Text, '#pop'),  # any other syntax
+        ],
         'funcname': [
-            (r'[a-z_][a-z0-9_]*', Name.Function, '#pop')
+            (r'[a-z_][a-z0-9_]*', Name.Function, '#pop'),
         ],
         'classname': [
-            (r'[a-z_][a-z0-9_]*', Name.Class, '#pop')
+            (r'[a-z_][a-z0-9_]*', Name.Class, '#pop'),
         ],
         'namespace': [
-            (r'[a-z_][a-z0-9_.]*', Name.Namespace, '#pop')
+            (r'[a-z_][a-z0-9_.]*', Name.Namespace, '#pop'),
+        ],
+        'end': [
+            (r'\s+', Text),
+            (r'(Function|Sub|Property|Class|Structure|Enum|Module|Namespace)\b',
+             Keyword, '#pop'),
+            (r'', Text, '#pop'),
+        ]
+    }
+
+class GenericAspxLexer(RegexLexer):
+    """
+    Lexer for ASP.NET pages.
+    """
+
+    name = 'aspx-gen'
+    filenames = []
+    mimetypes = []
+
+    flags = re.DOTALL
+
+    tokens = {
+        'root': [
+            (r'(<%[@=#]?)(.*?)(%>)', bygroups(Name.Tag, Other, Name.Tag)),
+            (r'(<script.*?>)(.*?)(</script>)', bygroups(using(XmlLexer),
+                                                        Other,
+                                                        using(XmlLexer))),
+            (r'(.+?)(?=<)', using(XmlLexer)),
+            (r'.+', using(XmlLexer)),
         ],
     }
+
+#TODO support multiple languages within the same source file
+class CSharpAspxLexer(DelegatingLexer):
+    """
+    Lexer for highligting C# within ASP.NET pages.
+    """
+
+    name = 'aspx-cs'
+    aliases = ['aspx-cs']
+    filenames = ['*.aspx', '*.asax', '*.ascx', '*.ashx', '*.asmx', '*.axd']
+    mimetypes = []
+
+    def __init__(self, **options):
+        super(CSharpAspxLexer, self).__init__(CSharpLexer,GenericAspxLexer,
+                                              **options)
+
+    def analyse_text(text):
+        if re.search(r'Page\s*Language="C#"', text, re.I) is not None:
+            return 0.2
+        elif re.search(r'script[^>]+language=["\']C#', text, re.I) is not None:
+            return 0.15
+        return 0.001 # TODO really only for when filename matched...
+
+class VbNetAspxLexer(DelegatingLexer):
+    """
+    Lexer for highligting Visual Basic.net within ASP.NET pages.
+    """
+
+    name = 'aspx-vb'
+    aliases = ['aspx-vb']
+    filenames = ['*.aspx', '*.asax', '*.ascx', '*.ashx', '*.asmx', '*.axd']
+    mimetypes = []
+
+    def __init__(self, **options):
+        super(VbNetAspxLexer, self).__init__(VbNetLexer,GenericAspxLexer,
+                                              **options)
+
+    def analyse_text(text):
+        if re.search(r'Page\s*Language="Vb"', text, re.I) is not None:
+            return 0.2
+        elif re.search(r'script[^>]+language=["\']vb', text, re.I) is not None:
+            return 0.15

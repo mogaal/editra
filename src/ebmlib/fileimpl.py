@@ -7,7 +7,7 @@
 ###############################################################################
 
 """
-Editra Buisness Model Library: FileObjectImpl
+Editra Business Model Library: FileObjectImpl
 
 Implementation of a file object interface class. Objects and methods inside
 of this library expect a file object that derives from this interface.
@@ -15,14 +15,16 @@ of this library expect a file object that derives from this interface.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: fileimpl.py 61504 2009-07-23 03:39:28Z CJP $"
-__revision__ = "$Revision: 61504 $"
+__svnid__ = "$Id: fileimpl.py 65795 2010-10-13 21:00:06Z CJP $"
+__revision__ = "$Revision: 65795 $"
 
 #--------------------------------------------------------------------------#
 # Imports
 import os
+import sys
 
-# Editra Buisness Model Imports
+# Editra Business Model Imports
+import txtutil
 import fileutil
 
 #--------------------------------------------------------------------------#
@@ -30,7 +32,7 @@ import fileutil
 class FileObjectImpl(object):
     """File Object Interface implementation base class"""
     def __init__(self, path=u'', modtime=0):
-        object.__init__(self)
+        super(FileObjectImpl, self).__init__()
 
         # Attributes
         self._path = fileutil.GetPathFromURI(path)
@@ -80,7 +82,7 @@ class FileObjectImpl(object):
         try:
             file_h = open(self._path, mode)
         except (IOError, OSError), msg:
-            self.last_err = msg
+            self.SetLastError(unicode(msg))
             return False
         else:
             self._handle = file_h
@@ -111,11 +113,17 @@ class FileObjectImpl(object):
         return self._handle
 
     def GetLastError(self):
-        """Return the last error that occured when using this file
+        """Return the last error that occurred when using this file
         @return: err traceback or None
 
         """
-        return unicode(self.last_err).replace("u'", "'")
+        errstr = u"None"
+        if self.last_err:
+            if not txtutil.IsUnicode(self.last_err):
+                errstr = unicode(self.last_err)
+            else:
+                errstr = self.last_err
+        return errstr
 
     def GetModtime(self):
         """Get the timestamp of this files last modification"""

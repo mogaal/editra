@@ -13,8 +13,8 @@ Editra Control Library: FilterDialog
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: filterdlg.py 63825 2010-04-02 01:20:36Z CJP $"
-__revision__ = "$Revision: 63825 $"
+__svnid__ = "$Id: filterdlg.py 65202 2010-08-06 15:49:23Z CJP $"
+__revision__ = "$Revision: 65202 $"
 
 __all__ = ["FilterDialog",]
 
@@ -37,8 +37,8 @@ class FilterDialog(ecbasewin.ECBaseDlg):
     def __init__(self, parent, id=wx.ID_ANY, title=u"",
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
                  style=wx.DEFAULT_DIALOG_STYLE, name=u"FilterDialog"):
-        ecbasewin.ECBaseDlg.__init__(self, parent, id, title,
-                                     pos, size, style, name)
+        super(FilterDialog, self).__init__(parent, id, title,
+                                           pos, size, style, name)
 
         # Attributes
         self.SetPanel(FilterPanel(self))
@@ -50,7 +50,7 @@ class FilterDialog(ecbasewin.ECBaseDlg):
 class FilterPanel(wx.Panel):
     """Filter dialog panel"""
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+        super(FilterPanel, self).__init__(parent)
 
         # Attributes
         self._left  = wx.ListBox(self, style=wx.LB_EXTENDED|wx.LB_SORT)

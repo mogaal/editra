@@ -5,23 +5,11 @@
 
     Lexers for non-source code file types.
 
-    :copyright: 2006-2008 by Armin Ronacher, Georg Brandl,
-                Tim Hatch <tim@timhatch.com>,
-                Ronny Pfannschmidt,
-                Dennis Kaarsemaker,
-                Kumar Appaiah <akumar@ee.iitm.ac.in>,
-                Varun Hiremath <varunhiremath@gmail.com>,
-                Jeremy Thurgood,
-                Max Battcher <me@worldmaker.net>,
-                Kirill Simonov <xi@resolvent.net>.
-    :license: BSD, see LICENSE for more details.
+    :copyright: Copyright 2006-2010 by the Pygments team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
 """
 
 import re
-try:
-    set
-except NameError:
-    from sets import Set as set
 from bisect import bisect
 
 from pygments.lexer import Lexer, LexerContext, RegexLexer, ExtendedRegexLexer, \
@@ -31,12 +19,12 @@ from pygments.token import Punctuation, Text, Comment, Keyword, Name, String, \
 from pygments.util import get_bool_opt
 from pygments.lexers.other import BashLexer
 
-__all__ = ['IniLexer', 'SourcesListLexer', 'BaseMakefileLexer',
+__all__ = ['IniLexer', 'PropertiesLexer', 'SourcesListLexer', 'BaseMakefileLexer',
            'MakefileLexer', 'DiffLexer', 'IrcLogsLexer', 'TexLexer',
            'GroffLexer', 'ApacheConfLexer', 'BBCodeLexer', 'MoinWikiLexer',
            'RstLexer', 'VimLexer', 'GettextLexer', 'SquidConfLexer',
            'DebianControlLexer', 'DarcsPatchLexer', 'YamlLexer',
-           'LighttpdConfLexer', 'NginxConfLexer']
+           'LighttpdConfLexer', 'NginxConfLexer', 'CMakeLexer']
 
 
 class IniLexer(RegexLexer):
@@ -46,7 +34,7 @@ class IniLexer(RegexLexer):
 
     name = 'INI'
     aliases = ['ini', 'cfg']
-    filenames = ['*.ini', '*.cfg', '*.properties']
+    filenames = ['*.ini', '*.cfg']
     mimetypes = ['text/x-ini']
 
     tokens = {
@@ -54,7 +42,7 @@ class IniLexer(RegexLexer):
             (r'\s+', Text),
             (r'[;#].*?$', Comment),
             (r'\[.*?\]$', Keyword),
-            (r'(.*?)(\s*)(=)(\s*)(.*?)$',
+            (r'(.*?)([ \t]*)(=)([ \t]*)(.*(?:\n[ \t].+)*)',
              bygroups(Name.Attribute, Text, Operator, Text, String))
         ]
     }
@@ -64,6 +52,28 @@ class IniLexer(RegexLexer):
         if npos < 3:
             return False
         return text[0] == '[' and text[npos-1] == ']'
+
+
+class PropertiesLexer(RegexLexer):
+    """
+    Lexer for configuration files in Java's properties format.
+
+    *New in Pygments 1.4.*
+    """
+
+    name = 'Properties'
+    aliases = ['properties']
+    filenames = ['*.properties']
+    mimetypes = ['text/x-java-properties']
+
+    tokens = {
+        'root': [
+            (r'\s+', Text),
+            (r'(?:[;#]|//).*$', Comment),
+            (r'(.*?)([ \t]*)([=:])([ \t]*)(.*(?:(?<=\\)\n.*)*)',
+             bygroups(Name.Attribute, Text, Operator, Text, String)),
+        ],
+    }
 
 
 class SourcesListLexer(RegexLexer):
@@ -179,12 +189,12 @@ class BaseMakefileLexer(RegexLexer):
             (r'([a-zA-Z0-9_${}.-]+)(\s*)([!?:+]?=)([ \t]*)((?:.*\\\n|.*\n)+)',
              bygroups(Name.Variable, Text, Operator, Text, using(BashLexer))),
             # strings
-            (r'"(\\\\|\\"|[^"])*"', String.Double),
-            (r"'(\\\\|\\'|[^'])*'", String.Single),
+            (r'(?s)"(\\\\|\\.|[^"\\])*"', String.Double),
+            (r"(?s)'(\\\\|\\.|[^'\\])*'", String.Single),
             # targets
             (r'([^\n:]+)(:+)([ \t]*)', bygroups(Name.Function, Operator, Text),
              'block-header'),
-            #TODO: add paren handling (grr)
+            # TODO: add paren handling (grr)
         ],
         'export': [
             (r'[a-zA-Z0-9_${}-]+', Name.Variable),
@@ -219,7 +229,7 @@ class DiffLexer(RegexLexer):
             (r'-.*\n', Generic.Deleted),
             (r'!.*\n', Generic.Strong),
             (r'@.*\n', Generic.Subheading),
-            (r'(Index|diff).*\n', Generic.Heading),
+            (r'([Ii]ndex|diff).*\n', Generic.Heading),
             (r'=.*\n', Generic.Heading),
             (r'.*\n', Text),
         ]
@@ -232,6 +242,7 @@ class DiffLexer(RegexLexer):
             return True
         if text[:4] == '--- ':
             return 0.9
+
 
 DPATCH_KEYWORDS = ['hunk', 'addfile', 'adddir', 'rmfile', 'rmdir', 'move',
     'replace']
@@ -254,10 +265,12 @@ class DarcsPatchLexer(RegexLexer):
             (r'>', Operator),
             (r'{', Operator),
             (r'}', Operator),
-            (r'(\[)((?:TAG )?)(.*)(\n)(.*)(\*\*)(\d+)(\s?)(\])', bygroups(Operator, Keyword, Name, Text,
-                Name, Operator, Literal.Date, Text, Operator)),
-            (r'(\[)((?:TAG )?)(.*)(\n)(.*)(\*\*)(\d+)(\s?)', bygroups(Operator, Keyword, Name, Text,
-                Name, Operator, Literal.Date, Text), 'comment'),
+            (r'(\[)((?:TAG )?)(.*)(\n)(.*)(\*\*)(\d+)(\s?)(\])',
+             bygroups(Operator, Keyword, Name, Text, Name, Operator,
+                      Literal.Date, Text, Operator)),
+            (r'(\[)((?:TAG )?)(.*)(\n)(.*)(\*\*)(\d+)(\s?)',
+             bygroups(Operator, Keyword, Name, Text, Name, Operator,
+                      Literal.Date, Text), 'comment'),
             (r'New patches:', Generic.Heading),
             (r'Context:', Generic.Heading),
             (r'Patch bundle hash:', Generic.Heading),
@@ -361,12 +374,23 @@ class BBCodeLexer(RegexLexer):
     mimetypes = ['text/x-bbcode']
 
     tokens = {
-        'root' : [
-            (r'[\s\w]+', Text),
-            (r'(\[)(/?[^\]\n\r=]+)(\])',
-             bygroups(Keyword, Keyword.Pseudo, Keyword)),
-            (r'(\[)([^\]\n\r=]+)(=)([^\]\n\r]+)(\])',
-             bygroups(Keyword, Keyword.Pseudo, Operator, String, Keyword)),
+        'root': [
+            (r'[^[]+', Text),
+            # tag/end tag begin
+            (r'\[/?\w+', Keyword, 'tag'),
+            # stray bracket
+            (r'\[', Text),
+        ],
+        'tag': [
+            (r'\s+', Text),
+            # attribute with value
+            (r'(\w+)(=)("?[^\s"\]]+"?)',
+             bygroups(Name.Attribute, Operator, String)),
+            # tag argument (a la [color=green])
+            (r'(=)("?[^\s"\]]+"?)',
+             bygroups(Operator, String)),
+            # tag end
+            (r'\]', Keyword, '#pop'),
         ],
     }
 
@@ -473,7 +497,7 @@ class GroffLexer(RegexLexer):
     }
 
     def analyse_text(text):
-        if text[0] != '.':
+        if text[:1] != '.':
             return False
         if text[:3] == '.\\"':
             return True
@@ -632,7 +656,8 @@ class RstLexer(RegexLexer):
     tokens = {
         'root': [
             # Heading with overline
-            (r'^(=+|-+|`+|:+|\.+|\'+|"+|~+|\^+|_+|\*+|\++|#+)([ \t]*\n)(.+)(\n)(\1)(\n)',
+            (r'^(=+|-+|`+|:+|\.+|\'+|"+|~+|\^+|_+|\*+|\++|#+)([ \t]*\n)'
+             r'(.+)(\n)(\1)(\n)',
              bygroups(Generic.Heading, Text, Generic.Heading,
                       Text, Generic.Heading, Text)),
             # Plain heading
@@ -652,24 +677,33 @@ class RstLexer(RegexLexer):
              bygroups(Text, Number, using(this, state='inline'))),
             (r'^(\s*)(\(?[A-Za-z]+\))( .+\n(?:\1  .+\n)+)',
              bygroups(Text, Number, using(this, state='inline'))),
+            # Line blocks
+            (r'^(\s*)(\|)( .+\n(?:\|  .+\n)*)',
+             bygroups(Text, Operator, using(this, state='inline'))),
             # Sourcecode directives
             (r'^( *\.\.)(\s*)((?:source)?code)(::)([ \t]*)([^\n]+)'
              r'(\n[ \t]*\n)([ \t]+)(.*)(\n)((?:(?:\8.*|)\n)+)',
              _handle_sourcecode),
             # A directive
-            (r'^( *\.\.)(\s*)([\w-]+)(::)(?:([ \t]*)(.+))?',
-             bygroups(Punctuation, Text, Operator.Word, Punctuation, Text, Keyword)),
+            (r'^( *\.\.)(\s*)([\w:-]+?)(::)(?:([ \t]*)(.*))',
+             bygroups(Punctuation, Text, Operator.Word, Punctuation, Text,
+                      using(this, state='inline'))),
             # A reference target
             (r'^( *\.\.)(\s*)([\w\t ]+:)(.*?)$',
              bygroups(Punctuation, Text, Name.Tag, using(this, state='inline'))),
             # A footnote target
             (r'^( *\.\.)(\s*)(\[.+\])(.*?)$',
              bygroups(Punctuation, Text, Name.Tag, using(this, state='inline'))),
+            # A substitution def
+            (r'^( *\.\.)(\s*)(\|.+\|)(\s*)([\w:-]+?)(::)(?:([ \t]*)(.*))',
+             bygroups(Punctuation, Text, Name.Tag, Text, Operator.Word,
+                      Punctuation, Text, using(this, state='inline'))),
             # Comments
             (r'^ *\.\..*(\n( +.*\n|\n)+)?', Comment.Preproc),
             # Field list
-            (r'^( *)(:.*?:)([ \t]+)(.*?)$', bygroups(Text, Name.Class, Text,
-                                                     Name.Function)),
+            (r'^( *)(:[a-zA-Z-]+:)(\s*)$', bygroups(Text, Name.Class, Text)),
+            (r'^( *)(:.*?:)([ \t]+)(.*?)$',
+             bygroups(Text, Name.Class, Text, Name.Function)),
             # Definition list
             (r'^([^ ].*(?<!::)\n)((?:(?: +.*)\n)+)',
              bygroups(using(this, state='inline'), using(this, state='inline'))),
@@ -681,12 +715,13 @@ class RstLexer(RegexLexer):
         'inline': [
             (r'\\.', Text), # escape
             (r'``', String, 'literal'), # code
-            (r'(`)(.+?)(`__?)',
-             bygroups(Punctuation, using(this), Punctuation)), # reference
-            (r'(`.+?`)(:[a-zA-Z0-9-]+?:)?',
+            (r'(`.+?)(<.+?>)(`__?)',  # reference with inline target
+             bygroups(String, String.Interpol, String)),
+            (r'`.+?`__?', String), # reference
+            (r'(`.+?`)(:[a-zA-Z0-9:-]+?:)?',
              bygroups(Name.Variable, Name.Attribute)), # role
-            (r'(:[a-zA-Z0-9-]+?:)(`.+?`)',
-             bygroups(Name.Attribute, Name.Variable)), # user-defined role
+            (r'(:[a-zA-Z0-9:-]+?:)(`.+?`)',
+             bygroups(Name.Attribute, Name.Variable)), # role (content first)
             (r'\*\*.+?\*\*', Generic.Strong), # Strong emphasis
             (r'\*.+?\*', Generic.Emph), # Emphasis
             (r'\[.*?\]_', String), # Footnote or citation
@@ -716,6 +751,7 @@ class RstLexer(RegexLexer):
             text[p1+1] in '-=' and   # the next line both starts and ends with
             text[p1+1] == text[p2-1]): # ...a sufficiently high header
             return 0.5
+
 
 class VimLexer(RegexLexer):
     """
@@ -816,7 +852,7 @@ class GettextLexer(RegexLexer):
             (r'^#:\s.*?$', Keyword.Declaration),
             #(r'^#$', Comment),
             (r'^(#|#\.\s|#\|\s|#~\s|#\s).*$', Comment.Single),
-            (r'^(")([\w-]*:)(.*")$',
+            (r'^(")([A-Za-z-]+:)(.*")$',
              bygroups(String, Name.Property, String)),
             (r'^".*"$', String),
             (r'^(msgid|msgid_plural|msgstr)(\s+)(".*")$',
@@ -825,6 +861,7 @@ class GettextLexer(RegexLexer):
              bygroups(Name.Variable, Number.Integer, Name.Variable, Text, String)),
         ]
     }
+
 
 class SquidConfLexer(RegexLexer):
     """
@@ -1005,6 +1042,7 @@ class DebianControlLexer(RegexLexer):
             (r'[}]', Text),
             (r'[^,]$', Name.Function, '#pop'),
             (r'([\+\.a-zA-Z0-9-][\s\n]*)', Name.Function),
+            (r'\[.*?\]', Name.Entity),
         ],
         'depend_vers': [
             (r'\),', Text, '#pop'),
@@ -1425,6 +1463,7 @@ class YamlLexer(ExtendedRegexLexer):
             context = YamlLexerContext(text, 0)
         return super(YamlLexer, self).get_tokens_unprocessed(text, context)
 
+
 class LighttpdConfLexer(RegexLexer):
     """
     Lexer for `Lighttpd <http://lighttpd.net/>`_ configuration files.
@@ -1451,6 +1490,7 @@ class LighttpdConfLexer(RegexLexer):
         ],
 
     }
+
 
 class NginxConfLexer(RegexLexer):
     """
@@ -1493,5 +1533,76 @@ class NginxConfLexer(RegexLexer):
             (r'[^\s;#{}$]+', String), # catch all
             (r'/[^\s;#]*', Name), # pathname
             (r'\s+', Text),
+            (r'[$;]', Text),  # leftover characters
         ],
     }
+
+
+class CMakeLexer(RegexLexer):
+    """
+    Lexer for `CMake <http://cmake.org/Wiki/CMake>`_ files.
+
+    *New in Pygments 1.2.*
+    """
+    name = 'CMake'
+    aliases = ['cmake']
+    filenames = ['*.cmake', 'CMakeLists.txt']
+    mimetypes = ['text/x-cmake']
+
+    tokens = {
+        'root': [
+            #(r'(ADD_CUSTOM_COMMAND|ADD_CUSTOM_TARGET|ADD_DEFINITIONS|'
+            # r'ADD_DEPENDENCIES|ADD_EXECUTABLE|ADD_LIBRARY|ADD_SUBDIRECTORY|'
+            # r'ADD_TEST|AUX_SOURCE_DIRECTORY|BUILD_COMMAND|BUILD_NAME|'
+            # r'CMAKE_MINIMUM_REQUIRED|CONFIGURE_FILE|CREATE_TEST_SOURCELIST|'
+            # r'ELSE|ELSEIF|ENABLE_LANGUAGE|ENABLE_TESTING|ENDFOREACH|'
+            # r'ENDFUNCTION|ENDIF|ENDMACRO|ENDWHILE|EXEC_PROGRAM|'
+            # r'EXECUTE_PROCESS|EXPORT_LIBRARY_DEPENDENCIES|FILE|FIND_FILE|'
+            # r'FIND_LIBRARY|FIND_PACKAGE|FIND_PATH|FIND_PROGRAM|FLTK_WRAP_UI|'
+            # r'FOREACH|FUNCTION|GET_CMAKE_PROPERTY|GET_DIRECTORY_PROPERTY|'
+            # r'GET_FILENAME_COMPONENT|GET_SOURCE_FILE_PROPERTY|'
+            # r'GET_TARGET_PROPERTY|GET_TEST_PROPERTY|IF|INCLUDE|'
+            # r'INCLUDE_DIRECTORIES|INCLUDE_EXTERNAL_MSPROJECT|'
+            # r'INCLUDE_REGULAR_EXPRESSION|INSTALL|INSTALL_FILES|'
+            # r'INSTALL_PROGRAMS|INSTALL_TARGETS|LINK_DIRECTORIES|'
+            # r'LINK_LIBRARIES|LIST|LOAD_CACHE|LOAD_COMMAND|MACRO|'
+            # r'MAKE_DIRECTORY|MARK_AS_ADVANCED|MATH|MESSAGE|OPTION|'
+            # r'OUTPUT_REQUIRED_FILES|PROJECT|QT_WRAP_CPP|QT_WRAP_UI|REMOVE|'
+            # r'REMOVE_DEFINITIONS|SEPARATE_ARGUMENTS|SET|'
+            # r'SET_DIRECTORY_PROPERTIES|SET_SOURCE_FILES_PROPERTIES|'
+            # r'SET_TARGET_PROPERTIES|SET_TESTS_PROPERTIES|SITE_NAME|'
+            # r'SOURCE_GROUP|STRING|SUBDIR_DEPENDS|SUBDIRS|'
+            # r'TARGET_LINK_LIBRARIES|TRY_COMPILE|TRY_RUN|UNSET|'
+            # r'USE_MANGLED_MESA|UTILITY_SOURCE|VARIABLE_REQUIRES|'
+            # r'VTK_MAKE_INSTANTIATOR|VTK_WRAP_JAVA|VTK_WRAP_PYTHON|'
+            # r'VTK_WRAP_TCL|WHILE|WRITE_FILE|'
+            # r'COUNTARGS)\b', Name.Builtin, 'args'),
+            (r'\b([A-Za-z_]+)([ \t]*)(\()', bygroups(Name.Builtin, Text,
+                                                     Punctuation), 'args'),
+            include('keywords'),
+            include('ws')
+        ],
+        'args': [
+            (r'\(', Punctuation, '#push'),
+            (r'\)', Punctuation, '#pop'),
+            (r'(\${)(.+?)(})', bygroups(Operator, Name.Variable, Operator)),
+            (r'(?s)".*?"', String.Double),
+            (r'\\\S+', String),
+            (r'[^\)$"# \t\n]+', String),
+            (r'\n', Text), # explicitly legal
+            include('keywords'),
+            include('ws')
+        ],
+        'string': [
+
+        ],
+        'keywords': [
+            (r'\b(WIN32|UNIX|APPLE|CYGWIN|BORLAND|MINGW|MSVC|MSVC_IDE|MSVC60|'
+             r'MSVC70|MSVC71|MSVC80|MSVC90)\b', Keyword),
+        ],
+        'ws': [
+            (r'[ \t]+', Text),
+            (r'#.+\n', Comment),
+        ]
+    }
+

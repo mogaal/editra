@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _python.py 64591 2010-06-15 04:00:50Z CJP $"
-__revision__ = "$Revision: 64591 $"
+__svnid__ = "$Id: _python.py 66807 2011-01-28 18:29:56Z CJP $"
+__revision__ = "$Revision: 66807 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -79,7 +79,7 @@ TIMMY = ("tab.timmy.whinge.level", "1") # Mark Inconsistent indentation
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for Python""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_PYTHON)
@@ -126,13 +126,28 @@ def AutoIndenter(estc, pos, ichar):
         estc.AddText(eolch)
         return
 
-    # Ignore empty lines and backtrace to find the previous line that we can
-    # get the indent position from
-#    while text.isspace():
-#        line -= 1
-#        if line < 0:
-#            return u''
-#        text = stc.GetTextRange(stc.PositionFromLine(line), pos)
+    # In case of open bracket: Indent next to open bracket
+    def BackTrack(tmp_text, tline):
+        bcount = [ tmp_text.count(brac) for brac in u")}]({[" ]
+        bRecurse = False
+        for idx, val in enumerate(bcount[:3]):
+            if val > bcount[idx+3]:
+                bRecurse = True
+                break
+        if bRecurse:
+            tline = tline - 1
+            if tline < 0:
+                return tmp_text
+            spos = estc.PositionFromLine(tline)
+            tmp_text = estc.GetTextRange(spos, pos)
+            BackTrack(tmp_text, tline)
+        return tmp_text
+    text = BackTrack(text, line)
+    pos = PosOpenBracket(text)
+    if pos > -1:
+        rval = eolch + (pos + 1) * u" "
+        estc.AddText(rval)
+        return
 
     indent = estc.GetLineIndentation(line)
     if ichar == u"\t":
@@ -150,6 +165,15 @@ def AutoIndenter(estc, pos, ichar):
                 i_space += 1
         elif tokens[-1].endswith(u"\\"):
             i_space += 1
+        elif len(tokens[-1]) and tokens[-1][-1] in u"}])":
+            ptok = tokens[-1][-1]
+            paren_pos = pos - (len(text) - text.rfind(ptok))
+            oparen, cparen = estc.GetBracePair(paren_pos)
+            if cparen >= 0: # Found matching bracket
+                line = estc.LineFromPosition(cparen)
+                indent = estc.GetLineIndentation(line)
+                i_space = indent / tabw
+                end_spaces = ((indent - (tabw * i_space)) * u" ")
         elif tokens[0] in UNINDENT_KW:
             i_space = max(i_space - 1, 0)
 
@@ -173,5 +197,40 @@ def KeywordString():
 
     """
     return PY_KW[1]
+
+def PosOpenBracket(text):
+    """Returns the position of the right most open bracket in text.
+    Brackets inside strings are ignored. In case of no open bracket
+    the returned value is -1
+    @param text: The line preceding the new line to be indented.
+    @return res: The position of right most open bracket.
+    @note: Used by AutoIndenter
+
+    """
+    # Store positions of '(', '[','{', ')', ']', '}'
+    brackets = [[], [], [], [], [], []]
+    quotes = u"'" + u'"'
+    in_string = False
+    for pos, char in enumerate(text):
+        if in_string:
+            in_string = not char == quote
+        else:
+            if char == u'#':
+                break
+            typ = u'([{)]}'.find(char)
+            if typ > -1:
+                brackets[typ].append(pos)
+            else:
+                typ = quotes.find(char)
+                if typ > -1:
+                    in_string = True
+                    quote = quotes[typ]
+    res = -1
+    for typ in range(3):
+        opn, cls = brackets[typ], brackets[typ+3]
+        nopn, ncls = len(opn), len(cls)
+        if nopn > ncls:
+            res = max(res, opn[nopn - ncls - 1])
+    return res
 
 #---- End Syntax Modules Internal Functions ----#

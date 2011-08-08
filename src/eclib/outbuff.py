@@ -61,11 +61,12 @@ Requirements:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: outbuff.py 63558 2010-02-26 01:13:41Z CJP $"
-__revision__ = "$Revision: 63558 $"
+__svnid__ = "$Id: outbuff.py 67636 2011-04-28 00:32:43Z CJP $"
+__revision__ = "$Revision: 67636 $"
 
 __all__ = ["OutputBuffer", "OutputBufferEvent", "ProcessBufferMixin",
-           "ProcessThread", "TaskThread", "OPB_STYLE_DEFAULT", "OPB_STYLE_INFO",
+           "ProcessThreadBase", "ProcessThread", "TaskThread", "TaskObject",
+           "OPB_STYLE_DEFAULT", "OPB_STYLE_INFO",
            "OPB_STYLE_WARN", "OPB_STYLE_ERROR", "OPB_STYLE_MAX",
 
            "OPB_ERROR_NONE", "OPB_ERROR_INVALID_COMMAND",
@@ -151,7 +152,7 @@ class OutputBufferEvent(wx.PyCommandEvent):
     """Event for data transfer and signaling actions in the L{OutputBuffer}"""
     def __init__(self, etype, eid=wx.ID_ANY, value=''):
         """Creates the event object"""
-        wx.PyCommandEvent.__init__(self, etype, eid)
+        super(OutputBufferEvent, self).__init__(etype, eid)
 
         # Attributes
         self._value = value
@@ -196,7 +197,8 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
                  size=wx.DefaultSize,
                  style=wx.BORDER_SUNKEN,
                  name=OUTPUTBUFF_NAME_STR):
-        wx.stc.StyledTextCtrl.__init__(self, parent, id, pos, size, style, name)
+        super(OutputBuffer, self).__init__(parent, id, pos,
+                                           size, style, name)
 
         # Attributes
         self._mutex = threading.Lock()
@@ -250,7 +252,7 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
         self.SetSelBackground(True, highlight)
         self.__SetupStyles()
 
-    def __FlushBuffer(self):
+    def FlushBuffer(self):
         """Flush the update buffer
         @postcondition: The update buffer is empty
 
@@ -259,7 +261,11 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
         self.SetReadOnly(False)
         txt = u''.join(self._updates[:])
         start = self.GetLength()
-        self.AppendText(txt)
+        if u'\0' in txt:
+            # HACK: handle displaying NULLs in the STC
+            self.AddStyledText('\0'.join(txt.encode('utf-8'))+'\0')
+        else:
+            self.AppendText(txt)
         self.GotoPos(self.GetLength())
         self._updates = list()
         self.ApplyStyles(start, txt)
@@ -306,14 +312,17 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
         self.DoHotSpotClicked(pos, self.LineFromPosition(pos))
 
     #---- Public Member Functions ----#
+
     def AppendUpdate(self, value):
         """Buffer output before adding to window. This method can safely be
         called from non gui threads to add updates to the buffer, that will
-        be displayed durning the next idle period.
+        be displayed during the next idle period.
         @param value: update string to append to stack
 
         """
         self._updating.acquire()
+        if not (type(value) is types.UnicodeType):
+            value = value.decode(sys.getfilesystemencoding())
         self._updates.append(value)
         self._updating.release()
 
@@ -362,7 +371,7 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
     def DoUpdatesEmpty(self):
         """Called when update stack is empty
         Override this function to perform actions when there are no updates
-        to process. It can be used for things such as temporarly stopping
+        to process. It can be used for things such as temporarily stopping
         the timer or performing idle processing.
 
         """
@@ -424,6 +433,13 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
         """
         return wx.Colour(*self._colors['warnf'])
 
+    def GetUpdateQueue(self):
+        """Gets a copy of the current update queue"""
+        self._updating.acquire()
+        val = list(self._updates)
+        self._updating.release()
+        return val
+
     def IsRunning(self):
         """Return whether the buffer is running and ready for output
         @return: bool
@@ -437,9 +453,8 @@ class OutputBuffer(wx.stc.StyledTextCtrl):
                return quickly to avoid blocking the ui.
 
         """
-        ind = len(self._updates)
-        if ind:
-            self.__FlushBuffer()
+        if len(self._updates):
+            self.FlushBuffer()
         elif evt is not None:
             self.DoUpdatesEmpty()
         else:
@@ -605,7 +620,7 @@ class ProcessBufferMixin:
         """Override this method to do an filtering on input that is sent to
         the buffer from the process text. The return text is what is put in
         the buffer.
-        @param txt: incoming udpate text
+        @param txt: incoming update text
         @return: string
 
         """
@@ -632,7 +647,7 @@ class ProcessBufferMixin:
         self.Stop()
 
     def DoProcessStart(self, cmd=''):
-        """Override this method to do any pre processing before starting
+        """Override this method to do any pre-processing before starting
         a processes output.
         @keyword cmd: Command used to start program
         @return: None
@@ -651,58 +666,26 @@ class ProcessBufferMixin:
 
 #-----------------------------------------------------------------------------#
 
-class ProcessThread(threading.Thread):
-    """Run a subprocess in a separate thread. Thread posts events back
-    to parent object on main thread for processing in the ui.
-    @see: EVT_PROCESS_START, EVT_PROCESS_END, EVT_UPDATE_TEXT
+class ProcessThreadBase(threading.Thread):
+    """Base Process Thread
+    Override DoPopen in subclasses.
 
     """
-    def __init__(self, parent, command, fname='',
-                 args=list(), cwd=None, env=dict(),
-                 use_shell=True):
-        """Initialize the ProcessThread object
-        Example:
-          >>> myproc = ProcessThread(myframe, '/usr/local/bin/python',
-                                     'hello.py', '--version', '/Users/me/home/')
-          >>> myproc.start()
-
-        @param parent: Parent Window/EventHandler to receive the events
-                       generated by the process.
-        @param command: Command string to execute as a subprocess.
-        @keyword fname: Filename or path to file to run command on.
-        @keyword args: Argument list or string to pass to use with fname arg.
-        @keyword cwd: Directory to execute process from or None to use current
-        @keyword env: Environment to run the process in (dictionary) or None to
-                      use default.
-        @keyword use_shell: Specify whether a shell should be used to launch 
-                            program or run directly
-
-        """
-        threading.Thread.__init__(self)
-
-        if isinstance(args, list):
-            args = u' '.join([arg.strip() for arg in args])
+    def __init__(self, parent):
+        super(ProcessThreadBase, self).__init__()
 
         # Attributes
         self.abort = False          # Abort Process
-        self._proc = None           # Process handle
+        self._proc = None
         self._parent = parent       # Parent Window/Event Handler
-        self._cwd = cwd             # Path at which to run from
-        self._cmd = dict(cmd=command, file=fname, args=args)
-        self._use_shell = use_shell
         self._sig_abort = signal.SIGTERM    # default signal to kill process
+        self._last_cmd = u""        # Last run command
 
-        # Make sure the environment is sane it must be all strings
-        nenv = dict(env) # make a copy to manipulate
-        for k, v in env.iteritems():
-            if isinstance(v, types.UnicodeType):
-                nenv[k] = v.encode(sys.getfilesystemencoding())
-            elif not isinstance(v, basestring):
-                nenv.pop(k)
-        self._env = nenv
-
-        # Setup
-        self.setDaemon(True)
+    #---- Properties ----#
+    LastCommand = property(lambda self: self._last_cmd,
+                           lambda self, val: setattr(self, '_last_cmd', val)) 
+    Parent = property(lambda self: self._parent)
+    Process = property(lambda self: self._proc)
 
     def __DoOneRead(self):
         """Read one line of output and post results.
@@ -728,7 +711,7 @@ class ProcessThread(threading.Thread):
                     else:
                         # Process has Exited
                         return False
-            except ValueError:
+            except ValueError, msg:
                 return False
             except (subprocess.pywintypes.error, Exception), msg:
                 if msg[0] in (109, errno.ESHUTDOWN):
@@ -764,9 +747,12 @@ class ProcessThread(threading.Thread):
         except UnicodeDecodeError:
             result = os.linesep
 
-        evt = OutputBufferEvent(edEVT_UPDATE_TEXT, self._parent.GetId(), result)
-        wx.PostEvent(self._parent, evt)
-        return True
+        if self.Parent:
+            evt = OutputBufferEvent(edEVT_UPDATE_TEXT, self.Parent.GetId(), result)
+            wx.PostEvent(self.Parent, evt)
+            return True
+        else:
+            return False # Parent is dead no need to keep running
 
     def __KillPid(self, pid):
         """Kill a process by process id, causing the run loop to exit
@@ -819,6 +805,14 @@ class ProcessThread(threading.Thread):
         self._sig_abort = sig
         self.abort = True
 
+    def DoPopen(self):
+        """Open the process
+        Override in a subclass to implement custom process opening
+        @return: subprocess.Popen instance
+
+        """
+        raise NotImplementedError("Must implement DoPopen in subclasses!")
+
     def run(self):
         """Run the process until finished or aborted. Don't call this
         directly instead call self.start() to start the thread else this will
@@ -826,48 +820,28 @@ class ProcessThread(threading.Thread):
         @note: overridden from Thread
 
         """
-        # using shell, Popen will need a string, else it must be a sequence
-        # use shlex for complex command line tokenization/parsing
-        command = u' '.join([item.strip() for item in [self._cmd['cmd'],
-                                                       self._cmd['file'],
-                                                       self._cmd['args']]])
-        command = command.strip()
-        if not self._use_shell and not subprocess.mswindows:
-            # shlex does not support unicode
-            command = shlex.split(command.encode(sys.getfilesystemencoding()))
-
-        if sys.platform.lower().startswith('win'):            
-            suinfo = subprocess.STARTUPINFO()
-            suinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        else:
-            suinfo = None
-        
         err = None
         try:
-            self._proc = subprocess.Popen(command,
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.STDOUT,
-                                          shell=self._use_shell,
-                                          cwd=self._cwd,
-                                          env=self._env,
-                                          startupinfo=suinfo)
+            self._proc = self.DoPopen()
         except OSError, msg:
             # NOTE: throws WindowsError on Windows which is a subclass of
             #       OSError, so it will still get caught here.
-            err =  OutputBufferEvent(edEVT_PROCESS_ERROR,
-                                     self._parent.GetId(),
-                                     OPB_ERROR_INVALID_COMMAND)
-            err.SetErrorMessage(msg)
+            if self.Parent:
+                err =  OutputBufferEvent(edEVT_PROCESS_ERROR,
+                                         self.Parent.GetId(),
+                                         OPB_ERROR_INVALID_COMMAND)
+                err.SetErrorMessage(msg)
 
-        evt = OutputBufferEvent(edEVT_PROCESS_START,
-                                self._parent.GetId(),
-                                command)
-        wx.PostEvent(self._parent, evt)
+        if self.Parent:
+            evt = OutputBufferEvent(edEVT_PROCESS_START,
+                                    self.Parent.GetId(),
+                                    self.LastCommand)
+            wx.PostEvent(self.Parent, evt)
 
         # Read from stdout while there is output from process
         while not err and True:
             if self.abort:
-                self.__KillPid(self._proc.pid)
+                self.__KillPid(self.Process.pid)
                 self.__DoOneRead()
                 more = False
                 break
@@ -877,7 +851,7 @@ class ProcessThread(threading.Thread):
                     more = self.__DoOneRead()
                 except wx.PyDeadObjectError:
                     # Our parent window is dead so kill process and return
-                    self.__KillPid(self._proc.pid)
+                    self.__KillPid(self.Process.pid)
                     return
 
                 if not more:
@@ -885,18 +859,122 @@ class ProcessThread(threading.Thread):
 
         # Notify of error in running the process
         if err is not None:
-            wx.PostEvent(self._parent, err)
+            if self.Parent:
+                wx.PostEvent(self.Parent, err)
             result = -1
         else:
             try:
-                result = self._proc.wait()
+                result = self.Process.wait()
             except OSError:
                 result = -1
 
         # Notify that process has exited
         # Pack the exit code as the events value
-        evt = OutputBufferEvent(edEVT_PROCESS_EXIT, self._parent.GetId(), result)
-        wx.PostEvent(self._parent, evt)
+        if self.Parent:
+            evt = OutputBufferEvent(edEVT_PROCESS_EXIT, self.Parent.GetId(), result)
+            wx.PostEvent(self.Parent, evt)
+
+class ProcessThread(ProcessThreadBase):
+    """Run a subprocess in a separate thread. Thread posts events back
+    to parent object on main thread for processing in the ui.
+    @see: EVT_PROCESS_START, EVT_PROCESS_END, EVT_UPDATE_TEXT
+
+    """
+    def __init__(self, parent, command, fname='',
+                 args=list(), cwd=None, env=dict(),
+                 use_shell=True):
+        """Initialize the ProcessThread object
+        Example:
+          >>> myproc = ProcessThread(myframe, '/usr/local/bin/python',
+                                     'hello.py', '--version', '/Users/me/home/')
+          >>> myproc.start()
+
+        @param parent: Parent Window/EventHandler to receive the events
+                       generated by the process.
+        @param command: Command string to execute as a subprocess.
+        @keyword fname: Filename or path to file to run command on.
+        @keyword args: Argument list or string to pass to use with fname arg.
+        @keyword cwd: Directory to execute process from or None to use current
+        @keyword env: Environment to run the process in (dictionary) or None to
+                      use default.
+        @keyword use_shell: Specify whether a shell should be used to launch 
+                            program or run directly
+
+        """
+        super(ProcessThread, self).__init__(parent)
+
+        if isinstance(args, list):
+            args = u' '.join([arg.strip() for arg in args])
+
+        # Attributes
+        self._cwd = cwd             # Path at which to run from
+        self._cmd = dict(cmd=command, file=fname, args=args)
+        self._use_shell = use_shell
+
+        # Make sure the environment is sane it must be all strings
+        nenv = dict(env) # make a copy to manipulate
+        for k, v in env.iteritems():
+            if isinstance(v, types.UnicodeType):
+                nenv[k] = v.encode(sys.getfilesystemencoding())
+            elif not isinstance(v, basestring):
+                nenv.pop(k)
+        self._env = nenv
+
+        # Setup
+        self.setDaemon(True)
+
+    def DoPopen(self):
+        """Open the process
+        @return: subprocess.Popen instance
+
+        """
+        # using shell, Popen will need a string, else it must be a sequence
+        # use shlex for complex command line tokenization/parsing
+        command = u' '.join([item.strip() for item in [self._cmd['cmd'],
+                                                       self._cmd['file'],
+                                                       self._cmd['args']]])
+        command = command.strip()
+        # TODO: exception handling and notification to main thread
+        #       when encoding fails.
+        command = command.encode(sys.getfilesystemencoding())
+        if not self._use_shell and not subprocess.mswindows:
+            # Note: shlex does not support Unicode
+            command = shlex.split(command)
+
+        # TODO: if a file path to the exe has any spaces in it on Windows
+        #       and use_shell is True then the command will fail. Must force
+        #       to False under this condition.
+        use_shell = self._use_shell
+        # TODO: See about supporting use_shell on Windows it causes lots of
+        #       issues with gui apps and killing processes when it is True.
+        if use_shell and subprocess.mswindows:
+            suinfo = subprocess.STARTUPINFO()
+            # Don't set this flag if we are not using the shell on
+            # Windows as it will cause any gui app to not show on the
+            # display!
+            #TODO: move this into common library as it is needed
+            #      by most code that uses subprocess
+            if hasattr(subprocess, 'STARTF_USESHOWWINDOW'):
+                suinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            else:
+                try:
+                    from win32process import STARTF_USESHOWWINDOW
+                    suinfo.dwFlags |= STARTF_USESHOWWINDOW
+                except ImportError:
+                    # Give up and try hard coded value from Windows.h
+                    suinfo.dwFlags |= 0x00000001
+        else:
+            suinfo = None
+        
+        proc = subprocess.Popen(command,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                shell=use_shell,
+                                cwd=self._cwd,
+                                env=self._env,
+                                startupinfo=suinfo)
+        self.LastCommand = command # Set last run command
+        return proc
 
     def SetArgs(self, args):
         """Set the args to pass to the command
@@ -916,7 +994,7 @@ class ProcessThread(threading.Thread):
 
     def SetFilename(self, fname):
         """Set the filename to run the command on
-        @param fname: string or unicode
+        @param fname: string or Unicode
 
         """
         self._cmd['file'] = fname
@@ -929,12 +1007,36 @@ class TaskThread(threading.Thread):
         """Initialize the TaskThread. All *args and **kwargs are passed
         to the task.
 
-        @param parent: Parent Window/EventHandler to recieve the events
+        @param parent: Parent Window/EventHandler to receive the events
                        generated by the process.
         @param task: callable should be a generator object and must be iterable
 
         """
-        threading.Thread.__init__(self)
+        super(TaskThread, self).__init__()
+        assert isinstance(parent, OutputBuffer)
+
+        self._task = TaskObject(parent, task, *args, **kwargs)
+
+    def run(self):
+        self._task.DoTask()
+
+    def Cancel(self):
+        self._task.Cancel()
+
+class TaskObject(object):
+    """Run a task in its own thread."""
+    def __init__(self, parent, task, *args, **kwargs):
+        """Initialize the TaskObject. All *args and **kwargs are passed
+        to the task.
+
+        @param parent: Parent Window/EventHandler to receive the events
+                       generated by the process.
+        @param task: callable should be a generator object and must be iterable
+
+        """
+        super(TaskObject, self).__init__()
+
+        assert isinstance(parent, OutputBuffer)
 
         # Attributes
         self.cancel = False         # Abort task
@@ -943,9 +1045,9 @@ class TaskThread(threading.Thread):
         self._args = args
         self._kwargs = kwargs
 
-    def run(self):
+    def DoTask(self):
         """Start running the task"""
-        # Notify that task is begining
+        # Notify that task is beginning
         evt = OutputBufferEvent(edEVT_TASK_START, self._parent.GetId())
         wx.PostEvent(self._parent, evt)
         time.sleep(.5) # Give the event a chance to be processed

@@ -14,46 +14,29 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 64553 2010-06-10 13:17:16Z CJP $"
-__revision__ = "$Revision: 64553 $"
+__svnid__ = "$Id: ed_shelf.py 68233 2011-07-12 03:01:16Z CJP $"
+__revision__ = "$Revision: 68233 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import re
 import wx
 
-# Editra Libraries
+# Editra Imports
 import ed_menu
 import ed_glob
 from profiler import Profile_Get
 import ed_msg
 import plugin
 import iface
-import extern.aui as aui
+from extern import aui
+import ed_book
+import ebmlib
 
 #--------------------------------------------------------------------------#
 # Globals
-
 PGNUM_PAT = re.compile(' - [0-9]+')
 _ = wx.GetTranslation
-
-#-----------------------------------------------------------------------------#
-
-def mainwinonly(func):
-    """Decorator method to add guards for methods that require the parent
-    to be a MainWindow instance
-
-    """
-    def WrapMainWin(*args, **kwargs):
-        self = args[0]
-        if not hasattr(self._parent, 'GetFrameManager'):
-            return
-        else:
-            func(*args, **kwargs)
-
-    WrapMainWin.__name__ = func.__name__
-    WrapMainWin.__doc__ = func.__doc__
-    return WrapMainWin
 
 #-----------------------------------------------------------------------------#
 
@@ -64,20 +47,21 @@ class Shelf(plugin.Plugin):
     """
     SHELF_NAME = u'Shelf'
     observers = plugin.ExtensionPoint(iface.ShelfI)
-    delegate = None
 
-    def GetUiHandlers(self):
+    def GetUiHandlers(self, delegate):
         """Gets the update ui handlers for the shelf's menu
+        @param delegate: L{EdShelfDelegate} instance
         @return: [(ID, handler),]
 
         """
-        handlers = [ (item.GetId(), Shelf.delegate.UpdateShelfMenuUI)
+        handlers = [ (item.GetId(), delegate.UpdateShelfMenuUI)
                      for item in self.observers ]
         return handlers
 
     def Init(self, parent):
         """Mixes the shelf into the parent window
         @param parent: Reference to MainWindow
+        @return: L{EdShelfDelegate}
 
         """
         # First check if the parent has an instance already
@@ -89,8 +73,8 @@ class Shelf(plugin.Plugin):
         shelf = EdShelfBook(parent)
         mgr.AddPane(shelf,
                     wx.aui.AuiPaneInfo().Name(Shelf.SHELF_NAME).\
-                            Caption("Shelf").Bottom().Layer(0).\
-                            CloseButton(True).MaximizeButton(False).\
+                            Caption(_("Shelf")).Bottom().Layer(0).\
+                            CloseButton(True).MaximizeButton(True).\
                             BestSize(wx.Size(500,250)))
 
         # Hide the pane and let the perspective manager take care of it
@@ -98,17 +82,13 @@ class Shelf(plugin.Plugin):
         mgr.Update()
 
         # Create the delegate
-        # Parent MUST take ownership and clear the class variable before
-        # another call to Init is made.
         delegate = EdShelfDelegate(shelf, self)
-        assert Shelf.delegate is None, "Delegate not cleared!"
-        Shelf.delegate = delegate
 
         # Install Shelf menu under View and bind event handlers
         view = parent.GetMenuBar().GetMenuByName("view")
         menu = delegate.GetMenu()
         pos = 0
-        for pos in xrange(view.GetMenuItemCount()):
+        for pos in range(view.GetMenuItemCount()):
             mitem = view.FindItemByPosition(pos)
             if mitem.GetId() == ed_glob.ID_PERSPECTIVES:
                 break
@@ -130,11 +110,15 @@ class Shelf(plugin.Plugin):
                hasattr(observer, 'InstallComponents'):
                 observer.InstallComponents(parent)
 
-        delegate.StockShelf(Profile_Get('SHELF_ITEMS', 'list', []))
+        # Only Load Perspective if all items are loaded
+        if delegate.StockShelf(Profile_Get('SHELF_ITEMS', 'list', [])):
+            delegate.SetPerspective(Profile_Get('SHELF_LAYOUT', 'str', u""))
+            delegate.SetSelection(Profile_Get('SHELF_SELECTION', 'int', -1))
+        return delegate
 
 #--------------------------------------------------------------------------#
 
-class EdShelfBook(aui.AuiNotebook):
+class EdShelfBook(ed_book.EdBaseBook):
     """Shelf notebook control"""
     def __init__(self, parent):
         style = aui.AUI_NB_BOTTOM | \
@@ -143,42 +127,52 @@ class EdShelfBook(aui.AuiNotebook):
                 aui.AUI_NB_CLOSE_ON_ACTIVE_TAB | \
                 aui.AUI_NB_TAB_MOVE | \
                 aui.AUI_NB_DRAW_DND_TAB
-        if wx.Platform == '__WXMAC__':
-            style |= aui.AUI_NB_CLOSE_ON_TAB_LEFT
-        aui.AuiNotebook.__init__(self, parent, agwStyle=style)
+        super(EdShelfBook, self).__init__(parent, style=style)
 
         # Attributes
         self._parent = parent
         self._open = dict()
-        self._imgidx = dict()
-        self._imglst = wx.ImageList(16, 16)
         self._name2idx = dict() # For settings maintenance
+        self._menu = ebmlib.ContextMenuManager()
+        self._mcback = None
 
         # Setup
-        self.SetImageList(self._imglst)
         self.SetSashDClickUnsplit(True)
+
+        # Event Handlers
+        self.Bind(aui.EVT_AUINOTEBOOK_TAB_RIGHT_UP, self.OnRightUp)
+        self.Bind(aui.EVT_AUINOTEBOOK_BG_RIGHT_UP, self.OnRightUp)
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
 
         # Message handlers
         ed_msg.Subscribe(self.OnUpdateTabs, ed_msg.EDMSG_THEME_NOTEBOOK)
+        ed_msg.Subscribe(self.OnUpdateTabs, ed_msg.EDMSG_THEME_CHANGED)
 
-    def __del__(self):
-        ed_msg.Unsubscribe(self.OnUpdateTabs)
+    def OnDestroy(self, evt):
+        if evt.GetId() == self.GetId():
+            self._menu.Clear()
+            ed_msg.Unsubscribe(self.OnUpdateTabs)
+        evt.Skip()
 
-    @property
-    def ImgIdx(self):
-        return self._imgidx
+    def OnRightUp(self, evt):
+        """Show context menu"""
+        self._menu.Clear()
+        if self.MenuCallback:
+            self._menu.Menu = self.MenuCallback()
+            self.PopupMenu(self._menu.Menu)
 
-    @property
-    def ImageList(self):
-        return self._imglst
+    BitmapCallbacks = property(lambda self: self._name2idx)
+    MenuCallback = property(lambda self: self._mcback,
+                            lambda self, funct: setattr(self, '_mcback', funct))
 
-    def AddItem(self, item, name, imgid=-1):
+    def AddItem(self, item, name, bmp=wx.NullBitmap):
         """Add an item to the shelf's notebook. This is useful for interacting
         with the Shelf from outside its interface. It may be necessary to
         call L{EnsureShelfVisible} before or after adding an item if you wish
         the shelf to be shown when the item is added.
         @param item: A panel like instance to add to the shelf's notebook
         @param name: Items name used for page text in notebook
+        @keyword bmp: Tab bitmap to display
 
         """
         self.AddPage(item, 
@@ -186,12 +180,9 @@ class EdShelfBook(aui.AuiNotebook):
                      select=True)
 
         # Set the tab icon
-        self._name2idx[repr(item.__class__)] = imgid
-        if imgid >= 0 and Profile_Get('TABICONS', default=True):
-            self.SetPageImage(self.GetPageCount()-1, imgid)
+        self.SetPageBitmap(self.GetPageCount()-1, bmp)
         self._open[name] = self._open.get(name, 0) + 1
 
-    @mainwinonly
     def EnsureShelfVisible(self):
         """Make sure the Shelf is visible
         @precondition: Shelf.Init has been called
@@ -211,7 +202,7 @@ class EdShelfBook(aui.AuiNotebook):
 
         """
         count = 0
-        for page in xrange(self.GetPageCount()):
+        for page in range(self.GetPageCount()):
             if self.GetPageText(page).startswith(item_name):
                 count = count + 1
         return count
@@ -230,7 +221,6 @@ class EdShelfBook(aui.AuiNotebook):
         """
         return self._open
 
-    @mainwinonly
     def Hide(self):
         """Hide the shelf
         @postcondition: Shelf is hidden by aui manager
@@ -253,7 +243,6 @@ class EdShelfBook(aui.AuiNotebook):
                 return True
         return False
 
-    @mainwinonly
     def IsShown(self):
         """Is the shelf visible?
         @return: bool
@@ -270,13 +259,13 @@ class EdShelfBook(aui.AuiNotebook):
         """Update all tab images depending upon current settings"""
         if not Profile_Get('TABICONS', default=True):
             for page in range(self.GetPageCount()):
-                self.SetPageImage(page, -1)
+                self.SetPageBitmap(page, wx.NullBitmap)
         else:
             # Show the icons
             for pnum in range(self.GetPageCount()):
                 page = self.GetPage(pnum)
-                imgid = self._name2idx.get(repr(page.__class__), -1)
-                self.SetPageImage(pnum, imgid)
+                bmp = self.BitmapCallbacks.get(repr(page.__class__), lambda:wx.NullBitmap)()
+                self.SetPageBitmap(pnum, bmp)
 
 #--------------------------------------------------------------------------#
 
@@ -291,20 +280,23 @@ class EdShelfDelegate(object):
         @param pobject: Reference to the plugin object
 
         """
-        object.__init__(self)
+        super(EdShelfDelegate, self).__init__()
 
         # Attributes
         self._log = wx.GetApp().GetLog()
         self._shelf = shelf
         self._pin = pobject
 
+        # Setup
+        self._shelf.MenuCallback = getattr(self, 'GetShelfObjectMenu')
+
     @property
     def observers(self):
         return self._pin.observers
 
-    def AddItem(self, item, name, imgid=-1):
+    def AddItem(self, item, name, bmp=wx.NullBitmap):
         """Add an item to the shelf"""
-        self._shelf.AddItem(item, name, imgid)
+        self._shelf.AddItem(item, name, bmp)
 
     def CanStockItem(self, item_name):
         """See if a named item can be stocked or not, meaning if it
@@ -353,24 +345,44 @@ class EdShelfDelegate(object):
 
         """
         rval = list()
-        if self._shelf is None:
-            return rval
-
-        for page in xrange(self._shelf.GetPageCount()):
-            rval.append(re.sub(PGNUM_PAT, u'', 
-                        self._shelf.GetPageText(page), 1))
+        if self._shelf is not None:
+            for page in xrange(self._shelf.GetPageCount()):
+                rval.append(re.sub(PGNUM_PAT, u'', 
+                            self._shelf.GetPageText(page), 1))
         return rval
 
-    def GetMenu(self):
-        """Return the menu of this object
-        @return: ed_menu.EdMenu()
+    def GetSelection(self):
+        """Get the index of the currently selected tab"""
+        if self._shelf:
+            return self._shelf.GetSelection()
+        return -1
+
+    def GetPerspective(self):
+        """Get the auinotebook perspective data
+        @return: string
+
+        """
+        return self._shelf.SavePerspective()
+
+    def SetPerspective(self, pdata):
+        """Set the aui notebooks perspective and layout
+        @param pdata: perspective data string
+
+        """
+        if pdata:
+            try:
+                self._shelf.LoadPerspective(pdata)
+                self._shelf.Update()
+            except Exception, msg:
+                self._log("[shelf][err] Failed LoadPerspective: %s" % msg)
+
+    def GetShelfObjectMenu(self):
+        """Get the minimal menu that lists all Shelf objects
+        without the 'Show Shelf' item.
+        @return: ed_menu.EdMenu
 
         """
         menu = ed_menu.EdMenu()
-        menu.Append(ed_glob.ID_SHOW_SHELF, _("Show Shelf") + \
-                    ed_menu.EdMenuBar.keybinder.GetBinding(ed_glob.ID_SHOW_SHELF), 
-                    _("Show the Shelf"))
-        menu.AppendSeparator()
         menu_items = list()
         open_items = self._shelf.GetOpen()
         for observer in self.observers:
@@ -387,8 +399,25 @@ class EdShelfDelegate(object):
         combo = 0
         for item in menu_items:
             combo += 1
-            item[1].SetText(item[1].GetText() + "\tCtrl+Alt+" + str(combo))
-            menu.AppendItem(item[1])
+            shortcut = u""
+            if combo < 10:
+                shortcut = u"\tCtrl+Alt+" + unicode(combo)
+            nitem = menu.Append(item[1].Id, item[1].GetText() + shortcut)
+            if item[1].Bitmap.IsOk():
+                nitem.SetBitmap(item[1].Bitmap)
+            item[1].Destroy()
+        return menu
+
+    def GetMenu(self):
+        """Return the menu of this object
+        @return: ed_menu.EdMenu()
+
+        """
+        menu = self.GetShelfObjectMenu()
+        menu.Insert(0, wx.ID_SEPARATOR)
+        menu.Insert(0, ed_glob.ID_SHOW_SHELF, _("Show Shelf") + \
+                    ed_menu.EdMenuBar.keybinder.GetBinding(ed_glob.ID_SHOW_SHELF), 
+                    _("Show the Shelf"))
         return menu
 
     def GetOwnerWindow(self):
@@ -401,7 +430,7 @@ class EdShelfDelegate(object):
 
     def GetWindow(self):
         """Return reference to the Shelfs window component
-        @return: FlatnoteBook
+        @return: AuiNotebook
 
         """
         return self._shelf
@@ -461,18 +490,14 @@ class EdShelfDelegate(object):
             return
         else:
             self.EnsureShelfVisible()
-            item_id = item.GetId()
-            index = -1
+            window = item.CreateItem(self._shelf)
+            bmp = wx.NullBitmap
             if hasattr(item, 'GetBitmap'):
-                if item_id in self._shelf.ImgIdx:
-                    index = self._shelf.ImgIdx[item_id]
-                else:
-                    bmp = item.GetBitmap()
-                    if bmp.IsOk():
-                        index = self._shelf.ImageList.Add(bmp)
-                        self._shelf.ImgIdx[item_id] = index
-
-            self.AddItem(item.CreateItem(self._shelf), name, index)
+                self._shelf.BitmapCallbacks[repr(window.__class__)] = item.GetBitmap
+                bmp = item.GetBitmap()
+            else:
+                self._shelf.BitmapCallbacks[repr(window.__class__)] = lambda:wx.NullBitmap
+            self.AddItem(window, name, bmp)
 
     def RaiseItem(self, item_name):
         """Set the selection in the notebook to be the that of the first
@@ -495,7 +520,7 @@ class EdShelfDelegate(object):
         @return: reference to the selected page or None if no instance is
 
         """
-        for page in xrange(self._shelf.GetPageCount()):
+        for page in range(self._shelf.GetPageCount()):
             ctrl = self._shelf.GetPage(page)
             if window == ctrl:
                 self._shelf.SetSelection(page)
@@ -503,17 +528,35 @@ class EdShelfDelegate(object):
         else:
             return None
 
+    def SetSelection(self, index):
+        """Select an item in the Shelf window
+        @param index: shelf tab index
+
+        """
+        if self._shelf and index > 0 and index < self._shelf.GetPageCount():
+            try:
+                self._shelf.SetSelection(index)
+            except Exception, msg:
+                self._log("[shelf][err] Failed SetSelection: %s" % msg)
+
     def StockShelf(self, i_list):
         """Fill the shelf by opening an ordered list of items
         @param i_list: List of named L{ShelfI} instances
         @type i_list: list of strings
+        @return: bool (True if all loaded / False otherwise)
 
         """
+        bLoaded = True
         for item in i_list:
             if self.CanStockItem(item):
                 itemid = self.GetItemId(item)
                 if itemid:
                     self.PutItemOnShelf(itemid)
+                else:
+                    bLoaded = False
+            else:
+                bLoaded = False
+        return bLoaded
 
     def UpdateShelfMenuUI(self, evt):
         """Enable/Disable shelf items based on whether they support

@@ -18,8 +18,8 @@ list all encodings found on the system using their normalized names.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: encdlg.py 59552 2009-03-15 06:31:10Z CJP $"
-__revision__ = "$Revision: 59552 $"
+__svnid__ = "$Id: encdlg.py 65202 2010-08-06 15:49:23Z CJP $"
+__revision__ = "$Revision: 65202 $"
 
 __all__ = ['EncodingDialog', 'GetAllEncodings']
 
@@ -64,8 +64,8 @@ class EncodingDialog(choicedlg.ChoiceDialog):
         else:
             sel = locale.getpreferredencoding(False)
 
-        choicedlg.ChoiceDialog.__init__(self, parent, id, msg, title,
-                                        elist, sel, pos, size, style)
+        super(EncodingDialog, self).__init__(parent, id, msg, title,
+                                             elist, sel, pos, size, style)
 
     def GetEncoding(self):
         """Get the selected encoding
@@ -89,11 +89,3 @@ def GetAllEncodings():
     return elist
 
 #--------------------------------------------------------------------------#
-
-# Test
-if __name__ == '__main__':
-    app = wx.App(False)
-    dlg = EncodingDialog(None, msg="Choose an Encoding",
-                         title="Encodings", default="utf-8")
-    dlg.ShowModal()
-    print dlg, dlg.GetEncoding()

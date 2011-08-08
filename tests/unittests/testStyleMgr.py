@@ -9,11 +9,13 @@
 """Unittest cases for testing the StyleManager"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testStyleMgr.py 62714 2009-11-25 22:53:32Z CJP $"
-__revision__ = "$Revision: 62714 $"
+__svnid__ = "$Id: testStyleMgr.py 67609 2011-04-26 19:47:25Z CJP $"
+__revision__ = "$Revision: 67609 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import os
+import types
 import wx
 import unittest
 
@@ -28,11 +30,11 @@ import ed_style
 
 class StyleMgrTest(unittest.TestCase):
     def setUp(self):
-        self.app = common.EdApp(False)
         self.mgr = ed_style.StyleMgr()
         self.dd = dict(ed_style.DEF_STYLE_DICT)
         self.bstr = ["fore:#000000", "back:#FFFFFF",
                      "face:%(primary)s", "size:%(size)d"]
+        self.stylesheet = common.GetDataFilePath('no_whitespace_style.ess')
 
     def tearDown(self):
         pass
@@ -62,7 +64,7 @@ class StyleMgrTest(unittest.TestCase):
         ditem = self.mgr.GetItemByName("default_style")
         self.assertTrue(ditem.IsOk(), "The default_style item is not OK")
 
-        # Check getting a non existant style tag
+        # Check getting a non existent style tag
         fake = self.mgr.GetItemByName("fakestyletag")
         self.assertFalse(fake.IsOk(), "The fake tag is not empty: %s" % str(fake))
 
@@ -184,3 +186,81 @@ class StyleMgrTest(unittest.TestCase):
                           "%s != %s" % (citem, item))
         self.assertFalse(self.mgr.SetStyleTag('default_style', self.bstr),
                          "SetStyleTag allowed setting of a list!")
+
+    def testParseStyleData(self):
+        """Test parsing Editra Style Sheets"""
+        # Test valid style sheet
+        data = common.GetFileContents(self.stylesheet)
+        styledict = self.mgr.ParseStyleData(data)
+        for tag, item in styledict.iteritems():
+            self.assertTrue(isinstance(tag, types.UnicodeType), "%s Is not Unicode!" % tag)
+            self.assertTrue(isinstance(item, ed_style.StyleItem))
+        # Test loading sheet with malformed data
+        sheet_path = common.GetDataFilePath('incorrect_syntax.ess')
+        data = common.GetFileContents(sheet_path)
+        styledict2 = self.mgr.ParseStyleData(data)
+        self.assertTrue(len(styledict) > len(styledict2))
+        for tag, item in styledict2.iteritems():
+            self.assertTrue(isinstance(tag, types.UnicodeType), "%s Is not Unicode!" % tag)
+            self.assertTrue(isinstance(item, ed_style.StyleItem))
+        # Test stylesheet that is all on one line
+        sheet_path = common.GetDataFilePath('one_liner.ess')
+        data = common.GetFileContents(sheet_path)
+        styledict3 = self.mgr.ParseStyleData(data)
+        for tag, item in styledict3.iteritems():
+            self.assertTrue(isinstance(tag, types.UnicodeType), "%s Is not Unicode!" % tag)
+            self.assertTrue(isinstance(item, ed_style.StyleItem))
+
+    def testPackStyleSet(self):
+        """Test packing an incomplete style set"""
+        ## TEST 1 - loading and packing sheet that does not define whitespace_style
+        data = common.GetFileContents(self.stylesheet)
+        styledict = self.mgr.ParseStyleData(data)
+        self.assertTrue('whitespace_style' not in styledict)
+        default = styledict.get('default_style')
+        self.assertTrue(isinstance(default, ed_style.StyleItem))
+        # Pack the Style Set
+        styledict = self.mgr.PackStyleSet(styledict)
+        self.assertTrue('whitespace_style' in styledict)
+        whitestyle = styledict.get('whitespace_style')
+        self.assertTrue(whitestyle == default)
+        ## END TEST 1
+
+    def testValidateColourData(self):
+        """Validate that colour data is getting parsed correctly"""
+        sheet_path = common.GetDataFilePath('old_format.ess')
+        data = common.GetFileContents(sheet_path)
+        styledict = self.mgr.ParseStyleData(data)
+        styledict = self.mgr.PackStyleSet(styledict)
+        for tag, item in styledict.iteritems():
+            self.doValidateColourAttrs(tag, item)
+
+    def doValidateColourAttrs(self, tag, item):
+        """validate the colour attributes on an item"""
+        if not item.IsNull():
+            try:
+                int(item.GetFore()[1:], 16)
+                int(item.GetBack()[1:], 16)
+            except Exception, msg:
+                self.assertFalse(True, "Bad data in style item: %s:%s" % (tag,item))
+
+    def testValidateBuiltinStyleSheets(self):
+        """Validate formatting and parsing of all builtin style sheets"""
+        sdir = common.GetStylesDir()
+        for sheet in [os.path.join(sdir, f) for f in os.listdir(sdir)
+                      if f.endswith('.ess')]:
+            data = common.GetFileContents(sheet)
+            styledict = self.mgr.ParseStyleData(data)
+            styledict = self.mgr.PackStyleSet(styledict)
+            for tag, item in styledict.iteritems():
+                self.doValidateColourAttrs(tag, item)
+                mods = item.GetModifierList()
+                if len(mods):
+                    for mod in mods:
+                        self.assertTrue(mod in ('eol', 'bold', 'italic', 'underline'))
+                isize = item.GetSize()
+                if len(isize): # Null items such as select_style dont set this attr
+                    self.assertTrue(isize.isdigit() or 
+                                    (isize.startswith("%(") and isize.endswith(")d")),
+                                    "Bad font size specification %s:%s:%s" % (sheet, tag, repr(isize)))
+                # TODO: Fonts

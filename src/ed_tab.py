@@ -15,12 +15,12 @@ notebook.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_tab.py 63569 2010-02-28 07:50:05Z CJP $"
-__revision__ = "$Revision: 63569 $"
+__svnid__ = "$Id: ed_tab.py 67542 2011-04-19 00:26:29Z CJP $"
+__revision__ = "$Revision: 67542 $"
 
 #--------------------------------------------------------------------------#
 # Imports
-
+import wx
 
 #--------------------------------------------------------------------------#
 
@@ -32,7 +32,7 @@ class EdTabBase(object):
     """
     def __init__(self):
         """Initialize the tab base class"""
-        object.__init__(self)
+        super(EdTabBase, self).__init__()
 
         # Attributes
         self._lbl = u''
@@ -74,6 +74,13 @@ class EdTabBase(object):
 
         """
         raise NotImplementedError, "GetName Must be implemented!!"
+
+    def GetTabImage(self):
+        """Get the Bitmap to use for the tab
+        @return: wx.Bitmap (16x16)
+
+        """
+        return wx.NullBitmap
 
     def GetTabMenu(self):
         """Get the context menu to show on the tab

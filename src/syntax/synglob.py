@@ -18,8 +18,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synglob.py 63788 2010-03-30 01:16:28Z CJP $"
-__revision__ = "$Revision: 63788 $"
+__svnid__ = "$Id: synglob.py 66605 2011-01-06 00:55:52Z CJP $"
+__revision__ = "$Revision: 66605 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -39,15 +39,18 @@ FEATURE_STYLETEXT = u"StyleText"
 
 # Maps file types to syntax definitions
 LANG_MAP = {LANG_4GL    : (ID_LANG_4GL,       '_progress'),
+            LANG_DSP56K : (ID_LANG_DSP56K,    '_asm68k'),
             LANG_68K    : (ID_LANG_68K,       '_asm68k'),
             LANG_ADA    : (ID_LANG_ADA,       '_ada'),
             LANG_APACHE : (ID_LANG_APACHE,    '_apache'),
             LANG_AS     : (ID_LANG_AS,        '_actionscript'),
+            LANG_ASM    : (ID_LANG_ASM,       '_asm'),
             LANG_BASH   : (ID_LANG_BASH,      '_sh'),
             LANG_BATCH  : (ID_LANG_BATCH,     '_batch'),
             LANG_BOO    : (ID_LANG_BOO,       '_boo'),
             LANG_C      : (ID_LANG_C,         '_cpp'),
             LANG_CAML   : (ID_LANG_CAML,      '_caml'),
+            LANG_CILK   : (ID_LANG_CILK,      '_cpp'),
             LANG_COBRA  : (ID_LANG_COBRA,     '_cobra'),
             LANG_COLDFUSION : (ID_LANG_COLDFUSION, '_html'),
             LANG_CPP    : (ID_LANG_CPP,    '_cpp'),
@@ -88,9 +91,11 @@ LANG_MAP = {LANG_4GL    : (ID_LANG_4GL,       '_progress'),
             LANG_MSSQL  : (ID_LANG_MSSQL,  '_mssql'),
             LANG_NASM   : (ID_LANG_NASM,   '_nasm'),
             LANG_NEWLISP: (ID_LANG_NEWLISP,'_lisp'),
+            LANG_NONMEM : (ID_LANG_NONMEM, '_nonmem'),
             LANG_NSIS   : (ID_LANG_NSIS,   '_nsis'),
             LANG_OBJC   : (ID_LANG_OBJC,   '_cpp'),
             LANG_OCTAVE : (ID_LANG_OCTAVE, '_matlab'),
+            LANG_OOC    : (ID_LANG_OOC,    '_ooc'),
             LANG_PASCAL : (ID_LANG_PASCAL, '_pascal'),
             LANG_PERL   : (ID_LANG_PERL,   '_perl'),
             LANG_PHP    : (ID_LANG_PHP,    '_php'),

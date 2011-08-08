@@ -3,7 +3,7 @@
 # Purpose: Editra's style management system. Implements the interpretation of #
 #          Editra Style Sheets to the StyledTextCtrl.                         #
 # Author: Cody Precord <cprecord@editra.org>                                  #
-# Copyright: (c) 2008 Cody Precord <staff@editra.org>                         #
+# Copyright: (c) 2008-2011 Cody Precord <staff@editra.org>                    #
 # License: wxWindows License                                                  #
 ###############################################################################
 
@@ -12,7 +12,7 @@ Provides a system for managing styles in the text control. Compiles the data
 in an Editra Style Sheet to a format that Scintilla can understand. The
 specification of Editra Style Sheets that this module implements can be found
 either in the _docs_ folder of the source distribution or on Editra's home page
-U{http://editra.org/?page=docs&doc=ess_spec}.
+U{http://editra.org/editra_style_sheets}.
 
 @summary: Style management system for managing the syntax highlighting of all
           buffers
@@ -20,11 +20,11 @@ U{http://editra.org/?page=docs&doc=ess_spec}.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_style.py 63701 2010-03-18 02:33:00Z CJP $"
-__revision__ = "$Revision: 63701 $"
+__svnid__ = "$Id: ed_style.py 67815 2011-05-31 19:08:47Z CJP $"
+__revision__ = "$Revision: 67815 $"
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Imports
 import os
 import re
 import wx
@@ -36,8 +36,8 @@ from profiler import Profile_Get, Profile_Set
 import eclib
 
 # Globals
-STY_ATTRIBUTES     = u"face fore back size modifiers"
-STY_EX_ATTRIBUTES  = u"eol bold italic underline"
+STY_ATTRIBUTES     = (u"face", u"fore", u"back", u"size", u"modifiers")
+STY_EX_ATTRIBUTES  = (u"eol", u"bold", u"italic", u"underline")
 
 # Parser Values
 RE_ESS_COMMENT = re.compile("\/\*[^*]*\*+([^/][^*]*\*+)*\/")
@@ -47,13 +47,7 @@ RE_HEX_STR = re.compile("#[0-9a-fA-F]{3,6}")
 #--------------------------------------------------------------------------#
 
 class StyleItem(object):
-    """A storage class for holding styling information
-    @todo: The extra Attributes should be saved as a separate attribute in the
-           StyleItem. This currently causes problems when customizing values in
-           the StyleEditor. Changing this is fairly easy in this class but it
-           will require changes to the StyleMgr and Editor as well.
-
-    """
+    """A storage class for holding styling information """
     __slots__ = ('null', 'fore', 'face', 'back', 'size', '_exattr')
     def __init__(self, fore=u"", back=u"", face=u"", size=u"", ex=None):
         """Initializes the Style Object.
@@ -74,11 +68,8 @@ class StyleItem(object):
             - ex            = bold underline italic eol
 
         """
-        object.__init__(self)
+        super(StyleItem, self).__init__()
 
-        # Workaround for issue of using a list as a default parameter
-        # was retaining values from previous calls for some yet to
-        # determine reasons.
         if ex is None:
             ex = list()
             
@@ -90,20 +81,29 @@ class StyleItem(object):
         self.size = size     # Font point size
         self._exattr = ex    # Extra attributes
 
-    def __eq__(self, si2):
+    def __eq__(self, other):
         """Defines the == operator for the StyleItem Class
         @param si2: style item to compare to
         @return: whether the two items are equal
         @rtype: bool
 
         """
-        return str(self) == str(si2)
+        return unicode(self) == unicode(other)
+
+    def __ne__(self, other):
+        """Defines != operator for the StyleItem Class"""
+        return unicode(self) != unicode(other)
 
     def __str__(self):
-        """Converts StyleItem to a string
+        """Convert StyleItem to string"""
+        uni = unicode(self)
+        return uni.encode('utf-8')
+
+    def __unicode__(self):
+        """Converts StyleItem to Unicode
         @note: This return string is in a format that can be accepted by
                Scintilla. No spaces may be in the string after the ':'.
-        @return: string representation of the StyleItem
+        @return: Unicode representation of the StyleItem
 
         """
         style_str = list()
@@ -114,13 +114,22 @@ class StyleItem(object):
         if self.face:
             style_str.append(u"face:%s" % self.face)
         if self.size:
-            style_str.append(u"size:%s" % str(self.size))
-        if len(self._exattr): 
+            style_str.append(u"size:%s" % unicode(self.size))
+        if len(self._exattr):
             style_str.append(u"modifiers:" +  u','.join(self._exattr))
 
         style_str = u",".join(style_str)
         return style_str.rstrip(u",")
 
+    def Clone(self):
+        """Make and return a copy of this object"""
+        nitem = StyleItem(self.fore, self.back,
+                          self.face, self.size,
+                          self._exattr)
+        if self.null:
+            nitem.Nullify()
+        return nitem
+        
     #---- Get Functions ----#
     def GetAsList(self):
         """Returns a list of attr:value strings
@@ -171,7 +180,7 @@ class StyleItem(object):
         @return: string
 
         """
-        return ",".join(self.GetModifierList())
+        return u",".join(self.GetModifierList())
 
     def GetModifierList(self):
         """Get the list of modifiers
@@ -201,7 +210,7 @@ class StyleItem(object):
         @return: bool
 
         """
-        return len(self.__str__())
+        return len(unicode(self))
 
     def Nullify(self):
         """Clear all values and set item as Null
@@ -210,7 +219,7 @@ class StyleItem(object):
         """
         self.null = True
         for attr in ('fore', 'face', 'back', 'size'):
-            setattr(self, attr, '')
+            setattr(self, attr, u'')
         self._exattr = list()
 
     #---- Set Functions ----#
@@ -229,7 +238,7 @@ class StyleItem(object):
             attrib = atom.split(u':')
             if len(attrib) == 2 and attrib[0] in STY_ATTRIBUTES:
                 last_set = attrib[0]
-                if last_set == "modifiers":
+                if last_set == u"modifiers":
                     self.SetExAttr(attrib[1])
                 else:
                     setattr(self, attrib[0], attrib[1])
@@ -289,7 +298,7 @@ class StyleItem(object):
         self.null = False
         if size is None:
             size = u''
-        self.size = str(size)
+        self.size = unicode(size)
         if ex and ex not in self._exattr:
             self._exattr.append(ex)
 
@@ -344,7 +353,7 @@ class StyleMgr(object):
     modifying styles during run time.
 
     """
-    STYLES         = dict()         # Cache for loaded style set(s)
+    STYLES         = dict()         # Static cache for loaded style set(s)
     FONT_PRIMARY   = u"primary"
     FONT_SECONDARY = u"secondary"
     FONT_SIZE      = u"size"
@@ -356,7 +365,7 @@ class StyleMgr(object):
         @keyword custom: path to custom style sheet to use
 
         """
-        object.__init__(self)
+        super(StyleMgr, self).__init__()
 
         # Attributes
         self.fonts = self.GetFontDictionary()
@@ -381,25 +390,23 @@ class StyleMgr(object):
         """
         sty_dict = dict()
         for key in DEF_STYLE_DICT.keys():
-            if key in ('select_style', 'whitespace_style'):
+            if key in ('select_style',): # special styles
                 sty_dict[key] = NullStyleItem()
             else:
                 sty_dict[key] = StyleItem("#000000", "#FFFFFF",
-                                          "%(primary)s", "%(size)d")#, ex=list())
+                                          "%(primary)s", "%(size)d")
         return sty_dict
 
     def FindTagById(self, style_id):
         """Find the style tag that is associated with the given
-        Id. If not found it returns an empty string.
+        Id. Return value defaults to default_style .
         @param style_id: id of tag to look for
         @return: style tag string
-        @todo: change syntax modules to all use ids
 
         """
         for data in self.syntax_set:
             if style_id == data[0]:
                 return data[1]
-
         return 'default_style'
 
     def GetFontDictionary(self, default=True):
@@ -469,7 +476,7 @@ class StyleMgr(object):
 
         """
         fore = self.GetItemByName('default_style').GetFore()
-        if fore == wx.EmptyString:
+        if not fore:
             fore = u"#000000"
 
         if not as_hex:
@@ -495,7 +502,7 @@ class StyleMgr(object):
 
         """
         back = self.GetItemByName('default_style').GetBack()
-        if back == wx.EmptyString:
+        if not back:
             back = u"#FFFFFF"
 
         if not as_hex:
@@ -510,8 +517,8 @@ class StyleMgr(object):
         @rtype: L{StyleItem}
 
         """
-        if self.HasNamedStyle(name):
-            scheme = self.GetStyleSet()
+        scheme = self.GetStyleSet()
+        if name in scheme:
             item = scheme[name]
 
             # Set font value if need be
@@ -551,7 +558,7 @@ class StyleMgr(object):
             stystr = unicode(self.GetItemByName(name))
             return stystr.replace("modifiers:", "")
         else:
-            return wx.EmptyString
+            return u""
 
     def GetStyleSet(self):
         """Returns the current set of styles or the default set if
@@ -628,14 +635,21 @@ class StyleMgr(object):
             if reader == -1:
                 self.LOG("[ed_style][err] Failed to open style sheet: %s" % style_sheet)
                 return False
-            ret_val = self.SetStyles(style_sheet, self.ParseStyleData(reader.read()))
+            style_data = None
+            try:
+                style_data = self.ParseStyleData(reader.read())
+            except Exception, msg:
+                self.LOG("[ed_style][err] Failed to parse style data for %s:" % style_sheet)
+                return False
+            ret_val = self.SetStyles(style_sheet, style_data)
             reader.close()
             return ret_val
         elif style_sheet not in StyleMgr.STYLES:
             self.LOG("[ed_style][warn] Style sheet %s does not exists" % style_sheet)
             # Reset to default style
-            Profile_Set('SYNTHEME', 'default')
-            self.SetStyles('default', DEF_STYLE_DICT)
+            if Profile_Get('SYNTHEME') != 'default':
+                Profile_Set('SYNTHEME', 'default')
+                self.SetStyles('default', DEF_STYLE_DICT)
             return False
         else:
             self.LOG("[ed_style][info] Using cached style data")
@@ -662,6 +676,15 @@ class StyleMgr(object):
                     style_set[tag].SetBack(default.GetBack())
                 if not style_set[tag].GetSize():
                     style_set[tag].SetSize(default.GetSize())
+
+            # Now need to pack in undefined styles that are part of
+            # the standard set.
+            for tag in DEF_STYLE_DICT.keys():
+                if tag not in style_set:
+                    if tag == 'select_style':
+                        style_set[tag] = NullStyleItem()
+                    else:
+                        style_set[tag] = default.Clone()
         else:
             pass
         return style_set
@@ -680,6 +703,7 @@ class StyleMgr(object):
         # Compact data into a contiguous string
         style_data = style_data.replace(u"\r\n", u"").replace(u"\n", u"")
         style_data = style_data.replace(u"\t", u"")
+#        style_data = style_data.replace(u" ", u"") # support old style
 
         ## Build style data tree
         # Tree Level 1 split tag from data
@@ -695,8 +719,9 @@ class StyleMgr(object):
             if len(branch) != 2:
                 self.LOG("[ed_style][err] There was an error parsing "
                          "the syntax data from " + self.style_set)
-                self.LOG("[ed_style][err] Missing a { or } in Def: " + branch[0].split()[0])
-                ttree.remove(style)
+                self.LOG("[ed_style][err] Missing a { or } in Def: " + repr(branch[0]))
+                ttree.remove(branch)
+                continue
 
             tmp2 = [leaf.strip().split(u":")
                     for leaf in branch[1].strip().split(u";")]
@@ -734,28 +759,29 @@ class StyleMgr(object):
                 self.LOG("[ed_style][err] The style def %s is not a "
                          "valid name" % style_def[0])
             else:
-                style_str = wx.EmptyString
+                style_str = u""
                 # Check each definition and validate its items
                 for attrib in style_dict[style_def]:
                     values = [ val for val in attrib[1].split()
-                               if val != wx.EmptyString ]
+                               if val != u"" ]
 
                     v1ok = v2ok = False
                     # Check that colors are a hex string
-                    if len(values) and \
+                    n_values = len(values)
+                    if n_values and \
                        attrib[0] in "fore back" and RE_HEX_STR.match(values[0]):
                         v1ok = True
-                    elif len(values) and attrib[0] == "size":
+                    elif n_values and attrib[0] == "size":
                         if RE_ESS_SCALAR.match(values[0]) or values[0].isdigit():
                             v1ok = True
                         else:
                             self.LOG("[ed_style][warn] Bad value in %s"
                                      " the value %s is invalid." % \
                                      (attrib[0], values[0]))
-                    elif len(values) and attrib[0] == "face":
+                    elif n_values and attrib[0] == "face":
                         # Font names may have spaces in them so join the
                         # name of the font into one item.
-                        if len(values) > 1 and values[1] not in STY_EX_ATTRIBUTES:
+                        if n_values > 1 and values[1] not in STY_EX_ATTRIBUTES:
                             tmp = list()
                             for val in list(values):
                                 if val not in STY_EX_ATTRIBUTES:
@@ -765,7 +791,7 @@ class StyleMgr(object):
                                     break
                             values = [u' '.join(tmp),] + values
                         v1ok = True
-                    elif len(values) and attrib[0] == "modifiers":
+                    elif n_values and attrib[0] == "modifiers":
                         v1ok = True
 
                     # Check extra attributes
@@ -836,6 +862,7 @@ class StyleMgr(object):
 
         """
         if not isinstance(value, StyleItem):
+            self.LOG("[ed_style][warn] Bad data in SetStyleTag(%s)" % repr(value))
             return False
 
         StyleMgr.STYLES[self.style_set][style_tag] = value
@@ -869,15 +896,16 @@ class StyleMgr(object):
             defaultd = DEF_STYLE_DICT
             dstyle = style_dict.get('default_style', None)
             if dstyle is None:
-                style_dict['default_style'] = defaultd['default_style']
+                self.LOG("[ed_style][warn] default_style is undefined")
+                style_dict['default_style'] = defaultd['default_style'].Clone()
 
             # Set any undefined styles to match the default_style
-            for tag, item in defaultd.iteritems():
+            for tag in defaultd:
                 if tag not in style_dict:
-                    if tag in ['select_style', 'whitespace_style']:
+                    if tag in ('select_style',):
                         style_dict[tag] = NullStyleItem()
                     else:
-                        style_dict[tag] = style_dict['default_style']
+                        style_dict[tag] = style_dict['default_style'].Clone()
 
             StyleMgr.STYLES[name] = self.PackStyleSet(style_dict)
             return True
@@ -894,9 +922,9 @@ class StyleMgr(object):
         # Parses Syntax Specifications list, ignoring all bad values
         self.UpdateBaseStyles()
         valid_settings = list()
-        lexer = self.GetLexer()
         for syn in synlst:
             if len(syn) != 2:
+                self.LOG("[ed_style][warn] Bogus Syntax Spec %s" % repr(syn))
                 continue
             else:
                 self.StyleSetSpec(syn[0], self.GetStyleByName(syn[1]))
@@ -920,9 +948,8 @@ class StyleMgr(object):
         @postcondition: style scheme is set to specified style
 
         """
-        if spec_style != self.style_set:
+        if spec_style and (spec_style != self.style_set):
             self.LoadStyleSheet(self.GetStyleSheet(spec_style), force=True)
-        self.UpdateBaseStyles()
         self.SetSyntax(self.GetSyntaxParams())
         self.Refresh()
 
@@ -949,7 +976,7 @@ class StyleMgr(object):
         self.StyleSetSpec(wx.stc.STC_STYLE_INDENTGUIDE, \
                           self.GetStyleByName('guide_style'))
 
-        # wx.stc.STC_STYLE_CALLTIP doesnt seem to do anything
+        # wx.stc.STC_STYLE_CALLTIP doesn't seem to do anything
         calltip = self.GetItemByName('calltip')
         self.CallTipSetBackground(calltip.GetBack())
         self.CallTipSetForeground(calltip.GetFore())
@@ -971,11 +998,13 @@ class StyleMgr(object):
         self.SetSelBackground(True, sback)
 
         wspace = self.GetItemByName('whitespace_style')
-        if not wspace.IsNull():
-            self.SetWhitespaceBackground(True, wspace.GetBack())
-            self.SetWhitespaceForeground(True, wspace.GetFore())
+        self.SetWhitespaceBackground(True, wspace.GetBack())
+        self.SetWhitespaceForeground(True, wspace.GetFore())
 
-        self.SetCaretForeground(self.GetDefaultForeColour())
+        default_fore = self.GetDefaultForeColour()
+        edge_colour = self.GetItemByName('edge_style')
+        self.SetEdgeColour(edge_colour.GetFore())
+        self.SetCaretForeground(default_fore)
         self.SetCaretLineBack(self.GetItemByName('caret_line').GetBack())
         self.Colourise(0, -1)
 
@@ -1014,6 +1043,7 @@ DEF_STYLE_DICT = \
          'directive_style' : StyleItem("#0000FF", face="%(secondary)s",
                                        ex=["bold",]),
          'dockey_style' : StyleItem("#0000FF"),
+         'edge_style'   : StyleItem(), # inherit from default
          'error_style' : StyleItem("#DD0101", face="%(secondary)s",
                                     ex=["bold",]),
          'foldmargin_style' : StyleItem(back="#D1D1D1"),
@@ -1057,7 +1087,7 @@ def MergeFonts(style_dict, font_dict):
 
     """
     for style in style_dict:
-        st_str = str(style_dict[style])
+        st_str = unicode(style_dict[style])
         if u'%' in st_str:
             style_dict[style].SetAttrFromStr(st_str % font_dict)
     return style_dict

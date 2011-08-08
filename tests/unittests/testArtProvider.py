@@ -9,8 +9,8 @@
 """Unittest cases for testing the artprovider"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testArtProvider.py 61521 2009-07-25 02:30:17Z CJP $"
-__revision__ = "$Revision: 61521 $"
+__svnid__ = "$Id: testArtProvider.py 65165 2010-08-02 22:04:37Z CJP $"
+__revision__ = "$Revision: 65165 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -31,12 +31,11 @@ import ed_art
 class ArtProviderTest(unittest.TestCase):
     """Tests the ArtProvider class"""
     def setUp(self):
-        self.app = common.EdApp(False)
         ap = ed_art.EditraArt()
         wx.ArtProvider.Push(ap)
 
     def tearDown(self):
-        self.app.Exit()
+        pass
 
     #---- Test Cases ----#
 
@@ -45,6 +44,7 @@ class ArtProviderTest(unittest.TestCase):
         ap = wx.ArtProvider()
         bmp = ap.GetBitmap(str(ed_glob.ID_COPY), wx.ART_MENU)
         self.assertTrue(bmp.IsOk())
+        self.assertEquals(bmp.GetSize(), (16, 16))
 
         bmp = ap.GetBitmap(str(ed_glob.ID_COPY), wx.ART_TOOLBAR)
         self.assertTrue(bmp.IsOk())

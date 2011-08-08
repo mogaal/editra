@@ -114,14 +114,7 @@ class AuiDefaultTabArt(object):
         self._tab_ctrl_height = 0
         self._buttonRect = wx.Rect()
 
-        base_colour = GetBaseColour()
-    
-        self._base_colour = base_colour
-        border_colour = StepColour(base_colour, 75)
-
-        self._border_pen = wx.Pen(border_colour)
-        self._base_colour_pen = wx.Pen(self._base_colour)
-        self._base_colour_brush = wx.Brush(self._base_colour)
+        self.SetDefaultColours()
 
         if wx.Platform == "__WXMAC__":
             bmp_colour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DDKSHADOW)
@@ -158,12 +151,53 @@ class AuiDefaultTabArt(object):
             self._focusPen = wx.Pen(wx.BLACK, 1, wx.USER_DASH)
             self._focusPen.SetDashes([1, 1])
             self._focusPen.SetCap(wx.CAP_BUTT)
+            
+            
+    def SetBaseColour(self, base_colour):
+        """
+        Sets a new base colour.
+
+        :param `base_colour`: an instance of `wx.Colour`.
+        """
+        
+        self._base_colour = base_colour
+        self._base_colour_pen = wx.Pen(self._base_colour)
+        self._base_colour_brush = wx.Brush(self._base_colour)
+
+
+    def SetDefaultColours(self, base_colour=None):
+        """
+        Sets the default colours, which are calculated from the given base colour.
+
+        :param `base_colour`: an instance of `wx.Colour`. If defaulted to ``None``, a colour
+         is generated accordingly to the platform and theme.
+        """
+
+        if base_colour is None:
+            base_colour = GetBaseColour()
+
+        self.SetBaseColour( base_colour )
+        self._border_colour = StepColour(base_colour, 75)
+        self._border_pen = wx.Pen(self._border_colour)
+
+        self._background_top_colour = StepColour(self._base_colour, 90)
+        self._background_bottom_colour = StepColour(self._base_colour, 170)
+        
+        self._tab_top_colour = self._base_colour
+        self._tab_bottom_colour = wx.WHITE
+        self._tab_gradient_highlight_colour = wx.WHITE
+
+        self._tab_inactive_top_colour = self._base_colour
+        self._tab_inactive_bottom_colour = StepColour(self._tab_inactive_top_colour, 160)
+        
+        self._tab_text_colour = lambda page: page.text_colour
+        self._tab_disabled_text_colour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT)
 
 
     def Clone(self):
         """ Clones the art object. """
 
-        art = AuiDefaultTabArt()
+        art = type(self)()
         art.SetNormalFont(self.GetNormalFont())
         art.SetSelectedFont(self.GetSelectedFont())
         art.SetMeasuringFont(self.GetMeasuringFont())
@@ -184,7 +218,7 @@ class AuiDefaultTabArt(object):
          ``AUI_NB_TOP``                       With this style, tabs are drawn along the top of the notebook
          ``AUI_NB_LEFT``                      With this style, tabs are drawn along the left of the notebook. Not implemented yet.
          ``AUI_NB_RIGHT``                     With this style, tabs are drawn along the right of the notebook. Not implemented yet.
-         ``AUI_NB_BOTTOM``                    With this style, tabs are drawn along the bottom of the notebook.
+         ``AUI_NB_BOTTOM``                    With this style, tabs are drawn along the bottom of the notebook
          ``AUI_NB_TAB_SPLIT``                 Allows the tab control to be split by dragging a tab
          ``AUI_NB_TAB_MOVE``                  Allows a tab to be moved horizontally by dragging
          ``AUI_NB_TAB_EXTERNAL_MOVE``         Allows a tab to be moved to another tab control
@@ -194,14 +228,16 @@ class AuiDefaultTabArt(object):
          ``AUI_NB_CLOSE_BUTTON``              With this style, a close button is available on the tab bar
          ``AUI_NB_CLOSE_ON_ACTIVE_TAB``       With this style, a close button is available on the active tab
          ``AUI_NB_CLOSE_ON_ALL_TABS``         With this style, a close button is available on all tabs
-         ``AUI_NB_MIDDLE_CLICK_CLOSE``        Allows to close AuiNotebook tabs by mouse middle button click
-         ``AUI_NB_SUB_NOTEBOOK``              This style is used by AuiManager to create automatic AuiNotebooks
+         ``AUI_NB_MIDDLE_CLICK_CLOSE``        Allows to close L{AuiNotebook} tabs by mouse middle button click
+         ``AUI_NB_SUB_NOTEBOOK``              This style is used by L{AuiManager} to create automatic AuiNotebooks
          ``AUI_NB_HIDE_ON_SINGLE_TAB``        Hides the tab window if only one tab is present
-         ``AUI_NB_SMART_TABS``                Use Smart Tabbing, like ``Alt``+``Tab`` on Windows
+         ``AUI_NB_SMART_TABS``                Use Smart Tabbing, like ``Alt`` + ``Tab`` on Windows
          ``AUI_NB_USE_IMAGES_DROPDOWN``       Uses images on dropdown window list menu instead of check items
          ``AUI_NB_CLOSE_ON_TAB_LEFT``         Draws the tab close button on the left instead of on the right (a la Camino browser)
          ``AUI_NB_TAB_FLOAT``                 Allows the floating of single tabs. Known limitation: when the notebook is more or less full screen, tabs cannot be dragged far enough outside of the notebook to become floating pages
          ``AUI_NB_DRAW_DND_TAB``              Draws an image representation of a tab while dragging (on by default)
+         ``AUI_NB_ORDER_BY_ACCESS``           Tab navigation order by last access time for the tabs
+         ``AUI_NB_NO_TAB_FOCUS``              Don't draw tab focus rectangle
          ==================================== ==================================
         
         """
@@ -225,8 +261,8 @@ class AuiDefaultTabArt(object):
         
         :param `tab_ctrl_size`: the size of the tab control area;
         :param `tab_count`: the number of tabs;
-        :param `minMaxTabWidth`: the minimum and maximum tab widths to be used
-         when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
+        :param `minMaxTabWidth`: a tuple containing the minimum and maximum tab widths
+         to be used when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
         """
         
         self._fixed_tab_width = 100
@@ -281,10 +317,7 @@ class AuiDefaultTabArt(object):
         else: #for AUI_NB_TOP
             r = wx.Rect(rect.x, rect.y, rect.width+2, rect.height-3)
 
-        top_colour = StepColour(self._base_colour, 90)
-        bottom_colour = StepColour(self._base_colour, 170)
-
-        dc.GradientFillLinear(r, top_colour, bottom_colour, wx.SOUTH)
+        dc.GradientFillLinear(r, self._background_top_colour, self._background_bottom_colour, wx.SOUTH)
 
         # draw base lines
 
@@ -293,7 +326,7 @@ class AuiDefaultTabArt(object):
         w = rect.GetWidth()
 
         if agwFlags & AUI_NB_BOTTOM:
-            dc.SetBrush(wx.Brush(bottom_colour))
+            dc.SetBrush(wx.Brush(self._background_bottom_colour))
             dc.DrawRectangle(-1, 0, w+2, 4)
 
         # TODO: else if (agwFlags & AUI_NB_LEFT) 
@@ -353,10 +386,10 @@ class AuiDefaultTabArt(object):
             textx, texty = normal_textx, normal_texty
 
         if not page.enabled:
-            dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
+            dc.SetTextForeground(self._tab_disabled_text_colour)
             pagebitmap = page.dis_bitmap
         else:
-            dc.SetTextForeground(page.text_colour)
+            dc.SetTextForeground(self._tab_text_colour(page))
             pagebitmap = page.bitmap
             
         # create points that will make the tab outline
@@ -407,8 +440,8 @@ class AuiDefaultTabArt(object):
             dc.DrawRectangle(r.x+1, r.y+1, r.width-1, r.height-4)
 
             # this white helps fill out the gradient at the top of the tab
-            dc.SetPen(wx.WHITE_PEN)
-            dc.SetBrush(wx.WHITE_BRUSH)
+            dc.SetPen( wx.Pen(self._tab_gradient_highlight_colour) )
+            dc.SetBrush( wx.Brush(self._tab_gradient_highlight_colour) )
             dc.DrawRectangle(r.x+2, r.y+1, r.width-3, r.height-4)
 
             # these two points help the rounded corners appear more antialiased
@@ -424,8 +457,8 @@ class AuiDefaultTabArt(object):
             r.y -= 2
 
             # draw gradient background
-            top_colour = wx.WHITE
-            bottom_colour = self._base_colour
+            top_colour = self._tab_bottom_colour
+            bottom_colour = self._tab_top_colour
             dc.GradientFillLinear(r, bottom_colour, top_colour, wx.NORTH)
         
         else:
@@ -444,16 +477,16 @@ class AuiDefaultTabArt(object):
             r.height -= 1
 
             # -- draw top gradient fill for glossy look
-            top_colour = self._base_colour
-            bottom_colour = StepColour(top_colour, 160)
+            top_colour = self._tab_inactive_top_colour
+            bottom_colour = self._tab_inactive_bottom_colour
             dc.GradientFillLinear(r, bottom_colour, top_colour, wx.NORTH)
 
             r.y += r.height
             r.y -= 1
 
             # -- draw bottom fill for glossy look
-            top_colour = self._base_colour
-            bottom_colour = self._base_colour
+            top_colour = self._tab_inactive_bottom_colour
+            bottom_colour = self._tab_inactive_bottom_colour
             dc.GradientFillLinear(r, top_colour, bottom_colour, wx.SOUTH)
         
         # draw tab outline
@@ -466,7 +499,7 @@ class AuiDefaultTabArt(object):
         if page.active:
         
             if agwFlags & AUI_NB_BOTTOM:
-                dc.SetPen(wx.Pen(StepColour(self._base_colour, 170)))
+                dc.SetPen(wx.Pen(self._background_bottom_colour))
                 
             # TODO: else if (agwFlags & AUI_NB_LEFT) 
             # TODO: else if (agwFlags & AUI_NB_RIGHT) 
@@ -534,7 +567,8 @@ class AuiDefaultTabArt(object):
         dc.DrawLabel(draw_text, wx.Rect(text_offset, ypos, rectx, recty))
 
         # draw focus rectangle
-        self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff, drawn_tab_height, textx, texty)
+        if (agwFlags & AUI_NB_NO_TAB_FOCUS) == 0:
+            self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff, drawn_tab_height, rectx, recty)
         
         out_button_rect = wx.Rect()
         
@@ -757,6 +791,9 @@ class AuiDefaultTabArt(object):
         :param `texty`: the y text extent.
         """
 
+        if self.GetAGWFlags() & AUI_NB_NO_TAB_FOCUS:
+            return
+        
         if page.active and wx.Window.FindFocus() == wnd:
         
             focusRectText = wx.Rect(text_offset, (drawn_tab_yoff + (drawn_tab_height)/2 - (texty/2)),
@@ -989,7 +1026,7 @@ class AuiSimpleTabArt(object):
     def Clone(self):
         """ Clones the art object. """
 
-        art = AuiSimpleTabArt()
+        art = type(self)()
         art.SetNormalFont(self.GetNormalFont())
         art.SetSelectedFont(self.GetSelectedFont())
         art.SetMeasuringFont(self.GetMeasuringFont())
@@ -1010,7 +1047,7 @@ class AuiSimpleTabArt(object):
          ``AUI_NB_TOP``                       With this style, tabs are drawn along the top of the notebook
          ``AUI_NB_LEFT``                      With this style, tabs are drawn along the left of the notebook. Not implemented yet.
          ``AUI_NB_RIGHT``                     With this style, tabs are drawn along the right of the notebook. Not implemented yet.
-         ``AUI_NB_BOTTOM``                    With this style, tabs are drawn along the bottom of the notebook.
+         ``AUI_NB_BOTTOM``                    With this style, tabs are drawn along the bottom of the notebook
          ``AUI_NB_TAB_SPLIT``                 Allows the tab control to be split by dragging a tab
          ``AUI_NB_TAB_MOVE``                  Allows a tab to be moved horizontally by dragging
          ``AUI_NB_TAB_EXTERNAL_MOVE``         Allows a tab to be moved to another tab control
@@ -1020,14 +1057,16 @@ class AuiSimpleTabArt(object):
          ``AUI_NB_CLOSE_BUTTON``              With this style, a close button is available on the tab bar
          ``AUI_NB_CLOSE_ON_ACTIVE_TAB``       With this style, a close button is available on the active tab
          ``AUI_NB_CLOSE_ON_ALL_TABS``         With this style, a close button is available on all tabs
-         ``AUI_NB_MIDDLE_CLICK_CLOSE``        Allows to close AuiNotebook tabs by mouse middle button click
-         ``AUI_NB_SUB_NOTEBOOK``              This style is used by AuiManager to create automatic AuiNotebooks
+         ``AUI_NB_MIDDLE_CLICK_CLOSE``        Allows to close L{AuiNotebook} tabs by mouse middle button click
+         ``AUI_NB_SUB_NOTEBOOK``              This style is used by L{AuiManager} to create automatic AuiNotebooks
          ``AUI_NB_HIDE_ON_SINGLE_TAB``        Hides the tab window if only one tab is present
-         ``AUI_NB_SMART_TABS``                Use Smart Tabbing, like ``Alt``+``Tab`` on Windows
+         ``AUI_NB_SMART_TABS``                Use Smart Tabbing, like ``Alt`` + ``Tab`` on Windows
          ``AUI_NB_USE_IMAGES_DROPDOWN``       Uses images on dropdown window list menu instead of check items
          ``AUI_NB_CLOSE_ON_TAB_LEFT``         Draws the tab close button on the left instead of on the right (a la Camino browser)
          ``AUI_NB_TAB_FLOAT``                 Allows the floating of single tabs. Known limitation: when the notebook is more or less full screen, tabs cannot be dragged far enough outside of the notebook to become floating pages
          ``AUI_NB_DRAW_DND_TAB``              Draws an image representation of a tab while dragging (on by default)
+         ``AUI_NB_ORDER_BY_ACCESS``           Tab navigation order by last access time for the tabs
+         ``AUI_NB_NO_TAB_FOCUS``              Don't draw tab focus rectangle
          ==================================== ==================================
         
         """
@@ -1051,8 +1090,8 @@ class AuiSimpleTabArt(object):
         
         :param `tab_ctrl_size`: the size of the tab control area;
         :param `tab_count`: the number of tabs;
-        :param `minMaxTabWidth`: the minimum and maximum tab widths to be used
-         when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
+        :param `minMaxTabWidth`: a tuple containing the minimum and maximum tab widths
+         to be used when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
         """
         
         self._fixed_tab_width = 100
@@ -1223,7 +1262,6 @@ class AuiSimpleTabArt(object):
             draw_text = ChopText(dc, caption,
                                  tab_width - (text_offset-tab_x) - close_button_width)
 
-
         ypos = (tab_y + tab_height)/2 - (texty/2) + 1
 
         if control is not None:
@@ -1245,7 +1283,7 @@ class AuiSimpleTabArt(object):
         dc.DrawLabel(draw_text, wx.Rect(text_offset, ypos, rectx, recty))
 
         # draw focus rectangle
-        if page.active and wx.Window.FindFocus() == wnd:
+        if page.active and wx.Window.FindFocus() == wnd and (agwFlags & AUI_NB_NO_TAB_FOCUS) == 0:
         
             focusRect = wx.Rect(text_offset, ((tab_y + tab_height)/2 - (texty/2) + 1),
                                 selected_textx, selected_texty)
@@ -1605,7 +1643,7 @@ class VC71TabArt(AuiDefaultTabArt):
     def Clone(self):
         """ Clones the art object. """
 
-        art = VC71TabArt()
+        art = type(self)()
         art.SetNormalFont(self.GetNormalFont())
         art.SetSelectedFont(self.GetSelectedFont())
         art.SetMeasuringFont(self.GetMeasuringFont())
@@ -1777,8 +1815,9 @@ class VC71TabArt(AuiDefaultTabArt):
         out_button_rect = wx.Rect()
 
         # draw focus rectangle
-        self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff+shift,
-                                drawn_tab_height+shift, textx, texty)
+        if (agwFlags & AUI_NB_NO_TAB_FOCUS) == 0:
+            self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff+shift,
+                                    drawn_tab_height+shift, rectx, recty)
                 
         # draw 'x' on tab (if enabled)
         if close_button_state != AUI_BUTTON_STATE_HIDDEN:
@@ -1824,7 +1863,7 @@ class FF2TabArt(AuiDefaultTabArt):
     def Clone(self):
         """ Clones the art object. """
 
-        art = FF2TabArt()
+        art = type(self)()
         art.SetNormalFont(self.GetNormalFont())
         art.SetSelectedFont(self.GetSelectedFont())
         art.SetMeasuringFont(self.GetMeasuringFont())
@@ -2012,8 +2051,9 @@ class FF2TabArt(AuiDefaultTabArt):
         dc.DrawLabel(draw_text, wx.Rect(text_offset, ypos, rectx, recty))
 
         # draw focus rectangle
-        self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff+shift,
-                                drawn_tab_height, textx, texty)
+        if (agwFlags & AUI_NB_NO_TAB_FOCUS) == 0:
+            self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff+shift,
+                                    drawn_tab_height, rectx, recty)
         
         out_button_rect = wx.Rect()
         # draw 'x' on tab (if enabled)
@@ -2118,7 +2158,7 @@ class VC8TabArt(AuiDefaultTabArt):
     def Clone(self):
         """ Clones the art object. """
 
-        art = VC8TabArt()
+        art = type(self)()
         art.SetNormalFont(self.GetNormalFont())
         art.SetSelectedFont(self.GetSelectedFont())
         art.SetMeasuringFont(self.GetMeasuringFont())
@@ -2133,8 +2173,8 @@ class VC8TabArt(AuiDefaultTabArt):
         
         :param `tab_ctrl_size`: the size of the tab control area;
         :param `tab_count`: the number of tabs;
-        :param `minMaxTabWidth`: the minimum and maximum tab widths to be used
-         when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
+        :param `minMaxTabWidth`: a tuple containing the minimum and maximum tab widths
+         to be used when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
         """
         
         AuiDefaultTabArt.SetSizingInfo(self, tab_ctrl_size, tab_count, minMaxTabWidth)
@@ -2342,8 +2382,9 @@ class VC8TabArt(AuiDefaultTabArt):
         dc.DrawLabel(draw_text, wx.Rect(text_offset, ypos, rectx, recty))
         
         # draw focus rectangle
-        self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff+shift,
-                                drawn_tab_height+shift, textx, texty)
+        if (agwFlags & AUI_NB_NO_TAB_FOCUS) == 0:
+            self.DrawFocusRectangle(dc, page, wnd, draw_text, offset_focus, bitmap_offset, drawn_tab_yoff+shift,
+                                    drawn_tab_height+shift, rectx, recty)
         
         out_button_rect = wx.Rect()
         # draw 'x' on tab (if enabled)
@@ -2451,7 +2492,7 @@ class ChromeTabArt(AuiDefaultTabArt):
          ``AUI_NB_TOP``                       With this style, tabs are drawn along the top of the notebook
          ``AUI_NB_LEFT``                      With this style, tabs are drawn along the left of the notebook. Not implemented yet.
          ``AUI_NB_RIGHT``                     With this style, tabs are drawn along the right of the notebook. Not implemented yet.
-         ``AUI_NB_BOTTOM``                    With this style, tabs are drawn along the bottom of the notebook.
+         ``AUI_NB_BOTTOM``                    With this style, tabs are drawn along the bottom of the notebook
          ``AUI_NB_TAB_SPLIT``                 Allows the tab control to be split by dragging a tab
          ``AUI_NB_TAB_MOVE``                  Allows a tab to be moved horizontally by dragging
          ``AUI_NB_TAB_EXTERNAL_MOVE``         Allows a tab to be moved to another tab control
@@ -2461,14 +2502,16 @@ class ChromeTabArt(AuiDefaultTabArt):
          ``AUI_NB_CLOSE_BUTTON``              With this style, a close button is available on the tab bar
          ``AUI_NB_CLOSE_ON_ACTIVE_TAB``       With this style, a close button is available on the active tab
          ``AUI_NB_CLOSE_ON_ALL_TABS``         With this style, a close button is available on all tabs
-         ``AUI_NB_MIDDLE_CLICK_CLOSE``        Allows to close AuiNotebook tabs by mouse middle button click
-         ``AUI_NB_SUB_NOTEBOOK``              This style is used by AuiManager to create automatic AuiNotebooks
+         ``AUI_NB_MIDDLE_CLICK_CLOSE``        Allows to close L{AuiNotebook} tabs by mouse middle button click
+         ``AUI_NB_SUB_NOTEBOOK``              This style is used by L{AuiManager} to create automatic AuiNotebooks
          ``AUI_NB_HIDE_ON_SINGLE_TAB``        Hides the tab window if only one tab is present
-         ``AUI_NB_SMART_TABS``                Use Smart Tabbing, like ``Alt``+``Tab`` on Windows
+         ``AUI_NB_SMART_TABS``                Use Smart Tabbing, like ``Alt`` + ``Tab`` on Windows
          ``AUI_NB_USE_IMAGES_DROPDOWN``       Uses images on dropdown window list menu instead of check items
          ``AUI_NB_CLOSE_ON_TAB_LEFT``         Draws the tab close button on the left instead of on the right (a la Camino browser)
          ``AUI_NB_TAB_FLOAT``                 Allows the floating of single tabs. Known limitation: when the notebook is more or less full screen, tabs cannot be dragged far enough outside of the notebook to become floating pages
          ``AUI_NB_DRAW_DND_TAB``              Draws an image representation of a tab while dragging (on by default)
+         ``AUI_NB_ORDER_BY_ACCESS``           Tab navigation order by last access time for the tabs
+         ``AUI_NB_NO_TAB_FOCUS``              Don't draw tab focus rectangle
          ==================================== ==================================
 
         :note: Overridden from L{AuiDefaultTabArt}.
@@ -2510,7 +2553,7 @@ class ChromeTabArt(AuiDefaultTabArt):
     def Clone(self):
         """ Clones the art object. """
 
-        art = ChromeTabArt()
+        art = type(self)()
         art.SetNormalFont(self.GetNormalFont())
         art.SetSelectedFont(self.GetSelectedFont())
         art.SetMeasuringFont(self.GetMeasuringFont())
@@ -2525,8 +2568,8 @@ class ChromeTabArt(AuiDefaultTabArt):
         
         :param `tab_ctrl_size`: the size of the tab control area;
         :param `tab_count`: the number of tabs;
-        :param `minMaxTabWidth`: the minimum and maximum tab widths to be used
-         when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
+        :param `minMaxTabWidth`: a tuple containing the minimum and maximum tab widths
+         to be used when the ``AUI_NB_TAB_FIXED_WIDTH`` style is active.
         """
         
         AuiDefaultTabArt.SetSizingInfo(self, tab_ctrl_size, tab_count, minMaxTabWidth)

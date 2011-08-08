@@ -12,8 +12,8 @@ Simple autocompletion support for Cascading Style Sheets.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: csscomp.py 63130 2010-01-10 03:29:46Z CJP $"
-__revision__ = "$Revision: 63130 $"
+__cvsid__ = "$Id: csscomp.py 67123 2011-03-04 00:02:35Z CJP $"
+__revision__ = "$Revision: 67123 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -38,9 +38,9 @@ PSUEDO_SYMBOLS = completer.CreateSymbols([ u'active', u'focus', u'hover',
 #--------------------------------------------------------------------------#
 
 class Completer(completer.BaseCompleter):
-    """Code completer provider"""
+    """CSS Code completion provider"""
     def __init__(self, stc_buffer):
-        completer.BaseCompleter.__init__(self, stc_buffer)
+        super(Completer, self).__init__(stc_buffer)
 
         # Setup
         self.SetAutoCompKeys([ord(':'), ord('.') ])

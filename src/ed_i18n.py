@@ -18,8 +18,8 @@ METHODS:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_i18n.py 63388 2010-02-04 23:07:36Z CJP $"
-__revision__ = "$Revision: 63388 $"
+__svnid__ = "$Id: ed_i18n.py 67537 2011-04-18 23:10:18Z CJP $"
+__revision__ = "$Revision: 67537 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -116,14 +116,13 @@ class LangListCombo(wx.combo.BitmapComboBox):
 #-----------------------------------------------------------------------------#
 if __name__ == '__main__':
     APP = wx.PySimpleApp(False)
-    # Print a list of Cannonical names usefull for seeing what codes to
+    # Print a list of Canonical names useful for seeing what codes to
     # use when naming po files
     OUT = list()
     for LANG in [x for x in dir(wx) if x.startswith("LANGUAGE")]:
-        LOC_I = wx.Locale(wx.LANGUAGE_DEFAULT).\
-                         GetLanguageInfo(getattr(wx, LANG))
+        LOC_I = wx.Locale.GetLanguageInfo(getattr(wx, LANG))
         if LOC_I:
-            OUT.append(LOC_I.CanonicalName)
+            OUT.append((LOC_I.Description, LOC_I.CanonicalName))
 
     for LANG in sorted(OUT):
         print LANG

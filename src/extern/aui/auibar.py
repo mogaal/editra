@@ -1,5 +1,5 @@
 """
-auibar contains an implementation of AuiToolBar, which is a completely owner-drawn
+auibar contains an implementation of L{AuiToolBar}, which is a completely owner-drawn
 toolbar perfectly integrated with the AUI layout system. This allows drag and drop of
 toolbars, docking/floating behaviour and the possibility to define "overflow" items
 in the toolbar itself.
@@ -20,6 +20,9 @@ from aui_utilities import GetBaseColour, MakeDisabledBitmap
 
 import framemanager
 from aui_constants import *
+
+# wxPython version string
+_VERSION_STRING = wx.VERSION_STRING
 
 # AuiToolBar events
 wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN = wx.NewEventType()
@@ -61,28 +64,6 @@ class CommandToolBarEvent(wx.PyCommandEvent):
         self.click_pt = wx.Point(-1, -1)
         self.rect = wx.Rect(-1, -1, 0, 0)
         self.tool_id = -1
-
-
-    def Clone(self):
-        """
-        Returns a copy of the event.
-
-        Any event that is posted to the wxPython event system for later action (via
-        `wx.EvtHandler.AddPendingEvent` or `wx.PostEvent`) must implement this method.
-        All wxPython events fully implement this method, but any derived events
-        implemented by the user should also implement this method just in case they
-        (or some event derived from them) are ever posted.
-
-        All wxPython events implement a copy constructor, so the easiest way of
-        implementing the L{Clone} function is to implement a copy constructor for a new
-        event (call it `MyEvent`) and then define the L{Clone} function like this::
-
-            def Clone(self):
-                return MyEvent(self)
-
-        """
-        
-        return CommandToolBarEvent(self)
 
 
     def IsDropDownClicked(self):
@@ -168,28 +149,6 @@ class AuiToolBarEvent(CommandToolBarEvent):
             self.notify = wx.NotifyEvent(command_type, win_id)
         else:
             self.notify = wx.NotifyEvent(command_type.GetEventType(), command_type.GetId())
-
-
-    def Clone(self):
-        """
-        Returns a copy of the event.
-
-        Any event that is posted to the wxPython event system for later action (via
-        `wx.EvtHandler.AddPendingEvent` or `wx.PostEvent`) must implement this method.
-        All wxPython events fully implement this method, but any derived events
-        implemented by the user should also implement this method just in case they
-        (or some event derived from them) are ever posted.
-
-        All wxPython events implement a copy constructor, so the easiest way of
-        implementing the Clone function is to implement a copy constructor for a new
-        event (call it MyEvent) and then define the Clone function like this::
-
-            def Clone(self):
-                return MyEvent(self)
-
-        """
-        
-        return AuiToolBarEvent(self)
 
         
     def GetNotifyEvent(self):
@@ -415,13 +374,13 @@ class AuiToolBarItem(object):
          ========================  =============================
          Item Kind                 Description
          ========================  =============================
-         ``ITEM_CONTROL``          The item in the AuiToolBar is a control
-         ``ITEM_LABEL``            The item in the AuiToolBar is a text label
-         ``ITEM_SPACER``           The item in the AuiToolBar is a spacer
-         ``ITEM_SEPARATOR``        The item in the AuiToolBar is a separator
-         ``ITEM_CHECK``            The item in the AuiToolBar is a toolbar check item
-         ``ITEM_NORMAL``           The item in the AuiToolBar is a standard toolbar item
-         ``ITEM_RADIO``            The item in the AuiToolBar is a toolbar radio item
+         ``ITEM_CONTROL``          The item in the `AuiToolBar` is a control
+         ``ITEM_LABEL``            The item in the `AuiToolBar` is a text label
+         ``ITEM_SPACER``           The item in the `AuiToolBar` is a spacer
+         ``ITEM_SEPARATOR``        The item in the `AuiToolBar` is a separator
+         ``ITEM_CHECK``            The item in the `AuiToolBar` is a toolbar check item
+         ``ITEM_NORMAL``           The item in the `AuiToolBar` is a standard toolbar item
+         ``ITEM_RADIO``            The item in the `AuiToolBar` is a toolbar radio item
          ========================  =============================
         """
 
@@ -457,7 +416,11 @@ class AuiToolBarItem(object):
 
         
     def GetState(self):
-        """ Returns the toolbar item state. See L{SetState} for more details. """
+        """
+        Returns the toolbar item state. See L{SetState} for more details.
+
+        :see: L{SetState}
+        """
         
         return self.state 
 
@@ -638,7 +601,7 @@ class AuiToolBarItem(object):
 
     def SetSpacerPixels(self, s):
         """
-        Sets the number of pixels for a toolbar item with kind=``ITEM_SEPARATOR``.
+        Sets the number of pixels for a toolbar item with kind = ``ITEM_SEPARATOR``.
 
         :param `s`: number of pixels.
         """
@@ -647,7 +610,7 @@ class AuiToolBarItem(object):
 
         
     def GetSpacerPixels(self):
-        """ Returns the number of pixels for a toolbar item with kind=``ITEM_SEPARATOR``. """
+        """ Returns the number of pixels for a toolbar item with kind = ``ITEM_SEPARATOR``. """
 
         return self.spacer_pixels 
 
@@ -823,7 +786,7 @@ class AuiDefaultToolBarArt(object):
          ``AUI_TB_GRIPPER``                   Shows a gripper on the `AuiToolBar`
          ``AUI_TB_OVERFLOW``                  The `AuiToolBar` can contain overflow items
          ``AUI_TB_VERTICAL``                  The `AuiToolBar` is vertical
-         ``AUI_TB_HORZ_LAYOUT``               Shows the text and the icons alongside, not vertically stacked. This style must be used with ``AUI_TB_TEXT``.
+         ``AUI_TB_HORZ_LAYOUT``               Shows the text and the icons alongside, not vertically stacked. This style must be used with ``AUI_TB_TEXT``
          ``AUI_TB_PLAIN_BACKGROUND``          Don't draw a gradient background on the toolbar
          ``AUI_TB_HORZ_TEXT``                 Combination of ``AUI_TB_HORZ_LAYOUT`` and ``AUI_TB_TEXT``
          ==================================== ==================================
@@ -863,10 +826,10 @@ class AuiDefaultToolBarArt(object):
          ==================================== ==================================
          Orientation Switches                 Description
          ==================================== ==================================
-         ``AUI_TBTOOL_TEXT_LEFT``             Text in AuiToolBar items is aligned left
-         ``AUI_TBTOOL_TEXT_RIGHT``            Text in AuiToolBar items is aligned right
-         ``AUI_TBTOOL_TEXT_TOP``              Text in AuiToolBar items is aligned top
-         ``AUI_TBTOOL_TEXT_BOTTOM``           Text in AuiToolBar items is aligned bottom
+         ``AUI_TBTOOL_TEXT_LEFT``             Text in `AuiToolBar` items is aligned left
+         ``AUI_TBTOOL_TEXT_RIGHT``            Text in `AuiToolBar` items is aligned right
+         ``AUI_TBTOOL_TEXT_TOP``              Text in `AuiToolBar` items is aligned top
+         ``AUI_TBTOOL_TEXT_BOTTOM``           Text in `AuiToolBar` items is aligned bottom
          ==================================== ==================================
         
         """
@@ -1108,7 +1071,7 @@ class AuiDefaultToolBarArt(object):
             # it's important to put this code in an else statment after the 
             # hover, otherwise hovers won't draw properly for checked items 
             dc.SetPen(wx.Pen(self._highlight_colour))
-            dc.SetBrush(wxBrush(StepColour(self._highlight_colour, 170)))
+            dc.SetBrush(wx.Brush(StepColour(self._highlight_colour, 170)))
             dc.DrawRectangle(button_rect)
             dc.DrawRectangle(dropdown_rect)
             
@@ -1366,9 +1329,9 @@ class AuiDefaultToolBarArt(object):
          ==================================== ==================================
          Element Identifier                   Description
          ==================================== ==================================
-         ``AUI_TBART_SEPARATOR_SIZE``         Separator size in AuiToolBar
-         ``AUI_TBART_GRIPPER_SIZE``           Gripper size in AuiToolBar
-         ``AUI_TBART_OVERFLOW_SIZE``          Overflow button size in AuiToolBar
+         ``AUI_TBART_SEPARATOR_SIZE``         Separator size in `AuiToolBar`
+         ``AUI_TBART_GRIPPER_SIZE``           Gripper size in `AuiToolBar`
+         ``AUI_TBART_OVERFLOW_SIZE``          Overflow button size in `AuiToolBar`
          ==================================== ==================================        
         """
         
@@ -1391,9 +1354,9 @@ class AuiDefaultToolBarArt(object):
          ==================================== ==================================
          Element Identifier                   Description
          ==================================== ==================================
-         ``AUI_TBART_SEPARATOR_SIZE``         Separator size in AuiToolBar
-         ``AUI_TBART_GRIPPER_SIZE``           Gripper size in AuiToolBar
-         ``AUI_TBART_OVERFLOW_SIZE``          Overflow button size in AuiToolBar
+         ``AUI_TBART_SEPARATOR_SIZE``         Separator size in `AuiToolBar`
+         ``AUI_TBART_GRIPPER_SIZE``           Gripper size in `AuiToolBar`
+         ``AUI_TBART_OVERFLOW_SIZE``          Overflow button size in `AuiToolBar`
          ==================================== ==================================
 
         :param `size`: the new size of the UI element.        
@@ -1555,7 +1518,7 @@ class AuiToolBar(wx.PyControl):
          ``AUI_TB_GRIPPER``                   Shows a gripper on the `AuiToolBar`
          ``AUI_TB_OVERFLOW``                  The `AuiToolBar` can contain overflow items
          ``AUI_TB_VERTICAL``                  The `AuiToolBar` is vertical
-         ``AUI_TB_HORZ_LAYOUT``               Shows the text and the icons alongside, not vertically stacked. This style must be used with ``AUI_TB_TEXT``.
+         ``AUI_TB_HORZ_LAYOUT``               Shows the text and the icons alongside, not vertically stacked. This style must be used with ``AUI_TB_TEXT``
          ``AUI_TB_PLAIN_BACKGROUND``          Don't draw a gradient background on the toolbar
          ``AUI_TB_HORZ_TEXT``                 Combination of ``AUI_TB_HORZ_LAYOUT`` and ``AUI_TB_TEXT``
          ==================================== ==================================
@@ -1659,7 +1622,7 @@ class AuiToolBar(wx.PyControl):
          ``AUI_TB_GRIPPER``                   Shows a gripper on the `AuiToolBar`
          ``AUI_TB_OVERFLOW``                  The `AuiToolBar` can contain overflow items
          ``AUI_TB_VERTICAL``                  The `AuiToolBar` is vertical
-         ``AUI_TB_HORZ_LAYOUT``               Shows the text and the icons alongside, not vertically stacked. This style must be used with ``AUI_TB_TEXT``.
+         ``AUI_TB_HORZ_LAYOUT``               Shows the text and the icons alongside, not vertically stacked. This style must be used with ``AUI_TB_TEXT``
          ``AUI_TB_PLAIN_BACKGROUND``          Don't draw a gradient background on the toolbar
          ``AUI_TB_HORZ_TEXT``                 Combination of ``AUI_TB_HORZ_LAYOUT`` and ``AUI_TB_TEXT``
          ==================================== ==================================
@@ -1700,7 +1663,7 @@ class AuiToolBar(wx.PyControl):
         """
         Returns the AGW-specific window style flag.
 
-        :see: L{SetAGWWindowStyleFlag} for an explanation of various AGW-specific style,        
+        :see: L{SetAGWWindowStyleFlag} for an explanation of various AGW-specific style.
         """
 
         return self._agwStyle
@@ -1745,13 +1708,13 @@ class AuiToolBar(wx.PyControl):
          ========================  =============================
          Item Kind                 Description
          ========================  =============================
-         ``ITEM_CONTROL``          The item in the AuiToolBar is a control
-         ``ITEM_LABEL``            The item in the AuiToolBar is a text label
-         ``ITEM_SPACER``           The item in the AuiToolBar is a spacer
-         ``ITEM_SEPARATOR``        The item in the AuiToolBar is a separator
-         ``ITEM_CHECK``            The item in the AuiToolBar is a toolbar check item
-         ``ITEM_NORMAL``           The item in the AuiToolBar is a standard toolbar item
-         ``ITEM_RADIO``            The item in the AuiToolBar is a toolbar radio item
+         ``ITEM_CONTROL``          The item in the `AuiToolBar` is a control
+         ``ITEM_LABEL``            The item in the `AuiToolBar` is a text label
+         ``ITEM_SPACER``           The item in the `AuiToolBar` is a spacer
+         ``ITEM_SEPARATOR``        The item in the `AuiToolBar` is a separator
+         ``ITEM_CHECK``            The item in the `AuiToolBar` is a toolbar check item
+         ``ITEM_NORMAL``           The item in the `AuiToolBar` is a standard toolbar item
+         ``ITEM_RADIO``            The item in the `AuiToolBar` is a toolbar radio item
          ========================  =============================
         """
         
@@ -1790,13 +1753,13 @@ class AuiToolBar(wx.PyControl):
          ========================  =============================
          Item Kind                 Description
          ========================  =============================
-         ``ITEM_CONTROL``          The item in the AuiToolBar is a control
-         ``ITEM_LABEL``            The item in the AuiToolBar is a text label
-         ``ITEM_SPACER``           The item in the AuiToolBar is a spacer
-         ``ITEM_SEPARATOR``        The item in the AuiToolBar is a separator
-         ``ITEM_CHECK``            The item in the AuiToolBar is a toolbar check item
-         ``ITEM_NORMAL``           The item in the AuiToolBar is a standard toolbar item
-         ``ITEM_RADIO``            The item in the AuiToolBar is a toolbar radio item
+         ``ITEM_CONTROL``          The item in the `AuiToolBar` is a control
+         ``ITEM_LABEL``            The item in the `AuiToolBar` is a text label
+         ``ITEM_SPACER``           The item in the `AuiToolBar` is a spacer
+         ``ITEM_SEPARATOR``        The item in the `AuiToolBar` is a separator
+         ``ITEM_CHECK``            The item in the `AuiToolBar` is a toolbar check item
+         ``ITEM_NORMAL``           The item in the `AuiToolBar` is a standard toolbar item
+         ``ITEM_RADIO``            The item in the `AuiToolBar` is a toolbar radio item
          ========================  =============================
 
         :param `short_help_string`: this string is used for the tools tooltip;
@@ -2384,7 +2347,7 @@ class AuiToolBar(wx.PyControl):
 
     def SetToolPacking(self, packing):
         """
-        Sets the value used for spacing tools. The default value is 1.
+        Sets the value used for spacing tools. The default value is 1 pixel.
 
         :param `packing`: the value for packing.
         """
@@ -2393,7 +2356,7 @@ class AuiToolBar(wx.PyControl):
 
 
     def GetToolPacking(self):
-        """ Returns the value used for spacing tools. The default value is 1. """
+        """ Returns the value used for spacing tools. The default value is 1 pixel. """
 
         return self._tool_packing
 
@@ -2579,8 +2542,13 @@ class AuiToolBar(wx.PyControl):
 
         # find out if the mouse cursor is inside the dropdown rectangle
         if overflow_rect.Contains((pt.x, pt.y)):
+
+            if _VERSION_STRING < "2.9":
+                leftDown = wx.GetMouseState().LeftDown()
+            else:
+                leftDown = wx.GetMouseState().LeftIsDown()
         
-            if wx.GetMouseState().LeftDown():
+            if leftDown:
                 overflow_state = AUI_BUTTON_STATE_PRESSED
             else:
                 overflow_state = AUI_BUTTON_STATE_HOVER
@@ -2732,7 +2700,7 @@ class AuiToolBar(wx.PyControl):
         Sets the tool bitmap for the tool identified by `tool_id`.
 
         :param `tool_id`: the tool identifier;
-        :param `bitmap`: the new bitmap for the toolbar item.
+        :param `bitmap`: the new bitmap for the toolbar item (an instance of `wx.Bitmap`).
         """
         
         tool = self.FindTool(tool_id)
@@ -2745,7 +2713,7 @@ class AuiToolBar(wx.PyControl):
         Sets the tool bitmap for the tool identified by `tool_id`.
 
         :param `tool_id`: the tool identifier;
-        :param `bitmap`: the new bitmap for the toolbar item.
+        :param `bitmap`: the new bitmap for the toolbar item (an instance of `wx.Bitmap`).
         """
         
         self.SetToolBitmap(tool_id, bitmap)
@@ -2756,7 +2724,7 @@ class AuiToolBar(wx.PyControl):
         Sets the tool disabled bitmap for the tool identified by `tool_id`.
 
         :param `tool_id`: the tool identifier;
-        :param `bitmap`: the new disabled bitmap for the toolbar item.
+        :param `bitmap`: the new disabled bitmap for the toolbar item (an instance of `wx.Bitmap`).
         """
         
         tool = self.FindTool(tool_id)
@@ -2878,21 +2846,21 @@ class AuiToolBar(wx.PyControl):
         return self.GetToolIndex(tool_id)
                                 
 
-    def GetToolFitsByIndex(self, tool_idx):
+    def GetToolFitsByIndex(self, tool_id):
         """
-        Returns whether the tool identified by `tool_idx` fits into the toolbar or not.
+        Returns whether the tool identified by `tool_id` fits into the toolbar or not.
 
-        :param `tool_idx`: the toolbar item identifier.
+        :param `tool_id`: the toolbar item identifier.
         """
         
-        if tool_idx < 0 or tool_idx >= len(self._items):
+        if tool_id < 0 or tool_id >= len(self._items):
             return False
 
-        if not self._items[tool_idx].sizer_item:
+        if not self._items[tool_id].sizer_item:
             return False
 
         cli_w, cli_h = self.GetClientSize()
-        rect = self._items[tool_idx].sizer_item.GetRect()
+        rect = self._items[tool_id].sizer_item.GetRect()
 
         if self._agwStyle & AUI_TB_VERTICAL:
             # take the dropdown size into account
@@ -3947,7 +3915,7 @@ class AuiToolBar(wx.PyControl):
 
 
     def StopPreviewTimer(self):
-        """ Stops a timer in {AuiManager} to slide-in/slide-out the minimized pane. """
+        """ Stops a timer in L{AuiManager} to slide-in/slide-out the minimized pane. """
 
         self_name = self.IsPaneMinimized()
         if not self_name:

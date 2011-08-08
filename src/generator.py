@@ -20,8 +20,8 @@ similar services for manipulating and transforming text.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: generator.py 62774 2009-12-03 21:01:45Z CJP $"
-__revision__ = "$Revision: 62774 $"
+__svnid__ = "$Id: generator.py 66957 2011-02-18 22:20:00Z CJP $"
+__revision__ = "$Revision: 66957 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -730,15 +730,15 @@ class LaTeX(plugin.Plugin):
         if size == wx.EmptyString:
             size = self._dstyle.GetSize()
 
-        back = back_tmp % self.HexToRGB(back.split(',')[0])
-        fore = fore_tmp % (self.HexToRGB(fore.split(',')[0]), back)
-        if "bold" in str(s_item):
+        back = back_tmp % self.HexToRGB(back.split(u',')[0])
+        fore = fore_tmp % (self.HexToRGB(fore.split(u',')[0]), back)
+        if u"bold" in unicode(s_item):
             fore = bold_tmp % fore
-        if "underline" in str(s_item):
+        if u"underline" in unicode(s_item):
             fore = uline_tmp % fore
-        if "italic" in str(s_item):
+        if u"italic" in unicode(s_item):
             fore = ital_tmp % fore
-        cmd = cmd_tmp % (("\\" + cmd_name), "\\texttt{\\ttfamily{%s}}" % fore)
+        cmd = cmd_tmp % ((u"\\" + cmd_name), u"\\texttt{\\ttfamily{%s}}" % fore)
         self._cmds[cmd_name] = cmd
 
     def TransformText(self, txt):

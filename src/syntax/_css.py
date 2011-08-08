@@ -14,11 +14,12 @@ FILE: css.py
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _css.py 64561 2010-06-12 01:49:05Z CJP $"
-__revision__ = "$Revision: 64561 $"
+__svnid__ = "$Id: _css.py 66902 2011-02-16 14:04:01Z CJP $"
+__revision__ = "$Revision: 66902 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import wx
 import wx.stc as stc
 
 # Local Imports
@@ -43,7 +44,8 @@ CSS1_KEYWORDS = (0, "font-family font-style font-variant font-weight font-size "
                     "border-bottom border-left border width height float clear "
                     "display white-space list-style-type list-style-image "
                     "list-style-position list-style margin-bottom "
-                    "text-decoration min-width min-height")
+                    "text-decoration min-width min-height "
+                    "background-attachment")
 
 # CSS Psuedo Classes
 CSS_PSUEDO_CLASS = (1, "link visited active hover focus before after left "
@@ -52,33 +54,34 @@ CSS_PSUEDO_CLASS = (1, "link visited active hover focus before after left "
 # CSS2 Keywords (Identifers2)
 # This is meant for css2 specific keywords, but in order to get a better
 # coloring effect this will contain special css properties as well.
-CSS2_KEYWORDS = (2, "src stemv stemh slope ascent descent widths bbox baseline "
-                    "centerline mathline topline all aqua black blue fuchsia "
-                    "gray green lime maroon navy olive purple red silver teal "
-                    "yellow ActiveBorder ActiveCaption AppWorkspace ButtonFace "
-                    "ButtonHighlight ButtonShadow ButtonText CaptionText "
-                    "GrayText Highlight HighlightText InactiveBorder "
-                    "InactiveCaption InactiveCaptionText InfoBackground "
-                    "InfoText Menu MenuText Scrollbar ThreeDDarkShadow "
-                    "ThreeDFace ThreeDHighlight ThreeDLightShadow ThreeDShadow "
-                    "Window WindowFrame WindowText Background auto none "
-                    "inherit top bottom medium normal cursive fantasy "
-                    "monospace italic oblique bold bolder lighter larger "
-                    "smaller icon menu narrower wider color center scroll "
-                    "fixed underline overline blink sub super middle "
-                    "capitalize uppercase lowercase center justify baseline "
-                    "width height float clear overflow clip visibility thin "
-                    "thick both dotted dashed solid double groove ridge inset "
-                    "outset hidden visible scroll collapse content quotes disc "
-                    "circle square hebrew armenian georgian inside outside "
-                    "size marks inside orphans widows landscape portrait crop "
-                    "cross always avoid cursor default crosshair pointer move "
-                    "wait help invert position below level above higher block "
-                    "inline compact static relative absolute fixed ltr rtl "
-                    "embed bidi-override pre nowrap volume during azimuth "
-                    "elevation stress richness silent non mix leftwards "
-                    "rightwards behind faster slower male female child code "
-                    "digits continuous separate show hide once ")
+CSS2_KEYWORDS = (2, "ActiveBorder ActiveCaption AppWorkspace Background "
+                    "ButtonFace ButtonHighlight ButtonShadow ButtonText "
+                    "CaptionText GrayText Highlight HighlightText "
+                    "InactiveBorder InactiveCaption InactiveCaptionText "
+                    "InfoBackground InfoText Menu MenuText Scrollbar "
+                    "ThreeDDarkShadow ThreeDFace ThreeDHighlight "
+                    "ThreeDLightShadow ThreeDShadow Window WindowFrame "
+                    "WindowText above absolute all always aqua armenian ascent "
+                    "auto avoid azimuth baseline baseline bbox behind below "
+                    "bidi-override black blink block blue bold bolder both "
+                    "bottom capitalize center center centerline child circle "
+                    "clear clip code collapse color compact content continuous "
+                    "crop cross crosshair cursive cursor dashed default "
+                    "descent digits disc dotted double during elevation embed "
+                    "fantasy faster female fixed fixed float fuchsia georgian "
+                    "gray green groove hebrew height help hidden hide higher "
+                    "icon inherit inline inset inside inside invert italic "
+                    "justify landscape larger leftwards level lighter lime "
+                    "lowercase ltr male marks maroon mathline medium menu "
+                    "middle mix monospace move narrower navy non none normal "
+                    "nowrap oblique olive once orphans outset outside overflow "
+                    "overline pointer portrait position pre purple quotes red "
+                    "relative richness ridge rightwards rtl scroll scroll "
+                    "separate show silent silver size slope slower smaller "
+                    "solid square src static stemh stemv stress sub super teal "
+                    "thick thin top topline underline uppercase visibility "
+                    "visible volume wait wider widows width widths yellow "
+                    "z-index outline left")
 
 #---- Syntax Style Specs ----#
 SYNTAX_ITEMS = [ (stc.STC_CSS_DEFAULT, 'default_style'),
@@ -99,14 +102,23 @@ SYNTAX_ITEMS = [ (stc.STC_CSS_DEFAULT, 'default_style'),
                  (stc.STC_CSS_UNKNOWN_PSEUDOCLASS, 'unknown_style'),
                  (stc.STC_CSS_VALUE, 'char_style') ]
 
+# TODO: add styling and keywords for new style regions in 2.9
+if wx.VERSION >= (2, 9, 0, 0, ''):
+    SYNTAX_ITEMS.append((stc.STC_CSS_EXTENDED_IDENTIFIER, 'default_style'))
+    SYNTAX_ITEMS.append((stc.STC_CSS_EXTENDED_PSEUDOCLASS, 'default_style'))
+    SYNTAX_ITEMS.append((stc.STC_CSS_EXTENDED_PSEUDOELEMENT, 'default_style'))
+    SYNTAX_ITEMS.append((stc.STC_CSS_IDENTIFIER3, 'default_style'))
+    SYNTAX_ITEMS.append((stc.STC_CSS_PSEUDOELEMENT, 'default_style'))
+
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
+
 #------------------------------------------------------------------------------#
 
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for CSS""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CSS)

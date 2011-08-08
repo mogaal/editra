@@ -16,8 +16,8 @@ A generic choice dialog that uses a wx.Choice control to display its choices.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: choicedlg.py 63820 2010-04-01 21:46:22Z CJP $"
-__revision__ = "$Revision: 63820 $"
+__svnid__ = "$Id: choicedlg.py 65202 2010-08-06 15:49:23Z CJP $"
+__revision__ = "$Revision: 65202 $"
 
 __all__ = ['ChoiceDialog',]
 
@@ -25,13 +25,15 @@ __all__ = ['ChoiceDialog',]
 # Imports
 import wx
 
+import ecbasewin
+
 #--------------------------------------------------------------------------#
 # Globals
 ChoiceDialogNameStr = u"ChoiceDialog"
 
 #--------------------------------------------------------------------------#
 
-class ChoiceDialog(wx.Dialog):
+class ChoiceDialog(ecbasewin.ECBaseDlg):
     """Dialog with a wx.Choice control for showing a list of choices"""
     def __init__(self, parent, id=wx.ID_ANY,
                  msg=u'', title=u'',
@@ -47,67 +49,17 @@ class ChoiceDialog(wx.Dialog):
         @keyword default: Default selection
 
         """
-        wx.Dialog.__init__(self, parent, id, title,
-                           style=wx.CAPTION, pos=pos, size=size, name=name)
+        super(ChoiceDialog, self).__init__(parent, id, title,
+                                           style=wx.CAPTION, pos=pos,
+                                           size=size, name=name)
 
         # Attributes
-        self._panel = ChoicePanel(self, msg=msg,
+        panel = ChoicePanel(self, msg=msg,
                                   choices=choices,
                                   default=default,
                                   style=style)
-
-        # Layout
-        self.__DoLayout()
-
-    def __DoLayout(self):
-        """Layout the dialogs controls"""
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self._panel, 1, wx.EXPAND)
-        self.SetSizer(sizer)
-        self.SetAutoLayout(True)
+        self.SetPanel(panel)
         self.SetInitialSize()
-
-    def SetChoices(self, choices):
-        """Set the dialogs choices
-        @param choices: list of strings
-
-        """
-        self._panel.SetChoices(choices)
-
-    def GetSelection(self):
-        """Get the selected choice
-        @return: string
-
-        """
-        return self._panel.GetSelection()
-
-    def GetStringSelection(self):
-        """Get the chosen string
-        @return: string
-
-        """
-        return self._panel.GetStringSelection()
-
-    def SetBitmap(self, bmp):
-        """Set the bitmap used in the dialog
-        @param bmp: wx.Bitmap
-
-        """
-        self._panel.SetBitmap(bmp)
-
-    def SetStringSelection(self, sel):
-        """Set the selected choice
-        @param sel: string
-
-        """
-        self._panel.SetStringSelection(sel)
-
-    def SetSelection(self, sel):
-        """Set the selected choice
-        @param sel: string
-
-        """
-        self._panel.SetSelection(sel)
 
 #--------------------------------------------------------------------------#
 
@@ -122,7 +74,7 @@ class ChoicePanel(wx.Panel):
         @keyword style: dialog style
 
         """
-        wx.Panel.__init__(self, parent)
+        super(ChoicePanel, self).__init__(parent)
 
         # Attributes
         self._msg = msg
@@ -214,6 +166,7 @@ class ChoicePanel(wx.Panel):
         """
         return self._choices
 
+    @ecbasewin.expose(ChoiceDialog)
     def GetSelection(self):
         """Get the chosen index
         @return: int
@@ -221,6 +174,7 @@ class ChoicePanel(wx.Panel):
         """
         return self._selidx
 
+    @ecbasewin.expose(ChoiceDialog)
     def GetStringSelection(self):
         """Get the chosen string
         @return: string
@@ -248,6 +202,7 @@ class ChoicePanel(wx.Panel):
         else:
             evt.Skip()
 
+    @ecbasewin.expose(ChoiceDialog)
     def SetBitmap(self, bmp):
         """Set the dialogs bitmap
         @param bmp: wx.Bitmap
@@ -256,6 +211,7 @@ class ChoicePanel(wx.Panel):
         self._bmp.SetBitmap(bmp)
         self.Layout()
 
+    @ecbasewin.expose(ChoiceDialog)
     def SetChoices(self, choices):
         """Set the dialogs choices
         @param choices: list of strings
@@ -265,6 +221,7 @@ class ChoicePanel(wx.Panel):
         self._choices.SetSelection(0)
         self._selection = self._choices.GetStringSelection()
 
+    @ecbasewin.expose(ChoiceDialog)
     def SetSelection(self, sel):
         """Set the selected choice
         @param sel: int
@@ -274,6 +231,7 @@ class ChoicePanel(wx.Panel):
         self._selection = self._choices.GetStringSelection()
         self._selidx = self._choices.GetSelection()
 
+    @ecbasewin.expose(ChoiceDialog)
     def SetStringSelection(self, sel):
         """Set the selected choice
         @param sel: string

@@ -9,8 +9,8 @@
 """Unittest cases for testing the ebmlib.Clipboard"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testEBMClipboard.py 64745 2010-06-25 23:13:12Z CJP $"
-__revision__ = "$Revision: 64745 $"
+__svnid__ = "$Id: testEBMClipboard.py 65165 2010-08-02 22:04:37Z CJP $"
+__revision__ = "$Revision: 65165 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -57,6 +57,8 @@ class EBMClipboardTest(unittest.TestCase):
         self.cb.Set("Test1")
         self.cb.NextFree()
         self.cb.Set("Test2")
+        self.cb.NextFree()
+        self.cb.Set("Test3")
         used = self.cb.AllUsed()
         self.assertTrue('"' in used)
         self.assertTrue('a' in used)

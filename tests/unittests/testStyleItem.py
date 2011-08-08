@@ -9,8 +9,8 @@
 """Unittest cases for StyleItems"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testStyleItem.py 62714 2009-11-25 22:53:32Z CJP $"
-__revision__ = "$Revision: 62714 $"
+__svnid__ = "$Id: testStyleItem.py 66896 2011-02-15 16:51:35Z CJP $"
+__revision__ = "$Revision: 66896 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -36,15 +36,22 @@ class StyleItemTest(unittest.TestCase):
     #---- Method Tests ----#
     def testEquals(self):
         """Test that the equality operator is functioning correctly"""
+        item1 = ed_style.StyleItem("#FF0000", "#000000", "Times", "10", ex=["bold",])
         item2 = ed_style.StyleItem("#FF0000", "#000000", "Times", "10", ex=["bold",])
 
         # Base Test
-        self.assertEquals(self.item, item2)
+        self.assertEquals(item1, item2)
 
         # Test 2
         item3 = ed_style.StyleItem("#FF0000", "#0000FF", "Arial", "10")
-        self.assertNotEquals(self.item, item3,
+        self.assertNotEquals(item1, item3,
                              "%s == %s" % (str(self.item), str(item2)))
+
+        # Test 3
+        # Coverage for bug of setting empty string in extra modifier styles
+        # that was being allowed and would ultimatly fail the equality test.
+        item1.SetExAttr(u'', True)
+        self.assertEquals(item1, item2)
 
     def testString(self):
         """Test that string conversion works properly"""

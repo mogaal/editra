@@ -32,8 +32,8 @@ a user defined sub item.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: panelbox.py 61808 2009-09-02 15:57:55Z CJP $"
-__revision__ = "$Revision: 61808 $"
+__svnid__ = "$Id: panelbox.py 67123 2011-03-04 00:02:35Z CJP $"
+__revision__ = "$Revision: 67123 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -52,10 +52,11 @@ class PanelBoxEventEvent(wx.PyCommandEvent):
 #--------------------------------------------------------------------------#
 
 class PanelBox(scrolled.ScrolledPanel):
+    """Scrolled container window for managing and displaying PanelBox items"""
     def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.HSCROLL|wx.VSCROLL,
                  name=u"PanelBox"):
-        scrolled.ScrolledPanel.__init__(self, parent, id, pos, size, style, name)
+        super(PanelBox, self).__init__(parent, id, pos, size, style, name)
 
         # Attributes
         self._items = list()
@@ -74,39 +75,6 @@ class PanelBox(scrolled.ScrolledPanel):
         # Event Handlers
 #        self.Bind(wx.EVT_KEY_UP, self.OnNavigate)
         self.GetParent().Bind(wx.EVT_KEY_UP, self.OnNavigate)
-
-#    def SetupScrolling(self, scroll_x=True, scroll_y=True, rate_x=20, rate_y=20, 
-#                       scrollToTop=True):
-#        """
-#        This function sets up the event handling necessary to handle
-#        scrolling properly. It should be called within the __init__
-#        function of any class that is derived from ScrolledPanel,
-#        once the controls on the panel have been constructed and
-#        thus the size of the scrolling area can be determined.
-
-#        """
-#        # The following is all that is needed to integrate the sizer and the
-#        # scrolled window.
-#        if not scroll_x: rate_x = 0
-#        if not scroll_y: rate_y = 0
-
-#        # Round up the virtual size to be a multiple of the scroll rate
-#        sizer = self.GetSizer()
-#        if sizer:
-#            w, h = sizer.GetMinSize()
-#            if rate_x:
-#                w += rate_x - (w % rate_x)
-#            if rate_y:
-#                h += rate_y - (h % rate_y)
-#            self.SetVirtualSize( (w, h) )
-#        self.SetScrollRate(rate_x, rate_y)        
-#        wx.CallAfter(self._SetupAfter, scrollToTop) # scroll back to top after initial events
-
-
-#    def _SetupAfter(self, scrollToTop):
-#        self.SetVirtualSize(self.GetBestVirtualSize())
-#        if scrollToTop:
-#            self.Scroll(0,0)
 
     #---- Event Handlers ----#
 
@@ -214,7 +182,7 @@ class PanelBox(scrolled.ScrolledPanel):
             return -1
 
     def GetItemCount(self):
-        """Get the number of items in teh control
+        """Get the number of items in the control
         @return: int
 
         """
@@ -297,7 +265,8 @@ class PanelBoxItemBase(wx.PyPanel):
     """Base L{PanelBox} Item"""
     def __init__(self, parent):
         """Create a PanelBoxItem"""
-        wx.PyPanel.__init__(self, parent, style=wx.NO_BORDER|wx.TAB_TRAVERSAL)
+        super(PanelBoxItemBase, self).__init__(parent,
+                                               style=wx.NO_BORDER|wx.TAB_TRAVERSAL)
 
         # Attributes
         self._selected = False
@@ -312,7 +281,7 @@ class PanelBoxItemBase(wx.PyPanel):
         """Update foreground colors when selection changes
         @param color: selection color
         @todo: should cache text's original color to restore
-               on deselection.
+               on de-selection.
 
         """
         if sum(color.Get()[:3]) < (127 * 3):
@@ -409,7 +378,7 @@ class PanelBoxItem(PanelBoxItemBase):
         @keyword sub: Window object or None
 
         """
-        PanelBoxItemBase.__init__(self, parent)
+        super(PanelBoxItem, self).__init__(parent)
 
         # Attributes
         self._bmp = bmp
@@ -474,22 +443,3 @@ class PanelBoxItem(PanelBoxItemBase):
 
         """
         pass
-
-#--------------------------------------------------------------------------#
-
-if __name__ == '__main__':
-    app = wx.App(False)
-    frame = wx.Frame(None, title="Test PanelBox")
-    panel = PanelBox(frame)
-    bmp = wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_TOOLBAR, (32, 32))
-    for num in range(15):
-        if num % 2:
-            secondary = wx.StaticText(panel, label="PanelBoxItem test")
-        else:
-            secondary = wx.Gauge(panel, size=(-1, 16))
-            secondary.Pulse()
-
-        pi = PanelBoxItem(panel, bmp, "Test Label", secondary)
-        panel.AppendItem(pi)
-    frame.Show()
-    app.MainLoop()

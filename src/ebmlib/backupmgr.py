@@ -7,15 +7,15 @@
 ###############################################################################
 
 """
-Editra Buisness Model Library: FileBackupMgr
+Editra Business Model Library: FileBackupMgr
 
 Helper class for managing and creating backups of files.
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: backupmgr.py 63435 2010-02-09 02:34:25Z CJP $"
-__revision__ = "$Revision: 63435 $"
+__cvsid__ = "$Id: backupmgr.py 67646 2011-04-29 03:07:20Z CJP $"
+__revision__ = "$Revision: 67646 $"
 
 __all__ = [ 'FileBackupMgr', ]
 
@@ -38,7 +38,7 @@ class FileBackupMgr(object):
         @keyword template: template string for naming backup file with
 
         """
-        object.__init__(self)
+        super(FileBackupMgr, self).__init__()
 
         # Attributes
         self.checker = fchecker.FileTypeChecker()
@@ -54,15 +54,16 @@ class FileBackupMgr(object):
 
         """
         isok = False
+        handle = None
         try:
-            try:
-                handle = open(fname)
-                line = handle.readline()
-                isok = line.startswith(self.header)
-            except:
-                isok = False
-        finally:
+            handle = open(fname, 'r')
+            line = handle.readline()
             handle.close()
+            isok = line.startswith(self.header)
+        except Exception, msg:
+            isok = False
+            if handle:
+                handle.close()
         return isok
 
     def GetBackupFilename(self, fname):
@@ -81,8 +82,11 @@ class FileBackupMgr(object):
            os.path.exists(rname):
             # Make sure that the template backup name does not match
             # an existing file that is not a backup file.
-            while not self._CheckHeader(rname):
-                rname = self.template % rname
+            while os.path.exists(rname):
+                if not self._CheckHeader(rname):
+                    rname = self.template % rname
+                else:
+                    break
                 
         return rname
 
@@ -97,7 +101,7 @@ class FileBackupMgr(object):
         fname = self.GetBackupFilename(nfile.GetPath())
         nfile.SetPath(fname)
         # Write the header if it is enabled
-        if self.header is not None and not self.checker.IsBinary(fname):
+        if self.header and not self.checker.IsBinary(fname):
             nfile.Write(self.header + os.linesep)
         return nfile.Write
 
@@ -136,18 +140,18 @@ class FileBackupMgr(object):
                 os.remove(backup)
 
             shutil.copy2(fname, backup)
+            if self.header:
+                handle = open(backup, 'r')
+                txt = handle.read()
+                handle.close()
+                handle = open(backup, 'w')
+                handle.write(self.header + os.linesep)
+                handle.write(txt)
+                handle.close()
         except:
             return False
         else:
             return True
-
-    def MakeBackupCopyAsync(self, fname):
-        """Do the backup asyncronously
-        @param fname: string (file path)
-        @todo: Not implemented yet
-
-        """
-        raise NotImplementedError("TODO: implement once threadpool is finished")
 
     def SetBackupDirectory(self, path):
         """Set the backup directory to use for all backups created by this

@@ -14,11 +14,12 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _perl.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _perl.py 66108 2010-11-10 21:04:54Z CJP $"
+__revision__ = "$Revision: 66108 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import wx
 import wx.stc as stc
 
 # Local Imports
@@ -92,6 +93,11 @@ SYNTAX_ITEMS = [ (stc.STC_PL_DEFAULT, 'default_style'),
                  (stc.STC_PL_SYMBOLTABLE, 'default_style'), # STYLE ME
                  (stc.STC_PL_WORD, 'keyword_style') ]
 
+if wx.VERSION >= (2, 9, 0, 0, ''):
+    SYNTAX_ITEMS.append((stc.STC_PL_FORMAT, 'default_style')) #TODO
+    SYNTAX_ITEMS.append((stc.STC_PL_FORMAT_IDENT, 'default_style')) #TODO
+    SYNTAX_ITEMS.append((stc.STC_PL_SUB_PROTOTYPE, 'default_style')) #TODO
+
 #---- Extra Properties ----#
 FOLD = ("fold", "1")
 FLD_COMPACT = ("fold.compact", "1")
@@ -104,7 +110,7 @@ FLD_PKG = ("fold.perl.package", "1")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for Perl""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_PERL)

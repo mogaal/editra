@@ -7,15 +7,15 @@
 ###############################################################################
 
 """
-Editra Buisness Model Library: SearchEngine
+Editra Business Model Library: SearchEngine
 
 Text Search Engine for finding text and grepping files
 
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: searcheng.py 60680 2009-05-17 20:31:58Z CJP $"
-__revision__ = "$Revision: 60680 $"
+__cvsid__ = "$Id: searcheng.py 68232 2011-07-12 02:08:53Z CJP $"
+__revision__ = "$Revision: 68232 $"
 
 __all__ = [ 'SearchEngine', ]
 
@@ -25,6 +25,7 @@ import os
 import re
 import fnmatch
 import types
+import unicodedata
 from StringIO import StringIO
 
 # Local imports
@@ -50,14 +51,13 @@ class SearchEngine(object):
         @keyword wholeword: Match whole word
 
         """
-        object.__init__(self)
+        super(SearchEngine, self).__init__()
 
         # Attributes
         self._isregex = regex
         self._next = down
         self._matchcase = matchcase
         self._wholeword = wholeword
-        self._unicode = False
         self._query = query
         self._regex = u''
         self._pool = u''
@@ -73,24 +73,44 @@ class SearchEngine(object):
 
         """
         tmp = self._query
+
+        uquery = type(tmp) is types.UnicodeType
+        upool = type(self._pool) is types.UnicodeType
+        if uquery and upool:
+            tmp = unicodedata.normalize("NFD", tmp)
+
         if not self._isregex:
             tmp = re.escape(tmp)
 
         if self._wholeword:
-            tmp = "\\b%s\\b" % tmp
+            if uquery:
+                tmp = u"\\b%s\\b" % tmp
+            else:
+                tmp = "\\b%s\\b" % tmp
 
         flags = re.MULTILINE
-
         if not self._matchcase:
             flags |= re.IGNORECASE
 
-        if self._unicode:
+        if upool:
             flags |= re.UNICODE
-
+            # Normalize
+            self._pool = unicodedata.normalize("NFD", self._pool)
+        else:
+            # If the pools is not Unicode also make sure that the
+            # query is a string too.
+            if uquery:
+                try:
+                    tmp = tmp.encode('utf-8')
+                except UnicodeEncodeError:
+                    # TODO: better error reporting about encoding issue
+                    self._regex = None
+                    return
         try:
             self._regex = re.compile(tmp, flags)
         except:
-            self._regex = None
+                self._regex = None
+        self._data = (tmp, self._pool)
 
     def ClearPool(self):
         """Clear the search pool"""
@@ -378,9 +398,7 @@ class SearchEngine(object):
         """
         del self._pool
         self._pool = pool
-        if isinstance(self._pool, types.UnicodeType):
-            self._unicode = True
-            self._CompileRegex()
+        self._CompileRegex()
 
     def SetQuery(self, query):
         """Set the search query

@@ -14,8 +14,8 @@ Miscellaneous utility functions and gui helpers
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: eclutil.py 63517 2010-02-19 02:44:37Z CJP $"
-__revision__ = "$Revision: 63517 $"
+__svnid__ = "$Id: eclutil.py 67596 2011-04-24 20:05:20Z CJP $"
+__revision__ = "$Revision: 67596 $"
 
 __all__ = ['AdjustAlpha', 'AdjustColour', 'BestLabelColour', 'HexToRGB',
            'GetHighlightColour', 'EmptyBitmapRGBA',
@@ -69,7 +69,7 @@ def AdjustColour(color, percent, alpha=wx.ALPHA_OPAQUE):
     @keyword alpha: amount to adjust alpha channel
 
     """
-    radj, gadj, badj = [ int(val * (abs(percent) / 100.))
+    radj, gadj, badj = [ int(val * (abs(percent) / 100.0))
                          for val in color.Get() ]
 
     if percent < 0:
@@ -88,7 +88,7 @@ def BestLabelColour(color):
     @param color: background color that text will be drawn on
 
     """
-    avg = sum(color.Get()) / 3
+    avg = sum(color.Get()) // 3
     if avg > 192:
         txt_color = wx.BLACK
     elif avg > 128:

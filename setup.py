@@ -29,8 +29,8 @@
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 64745 2010-06-25 23:13:12Z CJP $"
-__revision__ = "$Revision: 64745 $"
+__svnid__ = "$Id: setup.py 67669 2011-05-01 21:18:05Z CJP $"
+__revision__ = "$Revision: 67669 $"
 
 #---- Imports ----#
 import os
@@ -167,6 +167,7 @@ def GenerateSrcPackageFiles():
              "Editra",
              "src/extern/*.py",
              "src/extern/aui/*.py",
+             "src/extern/dexml/*.py",
              "src/extern/pygments/*.py",
              "src/extern/pygments/formatters/*.py",
              "src/extern/pygments/filters/*.py",
@@ -228,9 +229,11 @@ ICON = { 'Win' : "pixmaps/editra.ico",
 
 # Explicitly include some libraries that are either loaded dynamically
 # or otherwise not able to be found by py2app/exe
-INCLUDES = ['syntax.*', 'ed_log', 'shutil', 'subprocess', 'zipfile',
+INCLUDES = ['syntax.*', 'ed_bookmark', 'ed_log', 'shutil', 'subprocess', 'zipfile',
             'pygments.*', 'pygments.lexers.*', 'pygments.formatters.*',
-            'pygments.filters.*', 'pygments.styles.*', 'ftplib',
+            'pygments.filters.*', 'pygments.styles.*', 'ftplib', 'xmlrpclib',
+            'hmac', 'SimpleXMLRPCServer', 'SocketServer', 'commands', 
+            'BaseHTTPServer', 'wx.gizmos',
             'extern.flatnotebook'] # temporary till all references can be removed
 if sys.platform.startswith('win'):
     INCLUDES.extend(['ctypes', 'ctypes.wintypes'])
@@ -326,8 +329,10 @@ def BuildPy2Exe():
                                "optimize" : 1,
                                "bundle_files" : 2,
                                "includes" : INCLUDES,
-                               "excludes" : ["Tkinter",],
-                               "dll_excludes": [ "MSVCP90.dll" ] }},
+                               "excludes" : ["Tkinter", "Tkconstants", "tcl"],
+                               "dll_excludes": [ "MSVCP90.dll",
+                                                 "tk85.dll",
+                                                 "tcl85.dll" ] }},
         windows = [{"script": "src/Editra.py",
                     "icon_resources": [(1, ICON['Win'])],
                     "other_resources" : [(RT_MANIFEST, 1,
@@ -342,6 +347,7 @@ def BuildPy2Exe():
         url = URL,
         data_files = DATA_FILES,
         )
+    shutil.copy2(".\\editra-installer.nsi", ".\\dist\\editra-installer.nsi")
 
 def BuildOSXApp():
     """Build the OSX Applet"""
@@ -537,7 +543,7 @@ def DoSourcePackage():
 
     setup(
         name = NAME,
-        scripts = ['Editra', 'Editra.pyw'],
+        scripts = ['editra',],
         version = VERSION,
         description = DESCRIPTION,
         long_description = LONG_DESCRIPT,
