@@ -3,7 +3,7 @@ PACKAGE = $(shell dh_listpackages)
 TMP     = $(CURDIR)/debian/$(PACKAGE)
 
 %:
-	dh $@
+	dh $@ --with python2
 
 #override_dh_auto_configure:
 #	find . -name '*\.pyc' -delete
