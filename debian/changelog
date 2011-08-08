@@ -7,6 +7,8 @@ editra (0.6.58-1) unstable; urgency=low
   * Remove d/pycompat file (not needed in dh_python2)
   * Replace XS-Python-Version by X-Python-Version because is preferred by 
     transition to dh_python2 (following debian wiki)
+  * Rename Editra.1 manpage to editra.1 and update editra.manpages
+  * d/editra.menu: change run binary to editra (with 'E' in lower case)
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
 
