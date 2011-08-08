@@ -1,6 +1,6 @@
 editra (0.6.58-1) unstable; urgency=low
 
-  * New upstream release 
+  * New upstream release (Closes: #635092) 
   * Update Standards-Version field.
   * d/rules: Delete override_dh_auto_install, its not needed
   * Add transition to dh_python2.
