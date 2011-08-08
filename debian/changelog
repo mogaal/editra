@@ -9,6 +9,7 @@ editra (0.6.58-1) unstable; urgency=low
     transition to dh_python2 (following debian wiki)
   * Rename Editra.1 manpage to editra.1 and update editra.manpages
   * d/editra.menu: change run binary to editra (with 'E' in lower case)
+  * Remove editra.links, its not needed anymore.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
 
