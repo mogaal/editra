@@ -9,12 +9,13 @@ TMP     = $(CURDIR)/debian/$(PACKAGE)
 #	find . -name '*\.pyc' -delete
 #	dh_auto_configure
 	
-#override_dh_auto_install:
-#	dh_auto_install
-#	rm -f $(TMP)/usr/bin/Editra.pyw
-
-#override_dh_fixperms:
-#	dh_fixperms
-#	chmod +x $(TMP)/usr/share/pyshared/Editra/Editra
-#	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING
-#	rm -f $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING
+override_dh_fixperms:
+	dh_fixperms
+	chmod +x $(TMP)/usr/share/pyshared/Editra/Editra
+	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING
+	#rm -f $(TMP)/usr/share/pyshared/Editra/plugins/PyShell-0.8-py2.6.egg
+	#rm -f $(TMP)/usr/share/pyshared/Editra/plugins/Launch-1.11-py2.6.egg
+	#rm -f $(TMP)/usr/share/pyshared/Editra/plugins/FileBrowser-1.6-py2.6.egg
+	#rm -f $(TMP)/usr/share/pyshared/Editra/plugins/CodeBrowser-1.3-py2.6.egg
+	find . -name '*\.egg' -delete
+	rm -f $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING

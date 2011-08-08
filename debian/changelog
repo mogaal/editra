@@ -2,6 +2,7 @@ editra (0.6.58-1) unstable; urgency=low
 
   * New upstream release 
   * Update Standards-Version field.
+  * d/rules: Delete override_dh_auto_install, its not needed
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
 
