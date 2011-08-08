@@ -9,6 +9,5 @@ override_dh_fixperms:
 	dh_fixperms
 	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING
 	rm -f $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING
-	find $(TMP)/usr/share/pyshared/Editra -type d -empty -delete
-	find $(TMP)/usr/lib/python2.6/dist-packages/Editra -type d -empty -delete
+	rm -r $(TMP)/usr/share/pyshared/Editra $(TMP)/usr/lib/python2.6/dist-packages/Editra
 	find . -name '*\.egg' -delete
