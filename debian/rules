@@ -7,9 +7,9 @@ TMP     = $(CURDIR)/debian/$(PACKAGE)
 
 override_dh_fixperms:
 	dh_fixperms
-	rm -f $(TMP)/usr/share/pyshared/Editra/COPYING \
-         $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING \
-         $(TMP)/usr/share/pyshared/Editra \ 
-	      $(TMP)/usr/lib/python2.6/dist-packages/Editra
-	      $(TMP)/usr/lib/python2.7/dist-packages/Editra/plugins/
+	rm -rf $(TMP)/usr/share/pyshared/Editra/COPYING \
+          $(TMP)/usr/share/pyshared/Editra/pixmaps/theme/Tango/COPYING \
+          $(TMP)/usr/share/pyshared/Editra \ 
+	       $(TMP)/usr/lib/python2.6/dist-packages/Editra
+	       $(TMP)/usr/lib/python2.7/dist-packages/Editra/plugins/
 	find . -name '*\.egg' -delete
