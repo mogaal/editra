@@ -1,15 +1,17 @@
 editra (0.6.58-1) unstable; urgency=low
 
-  * New upstream release (Closes: #635092) 
+  * New upstream release (Closes: #635092).
   * Update Standards-Version field.
-  * d/rules: Delete override_dh_auto_install, its not needed
+  * d/rules: Delete override_dh_auto_install, its not needed.
   * Add transition to dh_python2.
   * Remove d/pycompat file (not needed in dh_python2)
   * Replace XS-Python-Version by X-Python-Version because is preferred by 
-    transition to dh_python2 (following debian wiki)
-  * Rename Editra.1 manpage to editra.1 and update editra.manpages
-  * d/editra.menu: change run binary to editra (with 'E' in lower case)
-  * Remove editra.links, its not needed anymore.
+    transition to dh_python2 (following debian wiki).
+  * Rename Editra.1 manpage to editra.1 and update editra.manpages. Now, the 
+    upstream package not install Editra binary (in uppercase).
+  * d/editra.menu: change run binary to editra (with 'E' in lower case).
+  * Remove editra.links, its not needed anymore because binary in uppercase its 
+    not installed.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
 
