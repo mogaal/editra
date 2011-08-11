@@ -12,6 +12,7 @@ editra (0.6.58-1) unstable; urgency=low
   * d/editra.menu: change run binary to editra (with 'E' in lower case).
   * Remove editra.links, its not needed anymore because binary in uppercase its 
     not installed.
+  * Add editra.pyremove to remove void directories installed by build system 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Sep 2010 00:46:51 -0430
 
