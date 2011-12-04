@@ -299,6 +299,7 @@ class AuiToolBarItem(object):
         self.hover_bitmap = wx.NullBitmap
         self.short_help = ""
         self.long_help = ""
+        self.target = None
         self.min_size = wx.Size(-1, -1)
         self.alignment = wx.ALIGN_CENTER
         self.orientation = AUI_TBTOOL_HORIZONTAL
@@ -331,6 +332,7 @@ class AuiToolBarItem(object):
         self.user_data = c.user_data
         self.alignment = c.alignment
         self.orientation = c.orientation
+        self.target = c.target
 
 
     def SetWindow(self, w):
@@ -934,7 +936,12 @@ class AuiDefaultToolBarArt(object):
         """
         
         dc.SetFont(self._font)
-        dc.SetTextForeground(wx.BLACK)
+
+        if item.state & AUI_BUTTON_STATE_DISABLED:
+            dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
+        else:
+            dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNTEXT))
+            
         orient = item.GetOrientation()
 
         horizontal = orient == AUI_TBTOOL_HORIZONTAL
@@ -1694,7 +1701,7 @@ class AuiToolBar(wx.PyControl):
         return self._art
 
 
-    def AddSimpleTool(self, tool_id, label, bitmap, short_help_string="", kind=ITEM_NORMAL):
+    def AddSimpleTool(self, tool_id, label, bitmap, short_help_string="", kind=ITEM_NORMAL, target=None):
         """
         Adds a tool to the toolbar. This is the simplest method you can use to
         ass an item to the L{AuiToolBar}.
@@ -1716,9 +1723,12 @@ class AuiToolBar(wx.PyControl):
          ``ITEM_NORMAL``           The item in the `AuiToolBar` is a standard toolbar item
          ``ITEM_RADIO``            The item in the `AuiToolBar` is a toolbar radio item
          ========================  =============================
+
+        :param `target`: a custom string indicating that an instance of L{framemanager.AuiPaneInfo}
+         has been minimized into this toolbar.
         """
         
-        return self.AddTool(tool_id, label, bitmap, wx.NullBitmap, kind, short_help_string, "", None)
+        return self.AddTool(tool_id, label, bitmap, wx.NullBitmap, kind, short_help_string, "", None, target)
 
 
     def AddToggleTool(self, tool_id, bitmap, disabled_bitmap, toggle=False, client_data=None, short_help_string="", long_help_string=""):
@@ -1739,7 +1749,7 @@ class AuiToolBar(wx.PyControl):
         return self.AddTool(tool_id, "", bitmap, disabled_bitmap, kind, short_help_string, long_help_string, client_data)
 
 
-    def AddTool(self, tool_id, label, bitmap, disabled_bitmap, kind, short_help_string, long_help_string, client_data):
+    def AddTool(self, tool_id, label, bitmap, disabled_bitmap, kind, short_help_string, long_help_string, client_data, target):
         """
         Adds a tool to the toolbar. This is the full feature version of L{AddTool}.
 
@@ -1766,6 +1776,8 @@ class AuiToolBar(wx.PyControl):
         :param `long_help_string`: this string is shown in the statusbar (if any) of the parent
          frame when the mouse pointer is inside the tool.
         :param `client_data`: whatever Python object to associate with the toolbar item.
+        :param `target`: a custom string indicating that an instance of L{framemanager.AuiPaneInfo}
+         has been minimized into this toolbar.
         """
         
         item = AuiToolBarItem()
@@ -1775,6 +1787,7 @@ class AuiToolBar(wx.PyControl):
         item.disabled_bitmap = disabled_bitmap
         item.short_help = short_help_string
         item.long_help = long_help_string
+        item.target = target
         item.active = True
         item.dropdown = False
         item.spacer_pixels = 0
@@ -2063,6 +2076,20 @@ class AuiToolBar(wx.PyControl):
         return None
 
 
+    def FindToolByLabel(self, label):
+        """
+        Finds a tool for the given label.
+
+        :param `tool_id`: the L{AuiToolBarItem} label.
+        """
+        
+        for item in self._items:
+            if item.label == label:
+                return item
+    
+        return None
+
+
     def FindToolForPosition(self, x, y):
         """
         Finds a tool for the given mouse position.
@@ -2087,6 +2114,21 @@ class AuiToolBar(wx.PyControl):
                 return item
             
         return None
+
+
+    def HitTest(self, x, y):
+        """
+        Finds a tool for the given mouse position.
+
+        :param `x`: mouse `x` position;
+        :param `y`: mouse `y` position.
+
+        :returns: a pointer to a L{AuiToolBarItem} if a tool is found, or ``None`` otherwise.
+
+        :note: This method is similar to L{FindToolForPosition} but it works with absolute coordinates.
+        """
+        
+        return self.FindToolForPosition(*self.ScreenToClient((x,y)))
 
 
     def FindToolForPositionWithPacking(self, x, y):
@@ -3625,7 +3667,11 @@ class AuiToolBar(wx.PyControl):
                         if not manager:
                             return
 
-                        pane = manager.GetPane(self)
+                        if self._action_item.target:
+                            pane = manager.GetPane(self._action_item.target)
+                        else:
+                            pane = manager.GetPane(self)
+                            
                         e = framemanager.AuiManagerEvent(framemanager.wxEVT_AUI_PANE_MIN_RESTORE)
 
                         e.SetManager(manager)
@@ -3664,8 +3710,8 @@ class AuiToolBar(wx.PyControl):
         if self._overflow_sizer_item:
         
             dropdown_size = self._art.GetElementSize(AUI_TBART_OVERFLOW_SIZE)
-            if dropdown_size > 0 and event.m_x > cli_rect.width - dropdown_size and \
-               event.m_y >= 0 and event.m_y < cli_rect.height and self._art:
+            if dropdown_size > 0 and event.GetX() > cli_rect.width - dropdown_size and \
+               event.GetY() >= 0 and event.GetY() < cli_rect.height and self._art:
                 return
             
         self._action_pos = wx.Point(*event.GetPosition())
@@ -3730,8 +3776,8 @@ class AuiToolBar(wx.PyControl):
         if self._overflow_sizer_item:
         
             dropdown_size = self._art.GetElementSize(AUI_TBART_OVERFLOW_SIZE)
-            if dropdown_size > 0 and event.m_x > cli_rect.width - dropdown_size and \
-               event.m_y >= 0 and event.m_y < cli_rect.height and self._art:            
+            if dropdown_size > 0 and event.GetX() > cli_rect.width - dropdown_size and \
+               event.GetY() >= 0 and event.GetY() < cli_rect.height and self._art:            
                 return
             
         self._action_pos = wx.Point(*event.GetPosition())
@@ -3778,7 +3824,7 @@ class AuiToolBar(wx.PyControl):
         
         # start a drag event
         if not self._dragging and self._action_item != None and self._action_pos != wx.Point(-1, -1) and \
-           abs(event.m_x - self._action_pos.x) + abs(event.m_y - self._action_pos.y) > 5:
+           abs(event.GetX() - self._action_pos.x) + abs(event.GetY() - self._action_pos.y) > 5:
         
             self.SetToolTipString("")
             self._dragging = True

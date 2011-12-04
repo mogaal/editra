@@ -16,8 +16,8 @@ can be installed as single file instead of dozens of individual image files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_theme.py 66815 2011-01-29 20:46:20Z CJP $"
-__revision__ = "$Revision: 66815 $"
+__svnid__ = "$Id: ed_theme.py 69062 2011-09-11 17:36:03Z CJP $"
+__revision__ = "$Revision: 69062 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -207,6 +207,7 @@ ART = { ed_glob.ID_ABOUT  : u'about.png',
         ed_glob.ID_COMPUTER : u'computer.png',
         ed_glob.ID_CUT    : u'cut.png',
         ed_glob.ID_DELETE : u'delete.png',
+        ed_glob.ID_DELETE_ALL : u'delete_all.png',
         ed_glob.ID_DOCPROP : u'doc_props.png',
         ed_glob.ID_DOCUMENTATION : u'docs.png',
         ed_glob.ID_DOWN   : u'down.png',

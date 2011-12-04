@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _apache.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _apache.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -158,7 +158,7 @@ SYNTAX_ITEMS = [(stc.STC_CONF_COMMENT,  'comment_style'),
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for Apache Conf files""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CONF)

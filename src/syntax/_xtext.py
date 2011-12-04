@@ -15,8 +15,8 @@ AUTHOR: Igor Dejanovic
 """
 
 __author__ = "Igor Dejanovic <igor.dejanovic@gmail.com>"
-__svnid__ = "$Id: _xtext.py 64561 2010-06-12 01:49:05Z CJP $"
-__revision__ = "$Revision: 64561 $"
+__svnid__ = "$Id: _xtext.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -80,7 +80,7 @@ SYNTAX_ITEMS = [ (STC_XTEXT_DEFAULT, 'default_style'),
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for XText""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CONTAINER)

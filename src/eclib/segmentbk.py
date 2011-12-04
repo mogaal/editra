@@ -33,8 +33,8 @@ page buttons.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: segmentbk.py 67323 2011-03-27 19:28:00Z CJP $"
-__revision__ = "$Revision: 67323 $"
+__svnid__ = "$Id: segmentbk.py 69065 2011-09-11 19:18:25Z CJP $"
+__revision__ = "$Revision: 69065 $"
 
 __all__ = ['SegmentBook', 'SegmentBookEvent', 'SEGBOOK_STYLE_DEFAULT',
            'SEGBOOK_STYLE_NO_DIVIDERS', 'SEGBOOK_STYLE_LABELS',
@@ -53,6 +53,7 @@ import wx
 
 # Local Imports
 import ctrlbox
+from eclutil import Freezer
 
 #-----------------------------------------------------------------------------#
 # Events
@@ -153,9 +154,8 @@ class SegmentBook(ctrlbox.ControlBox):
         handler = self.GetEventHandler()
         if not handler.ProcessEvent(event) or event.IsAllowed():
             # Do the actual page change
-            self.Freeze()
-            self.ChangePage(csel)
-            self.Thaw()
+            with Freezer(self) as _tmp:
+                self.ChangePage(csel)
 
             # Post page changed event
             event.SetEventType(edEVT_SB_PAGE_CHANGED)

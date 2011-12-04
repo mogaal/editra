@@ -10,8 +10,8 @@
 """Unittests for Editra's text SearchEngine"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testSearchEngine.py 68232 2011-07-12 02:08:53Z CJP $"
-__revision__ = "$Revision: 68232 $"
+__svnid__ = "$Id: testSearchEngine.py 68615 2011-08-09 19:01:24Z CJP $"
+__revision__ = "$Revision: 68615 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -203,7 +203,6 @@ class SearchEngineTest(unittest.TestCase):
         pool = unichr(0x00E9)
         search = ebmlib.SearchEngine(u'e' + u'\u0301')
         search.SetSearchPool(pool)
-        print search._data
         val = search.Find()
         self.assertTrue(val is not None)
 

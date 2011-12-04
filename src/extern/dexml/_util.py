@@ -1,3 +1,4 @@
+import copy
 
 class Error(Exception):
     """Base exception class for the dexml module."""

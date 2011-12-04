@@ -208,7 +208,3 @@ unknown_style {
         back: #DD0101; 
         modifiers:bold eol;
 }
-
-whitespace_style {
-        fore: #838383;
-}

@@ -40,6 +40,9 @@ Usage
 The following example shows a simple implementation that uses L{AuiManager} to manage
 three text controls in a frame window::
 
+    import wx
+    import wx.lib.agw.aui as aui
+
     class MyFrame(wx.Frame):
 
         def __init__(self, parent, id=-1, title="AUI Test", pos=wx.DefaultPosition,
@@ -99,7 +102,7 @@ three text controls in a frame window::
 What's New
 ==========
 
-Current wxAUI Version Tracked: wxWidgets 2.9.0 (SVN HEAD)
+Current wxAUI Version Tracked: wxWidgets 2.9.2 (SVN HEAD)
 
 The wxPython AUI version fixes the following bugs or implement the following
 missing features (the list is not exhaustive):
@@ -232,7 +235,11 @@ Plus the following features:
   (g) Ability of creating `AuiToolBar` tools with [counter]clockwise rotation. This allows to propose a
       variant of the minimizing functionality with a rotated button which keeps the caption of the pane
       as label;
-  (h) Allow setting the alignment of all tools in a toolbar that is expanded.
+  (h) Allow setting the alignment of all tools in a toolbar that is expanded;
+  (i) Implementation of the ``AUI_MINIMIZE_POS_TOOLBAR`` flag, which allows to minimize a pane inside
+      an existing toolbar. Limitation: if the minimized icon in the toolbar ends up in the overflowing
+      items (i.e., a menu is needed to show the icon), this style will not work.
+
 
 
 TODOs
@@ -270,7 +277,7 @@ License And Version
 
 AUI library is distributed under the wxPython license. 
 
-Latest revision: Andrea Gavana @ 10 Mar 2011, 15.00 GMT
+Latest Revision: Andrea Gavana @ 29 Sep 2011, 21.00 GMT
 
 Version 1.3. 
 

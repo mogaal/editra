@@ -13,15 +13,14 @@ This class implements Editra's main notebook control.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_pages.py 68233 2011-07-12 03:01:16Z CJP $"
-__revision__ = "$Revision: 68233 $"
+__svnid__ = "$Id: ed_pages.py 69269 2011-10-01 20:14:43Z CJP $"
+__revision__ = "$Revision: 69269 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
 import os
 import sys
 import glob
-import cPickle
 import wx
 
 # Editra Libraries
@@ -35,6 +34,7 @@ import util
 import ed_msg
 import ed_txt
 import ed_mdlg
+import ed_session
 import ebmlib
 import eclib
 from extern import aui
@@ -93,7 +93,6 @@ class EdPages(ed_book.EdBaseBook):
             util.Log("[ed_pages][warn] Bad bitmap: %s" % ed_icon)
 
         # Set custom options
-        self.SetSashDClickUnsplit(True)
         self.SetMinMaxTabWidth(125, 135)
 
         # Notebook Events
@@ -119,6 +118,7 @@ class EdPages(ed_book.EdBaseBook):
         ed_msg.Subscribe(self.OnThemeChanged, ed_msg.EDMSG_THEME_CHANGED)
         ed_msg.Subscribe(self.OnThemeChanged, ed_msg.EDMSG_THEME_NOTEBOOK)
         ed_msg.Subscribe(self.OnUpdatePosCache, ed_msg.EDMSG_UI_STC_POS_JUMPED)
+        ed_msg.Subscribe(self.OnGetOpenFiles, ed_msg.EDMSG_FILE_GET_OPENED)
         ed_msg.RegisterCallback(self.OnDocPointerRequest,
                                 ed_msg.EDREQ_DOCPOINTER)
 
@@ -128,13 +128,14 @@ class EdPages(ed_book.EdBaseBook):
 
     #---- End Init ----#
 
+    #---- Implementation ----#
+
     def OnDestroy(self, evt):
         if evt.GetId() == self.GetId():
             ed_msg.Unsubscribe(self.OnThemeChanged)
             ed_msg.Unsubscribe(self.OnUpdatePosCache)
+            ed_msg.Unsubscribe(self.OnGetOpenFiles)
             ed_msg.UnRegisterCallback(self.OnDocPointerRequest)
-
-    #---- Function Definitions ----#
 
     def _HandleEncodingError(self, control):
         """Handle trying to reload the file the file with a different encoding
@@ -239,7 +240,10 @@ class EdPages(ed_book.EdBaseBook):
         super(EdPages, self).AddPage(page, text, select, bitmap=bmp)
         self.UpdateIndexes()
         if not self._ses_load and not bNewPage:
-            self.SaveCurrentSession()
+            # Only auto save session when using default session
+            mgr = ed_session.EdSessionMgr()
+            if Profile_Get('LAST_SESSION') == mgr.DefaultSession:
+                self.SaveCurrentSession()
 
     def DocDuplicated(self, path):
         """Check for if the given path is open elsewhere and duplicate the
@@ -317,11 +321,14 @@ class EdPages(ed_book.EdBaseBook):
 
     def SaveCurrentSession(self):
         """Save the current session"""
+        if self._ses_load:
+            return
+
         session = Profile_Get('LAST_SESSION')
         # Compatibility with older session data
         if not isinstance(session, basestring) or not len(session):
-            session = os.path.join(ed_glob.CONFIG['SESSION_DIR'], 
-                                   u"__default.session")
+            mgr = ed_session.EdSessionMgr()
+            session = mgr.DefaultSession
             Profile_Set('LAST_SESSION', session)
         self.SaveSessionFile(session)
 
@@ -331,20 +338,15 @@ class EdPages(ed_book.EdBaseBook):
         @return: tuple (error desc, error msg) or None
 
         """
-        try:
-            f_handle = open(session, 'wb')
-        except (IOError, OSError), msg:
-            smsg = str(msg)
-            return (_("Error Saving Session File"),  ed_txt.DecodeString(smsg))
+        if self._ses_load:
+            return
 
         try:
-            sdata = dict(win1=self.GetFileNames())
-            cPickle.dump(sdata, f_handle)
+            mgr = ed_session.EdSessionMgr()
+            flist = self.GetFileNames()
+            bSaved = mgr.SaveSession(session, flist)
         except Exception, msg:
-            self.LOG("[ed_pages][err] Failed to SaveSessionFile: %s" % msg)
-        finally:
-            f_handle.close()
-
+            self.LOG("[ed_pages][err] SaveSession error %s" % msg)
         return None
 
     def LoadSessionFile(self, session):
@@ -355,35 +357,14 @@ class EdPages(ed_book.EdBaseBook):
         """
         self._ses_load = True
 
-        if os.path.exists(session):
-            try:
-                f_handle = open(session, 'rb')
-            except IOError:
-                f_handle = None
-        else:
-            f_handle = None
-
-        # Invalid file
-        if f_handle is None:
-            self._ses_load = False
-            return (_("Invalid File"), _("Session file doesn't exist."))
-
-        # Load and validate file
+        mgr = ed_session.EdSessionMgr()
+        flist = list()
         try:
-            try:
-                flist = cPickle.load(f_handle)
-                # TODO: Extend in future to support loading sessions
-                #       for multiple windows.
-                flist = flist.get('win1', list())
-                for item in flist:
-                    if type(item) not in (unicode, str):
-                        raise TypeError("Invalid item in unpickled sequence")
-            except (cPickle.UnpicklingError, TypeError, EOFError), e:
-                self._ses_load = False
-                return (_("Invalid file"),
-                        _("Selected file is not a valid session file"))
-        finally:
-            f_handle.close()
+            flist = mgr.LoadSession(session)
+        except Exception, msg:
+            self._ses_load = False
+            return (_("Session Load Error"),
+                    _("Failed to load the session: %s\n\nError: %s") % (session, msg))
 
         if not len(flist):
             self._ses_load = False
@@ -425,14 +406,11 @@ class EdPages(ed_book.EdBaseBook):
         @postcondition: a new page with an untitled document is opened
 
         """
-        frame = self.GetTopLevelParent()
-        frame.Freeze()
-        try:
+        frame = self.TopLevelParent
+        with eclib.Freezer(frame) as _tmp:
             self.control = ed_editv.EdEditorView(self)
             self.LOG("[ed_pages][evt] New Page Created")
             self.AddPage(self.control)
-        finally:
-            frame.Thaw()
 
         # Set the control up the the preferred default lexer
         dlexer = Profile_Get('DEFAULT_LEX', 'str', synglob.LANG_TXT)
@@ -462,7 +440,7 @@ class EdPages(ed_book.EdBaseBook):
 
         """
         ctab = self.GetCurrentPage()
-        handler = self._menu.GetHandler(evt.GetId())
+        handler = self._menu.GetHandler(evt.Id)
         if handler is not None:
             handler(ctab, evt)
         elif ctab is not None:
@@ -564,9 +542,9 @@ class EdPages(ed_book.EdBaseBook):
         self._menu.Clear()
 
         # Construct the menu
-        tab = evt.GetSelection()
+        tab = self.GetPageIndex(evt.Page)
         if tab != self.GetSelection():
-            self.SetSelection(evt.GetSelection())
+            self.SetSelection(tab)
 
         ctab = self.GetCurrentPage()
         if ctab is not None:
@@ -582,6 +560,18 @@ class EdPages(ed_book.EdBaseBook):
 
             # Show the menu
             self.PopupMenu(self._menu.Menu)
+
+    def GetMainWindow(self):
+        return self.TopLevelParent
+
+    @ed_msg.mwcontext
+    def OnGetOpenFiles(self, msg):
+        """Report all opened files"""
+        data = msg.GetData()
+        if not isinstance(data, list):
+            return
+        flist = self.GetFileNames()
+        data.extend(flist)
 
     def OnThemeChanged(self, msg):
         """Update icons when the theme has changed
@@ -621,46 +611,45 @@ class EdPages(ed_book.EdBaseBook):
         @keyword title: tab title
 
         """
-        self.GetTopLevelParent().Freeze()
-        nbuff = self.GetCurrentPage()
-        need_add = False
-        if nbuff.GetFileName() or nbuff.GetLength():
-            need_add = True
-            nbuff = ed_editv.EdEditorView(self)
+        with eclib.Freezer(self.TopLevelParent) as _tmp:
+            nbuff = self.GetCurrentPage()
+            need_add = False
+            if nbuff.GetFileName() or nbuff.GetLength():
+                need_add = True
+                nbuff = ed_editv.EdEditorView(self)
 
-        nbuff.SetDocPointer(ptr)
-        nbuff.SetDocument(doc)
-        doc.AddModifiedCallback(nbuff.FireModified)
-        nbuff.FindLexer()
+            nbuff.SetDocPointer(ptr)
+            nbuff.SetDocument(doc)
+            doc.AddModifiedCallback(nbuff.FireModified)
+            nbuff.FindLexer()
 
-        path = nbuff.GetFileName()
-        if Profile_Get('SAVE_POS'):
-            pos = self.DocMgr.GetPos(path)
-            nbuff.SetCaretPos(pos)
-            nbuff.ScrollToColumn(0)
+            path = nbuff.GetFileName()
+            if Profile_Get('SAVE_POS'):
+                pos = self.DocMgr.GetPos(path)
+                nbuff.SetCaretPos(pos)
+                nbuff.ScrollToColumn(0)
 
-        if title:
-            filename = title
-        else:
-            filename = ebmlib.GetFileName(path)
+            if title:
+                filename = title
+            else:
+                filename = ebmlib.GetFileName(path)
 
-        if need_add:
-            self.AddPage(nbuff, filename)
-        else:
-            self.SetPageText(self.GetSelection(), filename)
+            if need_add:
+                self.AddPage(nbuff, filename)
+            else:
+                self.SetPageText(self.GetSelection(), filename)
 
-        self.LOG("[ed_pages][evt] Opened Page: %s" % filename)
+            self.LOG("[ed_pages][evt] Opened Page: %s" % filename)
 
-        # Set tab image
-        self.SetPageBitmap(self.GetSelection(), nbuff.GetTabImage())
+            # Set tab image
+            self.SetPageBitmap(self.GetSelection(), nbuff.GetTabImage())
 
-        # Refocus on selected page
-        self.control = nbuff
-        self.GoCurrentPage()
-        self.GetTopLevelParent().Thaw()
-        ed_msg.PostMessage(ed_msg.EDMSG_FILE_OPENED,
-                           nbuff.GetFileName(),
-                           context=self.frame.GetId())
+            # Refocus on selected page
+            self.control = nbuff
+            self.GoCurrentPage()
+            ed_msg.PostMessage(ed_msg.EDMSG_FILE_OPENED,
+                               nbuff.GetFileName(),
+                               context=self.frame.Id)
 
     def OpenFileObject(self, fileobj):
         """Open a new text editor page with the given file object. The file
@@ -669,41 +658,39 @@ class EdPages(ed_book.EdBaseBook):
 
         """
         # Create the control
-        self.GetTopLevelParent().Freeze()
-        control = ed_editv.EdEditorView(self, wx.ID_ANY)
-        control.Hide()
+        with eclib.Freezer(self.TopLevelParent) as _tmp:
+            control = ed_editv.EdEditorView(self)
+            control.Hide()
 
-        # Load the files data
-        path = fileobj.GetPath()
-        filename = ebmlib.GetFileName(path)
-        control.SetDocument(fileobj)
-        result = control.ReloadFile()
+            # Load the files data
+            path = fileobj.GetPath()
+            filename = ebmlib.GetFileName(path)
+            control.SetDocument(fileobj)
+            result = control.ReloadFile()
 
-        # Setup the buffer
-        fileobj.AddModifiedCallback(control.FireModified)
+            # Setup the buffer
+            fileobj.AddModifiedCallback(control.FireModified)
 
-        # Setup the notebook
-        self.control = control
-        self.control.FindLexer()
-        self.control.EmptyUndoBuffer()
-        self.control.Show()
-        self.AddPage(self.control, filename)
+            # Setup the notebook
+            self.control = control
+            self.control.FindLexer()
+            self.control.EmptyUndoBuffer()
+            self.control.Show()
+            self.AddPage(self.control, filename)
 
-        self.frame.AddFileToHistory(path)
-        self.SetPageText(self.GetSelection(), filename)
-        self.LOG("[ed_pages][evt] Opened Page: %s" % filename)
+            self.frame.AddFileToHistory(path)
+            self.SetPageText(self.GetSelection(), filename)
+            self.LOG("[ed_pages][evt] Opened Page: %s" % filename)
 
-        # Set tab image
-        cpage = self.GetSelection()
-        self.SetPageBitmap(cpage, self.control.GetTabImage())
-
-        self.GetTopLevelParent().Thaw()
+            # Set tab image
+            cpage = self.GetSelection()
+            self.SetPageBitmap(cpage, self.control.GetTabImage())
 
         # Refocus on selected page
         self.GoCurrentPage()
         ed_msg.PostMessage(ed_msg.EDMSG_FILE_OPENED,
                            self.control.GetFileName(),
-                           context=self.frame.GetId())
+                           context=self.frame.Id)
 
         if Profile_Get('WARN_EOL', default=True) and not fileobj.IsRawBytes():
             self.control.CheckEOL()
@@ -739,99 +726,96 @@ class EdPages(ed_book.EdBaseBook):
             return
 
         # Create new control to place text on if necessary
-        self.GetTopLevelParent().Freeze()
-        new_pg = True
-        if self.GetPageCount():
-            if self.control.GetModify() or self.control.GetLength() or \
-               self.control.GetFileName() != u'':
+        with eclib.Freezer(self.TopLevelParent) as _tmp:
+            new_pg = True
+            if self.GetPageCount():
+                if self.control.GetModify() or self.control.GetLength() or \
+                   self.control.GetFileName() != u'':
+                    control = ed_editv.EdEditorView(self, wx.ID_ANY)
+                    control.Hide()
+                else:
+                    new_pg = False
+                    control = self.control
+            else:
                 control = ed_editv.EdEditorView(self, wx.ID_ANY)
                 control.Hide()
+
+            # Open file and get contents
+            result = False
+            if os.path.exists(path2file):
+                try:
+                    result = control.LoadFile(path2file)
+                except Exception, msg:
+                    self.LOG("[ed_pages][err] Failed to open file %s\n" % path2file)
+                    self.LOG("[ed_pages][err] %s" % msg)
+
+                    # File could not be opened/read give up
+                    # Don't raise a dialog during a session load error as if the
+                    # dialog is shown before the mainwindow is ready it can cause
+                    # the app to freeze.
+                    if not self._ses_load:
+                        ed_mdlg.OpenErrorDlg(self, path2file, msg)
+                    control.GetDocument().ClearLastError()
+                    control.SetFileName('') # Reset the file name
+
+                    if new_pg:
+                        control.Destroy()
+
+                    return
             else:
-                new_pg = False
-                control = self.control
-        else:
-            control = ed_editv.EdEditorView(self, wx.ID_ANY)
-            control.Hide()
+                control.SetFileName(path2file)
+                result = True
 
-        # Open file and get contents
-        result = False
-        if os.path.exists(path2file):
-            try:
-                result = control.LoadFile(path2file)
-            except Exception, msg:
-                self.LOG("[ed_pages][err] Failed to open file %s\n" % path2file)
-                self.LOG("[ed_pages][err] %s" % msg)
+            # Check if there was encoding errors
+            if not result and not self._ses_load:
+                result = self._HandleEncodingError(control)
 
-                # File could not be opened/read give up
-                # Don't raise a dialog during a session load error as if the
-                # dialog is shown before the mainwindow is ready it can cause
-                # the app to freeze.
-                if not self._ses_load:
-                    ed_mdlg.OpenErrorDlg(self, path2file, msg)
-                control.GetDocument().ClearLastError()
-                control.SetFileName('') # Reset the file name
-
+            # Cleanup after errors
+            if not result:
                 if new_pg:
+                    # We created a new one so destroy it
                     control.Destroy()
+                else:
+                    # We where using an existing buffer so reset it
+                    control.SetText('')
+                    control.SetDocument(ed_txt.EdFile())
+                    control.SetSavePoint()
 
-                self.GetTopLevelParent().Thaw()
                 return
-        else:
-            control.SetFileName(path2file)
-            result = True
 
-        # Check if there was encoding errors
-        if not result and not self._ses_load:
-            result = self._HandleEncodingError(control)
-
-        # Cleanup after errors
-        if not result:
+            # Put control into page an place page in notebook
             if new_pg:
-                # We created a new one so destroy it
-                control.Destroy()
+                control.Show()
+                self.control = control
+
+            # Setup Document
+            self.control.FindLexer()
+            self.control.EmptyUndoBuffer()
+            doc = self.control.GetDocument()
+            doc.AddModifiedCallback(self.control.FireModified)
+
+            # Add the buffer to the notebook
+            if new_pg:
+                self.AddPage(self.control, filename)
             else:
-                # We where using an existing buffer so reset it
-                control.SetText('')
-                control.SetDocument(ed_txt.EdFile())
-                control.SetSavePoint()
+                self.frame.SetTitle(self.control.GetTitleString())
 
-            self.GetTopLevelParent().Thaw()
-            return
+            self.frame.AddFileToHistory(path2file)
+            self.SetPageText(self.GetSelection(), filename)
 
-        # Put control into page an place page in notebook
-        if new_pg:
-            control.Show()
-            self.control = control
+            # Set tab image
+            cpage = self.GetSelection()
+            self.SetPageBitmap(cpage, self.control.GetTabImage())
 
-        # Setup Document
-        self.control.FindLexer()
-        self.control.EmptyUndoBuffer()
-        doc = self.control.GetDocument()
-        doc.AddModifiedCallback(self.control.FireModified)
+            if Profile_Get('WARN_EOL', default=True) and not doc.IsRawBytes():
+                self.control.CheckEOL()
 
-        # Add the buffer to the notebook
-        if new_pg:
-            self.AddPage(self.control, filename)
-        else:
-            self.frame.SetTitle(self.control.GetTitleString())
+            if not control.IsLoading():
+                self.DoPostLoad()
 
-        self.frame.AddFileToHistory(path2file)
-        self.SetPageText(self.GetSelection(), filename)
-
-        # Set tab image
-        cpage = self.GetSelection()
-        self.SetPageBitmap(cpage, self.control.GetTabImage())
-
-        if Profile_Get('WARN_EOL', default=True) and not doc.IsRawBytes():
-            self.control.CheckEOL()
-
-        if not control.IsLoading():
-            self.DoPostLoad()
-
-        # Refocus on selected page
-        self.GoCurrentPage()
-        self.GetTopLevelParent().Thaw()
-        self.LOG("[ed_pages][evt] Opened Page: %s" % filename)
+            # Refocus on selected page
+            self.GoCurrentPage()
+            self.LOG("[ed_pages][evt] Opened Page: %s" % filename)
 
     def DoPostLoad(self):
         """Perform post file open actions"""
@@ -851,7 +835,7 @@ class EdPages(ed_book.EdBaseBook):
 
         ed_msg.PostMessage(ed_msg.EDMSG_FILE_OPENED,
                            self.control.GetFileName(),
-                           context=self.frame.GetId())
+                           context=self.frame.Id)
 
     def GoCurrentPage(self):
         """Move Focus to Currently Selected Page.
@@ -1047,12 +1031,12 @@ class EdPages(ed_book.EdBaseBook):
                   "%d to Page: %d\n" % pages)
 
         # Check if it has been destroyed already
-        if isinstance(self.control, wx.Window):
+        if self.control:
             self.control.DoDeactivateTab()
 
         ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_CHANGING,
                            (self,) + pages,
-                           context=self.frame.GetId())
+                           context=self.frame.Id)
 
     def ChangePage(self, pg_num, old=-2):
         """Change the page and focus to the the given page id
@@ -1080,7 +1064,7 @@ class EdPages(ed_book.EdBaseBook):
         if not self.frame.IsExiting() and cpage != pg_num:
             ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_CHANGED,
                                (self, pg_num),
-                               context=self.frame.GetId())
+                               context=self.frame.Id)
 
     def OnPageChanged(self, evt):
         """Actions to do after a page change
@@ -1115,7 +1099,7 @@ class EdPages(ed_book.EdBaseBook):
             evt.Skip()
             ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_CLOSING,
                                (self, sel),
-                               context=self.frame.GetId())
+                               context=self.frame.Id)
         else:
             evt.Veto()
 
@@ -1125,24 +1109,21 @@ class EdPages(ed_book.EdBaseBook):
         @type evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSED
 
         """
-        frame = self.GetTopLevelParent()
-        frame.Freeze()
-        try:
+        frame = self.TopLevelParent
+        with eclib.Freezer(frame) as _tmp:
             cpage = evt.GetSelection()
             evt.Skip()
             self.LOG("[ed_pages][evt] Closed Page: #%d" % cpage)
             self.UpdateIndexes()
             ed_msg.PostMessage(ed_msg.EDMSG_UI_NB_CLOSED,
                                (self, cpage),
-                               context=self.frame.GetId())
+                               context=self.frame.Id)
 
             if not self.GetPageCount() and \
                hasattr(frame, 'IsExiting') and not frame.IsExiting():
                 self.NewPage()
             elif not self.frame.IsExiting():
                 self.SaveCurrentSession()
-        finally:
-            frame.Thaw()
 
     #---- End Event Handlers ----#
 
@@ -1166,9 +1147,8 @@ class EdPages(ed_book.EdBaseBook):
                                            SIMULATED_EVT_ID)
                 evt.SetSelection(idx)
                 self.OnPageClosing(evt)
-                self.TopLevelParent.Freeze() # prevent flashing on OSX
-                self.DeletePage(idx)
-                self.TopLevelParent.Thaw()
+                with eclib.Freezer(self.TopLevelParent) as _tmp:
+                    self.DeletePage(idx)
                 evt = aui.AuiNotebookEvent(aui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSED,
                                            SIMULATED_EVT_ID)
                 evt.SetSelection(idx)
@@ -1263,9 +1243,7 @@ class EdPages(ed_book.EdBaseBook):
 
         """
         try:
-            e_id = evt.GetId()
-            if self.control.GetId() == e_id:
-
+            if self.control.Id == evt.Id:
                 # Wait till file is completely loaded before updating ui based
                 # on modification events.
                 if self.control.IsLoading():
@@ -1285,7 +1263,7 @@ class EdPages(ed_book.EdBaseBook):
                 # A background page has changed
                 for page in range(self.GetPageCount()):
                     control = self.GetPage(page)
-                    if control.GetId() == e_id:
+                    if control.Id == evt.Id:
                         title = self.GetPageText(page)
                         if control.GetModify():
                             title = u"*" + title
@@ -1294,7 +1272,7 @@ class EdPages(ed_book.EdBaseBook):
         except wx.PyDeadObjectError:
             pass
 
-    def UpdateTextControls(self, meth=None, args=list()):
+    def UpdateTextControls(self):
         """Updates all text controls to use any new settings that have
         been changed since initialization.
         @postcondition: all stc controls in the notebook are reconfigured
@@ -1302,10 +1280,7 @@ class EdPages(ed_book.EdBaseBook):
 
         """
         for control in self.GetTextControls():
-            if meth is not None:
-                getattr(control, meth)(*args)
-            else:
-                control.UpdateAllStyles()
-                control.Configure()
+            control.UpdateAllStyles()
+            control.Configure()
 
 #---- End Function Definitions ----#

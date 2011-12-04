@@ -12,8 +12,8 @@ Text/Unicode handling functions and File wrapper class
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_txt.py 67628 2011-04-27 16:26:04Z CJP $"
-__revision__ = "$Revision: 67628 $"
+__svnid__ = "$Id: ed_txt.py 69245 2011-09-30 17:52:23Z CJP $"
+__revision__ = "$Revision: 69245 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -23,7 +23,6 @@ import time
 import wx
 import codecs
 import locale
-import types
 from StringIO import StringIO
 
 # Local Imports
@@ -289,7 +288,7 @@ class EdFile(ebmlib.FileObjectImpl):
             except LookupError, msg:
                 Log("[ed_txt][err] Invalid encoding: %s" % enc)
                 Log("[ed_txt][err] %s" % msg)
-                self.SetLastError(unicde(msg))
+                self.SetLastError(unicode(msg))
             except UnicodeEncodeError, msg:
                 Log("[ed_txt][err] Failed to encode text with %s" % enc)
                 Log("[ed_txt][err] %s" % msg)
@@ -720,7 +719,7 @@ def GuessEncoding(fname, sample):
         try:
             handle = open(fname, 'rb')
             reader = codecs.getreader(enc)(handle)
-            txt = reader.read(sample)
+            reader.read(sample)
             reader.close()
         except Exception, msg:
             handle.close()
@@ -745,7 +744,8 @@ def GetEncodings():
     encodings.append('utf-8')
 
     try:
-        encodings.append(locale.nl_langinfo(locale.CODESET))
+        if hasattr(locale, 'nl_langinfo'):
+            encodings.append(locale.nl_langinfo(locale.CODESET))
     except:
         pass
     try:

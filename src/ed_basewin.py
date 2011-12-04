@@ -13,8 +13,8 @@ Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basewin.py 67857 2011-06-05 00:16:24Z CJP $"
-__revision__ = "$Revision: 67857 $"
+__svnid__ = "$Id: ed_basewin.py 69061 2011-09-11 17:04:41Z CJP $"
+__revision__ = "$Revision: 69061 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -98,6 +98,7 @@ class EdBaseCtrlBox(eclib.ControlBox):
             ed_msg.Unsubscribe(self._OnFontChange)
 
     def _OnFontChange(self, msg):
+        """Update font of all controls"""
         if not self:
             return
         font = msg.GetData()
@@ -121,15 +122,7 @@ class EdBaseCtrlBox(eclib.ControlBox):
         """
         ctrlbar = self.GetControlBar(cbarpos)
         assert ctrlbar is not None, "No ControlBar at cbarpos"
-        if not isinstance(bmp, wx.Bitmap):
-            assert isinstance(bmp, int)
-            bmp = wx.ArtProvider.GetBitmap(str(bmp), wx.ART_MENU)
-        if bmp.IsNull() or not bmp.IsOk():
-            bmp = None
-        btn = eclib.PlateButton(ctrlbar, wx.ID_ANY, lbl, bmp,
-                                style=eclib.PB_STYLE_NOBG)
-        ctrlbar.AddControl(btn, align)
-        return btn
+        return ctrlbar.AddPlateButton(lbl, bmp, align)
 
     def CreateControlBar(self, pos=wx.TOP):
         """Override for CreateControlBar to automatically set the
@@ -137,6 +130,26 @@ class EdBaseCtrlBox(eclib.ControlBox):
 
         """
         cbar = super(EdBaseCtrlBox, self).CreateControlBar(pos)
+        cbar.__class__ = EdBaseCtrlBar
         if wx.Platform == '__WXGTK__':
             cbar.SetWindowStyle(eclib.CTRLBAR_STYLE_DEFAULT)
         return cbar
+
+class EdBaseCtrlBar(eclib.ControlBar):
+    def AddPlateButton(self, lbl=u"", bmp=-1, align=wx.ALIGN_LEFT):
+        """Add an eclib.PlateButton 
+        @keyword lbl: Button Label
+        @keyword bmp: Bitmap or EditraArtProvider ID
+        @keyword align: button alignment
+        @return: PlateButton instance
+
+        """
+        if not isinstance(bmp, wx.Bitmap):
+            assert isinstance(bmp, int)
+            bmp = wx.ArtProvider.GetBitmap(str(bmp), wx.ART_MENU)
+        if bmp.IsNull() or not bmp.IsOk():
+            bmp = None
+        btn = eclib.PlateButton(self, wx.ID_ANY, lbl, bmp,
+                                style=eclib.PB_STYLE_NOBG)
+        self.AddControl(btn, align)
+        return btn

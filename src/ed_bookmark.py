@@ -1,6 +1,6 @@
 ###############################################################################
 # Name: Cody Precord                                                          #
-# Purpose:                                    #
+# Purpose: Bookmark Manager window and plugin interface                       #
 # Author: Cody Precord <cprecord@editra.org>                                  #
 # Copyright: (c) 2010 Cody Precord <staff@editra.org>                         #
 # License: wxWindows License                                                  #
@@ -12,8 +12,8 @@ Bookmark manager
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_bookmark.py 67489 2011-04-14 15:39:14Z CJP $"
-__revision__ = "$Revision: 67489 $"
+__svnid__ = "$Id: ed_bookmark.py 69115 2011-09-17 16:51:49Z CJP $"
+__revision__ = "$Revision: 69115 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -139,8 +139,13 @@ class BookmarkWindow(ed_basewin.EdBaseCtrlBox):
         self.SetWindow(self._list)
         ctrlbar = self.CreateControlBar(wx.TOP)
         ctrlbar.AddStretchSpacer()
-        self._delbtn = self.AddPlateButton(_("Delete"), ed_glob.ID_DELETE)
-        self._delbtn.SetToolTipString(_("Delete Bookmark"))
+        self._delbtn = self.AddPlateButton(_("Delete"), ed_glob.ID_DELETE,
+                                           wx.ALIGN_RIGHT)
+        self._delbtn.ToolTip = wx.ToolTip(_("Delete Bookmark"))
+        self._delallbtn = self.AddPlateButton(_("Delete All"),
+                                              ed_glob.ID_DELETE_ALL,
+                                              wx.ALIGN_RIGHT)
+        self._delallbtn.ToolTip = wx.ToolTip(_("Delete all bookmarks"))
 
         # Message Handlers
         ed_msg.Subscribe(self.OnBookmark, ed_msg.EDMSG_UI_STC_BOOKMARK)
@@ -149,6 +154,7 @@ class BookmarkWindow(ed_basewin.EdBaseCtrlBox):
         self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
         self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivate, self._list)
         self.Bind(wx.EVT_BUTTON, self.OnDelBm, self._delbtn)
+        self.Bind(wx.EVT_BUTTON, self.OnDelAllBm, self._delallbtn)
         # BUG in wxAUI UpdateUI events not processed when docked
         # TODO: renable when switch to agw aui
 #        self.Bind(wx.EVT_UPDATE_UI,
@@ -167,9 +173,22 @@ class BookmarkWindow(ed_basewin.EdBaseCtrlBox):
         # in the singleton data store have been updated.
         wx.CallAfter(self.DoUpdateListCtrl)
 
+    def OnDelAllBm(self, evt):
+        """Delete all bookmarks"""
+        items = range(self._list.ItemCount)
+        self.DeleteBookmarks(items)
+
     def OnDelBm(self, evt):
         """Remove the selected bookmark(s) from the list and the buffer"""
         items = self._list.GetSelections()
+        self.DeleteBookmarks(items)
+
+    def DeleteBookmarks(self, items):
+        """Delete the bookmarks from the passed in list
+        @param items: list of indexes in BookmarkList
+
+        """
+        assert isinstance(items, list)
         if len(items):
             items.reverse()
             marks = EdBookmarks.GetMarks()

@@ -16,8 +16,8 @@ intended as samples for exercising the various control apis.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: demo.py 65793 2010-10-12 16:46:24Z CJP $"
-__revision__ = "$Revision: 65793 $"
+__svnid__ = "$Id: demo.py 68686 2011-08-13 19:07:25Z CJP $"
+__revision__ = "$Revision: 68686 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -81,7 +81,7 @@ class EclibDemoFrame(wx.Frame):
 
         self.CenterOnParent()
 
-        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnTreeSel)
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnTreeSel, self.tree)
 
     def OnTreeSel(self, evt):
         self.Freeze()
@@ -97,7 +97,7 @@ class EclibDemoFrame(wx.Frame):
 class EclibDemoBook(wx.Notebook):
     """Main Window display panel"""
     def __init__(self, parent):
-        wx.Notebook.__init__(self, parent, size=(450, 400))
+        super(EclibDemoBook, self).__init__(parent, size=(450, 400))
 
         # Attributes
         self.doc = html.HtmlWindow(self)
@@ -323,6 +323,7 @@ def FindDemoModules(path):
 
 def Main():
     app = EclibDemoApp(False)
+    print wx.version()
     app.MainLoop()
 
 #-----------------------------------------------------------------------------#

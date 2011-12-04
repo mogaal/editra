@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 67626 2011-04-27 02:51:39Z CJP $"
-__revision__ = "$Revision: 67626 $"
+__svnid__ = "$Id: ed_basestc.py 69268 2011-10-01 19:50:54Z CJP $"
+__revision__ = "$Revision: 69268 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -1104,6 +1104,41 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
             self.EndUndoAction()
             self.SetFocus()
 
+    def GetViewWhiteSpace(self):
+        """Get if view whitespace is turned on
+        @return: bool
+
+        """
+        val = super(EditraBaseStc, self).GetViewWhiteSpace()
+        return val != wx.stc.STC_WS_INVISIBLE
+
+    def SetViewWhiteSpace(self, viewws):
+        """Overrides base method to make it a simple bool toggle"""
+        if viewws:
+            val = wx.stc.STC_WS_VISIBLEALWAYS
+        else:
+            val = wx.stc.STC_WS_INVISIBLE
+        super(EditraBaseStc, self).SetViewWhiteSpace(val)
+
+    def GetWrapMode(self):
+        """Get if word wrap is turned on
+        @return: bool
+
+        """
+        val = super(EditraBaseStc, self).GetWrapMode()
+        return val != wx.stc.STC_WRAP_NONE
+
+    def SetWrapMode(self, wrap):
+        """Overrides base method to make it a simple toggle operation
+        @param wrap: bool
+
+        """
+        if wrap:
+            val = wx.stc.STC_WRAP_WORD
+        else:
+            val = wx.stc.STC_WRAP_NONE
+        super(EditraBaseStc, self).SetWrapMode(val)
+
     def ShowCallTip(self, command):
         """Shows call tip for given command
         @param command: command to  look for calltips for
@@ -1175,11 +1210,10 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         @postcondition: all style settings are refreshed in the control
 
         """
-        self.Freeze()
-        self.StyleClearAll()
-        self.SetSyntax(self.GetSyntaxParams())
-        self.DefineMarkers()
-        self.Thaw()
+        with eclib.Freezer(self) as _tmp:
+            self.StyleClearAll()
+            self.SetSyntax(self.GetSyntaxParams())
+            self.DefineMarkers()
         self.Refresh()
 
     def UpdateBaseStyles(self):

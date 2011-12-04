@@ -24,7 +24,7 @@ access the instance via the Publisher object available from the module::
 
 :Author:      Oliver Schoenborn
 :Since:       Apr 2004
-:Version:     $Id: pubsub.py 60742 2009-05-25 16:14:13Z CJP $
+:Version:     $Id: pubsub.py 69063 2011-09-11 18:19:32Z CJP $
 :Copyright:   \(c) 2004 Oliver Schoenborn
 :License:     wxWidgets
 """
@@ -835,6 +835,12 @@ class Message:
         self.topic = topic
         self.data  = data
         self.context = context
+
+    Data = property(lambda self: self.data,
+                    lambda self, data: setattr(self, 'data', data))
+    Context = property(lambda self: self.context,
+                       lambda self, ctx: setattr(self, 'context', value))
+    Type = property(lambda self: self.topic)
 
     def __str__(self):
         return '[Topic: '+`self.topic`+',  Data: '+`self.data`+']'

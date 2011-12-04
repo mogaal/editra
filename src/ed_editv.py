@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 67834 2011-06-02 02:39:41Z CJP $"
-__revision__ = "$Revision: 67834 $"
+__svnid__ = "$Id: ed_editv.py 69268 2011-10-01 19:50:54Z CJP $"
+__revision__ = "$Revision: 69268 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -113,17 +113,19 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         self.Bind(wx.EVT_LEFT_UP, self.OnSetFocus)
         self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
 
-        ed_msg.Subscribe(self.OnConfigMsg,
-                         ed_msg.EDMSG_PROFILE_CHANGE + ('SPELLCHECK',))
-        ed_msg.Subscribe(self.OnConfigMsg,
-                         ed_msg.EDMSG_PROFILE_CHANGE + ('AUTOBACKUP',))
-        ed_msg.Subscribe(self.OnConfigMsg,
-                         ed_msg.EDMSG_PROFILE_CHANGE + ('SYNTHEME',))
-        ed_msg.Subscribe(self.OnConfigMsg,
-                         ed_msg.EDMSG_PROFILE_CHANGE + ('SYNTAX',))
+        # Subscribe for configuration updates
+        for opt in ('AUTOBACKUP', 'SYNTHEME', 'SYNTAX', 'BRACKETHL', 'GUIDES',
+                    'SHOW_EDGE', 'EDGE', 'CODE_FOLD', 'AUTO_COMP',
+                    'AUTO_INDENT', 'HLCARETLINE', 'SPELLCHECK', 'VI_EMU',
+                    'VI_NORMAL_DEFAULT', 'USETABS', 'TABWIDTH', 'INDENTWIDTH',
+                    'BSUNINDENT', 'EOL_MODE', 'AALIASING', 'SHOW_EOL', 'SHOW_LN',
+                    'SHOW_WS', 'WRAP', 'VIEWVERTSPACE'):
+            ed_msg.Subscribe(self.OnConfigMsg,
+                             ed_msg.EDMSG_PROFILE_CHANGE + (opt,))
 
     def OnDestroy(self, evt):
-        if evt.GetId() == self.GetId():
+        """Cleanup message handlers on destroy"""
+        if evt.Id == self.Id:
             ed_msg.Unsubscribe(self.OnConfigMsg)
         evt.Skip()
 
@@ -380,14 +382,45 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
             self._spell.setDefaultLanguage(mdata.get('dict', 'en_US'))
             if not self._spell_data['enabled']:
                 self._spell.clearAll()
-        elif mtype == 'AUTOBACKUP':
-            self.EnableAutoBackup(Profile_Get('AUTOBACKUP'))
-        elif mtype == 'SYNTHEME':
-            self.UpdateAllStyles(Profile_Get('SYNTHEME'))
-        elif mtype == 'SYNTAX':
-            self.SyntaxOnOff(Profile_Get('SYNTAX'))
+            return
         elif mtype == 'AUTO_COMP_EX':
             self.ConfigureAutoComp()
+            return
+        elif mtype in ('VI_EMU', 'VI_NORMAL_DEFAULT'):
+            self.SetViEmulationMode(Profile_Get('VI_EMU'),
+                                    Profile_Get('VI_NORMAL_DEFAULT'))
+            return
+        elif mtype == 'VIEWVERTSPACE':
+            self.SetEndAtLastLine(not Profile_Get('VIEWVERTSPACE'))
+
+        # Update other settings
+        cfgmap = { 'AUTOBACKUP' : self.EnableAutoBackup,
+                   'SYNTHEME'   : self.UpdateAllStyles,
+                   'SYNTAX'     : self.SyntaxOnOff,
+                   'BRACKETHL'  : self.ToggleBracketHL,
+                   'GUIDES'     : self.SetIndentationGuides,
+                   'SHOW_EDGE'  : self.SetViewEdgeGuide,
+                   'EDGE'       : self.SetViewEdgeGuide,
+                   'CODE_FOLD'  : self.FoldingOnOff,
+                   'AUTO_COMP'  : self.SetAutoComplete,
+                   'AUTO_INDENT': self.ToggleAutoIndent,
+                   'HLCARETLINE': self.SetCaretLineVisible,
+                   'USETABS'    : self.SetUseTabs,
+                   'BSUNINDENT' : self.SetBackSpaceUnIndents,
+                   'EOL_MODE'   : self.SetEOLMode,
+                   'AALIASING'  : self.SetUseAntiAliasing,
+                   'SHOW_EOL'   : self.SetViewEOL,
+                   'SHOW_LN'    : self.ToggleLineNumbers,
+                   'SHOW_WS'    : self.SetViewWhiteSpace,
+                   'WRAP'       : self.SetWrapMode                   }
+        if mtype in cfgmap:
+            cfgmap[mtype](Profile_Get(mtype))
+            return
+
+        cfgmap2 = { 'TABWIDTH'   : self.SetTabWidth,
+                    'INDENTWIDTH': self.SetIndent }
+        if mtype in cfgmap2:
+            cfgmap2[mtype](Profile_Get(mtype, 'int'))
 
     def OnContextMenu(self, evt):
         """Handle right click menu events in the buffer"""

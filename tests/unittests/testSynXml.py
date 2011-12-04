@@ -6,11 +6,11 @@
 # License: wxWindows License                                                  #
 ###############################################################################
 
-"""Unittest cases for teh Syntax Xml Library"""
+"""Unittest cases for the Syntax Xml Library"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testSynXml.py 62523 2009-10-31 21:03:19Z CJP $"
-__revision__ = "$Revision: 62523 $"
+__svnid__ = "$Id: testSynXml.py 68817 2011-08-21 20:16:52Z CJP $"
+__revision__ = "$Revision: 68817 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -104,6 +104,10 @@ class SynXmlTest(unittest.TestCase):
         self.assertEquals(spec[0][0], wx.stc.STC_P_DEFAULT,
                           "val was: %s" % spec[0][0])
         self.assertEquals(spec[0][1], "default_style",
+                          "val was: %s" % spec[0][1])
+        self.assertEquals(spec[1][0], wx.stc.STC_P_WORD,
+                          "val was: %s" % spec[0][0])
+        self.assertEquals(spec[1][1], "keyword_style",
                           "val was: %s" % spec[0][1])
 
     def testIsOk(self):

@@ -14,8 +14,8 @@ Helper class for managing context menu callbacks
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: cmenumgr.py 67348 2011-03-30 17:59:32Z CJP $"
-__revision__ = "$Revision: 67348 $"
+__cvsid__ = "$Id: cmenumgr.py 69118 2011-09-17 18:46:15Z CJP $"
+__revision__ = "$Revision: 69118 $"
 
 __all__ = [ 'ContextMenuManager', ]
 
@@ -41,6 +41,10 @@ class ContextMenuManager(object):
 
     Position = property(lambda self: self.GetPosition(),
                         lambda self, pos: self.SetPosition(pos))
+
+    def __del__(self):
+        """Cleanup when it goes out of scope"""
+        self.Clear()
 
     def AddHandler(self, evt_id, handler):
         """Add an event handler

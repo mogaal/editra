@@ -7,8 +7,74 @@ License: wxWindows
 Change Log:
 
 #-----------------------------------------------------------------------------#
-
 Changes since last release:
+
+VERSION 0.6.77
+DATE 10/02/2011
+46th Alpha Release
+
+NEWS:
+
+Just a rebuild of 0.6.76 to fix some system compatibility issues that some ran
+in to while using the new Windows binaries.
+
+#-----------------------------------------------------------------------------#
+
+VERSION 0.6.76
+DATE 10/01/2011
+45th Alpha Release
+
+NEWS:
+
+New in this release is the new Session Manager bar for managing editing sessions.
+Along with the Session Manager the session feature has had a change to its
+behavior, only the Default session will automatically update. All other custom
+sessions require explicit saves to configure the set of files that belong in it.
+See the changelog below for details of other changes and bug fixes that are
+included in this release.
+
+
+NEW: [features/improvements]
++Allow scrolling of the buffer from within the search bar with up/down keys.
++Can now change lexer from status bar context menu.
++Session management feature behavior has been changed in this release. When using
+custom sessions they will not automatically be saved as new files are opened or
+when the editor is closed. They must now be saved manually. Only the builtin
+'Default' session will retain the automatic behavior.
++Support folding docstrings in Python source code.
++Add Command Bar for managing editing sessions, default key binding of Ctrl+K.
++Add Delete All button to Bookmark manager Shelf window.
++Add close all option to shelf tab right click menu.
++New version of Launch Plugin (Bug fixes)
++New version of CodeBrowser (Python enhancements / wxPython 2.9 bug fixes)
+
+LIBRARY:
++Add FileTree class to eclib.
++Add FactoryMixin mixin class to ebmlib to simplify implementing factories for
+classes.
++Add new icon resource for Delete All (ID_DELETE_ALL).
++Add Freezer context manager class to eclib.
+
+BUG FIXES:
++Fix PyDeadObject error when opening new window from tab menu.
++Fix selection background not being shown when selecting whitespace when the
+buffers show whitespace option is turned on.
++Fix Select All not working in search bar.
++Fix issue during shutdown when IPC server isn't running.
++Fix loading custom key profiles that have duplicate entries.
++Fix handling the toggling of Maximize/Restore editor for some workflows so that
+the view is correctly toggled back and forth for all cases.
++Fix display issues when scrolling on GTK caused by overlay scrollbars.
++Fix issue with some obsolete plugins being shown in plugin manager download window.
++Fix issue with initial search from Find dialog always beginning at position 
+zero instead of the current caret position.
++Fix some inconsistencies with doing incremental searches and behavior when
+the search direction is changed for a find next action.
++Fix failure to detect correct syntax highlighting when extension manager
+had mappings with upper or mixed case letter.
++Fix some incorrect tab selection index issues when notebook was split.
+
+#-----------------------------------------------------------------------------#
 
 VERSION 0.6.58
 DATE 07/23/2011

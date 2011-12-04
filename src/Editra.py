@@ -16,8 +16,8 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 67432 2011-04-11 00:02:30Z CJP $"
-__revision__ = "$Revision: 67432 $"
+__svnid__ = "$Id: Editra.py 69061 2011-09-11 17:04:41Z CJP $"
+__revision__ = "$Revision: 69061 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -66,6 +66,7 @@ import ed_event
 import updater
 import plugin
 import ed_ipc
+import ed_session
 import ebmlib
 from syntax import synglob
 
@@ -280,7 +281,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         self._pluginmgr.WritePluginConfig()
         profiler.TheProfile.Write(profiler.Profile_Get('MYPROFILE'))
         if not self._lock or force:
-            if hasattr(self, '_server'):
+            if getattr(self, '_server', None):
                 self._server.Shutdown()
 
             try:
@@ -766,13 +767,19 @@ def InitConfig():
         else:
             dev_tool.DEBUGP("[InitConfig][info] Updating Profile to current version")
 
+            # When upgrading from an older version make sure all
+            # config directories are available.
+            for cfg in ("cache", "styles", "plugins", "profiles", "sessions"):
+                if not util.HasConfigDir(cfg):
+                    util.MakeConfigDir(cfg)
+
             # Load and update profile
             pstr = profiler.GetProfileStr()
             pstr = util.RepairConfigState(pstr)
             profiler.TheProfile.Load(pstr)
             profiler.TheProfile.Update()
 
-            #---- Temporary Profile Adaptions ----#
+            #---- Temporary Profile Adaption ----#
 
             # Added after 0.5.32
             mconfig = profiler.Profile_Get('LEXERMENU', default=None)
@@ -805,20 +812,21 @@ def InitConfig():
 
             # After 0.4.65 LAST_SESSION now points a session file and not
             # to a list of files to open.
+            ed_glob.CONFIG['SESSION_DIR'] = util.ResolvConfigDir(u"sessions")
+            smgr = ed_session.EdSessionMgr()
             sess = profiler.Profile_Get('LAST_SESSION')
             if isinstance(sess, list):
-                profiler.Profile_Set('LAST_SESSION', u'')
+                profiler.Profile_Set('LAST_SESSION', smgr.DefaultSession)
+            else:
+                # After 0.6.58 session is reduced to a name instead of path
+                if os.path.sep in sess:
+                    name = smgr.SessionNameFromPath(sess)
+                    profiler.Profile_Set('LAST_SESSION', name)
 
-            #---- End Temporary Profile Adaptions ----#
+            #---- End Temporary Profile Adaption ----#
 
             # Write out updated profile
             profiler.TheProfile.Write(pstr)
-
-            # When upgrading from an older version make sure all
-            # config directories are available.
-            for cfg in ("cache", "styles", "plugins", "profiles", "sessions"):
-                if not util.HasConfigDir(cfg):
-                    util.MakeConfigDir(cfg)
 
             profile_updated = True
     else:

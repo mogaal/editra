@@ -35,6 +35,19 @@ class EdFrameManager(aui.AuiManager):
     def AddPane(self, wnd, info=None, caption=None):
         return super(EdFrameManager, self).AddPane(wnd, info, caption)
 
+    def IsEditorMaximized(self):
+        """Is the editor pane maximized?
+        return: bool
+
+        """
+        bEditMax = True
+        # If any other pane is open then the editor is not maximized
+        for pane in self.GetAllPanes():
+            if pane.IsShown() and pane.name != "EditPane":
+                bEditMax = False
+                break
+        return bEditMax
+
 #--------------------------------------------------------------------------#
 
 class EdPaneInfo(aui.AuiPaneInfo):

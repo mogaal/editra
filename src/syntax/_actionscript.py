@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _actionscript.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _actionscript.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -63,7 +63,7 @@ AS_TYPES = ("AS3 flash_proxy object_proxy flash accessibility display errors "
 class SyntaxData(syndata.SyntaxDataBase):
     """ActionScript SyntaxData"""
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CPP)

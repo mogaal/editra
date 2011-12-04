@@ -7,8 +7,8 @@
 ###############################################################################
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: common.py 67609 2011-04-26 19:47:25Z CJP $"
-__revision__ = "$Revision: 67609 $"
+__svnid__ = "$Id: common.py 68879 2011-08-25 03:22:55Z CJP $"
+__revision__ = "$Revision: 68879 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -58,6 +58,10 @@ def CleanTempDir():
             shutil.rmtree(fpath)
         else:
             os.remove(fpath)
+
+def CopyToTempDir(path):
+    """Copy a file to the temp directory"""
+    shutil.copy2(path, GetTempDir())
 
 def GetDataDir():
     """Get the path to the test data directory

@@ -149,7 +149,7 @@ def IndentPressedBitmap(rect, button_state):
     """
     Indents the input rectangle `rect` based on the value of `button_state`.
 
-    :param `rect`: an instance of wx.Rect;
+    :param `rect`: an instance of `wx.Rect`;
     :param `button_state`: an L{AuiNotebook} button state.
     """
 

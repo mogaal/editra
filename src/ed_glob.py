@@ -14,8 +14,8 @@ access point for all common variables in the project.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_glob.py 67594 2011-04-24 15:24:40Z CJP $"
-__revision__ = "$Revision: 67594 $"
+__svnid__ = "$Id: ed_glob.py 69062 2011-09-11 17:36:03Z CJP $"
+__revision__ = "$Revision: 69062 $"
 
 __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_CLOSE', 'ID_CLOSEALL', 'ID_SAVE', 'ID_SAVEAS', 'ID_SAVEALL',
@@ -45,7 +45,7 @@ __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_NEW_WINDOW', 'ID_TOGGLE_FOLD', 'ID_TOGGLE_ALL_FOLDS',
             'ID_SAVE_SESSION', 'ID_LOAD_SESSION', 'ID_NEXT_POS', 'ID_PRE_POS',
             'ID_CYCLE_CLIPBOARD', 'ID_LEXER_CUSTOM', 'ID_SHOW_AUTOCOMP',
-            'ID_SHOW_CALLTIP' ]
+            'ID_SHOW_CALLTIP', 'ID_SESSION_BAR' ]
 
 #---- Project Info ----#
 # The project info was moved to another module so it could be accessed
@@ -107,6 +107,7 @@ ID_SAVE_PROFILE  = wx.NewId()
 ID_LOAD_PROFILE  = wx.NewId()
 ID_SAVE_SESSION  = wx.NewId()
 ID_LOAD_SESSION  = wx.NewId()
+ID_SESSION_BAR   = wx.NewId()
 ID_PRINT         = wx.ID_PRINT
 ID_PRINT_PRE     = wx.ID_PREVIEW
 ID_PRINT_SU      = wx.NewId()
@@ -125,7 +126,7 @@ ID_COLUMN_MODE   = wx.NewId()
 ID_LINE_EDIT     = wx.NewId()
 ID_BOOKMARK      = wx.NewId()
 ID_ADD_BM        = wx.NewId()
-ID_DEL_BM        = wx.ID_REMOVE # Not used in menu anymore
+ID_DEL_BM        = wx.NewId() # Not used in menu anymore
 ID_DEL_ALL_BM    = wx.NewId()
 ID_LINE_AFTER    = wx.NewId()
 ID_LINE_BEFORE   = wx.NewId()
@@ -274,6 +275,7 @@ ID_COMPUTER          = wx.NewId()
 ID_COPY_PATH         = wx.NewId()
 ID_COPY_FILE         = wx.NewId()
 ID_DELETE            = wx.NewId()
+ID_DELETE_ALL        = wx.NewId()
 ID_DOCPROP           = wx.NewId()
 ID_DOWN              = wx.ID_DOWN
 ID_DOWNLOAD_DLG      = wx.NewId()

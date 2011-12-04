@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 68139 2011-07-02 20:35:04Z CJP $"
-__revision__ = "$Revision: 68139 $"
+__svnid__ = "$Id: ed_stc.py 69065 2011-09-11 19:18:25Z CJP $"
+__revision__ = "$Revision: 69065 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -39,6 +39,7 @@ import ed_msg
 import ed_mdlg
 import ed_txt
 from ed_keyh import KeyHandler, ViKeyHandler
+import eclib
 import ebmlib
 import ed_thread
 
@@ -1864,10 +1865,9 @@ class EditraStc(ed_basestc.EditraBaseStc):
                         is re-saved if it has an on disk file.
 
         """
-        self.Freeze()
-        while self.CanUndo():
-            self.Undo()
-        self.Thaw()
+        with eclib.Freezer(self) as _tmp:
+            while self.CanUndo():
+                self.Undo()
 
         fname = self.GetFileName()
         if len(fname):
@@ -1875,13 +1875,12 @@ class EditraStc(ed_basestc.EditraBaseStc):
 
     def RevertToSaved(self):
         """Revert the current buffer back to the last save point"""
-        self.Freeze()
-        while self.CanUndo():
-            if self.GetModify():
-                self.Undo()
-            else:
-                break
-        self.Thaw()
+        with eclib.Freezer(self) as _tmp:
+            while self.CanUndo():
+                if self.GetModify():
+                    self.Undo()
+                else:
+                    break
 
     def SaveFile(self, path):
         """Save buffers contents to disk

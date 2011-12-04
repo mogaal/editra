@@ -12,8 +12,8 @@
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _ferite.py 62364 2009-10-11 01:02:12Z CJP $"
-__revision__ = "$Revision: 62364 $"
+__svnid__ = "$Id: _ferite.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -45,7 +45,7 @@ FERITE_TYPES = (1, "boolean string number array object void XML Unix Sys "
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for Ferite""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CPP)
