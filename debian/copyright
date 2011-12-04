@@ -48,16 +48,16 @@ Files: scripts/i18n/*
 Copyright: 2008, Rosetta Contributors and Canonical Ltd 2008
 License: wxwindows
 
-Files: src/extern/pygments/filter.py,
-       src/extern/pygments/plugin.py,
-       src/extern/pygments/scanner.py,
-       src/extern/pygments/styles/perldoc.py,
-       src/extern/pygments/styles/borland.py,
-       src/extern/pygments/styles/autumn.py,
-       src/extern/pygments/styles/pastie.py,
-       src/extern/pygments/styles/native.py,
-       src/extern/pygments/formatters/rtf.py,
-       src/extern/pygments/lexers/_phpbuiltins.py,
+Files: src/extern/pygments/filter.py
+       src/extern/pygments/plugin.py
+       src/extern/pygments/scanner.py
+       src/extern/pygments/styles/perldoc.py
+       src/extern/pygments/styles/borland.py
+       src/extern/pygments/styles/autumn.py
+       src/extern/pygments/styles/pastie.py
+       src/extern/pygments/styles/native.py
+       src/extern/pygments/formatters/rtf.py
+       src/extern/pygments/lexers/_phpbuiltins.py
 Copyright: 2006,2007 Armin Ronacher
 License: BSD
 
@@ -73,8 +73,8 @@ Files: src/extern/pygments/lexers/other.py
 Copyright: 2006-2008, Georg Brandl, Tim Hatch <tim@timhatch.com>
 License: BSD
 
-Files: src/extern/pygments/lexers/agile.py,
-       src/extern/pygments/lexers/text.py,
+Files: src/extern/pygments/lexers/agile.py
+       src/extern/pygments/lexers/text.py
        src/extern/pygments/lexers/web.py
 Copyright: 2006-2008, Georg Brandl, Armin Ronacher
 License: BSD
@@ -87,15 +87,15 @@ Files: src/extern/pygments/lexers/math.py
 Copyright: 2007-2008, Christopher Creutzig, Ken Schutte, Stou Sandalski
 License: BSD
 
-Files: src/extern/pygments/console.py,
-       src/extern/pygments/formatter.py,
-       src/extern/pygments/styles/friendly.py,
-       src/extern/pygments/formatters/html.py,
-       src/extern/pygments/formatters/__init__.py,
-       src/extern/pygments/formatters/other.py,
-       src/extern/pygments/formatters/_mapping.py,
-       src/extern/pygments/lexers/dotnet.py,
-       src/extern/pygments/lexers/_mapping.py,
+Files: src/extern/pygments/console.py
+       src/extern/pygments/formatter.py
+       src/extern/pygments/styles/friendly.py
+       src/extern/pygments/formatters/html.py
+       src/extern/pygments/formatters/__init__.py
+       src/extern/pygments/formatters/other.py
+       src/extern/pygments/formatters/_mapping.py
+       src/extern/pygments/lexers/dotnet.py
+       src/extern/pygments/lexers/_mapping.py
 Copyright: 2006-2007, Georg Brandl, Armin Ronacher
 License: BSD
 
@@ -131,19 +131,19 @@ Files: src/extern/pygments/styles/default.py
 Copyright: 2006-2007, Georg Brandl, Tiberius Teng 
 License: BSD
 
-Files: src/extern/pygments/token.py,
-       src/extern/pygments/lexer.py,
-       src/extern/pygments/style.py,
-       src/extern/pygments/styles/emacs.py,
-       src/extern/pygments/styles/colorful.py,
-       src/extern/pygments/styles/murphy.py,
-       src/extern/pygments/formatters/terminal.py,
-       src/extern/pygments/lexers/__init__.py,
+Files: src/extern/pygments/token.py
+       src/extern/pygments/lexer.py
+       src/extern/pygments/style.py
+       src/extern/pygments/styles/emacs.py
+       src/extern/pygments/styles/colorful.py
+       src/extern/pygments/styles/murphy.py
+       src/extern/pygments/formatters/terminal.py
+       src/extern/pygments/lexers/__init__.py
        src/extern/pygments/lexers/special.py
 Copyright: 2006-2007, Georg Brandl
 License: BSD
 
-Files: src/extern/pygments/formatters/bbcode.py,
+Files: src/extern/pygments/formatters/bbcode.py
        src/extern/pygments/lexers/_luabuiltins.py
 Copyright: 2006-2007, Lukas Meuser
 License: BSD
@@ -152,10 +152,10 @@ Files: src/extern/pygments/styles/trac.py
 Copyright: 2006-2007, Edgewall, Armin Ronacher
 License: BSD
 
-Files: src/extern/pygments/util.py,
-       src/extern/pygments/cmdline.py,
-       src/extern/pygments/styles/__init__.py,
-       src/extern/pygments/formatters/latex.py,
+Files: src/extern/pygments/util.py
+       src/extern/pygments/cmdline.py
+       src/extern/pygments/styles/__init__.py
+       src/extern/pygments/formatters/latex.py
 Copyright: 2006-2008, Georg Brandl
 License: BSD
 
@@ -167,7 +167,7 @@ Files: src/extern/pygments/lexers/_clbuiltins.py
 Copyright: 2006-2007, Matteo Sasso
 License: BSD
 
-Files: src/extern/pygments/styles/vs.py,
+Files: src/extern/pygments/styles/vs.py
        src/extern/pygments/styles/bw.py
 Copyright: 2008, Georg Brandl
 License: BSD
