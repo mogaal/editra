@@ -12,11 +12,12 @@
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: wxcompat.py 63517 2010-02-19 02:44:37Z CJP $"
-__revision__ = "$Revision: 63517 $"
+__svnid__ = "$Id: wxcompat.py 68998 2011-09-03 22:03:32Z CJP $"
+__revision__ = "$Revision: 68998 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
+import os
 import wx
 
 #-----------------------------------------------------------------------------#
@@ -38,6 +39,9 @@ if wx.Platform == '__WXMAC__':
         wx.MacThemeColour = MacThemeColour
 
     wx.SystemOptions.SetOptionInt("mac.textcontrol-use-spell-checker", 1)
+
+elif wx.Platform == '__WXGTK__':
+    os.environ['LIBOVERLAY_SCROLLBAR'] = '0'
 
 # GetText is not available in 2.9 but GetItemLabel is not available pre 2.8.6
 if wx.VERSION < (2, 8, 6, 0, ''):

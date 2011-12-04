@@ -14,8 +14,8 @@ FILE: cpp.py
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _cpp.py 66605 2011-01-06 00:55:52Z CJP $"
-__revision__ = "$Revision: 66605 $"
+__svnid__ = "$Id: _cpp.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -137,7 +137,7 @@ ALLOW_DOLLARS = ("lexer.cpp.allow.dollars", "1")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for many C like languages""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CPP)

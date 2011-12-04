@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _nsis.py 64591 2010-06-15 04:00:50Z CJP $"
-__revision__ = "$Revision: 64591 $"
+__svnid__ = "$Id: _nsis.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -138,7 +138,7 @@ FOLD = ("fold", "1")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for NSIS""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_NSIS)

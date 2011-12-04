@@ -14,8 +14,8 @@ FILE: boo.py
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _boo.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _boo.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -40,13 +40,13 @@ BOO_KW = (0, "abstract and as AST break callable cast char class constructor "
 #---- End Keyword Definitions ----#
 
 #---- Syntax Style Specs ----#
-SYNTAX_ITEMS = [x for x in _python.SYNTAX_ITEMS if x[0] != 'STC_P_DECORATOR']
+SYNTAX_ITEMS = [x for x in _python.SYNTAX_ITEMS if x[0] != stc.STC_P_DECORATOR]
 SYNTAX_ITEMS.append((stc.STC_P_DECORATOR, 'default_style'))
 
 #---- Extra Properties ----#
 
 FOLD = ("fold", "1")
-TIMMY = ("tab.timmy.whinge.level", "1") # Mark Inconsistant indentation
+TIMMY = ("tab.timmy.whinge.level", "1") # Mark Inconsistent indentation
 
 #-----------------------------------------------------------------------------#
 
@@ -56,7 +56,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     """ 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_PYTHON)

@@ -149,10 +149,6 @@ stringeol_style {
         modifiers:eol bold;
 }
 
-whitespace_style {
-        fore:#838383;
-}
-
 decor_style {
         fore:#BA0EEA;
         face:%(secondary)s;

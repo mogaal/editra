@@ -9,8 +9,8 @@
 """Unittest cases for testing the fileutil functions"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileUtil.py 67147 2011-03-07 20:33:37Z CJP $"
-__revision__ = "$Revision: 67147 $"
+__svnid__ = "$Id: testFileUtil.py 69212 2011-09-28 18:47:44Z CJP $"
+__revision__ = "$Revision: 69212 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -68,7 +68,8 @@ class FileUtilTest(unittest.TestCase):
         if ISWINDOWS:
             path = "c:\\documents and settings"
             spath = "C:\\DOCUME~1"
-            self.assertEquals(path, ebmlib.GetAbsPath(spath).lower())
+            self.assertEquals(path, ebmlib.GetAbsPath(spath).lower(), 
+                              "Missing win32api extension modules?")
 
     def testGetFileExtension(self):
         """Test getting a files extension"""

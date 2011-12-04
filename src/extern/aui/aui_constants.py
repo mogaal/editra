@@ -376,7 +376,9 @@ AUI_MINIMIZE_POS_RIGHT    = 0x04
 """ Minimizes the pane on its right tool bar. """
 AUI_MINIMIZE_POS_BOTTOM   = 0x05
 """ Minimizes the pane on its bottom tool bar. """
-AUI_MINIMIZE_POS_MASK     = 0x07
+AUI_MINIMIZE_POS_TOOLBAR  = 0x06
+""" Minimizes the pane on its bottom tool bar. """
+AUI_MINIMIZE_POS_MASK     = 0x17
 """ Mask to filter the position flags. """
 AUI_MINIMIZE_CAPT_HIDE    = 0
 """ Hides the caption of the minimized pane. """

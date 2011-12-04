@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _mssql.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _mssql.py 68355 2011-07-24 20:06:07Z CJP $"
+__revision__ = "$Revision: 68355 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -71,7 +71,7 @@ FOLD_COMPACT = ("fold.compact", "1")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for MS SQL""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_MSSQL)
@@ -82,7 +82,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     def GetProperties(self):
         """Returns a list of Extra Properties to set """
-        return [FOLD]
+        return [FOLD, FOLD_COMPACT]
 
     def GetCommentPattern(self):
         """Returns a list of characters used to comment a block of code """

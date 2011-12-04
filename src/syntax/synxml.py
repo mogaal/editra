@@ -52,8 +52,8 @@ xml_spec = """
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synxml.py 63408 2010-02-05 21:50:18Z CJP $"
-__revision__ = "$Revision: 63408 $"
+__svnid__ = "$Id: synxml.py 68814 2011-08-21 17:10:03Z CJP $"
+__revision__ = "$Revision: 68814 $"
 
 #----------------------------------------------------------------------------#
 # Imports
@@ -689,6 +689,7 @@ class SyntaxSpecList(EditraXml):
                 # Scintilla Value
                 style_id = getattr(stc, lid, None)
                 assert style_id is not None, "Invalid STC Value: %s" % lid
+                assert isinstance(style_id, int), "Invalid ID: %s" % lid
 
             self._specs.append((style_id, attrs.get(EXML_TAG, 'default_style')))
         else:

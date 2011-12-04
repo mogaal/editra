@@ -13,7 +13,7 @@ FILE: stata.py
 """
 
 __author__ = "Jean Eid <jeid@wlu.ca>"
-__svnid__ = "$Id: _stata.py 63834 2010-04-03 06:04:33Z CJP $"
+__svnid__ = "$Id: _stata.py 68798 2011-08-20 17:17:05Z CJP $"
 __revision__ = "$Revision: 0$"
 
 #-----------------------------------------------------------------------------#
@@ -410,7 +410,7 @@ FOLD_ELSE = ("fold.at.else", "0")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for STATA""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CPP)

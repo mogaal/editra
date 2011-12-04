@@ -85,8 +85,8 @@ wil not work.
 """
 
 __author__ = "Thomas Keul <tgkeul@web.de>"
-__svnid__ = "$Id: _sql.py 63834 2010-04-03 06:04:33Z CJP $"
-__revision__ = "$Revision: 63834 $"
+__svnid__ = "$Id: _sql.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -361,7 +361,7 @@ SQL_BACKTICKS_IDENTIFIER = ("lexer.sql.backticks.identifier", "0")
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for PL/SQL""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_SQL)

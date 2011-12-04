@@ -24,8 +24,8 @@ which can be used to remove a listener from recieving messages.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_msg.py 67571 2011-04-22 01:10:57Z CJP $"
-__revision__ = "$Revision: 67571 $"
+__svnid__ = "$Id: ed_msg.py 69063 2011-09-11 18:19:32Z CJP $"
+__revision__ = "$Revision: 69063 $"
 
 __all__ = ['PostMessage', 'Subscribe', 'Unsubscribe']
 
@@ -92,6 +92,10 @@ EDMSG_FILE_OPENING = EDMSG_FILE_ALL + ('opening',)
 # File was just opened / msgdata == file path
 # context == MainWindows ID
 EDMSG_FILE_OPENED = EDMSG_FILE_ALL + ('opened',)
+
+# Get a list of all opened files
+# msgdata == list of file paths (out param)
+EDMSG_FILE_GET_OPENED = EDMSG_FILE_ALL + ('allopened',)
 
 # TODO: using MainWindow as context for now, but may make more sense to use
 #       the buffer instead.
@@ -263,6 +267,25 @@ EDMSG_FIND_SHOW_DLG = EDMSG_FIND_ALL + ('show',)
 EDMSG_START_SEARCH = EDMSG_FIND_ALL + ('results',)
 
 #---- End Find Actions ----#
+
+#---- Session Related Actions ----#
+
+# Root Session Message
+EDMSG_SESSION_ALL = ('session',)
+
+# Initiate a Session Save to save current session under new name.
+# Note: This invokes a UI action to prompt the user on what to name
+#       the session. DO NOT call from background threads.
+#      send(msgdata == None) | context - MainWindow
+EDMSG_SESSION_DO_SAVE = EDMSG_SESSION_ALL + ('dosave',)
+
+# Initiate loading a session
+# Causes all currently open files to be closed and the files from the
+# specified session to be loaded. Not thread safe.
+# send(msgdata == session_name)
+EDMSG_SESSION_DO_LOAD = EDMSG_SESSION_ALL + ('doload',)
+
+#---- End Session Related Actions ----#
 
 #---- Misc Messages ----#
 # Signal that the icon theme has changed. Respond to this to update icon

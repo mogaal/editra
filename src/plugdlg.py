@@ -15,8 +15,8 @@ Provides a dialog for downloading, installing and configuring plugins or Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: plugdlg.py 67856 2011-06-04 21:14:06Z CJP $"
-__revision__ = "$Revision: 67856 $"
+__cvsid__ = "$Id: plugdlg.py 69245 2011-09-30 17:52:23Z CJP $"
+__revision__ = "$Revision: 69245 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -144,6 +144,7 @@ class PluginDialog(wx.Frame):
         ed_msg.Subscribe(self.OnThemeChange, ed_msg.EDMSG_THEME_CHANGED)
 
     def OnDestroy(self, evt):
+        """Cleanup message handlers on delete"""
         if evt.GetId() == self.GetId():
             ed_msg.Unsubscribe(self.OnThemeChange)
         evt.Skip()
@@ -316,7 +317,7 @@ class ConfigPanel(eclib.ControlBox):
             else:
                 imglst = parent.GetImageList()
                 imglst.append(bmp)
-                idx = len(imgst) - 1
+                idx = len(imglst) - 1
 
             label = cfg_obj.GetLabel()
             panel = cfg_obj.GetConfigPanel(parent)
@@ -350,34 +351,33 @@ class ConfigPanel(eclib.ControlBox):
                       key=unicode.lower)
         uninstalled = Profile_Get('UNINSTALL_PLUGINS', default=list())
 
-        for item in keys:
-            val = config[item]
-            self._list.Freeze()
-            mod = sys.modules.get(item)
-            dist = p_mgr.GetPluginDistro(item)
-            if dist is not None:
-                item = dist.project_name
-                version = dist.version
-            else:
-                version = str(getattr(mod, '__version__', _("Unknown")))
+        with eclib.Freezer(self._list) as _tmp:
+            for item in keys:
+                val = config[item]
+                mod = sys.modules.get(item)
+                dist = p_mgr.GetPluginDistro(item)
+                if dist is not None:
+                    item = dist.project_name
+                    version = dist.version
+                else:
+                    version = str(getattr(mod, '__version__', _("Unknown")))
 
-            pdata = PluginData()
-            pdata.SetName(item)
-            desc = getattr(mod, '__doc__', None)
-            if not isinstance(desc, basestring):
-                desc = _("No Description Available")
-            pdata.SetDescription(desc.strip())
-            pdata.SetAuthor(getattr(mod, '__author__', _("Unknown")))
-            pdata.SetVersion(version)
-            pdata.SetDist(dist)
-            pbi = PBPluginItem(self._list, mod, pdata, None)
+                pdata = PluginData()
+                pdata.SetName(item)
+                desc = getattr(mod, '__doc__', None)
+                if not isinstance(desc, basestring):
+                    desc = _("No Description Available")
+                pdata.SetDescription(desc.strip())
+                pdata.SetAuthor(getattr(mod, '__author__', _("Unknown")))
+                pdata.SetVersion(version)
+                pdata.SetDist(dist)
+                pbi = PBPluginItem(self._list, mod, pdata, None)
 
-            pbi.SetChecked(val)
-            util.Log("[pluginmgr][info] Adding %s to list" % item)
-            self._list.AppendItem(pbi)
-            if pbi.GetInstallPath() in uninstalled:
-                pbi.Enable(False)
-            self._list.Thaw()
+                pbi.SetChecked(val)
+                util.Log("[pluginmgr][info] Adding %s to list" % item)
+                self._list.AppendItem(pbi)
+                if pbi.GetInstallPath() in uninstalled:
+                    pbi.Enable(False)
 
         self._list.SendSizeEvent()
         return self._list.GetItemCount()
@@ -405,26 +405,25 @@ class ConfigPanel(eclib.ControlBox):
         bmp = wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_TOOLBAR, (32, 32))
         msg = _("This plugin requires a newer version of Editra.")
 
-        for item in keys:
-            val = errors[item]
-            self._list.Freeze()
-            mod = sys.modules.get(val)
-            dist = p_mgr.GetPluginDistro(item)
-            if dist is not None:
-                item = dist.project_name
-                version = dist.version
-            else:
-                version = unicode(getattr(mod, '__version__', _("Unknown")))
+        with eclib.Freezer(self._list) as _tmp:
+            for item in keys:
+                val = errors[item]
+                mod = sys.modules.get(val)
+                dist = p_mgr.GetPluginDistro(item)
+                if dist is not None:
+                    item = dist.project_name
+                    version = dist.version
+                else:
+                    version = unicode(getattr(mod, '__version__', _("Unknown")))
 
-            pin = PluginData()
-            pin.SetName(item)
-            pin.SetAuthor(getattr(mod, '__author__', _("Unknown")))
-            pin.SetVersion(version)
-            pin.SetDist(dist)
-            pbi = PluginErrorItem(self._list, pin, msg, bmp=bmp)
+                pin = PluginData()
+                pin.SetName(item)
+                pin.SetAuthor(getattr(mod, '__author__', _("Unknown")))
+                pin.SetVersion(version)
+                pin.SetDist(dist)
+                pbi = PluginErrorItem(self._list, pin, msg, bmp=bmp)
 
-            self._list.AppendItem(pbi)
-            self._list.Thaw()
+                self._list.AppendItem(pbi)
 
         self._list.SendSizeEvent()
         return self._list.GetItemCount()
@@ -546,8 +545,14 @@ class DownloadPanel(eclib.ControlBox):
         to_clean = list()
         for pin in p_list:
             cfg_id = config_pg.GetItemIdentifier(pin.lower())
-            if cfg_id is not None and cfg_id[1] >= p_list[pin].GetVersion():
-                to_clean.append(pin)
+            if cfg_id is not None:
+                try:
+                    cur_id = [int(v) for v in cfg_id[1].split(".")]
+                    dl_id = [int(v) for v in p_list[pin].GetVersion().split(".")]
+                except:
+                    continue
+                if cur_id >= dl_id: # Installed version is >= avail dl
+                    to_clean.append(pin)
 
         for item in to_clean:
             del p_list[item]
@@ -604,7 +609,6 @@ class DownloadPanel(eclib.ControlBox):
         @type evt: ed_event.NotificationEvent
 
         """
-        index = evt.GetId()
         pin, enable = evt.GetValue()
         self._dl_list[pin] = enable
 
@@ -631,14 +635,11 @@ class DownloadPanel(eclib.ControlBox):
         """
         if self._list.GetItemCount():
             self._list.DeleteAllItems()
-
         pins = sorted([ name for name in self._p_list.keys() ], key=unicode.lower)
-        self.Freeze()
-        for item in pins:
-            pbi = PBDownloadItem(self._list, self._p_list[item], None)
-            self._list.AppendItem(pbi)
-
-        self.Thaw()
+        with eclib.Freezer(self) as _tmp:
+            for item in pins:
+                pbi = PBDownloadItem(self._list, self._p_list[item], None)
+                self._list.AppendItem(pbi)
         self._list.SendSizeEvent()
         return self._list.GetItemCount()
 

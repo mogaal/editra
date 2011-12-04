@@ -14,8 +14,8 @@ FILE: css.py
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _css.py 66902 2011-02-16 14:04:01Z CJP $"
-__revision__ = "$Revision: 66902 $"
+__svnid__ = "$Id: _css.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -30,7 +30,7 @@ import syndata
 
 #---- Keyword Specifications ----#
 
-# CSS1 Keywords (Idenifiers)
+# CSS1 Keywords (Identifiers)
 CSS1_KEYWORDS = (0, "font-family font-style font-variant font-weight font-size "
                     "font color background-color background-image "
                     "background-repeat background-position background "
@@ -51,7 +51,7 @@ CSS1_KEYWORDS = (0, "font-family font-style font-variant font-weight font-size "
 CSS_PSUEDO_CLASS = (1, "link visited active hover focus before after left "
                        "right lang first-letter first-line first-child")
 
-# CSS2 Keywords (Identifers2)
+# CSS2 Keywords (Identifiers)
 # This is meant for css2 specific keywords, but in order to get a better
 # coloring effect this will contain special css properties as well.
 CSS2_KEYWORDS = (2, "ActiveBorder ActiveCaption AppWorkspace Background "

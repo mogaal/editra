@@ -16,8 +16,8 @@ AUTHOR: Cody Precord, Torsten Mohr, Robert McLeay
 """
 
 __author__ = "Cody Precord <cprecord>, Torsten Mohr <none_yet>"
-__svnid__ = "$Id: _nonmem.py 65461 2010-09-02 04:09:42Z CJP $"
-__revision__ = "$Revision: 65461 $"
+__svnid__ = "$Id: _nonmem.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -92,7 +92,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     """ 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_CONTAINER)

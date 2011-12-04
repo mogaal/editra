@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _php.py 67413 2011-04-07 14:39:39Z CJP $"
-__revision__ = "$Revision: 67413 $"
+__svnid__ = "$Id: _php.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -408,7 +408,7 @@ SYNTAX_ITEMS = [ (stc.STC_HPHP_DEFAULT,      'default_style'),
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for Php""" 
     def __init__(self, langid):
-        syndata.SyntaxDataBase.__init__(self, langid)
+        super(SyntaxData, self).__init__(langid)
 
         # Setup
         self.SetLexer(stc.STC_LEX_HTML)

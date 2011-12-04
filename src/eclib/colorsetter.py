@@ -16,8 +16,8 @@ choice dialog.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: colorsetter.py 65202 2010-08-06 15:49:23Z CJP $"
-__revision__ = "$Revision: 65202 $"
+__svnid__ = "$Id: colorsetter.py 69065 2011-09-11 19:18:25Z CJP $"
+__revision__ = "$Revision: 69065 $"
 
 __all__ = ["ColorSetter", "ColorSetterEvent",
            "EVT_COLORSETTER", "csEVT_COLORSETTER"]
@@ -27,7 +27,7 @@ __all__ = ["ColorSetter", "ColorSetterEvent",
 import wx
 import wx.lib.colourselect as csel
 
-from eclutil import HexToRGB
+from eclutil import HexToRGB, Freezer
 
 #-----------------------------------------------------------------------------#
 # Globals
@@ -107,23 +107,22 @@ class ColorSetter(wx.Panel):
 
     def __UpdateValues(self):
         """Update the values based on the current state of the text control"""
-        self._txt.Freeze()
-        cpos = self._txt.GetInsertionPoint()
-        hexstr = self._txt.GetValue().replace('#', '').strip()
-        valid = ''
-        for char in hexstr:
-            if char in HEX_CHARS[:-1]:
-                valid = valid + char
+        with Freezer(self._txt) as _tmp:
+            cpos = self._txt.GetInsertionPoint()
+            hexstr = self._txt.GetValue().replace('#', '').strip()
+            valid = ''
+            for char in hexstr:
+                if char in HEX_CHARS[:-1]:
+                    valid = valid + char
 
-        if len(valid) > 6:
-            valid = valid[:6]
+            if len(valid) > 6:
+                valid = valid[:6]
 
-        valid = '#' + valid
-        self._txt.SetValue(valid)
-        self._txt.SetInsertionPoint(cpos)
-        valid = valid + (u'0' * (6 - len(valid)))
-        self._cbtn.SetValue(HexToRGB(valid))
-        self._txt.Thaw()
+            valid = '#' + valid
+            self._txt.SetValue(valid)
+            self._txt.SetInsertionPoint(cpos)
+            valid = valid + (u'0' * (6 - len(valid)))
+            self._cbtn.SetValue(HexToRGB(valid))
 
     def _DoLayout(self):
         """Layout the controls"""

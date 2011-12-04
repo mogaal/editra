@@ -91,7 +91,6 @@ STANDARD TAGS:
         - stringeol_style: Style of unclosed strings (i.e "hello )
         - unknown_style: Style of unknown statements
         - userkw_style: Style for some builins and user defined keywords
-        - whitespace_style: Style of whitespace indicators
 
 STANDARD ATTRIBUTES:
         - back: Defines the style of the background for the tags text area. The
@@ -158,7 +157,6 @@ SPECIAL TAGS:
         - select_style: When defined only the Background attribute is used. If
                         this style is not defined then the default system colour
                         for selection highlight is used in its place.
-        - whitespace_style: Only Foreground and Background attributes are used
 
 EXAMPLES:
 

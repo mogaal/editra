@@ -16,8 +16,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _d.py 66108 2010-11-10 21:04:54Z CJP $"
-__revision__ = "$Revision: 66108 $"
+__svnid__ = "$Id: _d.py 68798 2011-08-20 17:17:05Z CJP $"
+__revision__ = "$Revision: 68798 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -60,7 +60,7 @@ DOC_KEYWORDS = (2, "TODO FIXME XXX \\author \\brief \\bug \\callgraph "
 
 #---- Syntax Style Specs ----#
 if wx.VERSION >= (2, 9, 0, 0, ''):
-    SYNTAX_ITEMS2 = [ (stc.STC_D_CHARACTER, 'char_style'),
+    SYNTAX_ITEMS = [ (stc.STC_D_CHARACTER, 'char_style'),
                       (stc.STC_D_COMMENT, 'comment_style'),
                       (stc.STC_D_COMMENTDOC, 'comment_style'),
                       (stc.STC_D_COMMENTDOCKEYWORD, 'dockey_style'),
@@ -133,10 +133,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     def GetSyntaxSpec(self):
         """Syntax Specifications """
-        if wx.VERSION >= (2, 9, 0, 0, ''):
-            return SYNTAX_ITEMS2
-        else:
-            return SYNTAX_ITEMS
+        return SYNTAX_ITEMS
 
     def GetProperties(self):
         """Returns a list of Extra Properties to set """

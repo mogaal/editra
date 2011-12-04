@@ -196,7 +196,3 @@ unknown_style {
         fore:#000000;
         back:#FF0000;
 }
-
-whitespace_style {
-        fore: #DDCCBB;
-}
