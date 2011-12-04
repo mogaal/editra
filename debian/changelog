@@ -1,3 +1,9 @@
+editra (0.6.77-1) unstable; urgency=low
+
+  * New upstream release  
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 03 Dec 2011 19:42:32 -0430
+
 editra (0.6.58-1) unstable; urgency=low
 
   * New upstream release (Closes: #635092).
