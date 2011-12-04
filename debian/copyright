@@ -1,8 +1,8 @@
-Format-Specification:
-    http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=196
-Upstream-Name: Editra
-Upstream-Maintainer: Cody Precord <cprecord@editra.org>
-Upstream-Source: http://editra.org
+Format:
+   http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=202
+Upstream-Name: editra
+Upstream-Contact: Cody Precord <cprecord@editra.org>
+Source: http://editra.org
 
 Files: *
 Copyright: 2007, Cody Precord <cprecord@editra.org>

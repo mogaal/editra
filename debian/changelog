@@ -1,6 +1,8 @@
 editra (0.6.77-1) unstable; urgency=low
 
-  * New upstream release  
+  * New upstream release
+  * d/control: Update standards-version field
+  * d/copyright: Adapt fields to 202 revision 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 03 Dec 2011 19:42:32 -0430
 
