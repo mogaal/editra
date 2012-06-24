@@ -14,8 +14,8 @@ Text Search Engine for finding text and grepping files
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: searcheng.py 68232 2011-07-12 02:08:53Z CJP $"
-__revision__ = "$Revision: 68232 $"
+__cvsid__ = "$Id: searcheng.py 70206 2011-12-30 20:41:02Z CJP $"
+__revision__ = "$Revision: 70206 $"
 
 __all__ = [ 'SearchEngine', ]
 
@@ -77,7 +77,7 @@ class SearchEngine(object):
         uquery = type(tmp) is types.UnicodeType
         upool = type(self._pool) is types.UnicodeType
         if uquery and upool:
-            tmp = unicodedata.normalize("NFD", tmp)
+            tmp = unicodedata.normalize("NFC", tmp)
 
         if not self._isregex:
             tmp = re.escape(tmp)
@@ -95,7 +95,7 @@ class SearchEngine(object):
         if upool:
             flags |= re.UNICODE
             # Normalize
-            self._pool = unicodedata.normalize("NFD", self._pool)
+            self._pool = unicodedata.normalize("NFC", self._pool)
         else:
             # If the pools is not Unicode also make sure that the
             # query is a string too.

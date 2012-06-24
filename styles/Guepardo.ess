@@ -52,7 +52,6 @@ line_num {
         fore:#FFFFFF;
         back:#5181AB;
         face:%(secondary)s;
-        size:%(size3)d;
 }
 
 string_style {

@@ -50,7 +50,7 @@ class EdFrameManager(aui.AuiManager):
 
 #--------------------------------------------------------------------------#
 
-class EdPaneInfo(aui.AuiPaneInfo):
-    """Frame manager panel info"""
-    def __init__(self):
-        super(EdPaneInfo, self).__init__()
+EdPaneInfo = aui.AuiPaneInfo
+#    """Frame manager panel info"""
+#    def __init__(self):
+#        super(EdPaneInfo, self).__init__()

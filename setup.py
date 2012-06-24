@@ -29,8 +29,8 @@
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: setup.py 67669 2011-05-01 21:18:05Z CJP $"
-__revision__ = "$Revision: 67669 $"
+__svnid__ = "$Id: setup.py 71273 2012-04-24 02:45:36Z CJP $"
+__revision__ = "$Revision: 71273 $"
 
 #---- Imports ----#
 import os
@@ -214,9 +214,9 @@ screenshots visit the projects homepage at `Editra.org
 <http://www.editra.org/>`_.
 
 ============
-Dependancies
+Dependencies
 ============
-  * Python 2.4+
+  * Python 2.6+
   * wxPython 2.8.3+ (Unicode build suggested)
   * setuptools 0.6+
 
@@ -233,7 +233,7 @@ INCLUDES = ['syntax.*', 'ed_bookmark', 'ed_log', 'shutil', 'subprocess', 'zipfil
             'pygments.*', 'pygments.lexers.*', 'pygments.formatters.*',
             'pygments.filters.*', 'pygments.styles.*', 'ftplib', 'xmlrpclib',
             'hmac', 'SimpleXMLRPCServer', 'SocketServer', 'commands', 
-            'BaseHTTPServer', 'wx.gizmos',
+            'BaseHTTPServer', 'wx.gizmos', 'wx.lib.intctrl',
             'extern.flatnotebook'] # temporary till all references can be removed
 if sys.platform.startswith('win'):
     INCLUDES.extend(['ctypes', 'ctypes.wintypes'])
@@ -357,14 +357,15 @@ def BuildOSXApp():
     from setuptools import setup
 
     CleanBuild()
-
+    fextents = synextreg.GetFileExtensions()
+    fextents.append("*")
     PLIST = dict(CFBundleName = info.PROG_NAME,
              CFBundleIconFile = 'Editra.icns',
              CFBundleShortVersionString = info.VERSION,
              CFBundleGetInfoString = info.PROG_NAME + " " + info.VERSION,
              CFBundleExecutable = info.PROG_NAME,
              CFBundleIdentifier = "org.editra.%s" % info.PROG_NAME.title(),
-             CFBundleDocumentTypes = [dict(CFBundleTypeExtensions=synextreg.GetFileExtensions(),
+             CFBundleDocumentTypes = [dict(CFBundleTypeExtensions=fextents,
                                            CFBundleTypeIconFile='editra_doc',
                                            CFBundleTypeRole="Editor"
                                           ),
@@ -385,7 +386,8 @@ def BuildOSXApp():
                        argv_emulation = True,
                        optimize = True,
                        includes = INCLUDES,
-                       plist = PLIST)
+                       plist = PLIST,
+                       strip = True)
 
     # Add extra mac specific files
     DATA_FILES = GenerateBinPackageFiles()
@@ -552,7 +554,7 @@ def DoSourcePackage():
         maintainer = AUTHOR,
         maintainer_email = AUTHOR_EMAIL,
         url = URL,
-        download_url = "http://editra.org/?page=download",
+        download_url = "http://editra.org/download",
         license = LICENSE,
         platforms = [ "Many" ],
         packages = [ NAME ],

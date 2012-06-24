@@ -21,8 +21,8 @@ LANGUAGE: Python
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synextreg.py 69105 2011-09-16 21:49:07Z CJP $"
-__revision__ = "$Revision: 69105 $"
+__svnid__ = "$Id: synextreg.py 70228 2011-12-31 20:39:16Z CJP $"
+__revision__ = "$Revision: 70228 $"
 
 #-----------------------------------------------------------------------------#
 import os
@@ -98,6 +98,8 @@ ID_LANG_EDJE = _NewId()
 LANG_EDJE = u'Edje'
 ID_LANG_FERITE = _NewId()
 LANG_FERITE = u'Ferite'
+ID_LANG_GLSL = _NewId()
+LANG_GLSL = u'GLSL'
 ID_LANG_HAXE = _NewId()
 LANG_HAXE = u'HaXe'
 ID_LANG_JAVA = _NewId()
@@ -340,6 +342,7 @@ EXT_MAP = {
            'fe'                 : LANG_FERITE,
            'fth 4th fs seq'     : LANG_FORTH,
            'prg'                : LANG_FLAGSHIP,
+           'frag vert glsl'     : LANG_GLSL,
            'gc gui'             : LANG_GUI4CLI,
            'hs'                 : LANG_HASKELL,
            'hx hxml'            : LANG_HAXE,
@@ -401,9 +404,7 @@ EXT_MAP = {
 
 class ExtensionRegister(dict):
     """A data storage class for managing mappings of
-    file types to file extensions. The register is created
-    as a singleton.
-    @status: initial implementation
+    file types to file extensions. The register is created as a singleton.
 
     """
     instance = None

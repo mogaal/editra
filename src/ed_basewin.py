@@ -13,8 +13,8 @@ Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basewin.py 69061 2011-09-11 17:04:41Z CJP $"
-__revision__ = "$Revision: 69061 $"
+__svnid__ = "$Id: ed_basewin.py 69753 2011-11-13 23:26:20Z CJP $"
+__revision__ = "$Revision: 69753 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -132,7 +132,10 @@ class EdBaseCtrlBox(eclib.ControlBox):
         cbar = super(EdBaseCtrlBox, self).CreateControlBar(pos)
         cbar.__class__ = EdBaseCtrlBar
         if wx.Platform == '__WXGTK__':
-            cbar.SetWindowStyle(eclib.CTRLBAR_STYLE_DEFAULT)
+            cbar.SetWindowStyle(eclib.CTRLBAR_STYLE_DEFAULT|\
+                                eclib.CTRLBAR_STYLE_BORDER_TOP|\
+                                eclib.CTRLBAR_STYLE_BORDER_BOTTOM)
+        cbar.SetMargins(2,2)
         return cbar
 
 class EdBaseCtrlBar(eclib.ControlBar):

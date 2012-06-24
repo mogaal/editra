@@ -24,8 +24,8 @@ which can be used to remove a listener from recieving messages.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_msg.py 69063 2011-09-11 18:19:32Z CJP $"
-__revision__ = "$Revision: 69063 $"
+__svnid__ = "$Id: ed_msg.py 70097 2011-12-22 21:36:43Z CJP $"
+__revision__ = "$Revision: 70097 $"
 
 __all__ = ['PostMessage', 'Subscribe', 'Unsubscribe']
 
@@ -384,7 +384,7 @@ def mwcontext(func):
     ContextWrap.__doc__ = func.__doc__
     return ContextWrap
 
-def wincontext(func):
+def wincontext(funct):
     """Decorator to filter messages based on a window. Class must declare
     a GetWindow method that returns the window that the messages context
     should be filtered on.

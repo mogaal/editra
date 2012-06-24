@@ -20,8 +20,8 @@ similar services for manipulating and transforming text.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: generator.py 66957 2011-02-18 22:20:00Z CJP $"
-__revision__ = "$Revision: 66957 $"
+__svnid__ = "$Id: generator.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -48,14 +48,14 @@ FONT_FALLBACKS = "Trebuchet, Tahoma, sans-serif"
 # Plugin Interface
 class GeneratorI(plugin.Interface):
     """Plugins that are to be used for generating code/document need
-    to impliment this interface.
+    to implement this interface.
 
     """
     def Generate(self, stc):
         """Generates the code. The txt_ctrl parameter is a reference
         to an ED_STC object (see ed_stc.py). The return value of this
         function needs to be a 2 item tuple with the first item being
-        an associated file extention to use for setting highlighting
+        an associated file extension to use for setting highlighting
         if available and the second item is the string of the new document.
         @param stc: reference to an an stc defined in ed_stc.py
         @see: L{ed_stc}
@@ -74,8 +74,7 @@ class GeneratorI(plugin.Interface):
 
     def GetMenuEntry(self, menu):
         """Returns the MenuItem entry for this generator
-        @return: menu entry for the implemented generator
-        @rtype: wx.MenuItem
+        @return: wx.MenuItem
 
         """
         pass
@@ -94,7 +93,6 @@ class Generator(plugin.Plugin):
         """Appends the menu of available Generators onto
         the given menu.
         @param menu: menu to install entries into
-        @type menu: wx.Menu
 
         """
         # Fetch all the menu items for each generator object
@@ -119,10 +117,8 @@ class Generator(plugin.Plugin):
         """Generates the new document text based on the given
         generator id and contents of the given ED_STC text control.
         @param e_id: event id originating from menu entry
-        @param txt_ctrl: reference document to generate from
-        @type txt_ctrl: EditraStc
+        @param txt_ctrl: EditraStc
         @return: the generated text
-        @rtype: string
 
         """
         gentext = None
@@ -181,8 +177,8 @@ class Html(plugin.Plugin):
         return html
 
     def Unicode(self):
-        """Returns the html as unicode
-        @return: unicode string of html
+        """Returns the html as Unicode
+        @return: Unicode string of html
 
         """
         return unicode(self.__str__())
@@ -200,7 +196,6 @@ class Html(plugin.Plugin):
     def GenerateHead(self):
         """Generates the html head block
         @return: html header information
-        @rtype: string
 
         """
         return "<head>\n<title>%s</title>\n" \
@@ -214,7 +209,7 @@ class Html(plugin.Plugin):
         """Generates the body of the html from the stc's content. To do
         this it does a character by character parse of the stc to determine
         style regions and generate css and and styled spans of html in order
-        to generate an 'exact' html reqresentation of the stc's window.
+        to generate an 'exact' html representation of the stc's window.
         @return: the body section of the html generated from the text control
 
         """
@@ -303,7 +298,7 @@ class Html(plugin.Plugin):
         if 'operator_style' in self.css:
             self.css.pop('operator_style')
 
-        # All other css elements will inheirit from the default
+        # All other css elements will inherit from the default
         default = self.css['default_style']
         for key in self.css:
             if key == 'default_style':
@@ -322,7 +317,7 @@ class Html(plugin.Plugin):
 
     def TransformText(self, text):
         """Does character substitution on a string and returns
-        the html equivlant of the given string.
+        the html equivalent of the given string.
         @param text: text to transform
         @return: text with all special characters transformed
 
@@ -336,18 +331,17 @@ class Html(plugin.Plugin):
 #-----------------------------------------------------------------------------#
 
 class CssItem:
-    """Converts an Edtira StyleItem to a Css item for use in
+    """Converts an Editra StyleItem to a Css item for use in
     generating html.
 
     """
     def __init__(self, class_tag, style_item):
-        """Initilizes a Css object equivilant of an Editra StyleItem
-        @note: it is left up to the caller to do any string substituition
-        for font faces and size values as this class will contruct the css
+        """Initializes a Css object equivalent of an Editra StyleItem
+        @note: it is left up to the caller to do any string substitution
+        for font faces and size values as this class will construct the css
         item as a mere reformation of StyleItem
         @param class_tag: StyleItem tag name
-        @param style_item: style item to convert to css
-        @type style_item: ed_style.StyleItem
+        @param style_item: ed_style.StyleItem
         @see: L{ed_style}
 
         """
@@ -366,8 +360,7 @@ class CssItem:
     def __eq__(self, css2):
         """Defines the == operator for the CssItem class
         @param css2: CssItem to compare to
-        @return: whether the two items are equivalant
-        @rtype: bool
+        @return: whether the two items are equivalent
 
         """
         return self.__str__() == str(css2)
@@ -377,7 +370,7 @@ class CssItem:
         @return: CssItem as a string
 
         """
-        # Generate the main style attribures
+        # Generate the main style attributes
         css = ".%s {\n%s}"
         css_body = wx.EmptyString
         if self._font != wx.EmptyString:
@@ -461,9 +454,8 @@ class CssItem:
         return self._size
 
     def RemoveDecorator(self, item):
-        """Removes a specifed decorator from the decorator set
+        """Removes a specified decorator from the decorator set
         @param item: decorator item to remove
-        @type item: string
 
         """
         if item in self._decor:
@@ -473,14 +465,14 @@ class CssItem:
 
     def SetBackground(self, hex_str):
         """Sets the Background Color
-        @param hex_str: hex color string to set backround attribute with
+        @param hex_str: hex color string to set background attribute with
 
         """
         self._back = hex_str
 
     def SetColor(self, hex_str):
         """Sets the Font/Fore Color
-        @param hex_str: hex color string to set foreround attribute with
+        @param hex_str: hex color string to set foreground attribute with
 
         """
         self._fore = hex_str
@@ -495,7 +487,6 @@ class CssItem:
     def SetFontSize(self, size_str):
         """Sets the Font Point Size
         @param size_str: point size to use for font in style
-        @type size_str: string
 
         """
         self._size = size_str
@@ -570,7 +561,7 @@ class LaTeX(plugin.Plugin):
         for parse_pos in xrange(last_pos + 1):
             curr_id = GetStyleAt(parse_pos)
             if parse_pos > 1:
-                # This is the performance bottleneck, changeing the text
+                # This is the performance bottleneck, changing the text
                 # collection to when the style changes is much faster as
                 # it only needs to be done once per style section instead
                 # of once per character. Doing that however causes problems
@@ -854,7 +845,7 @@ class Rtf(plugin.Plugin):
 
     def Generate(self, stc_doc):
         """Implements the GeneratorI's Generator Function by
-        returning the RTF equvialent of the given stc_doc
+        returning the RTF equivalent of the given stc_doc
         @param stc_doc: document to generate text from
         @return: document marked up in rtf
 
@@ -923,8 +914,7 @@ class RtfColorTbl:
     def AddColor(self, si_color):
         """Takes a style item and adds it to the table if
         has not already been defined in the table.
-        @param si_color: color to add to table
-        @type si_color: hex color string
+        @param si_color: hex color string
 
         """
         if si_color not in self._index:

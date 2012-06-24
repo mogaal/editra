@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 69065 2011-09-11 19:18:25Z CJP $"
-__revision__ = "$Revision: 69065 $"
+__svnid__ = "$Id: ed_stc.py 71263 2012-04-23 00:42:30Z CJP $"
+__revision__ = "$Revision: 71263 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -74,8 +74,8 @@ def jumpaction(func):
         mdata = dict(fname=fname,
                      prepos=pos, preline=line,
                      lnum=cline, pos=cpos)
-        tlw = stc.GetTopLevelParent()
-        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_POS_JUMPED, mdata, tlw.GetId()) 
+        tlw = stc.TopLevelParent
+        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_POS_JUMPED, mdata, tlw.Id) 
 
     WrapJump.__name__ = func.__name__
     WrapJump.__doc__ = func.__doc__
@@ -95,6 +95,11 @@ class EditraStc(ed_basestc.EditraBaseStc):
                  style=0, use_dt=True):
         """Initializes a control and sets the default objects for
         Tracking events that occur in the control.
+        @param parent: Parent Window
+        @param id_: Control ID
+        @keyword pos: Control position
+        @keyword size: Control size
+        @keyword style: Control style bitmask
         @keyword use_dt: whether to use a drop target or not
 
         """
@@ -318,11 +323,11 @@ class EditraStc(ed_basestc.EditraBaseStc):
     # TODO: DO NOT use these methods anywhere new they will be removed soon
     def ShowCommandBar(self):
         """Open the command bar"""
-        self.GetTopLevelParent().GetEditPane().ShowCommandControl(ed_glob.ID_COMMAND)
+        self.TopLevelParent.GetEditPane().ShowCommandControl(ed_glob.ID_COMMAND)
 
     def ShowFindBar(self):
         """Open the quick-find bar"""
-        self.GetTopLevelParent().GetEditPane().ShowCommandControl(ed_glob.ID_QUICK_FIND)
+        self.TopLevelParent.GetEditPane().ShowCommandControl(ed_glob.ID_QUICK_FIND)
     # END TODO
 
     def GetBookmarks(self):
@@ -407,6 +412,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         self.SetViewEdgeGuide(_PGET('SHOW_EDGE'))
         self.EnableAutoBackup(_PGET('AUTOBACKUP'))
         self.SetEndAtLastLine(not _PGET('VIEWVERTSPACE', default=False))
+        self.SetCaretWidth(_PGET('CARETWIDTH', default=1))
 
     def ConvertCase(self, upper=False):
         """Converts the case of the selected text to either all lower
@@ -448,7 +454,6 @@ class EditraStc(ed_basestc.EditraBaseStc):
     def GetAutoIndent(self):
         """Returns whether auto-indent is being used
         @return: whether autoindent is active or not
-        @rtype: bool
 
         """
         return self._config['autoindent']
@@ -608,7 +613,8 @@ class EditraStc(ed_basestc.EditraBaseStc):
             return
 
         # If the file is different than the last save point make the backup.
-        bkupmgr = ebmlib.FileBackupMgr(None, u"%s.edbkup")
+        suffix = _PGET('AUTOBACKUP_SUFFIX', default=u'.edbkup')
+        bkupmgr = ebmlib.FileBackupMgr(None, u"%s" + suffix)
         path = _PGET('AUTOBACKUP_PATH', default=u"")
         if path and os.path.exists(path):
             bkupmgr.SetBackupDirectory(path)
@@ -640,7 +646,6 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """Handles keydown events, currently only deals with
         auto indentation.
         @param evt: event that called this handler
-        @type evt: wx.KeyEvent
 
         """
         k_code = evt.GetKeyCode()
@@ -679,7 +684,6 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """Handles Char events that aren't caught by the
         KEY_DOWN event.
         @param evt: event that called this handler
-        @type evt: wx.EVT_CHAR
         @todo: autocomp/calltip lookup can be very cpu intensive it may
                be better to try and process it on a separate thread to
                prevent a slow down in the input of text into the buffer
@@ -732,17 +736,15 @@ class EditraStc(ed_basestc.EditraBaseStc):
     def DoAutoComplete(self):
         """Atempt to perform an autocompletion event."""
         self.HidePopups()
-        if self._config['autocomp']:
-            command = self.GetCommandStr()
-            self.ShowAutoCompOpt(command)
+        command = self.GetCommandStr()
+        self.ShowAutoCompOpt(command)
 
     def DoCallTip(self):
         """Attempt to show a calltip for the current cursor position"""
         self.HidePopups()
-        if self._config['autocomp']:
-            command = self.GetCommandStr()
-            # TODO: GetCommandStr seems to be inadquate under some cases
-            self.ShowCallTip(command)
+        command = self.GetCommandStr()
+        # TODO: GetCommandStr seems to be inadequate under some cases
+        self.ShowCallTip(command)
 
     def OnKeyUp(self, evt):
         """Update status bar of window
@@ -751,10 +753,9 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """
         evt.Skip()
         self.PostPositionEvent()
-        tlw = self.GetTopLevelParent()
+        tlw = self.TopLevelParent
         ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_KEYUP,
-                           (evt.GetPositionTuple(), evt.GetKeyCode()),
-                           tlw.GetId())
+                           (evt.GetPositionTuple(), evt.GetKeyCode()), tlw.Id)
 
     def PostPositionEvent(self):
         """Post an event to update the status of the line/column"""
@@ -763,14 +764,13 @@ class EditraStc(ed_basestc.EditraBaseStc):
         msg = _("Line: %(lnum)d  Column: %(cnum)d") % pinfo
         nevt = ed_event.StatusEvent(ed_event.edEVT_STATUS, self.GetId(),
                                     msg, ed_glob.SB_ROWCOL)
-        tlw = self.GetTopLevelParent()
+        tlw = self.TopLevelParent
         wx.PostEvent(tlw, nevt)
-        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_POS_CHANGED, pinfo, tlw.GetId())
+        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_POS_CHANGED, pinfo, tlw.Id)
 
     def OnRecordMacro(self, evt):
         """Records macro events
-        @param evt: event that called this handler
-        @type evt: wx.stc.StyledTextEvent
+        @param evt: wx.stc.StyledTextEvent
 
         """
         if self.IsRecording():
@@ -829,8 +829,8 @@ class EditraStc(ed_basestc.EditraBaseStc):
         self.PostPositionEvent()
 
     def OnLoadProgress(self, evt):
-        """Recieves file loading events from asynchronous file loading"""
-        pid = self.GetTopLevelParent().GetId()
+        """Receives file loading events from asynchronous file loading"""
+        pid = self.TopLevelParent.Id
         if evt.GetState() == ed_txt.FL_STATE_READING:
             if evt.HasText():
                 # TODO: get gauge updates working properly
@@ -866,8 +866,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
 
     def OnUpdateUI(self, evt):
         """Check for matching braces
-        @param evt: event that called this handler
-        @type evt: wx.stc.StyledTextEvent
+        @param evt: wx.stc.StyledTextEvent
 
         """
         # If disabled just skip the event
@@ -885,7 +884,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
                      text=evt.GetText(),
                      stc=self)
         ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_USERLIST_SEL, mdata,
-                           context=self.GetTopLevelParent().GetId())
+                           context=self.TopLevelParent.Id)
         evt.Skip()
 
     def OnDwellStart(self, evt):
@@ -896,7 +895,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         brect = self.GetScreenRect()
         if not brect.Contains(mpoint) or \
            not self.IsShown() or \
-           not self.GetTopLevelParent().IsActive():
+           not self.TopLevelParent.IsActive():
             return
 
         position = evt.Position
@@ -914,7 +913,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
             else:
                 # Clients did not need to make use of the calltip
                 # so check if auto-completion provider has anything to display.
-                if not self.IsComment(position) and not self.IsString(position):
+                if not self.IsNonCode(position):
                     endpos = self.WordEndPosition(position, True)
                     col = self.GetColumn(endpos)
                     line = self.GetLine(line_num-1)
@@ -935,8 +934,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
 
     def OnMarginClick(self, evt):
         """Open and Close Folders as Needed
-        @param evt: event that called this handler
-        @type evt: wx.stc.StyledTextEvent
+        @param evt: wx.stc.StyledTextEvent
 
         """
         margin_num = evt.GetMargin()
@@ -1213,7 +1211,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
                 # Warn about mixed end of line characters and offer to convert
                 msg = _("Mixed EOL characters detected.\n\n"
                         "Would you like to format them to all be the same?")
-                dlg = ed_mdlg.EdFormatEOLDlg(self.GetTopLevelParent(), msg,
+                dlg = ed_mdlg.EdFormatEOLDlg(self.TopLevelParent, msg,
                                              _("Format EOL?"),
                                              eol_map.get(eol, self.GetEOLMode()))
 
@@ -1360,17 +1358,17 @@ class EditraStc(ed_basestc.EditraBaseStc):
     def LineCut(self): # pylint: disable-msg=W0221
         """Cut the selected lines into the clipboard"""
         start, end = self.GetSelectionLineStartEnd()
-        self.SetSelection(start, end)
         self.BeginUndoAction()
+        self.BaseSetSelection(start, end)
         self.Cut()
         self.EndUndoAction()
 
     def LineDelete(self): # pylint: disable-msg=W0221
         """Delete the selected lines without modifying the clipboard"""
         start, end = self.GetSelectionLineStartEnd()
+        self.BeginUndoAction()
         self.SetTargetStart(start)
         self.SetTargetEnd(end)
-        self.BeginUndoAction()
         self.ReplaceTarget(u'')
         self.EndUndoAction()
 
@@ -1441,7 +1439,6 @@ class EditraStc(ed_basestc.EditraBaseStc):
     def SetAutoComplete(self, value):
         """Turns Autocompletion on and off
         @param value: use autocomp or not
-        @type value: bool
 
         """
         if isinstance(value, bool):
@@ -1466,9 +1463,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
     def SetViEmulationMode(self, use_vi, use_normal=False):
         """Activate/Deactivate Vi emulation mode
         @param use_vi: Turn vi emulation on/off
-        @type use_vi: boolean
         @keyword use_normal: Start in normal mode
-        @type use_normal: boolean
 
         """
         self.key_handler.ClearMode()
@@ -1497,7 +1492,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         evt = ed_event.StatusEvent(ed_event.edEVT_STATUS, self.GetId(),
                                    _("Recording Macro") + u"...",
                                    ed_glob.SB_INFO)
-        wx.PostEvent(self.GetTopLevelParent(), evt)
+        wx.PostEvent(self.TopLevelParent, evt)
         super(EditraStc, self).StartRecord()
 
     def StopRecord(self): # pylint: disable-msg=W0221
@@ -1510,7 +1505,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
         evt = ed_event.StatusEvent(ed_event.edEVT_STATUS, self.GetId(),
                                    _("Recording Finished"),
                                    ed_glob.SB_INFO)
-        wx.PostEvent(self.GetTopLevelParent(), evt)
+        wx.PostEvent(self.TopLevelParent, evt)
         self._BuildMacro()
 
     def TrimWhitespace(self):
@@ -1820,7 +1815,6 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """Reloads the current file, returns True on success and
         False if there is a failure.
         @return: whether file was reloaded or not
-        @rtype: bool
 
         """
         cfile = self.GetFileName()
@@ -1851,7 +1845,7 @@ class EditraStc(ed_basestc.EditraBaseStc):
                 return False, msg
             else:
                 self.GotoPos(cpos)
-                context = self.GetTopLevelParent().GetId()
+                context = self.TopLevelParent.Id
                 ed_msg.PostMessage(ed_msg.EDMSG_FILE_OPENED,
                                    self.GetFileName(), context)
                 return True, ''
@@ -1886,12 +1880,11 @@ class EditraStc(ed_basestc.EditraBaseStc):
         """Save buffers contents to disk
         @param path: path of file to save
         @return: whether file was written or not
-        @rtype: bool
 
         """
         result = True
         try:
-            tlw_id = self.GetTopLevelParent().GetId()
+            tlw_id = self.TopLevelParent.Id
             ed_msg.PostMessage(ed_msg.EDMSG_FILE_SAVE,
                                (path, self.GetLangId()), tlw_id)
             self.File.SetPath(path)
@@ -1947,3 +1940,15 @@ class EditraStc(ed_basestc.EditraBaseStc):
         ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_LEXER,
                            (self.GetFileName(), self.GetLangId()), pid)
         return True
+
+    def HideCaret(self):
+        if hasattr(self, 'SetCaretStyle'):
+            self.SetCaretStyle(wx.stc.STC_CARETSTYLE_INVISIBLE)
+        else:
+            self.SetCaretWidth(0)
+
+    def RestoreCaret(self):
+        if self.key_handler.BlockMode:
+            self.SetBlockCaret()
+        else:
+            self.SetLineCaret()

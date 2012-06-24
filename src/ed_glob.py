@@ -14,8 +14,8 @@ access point for all common variables in the project.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_glob.py 69062 2011-09-11 17:36:03Z CJP $"
-__revision__ = "$Revision: 69062 $"
+__svnid__ = "$Id: ed_glob.py 70747 2012-02-29 01:33:35Z CJP $"
+__revision__ = "$Revision: 70747 $"
 
 __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_CLOSE', 'ID_CLOSEALL', 'ID_SAVE', 'ID_SAVEAS', 'ID_SAVEALL',
@@ -45,7 +45,7 @@ __all__ = [ 'CONFIG', 'SB_INFO', 'VERSION', 'PROG_NAME', 'ID_NEW', 'ID_OPEN',
             'ID_NEW_WINDOW', 'ID_TOGGLE_FOLD', 'ID_TOGGLE_ALL_FOLDS',
             'ID_SAVE_SESSION', 'ID_LOAD_SESSION', 'ID_NEXT_POS', 'ID_PRE_POS',
             'ID_CYCLE_CLIPBOARD', 'ID_LEXER_CUSTOM', 'ID_SHOW_AUTOCOMP',
-            'ID_SHOW_CALLTIP', 'ID_SESSION_BAR' ]
+            'ID_SHOW_CALLTIP', 'ID_SESSION_BAR', 'ID_PREF_CARET_WIDTH' ]
 
 #---- Project Info ----#
 # The project info was moved to another module so it could be accessed
@@ -183,6 +183,7 @@ ID_TRANSPARENCY  = wx.NewId()
 ID_PREF_SPOS     = wx.NewId()
 ID_PREF_UPDATE_BAR = wx.NewId()
 ID_PREF_VIRT_SPACE = wx.NewId()
+ID_PREF_CARET_WIDTH = wx.NewId()
 ID_PREF_WARN_EOL = wx.NewId()
 ID_SESSION       = wx.NewId()
 
@@ -302,6 +303,7 @@ ID_VI_MODE           = wx.NewId()
 ID_VI_NORMAL_DEFAULT = wx.NewId()
 ID_WEB               = wx.NewId()
 ID_READONLY          = wx.NewId()
+ID_NEW_FOLDER        = wx.NewId()
 
 # Code Elements (ids for art provider)
 ID_CLASS_TYPE = wx.NewId()
@@ -378,6 +380,7 @@ ID_2_PROF = {
              ID_VIEW_TOOL         : 'TOOLBAR',
              ID_PREF_TABS         : 'USETABS',
              ID_PREF_VIRT_SPACE   : 'VIEWVERTSPACE',
+             ID_PREF_CARET_WIDTH  : 'CARETWIDTH',
              ID_VI_MODE           : 'VI_EMU',
              ID_VI_NORMAL_DEFAULT : 'VI_NORMAL_DEFAULT',
              ID_PREF_WARN_EOL     : 'WARN_EOL',

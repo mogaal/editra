@@ -915,10 +915,11 @@ class ModernDockArt(AuiDefaultDockArt):
 
         # Get the size of a small close button (themed)
         hwnd = self.win.GetHandle()
+        self.usingTheme = False
         
-        self.hTheme1 = winxptheme.OpenThemeData(hwnd, "Window")
-        
-        self.usingTheme = True
+        if _ctypes:
+            self.hTheme1 = winxptheme.OpenThemeData(hwnd, "Window")        
+            self.usingTheme = True
         
         if not self.hTheme1:
             self.usingTheme = False

@@ -12,8 +12,8 @@ Simple Generic autocompleter for completing words found in the current buffer.
 """
 
 __author__ = "Giuseppe \"Cowo\" Corbelli"
-__cvsid__ = "$Id: simplecomp.py 67123 2011-03-04 00:02:35Z CJP $"
-__revision__ = "$Revision: 67123 $"
+__cvsid__ = "$Id: simplecomp.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -112,11 +112,8 @@ class Completer(completer.BaseCompleter):
         return kwlst
 
     def GetAutoCompList(self, command):
-        """Returns the list of possible completions for a
-        command string. If namespace is not specified the lookup
-        is based on the locals namespace
-        @param command: commadn lookup is done on
-        @keyword namespace: namespace to do lookup in
+        """Returns the list of possible completions for a command string.
+        @param command: command lookup is done on
 
         """
         rlist = self._GetCompletionInfo(command)

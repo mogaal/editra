@@ -2032,6 +2032,7 @@ class AuiTabCtrl(wx.PyControl, AuiTabContainer):
         if wnd:
             e = AuiNotebookEvent(wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_UP, self.GetId())
             e.SetEventObject(self)
+            e.Page = wnd
             e.SetSelection(self.GetIdxFromWindow(wnd))
             self.GetEventHandler().ProcessEvent(e)
         elif not self.ButtonHitTest(x, y):
@@ -2058,6 +2059,7 @@ class AuiTabCtrl(wx.PyControl, AuiTabContainer):
         if wnd:
             e = AuiNotebookEvent(wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_DOWN, self.GetId())
             e.SetEventObject(self)
+            e.Page = wnd
             e.SetSelection(self.GetIdxFromWindow(wnd))
             self.GetEventHandler().ProcessEvent(e)
         elif not self.ButtonHitTest(x, y):
@@ -2102,6 +2104,7 @@ class AuiTabCtrl(wx.PyControl, AuiTabContainer):
             e = AuiNotebookEvent(wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_DOWN, self.GetId())
             e.SetEventObject(self)
             e.SetSelection(self.GetIdxFromWindow(wnd))
+            e.Page = wnd
             self.GetEventHandler().ProcessEvent(e)
         elif not self.ButtonHitTest(x, y):
             e = AuiNotebookEvent(wxEVT_COMMAND_AUINOTEBOOK_BG_RIGHT_DOWN, self.GetId())
@@ -2123,6 +2126,7 @@ class AuiTabCtrl(wx.PyControl, AuiTabContainer):
             e = AuiNotebookEvent(wxEVT_COMMAND_AUINOTEBOOK_TAB_DCLICK, self.GetId())
             e.SetEventObject(self)
             e.SetSelection(self.GetIdxFromWindow(wnd))
+            e.Page = wnd
             self.GetEventHandler().ProcessEvent(e)
         elif not self.ButtonHitTest(x, y):
             e = AuiNotebookEvent(wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK, self.GetId())

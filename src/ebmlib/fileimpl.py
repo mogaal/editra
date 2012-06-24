@@ -15,8 +15,8 @@ of this library expect a file object that derives from this interface.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: fileimpl.py 65795 2010-10-13 21:00:06Z CJP $"
-__revision__ = "$Revision: 65795 $"
+__svnid__ = "$Id: fileimpl.py 70309 2012-01-10 00:09:26Z CJP $"
+__revision__ = "$Revision: 70309 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -42,6 +42,14 @@ class FileObjectImpl(object):
         self.open = False
 
         self.last_err = None
+
+    # Properties
+    Path = property(lambda self: self.GetPath(),
+                    lambda self, path: self.SetPath(path))
+    Handle = property(lambda self: self._handle)
+    ModTime = property(lambda self: self.GetModTime(),
+                       lambda self, tstamp: self.SetModTime(tstamp))
+    ReadOnly = property(lambda self: self.IsReadOnly())
 
     def ClearLastError(self):
         """Reset the error marker on this file"""
@@ -125,7 +133,7 @@ class FileObjectImpl(object):
                 errstr = self.last_err
         return errstr
 
-    def GetModtime(self):
+    def GetModTime(self):
         """Get the timestamp of this files last modification"""
         return self._modtime
 
@@ -146,11 +154,6 @@ class FileObjectImpl(object):
         else:
             return 0
 
-    @property
-    def Handle(self):
-        """Raw file handle property"""
-        return self._handle
-
     def IsOpen(self):
         """Check if file is open or not
         @return: bool
@@ -167,16 +170,6 @@ class FileObjectImpl(object):
             return not os.access(self._path, os.R_OK|os.W_OK)
         else:
             return False
-
-    @property
-    def Modtime(self):
-        """File modification time propery"""
-        return self.GetModtime()
-
-    @property
-    def ReadOnly(self):
-        """Is the file read only?"""
-        return self.IsReadOnly()
 
     def ResetAll(self):
         """Reset all file attributes"""

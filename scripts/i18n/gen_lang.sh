@@ -10,6 +10,7 @@
 # Variables
 ##############################################################################
 ARG=$1
+IMPORT_DIR=$2
 
 ##############################################################################
 # Function: print_help
@@ -17,11 +18,13 @@ ARG=$1
 ##############################################################################
 print_help () {
 	echo
-	echo "Usage: $0 [-h|-mo|-po|-all]"
+	echo "Usage: $0 [-h|-mo|-po|-all|-app]"
 	echo "    -h    Print this help message"
 	echo "    -mo   Generate mo files and install them in the locale directory"
 	echo "    -po   Generate new po files from the project source"
     echo "    -all  Regenerate everything"
+    echo "    -app  Only regenerate the file list"
+    echo "    -lp <path> Import translations from Launchpad export"
 	echo
 }
 
@@ -57,6 +60,14 @@ gen_appfile () {
             fi
         done
     done
+}
+
+##############################################################################
+# Function: import_lp_files
+# Purpose: Copy exported launchpad files to here and rename
+##############################################################################
+import_lp_files() {
+    python getlpfiles.py $IMPORT_DIR
 }
 
 ##############################################################################
@@ -97,6 +108,7 @@ make_mo () {
 
 if [ "$ARG" = "-po" ]
 then
+    gen_appfile
     gen_po
     exit 0
 elif [ "$ARG" = "-mo" ]
@@ -112,6 +124,10 @@ then
 elif [ "$ARG" = "-app" ]
 then
     gen_appfile
+    exit 0
+elif [ "$ARG" = "-lp" ]
+then
+    import_lp_files
     exit 0
 else
     print_help

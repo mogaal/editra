@@ -14,8 +14,8 @@ FILE: css.py
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _css.py 68798 2011-08-20 17:17:05Z CJP $"
-__revision__ = "$Revision: 68798 $"
+__svnid__ = "$Id: _css.py 69877 2011-12-01 03:04:21Z CJP $"
+__revision__ = "$Revision: 69877 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -83,6 +83,9 @@ CSS2_KEYWORDS = (2, "ActiveBorder ActiveCaption AppWorkspace Background "
                     "visible volume wait wider widows width widths yellow "
                     "z-index outline left")
 
+# CSS3 Keywords
+CSS3_KEYWORDS = (3, "border-radius text-shadow")
+
 #---- Syntax Style Specs ----#
 SYNTAX_ITEMS = [ (stc.STC_CSS_DEFAULT, 'default_style'),
                  (stc.STC_CSS_ATTRIBUTE, 'funct_style'),
@@ -107,7 +110,7 @@ if wx.VERSION >= (2, 9, 0, 0, ''):
     SYNTAX_ITEMS.append((stc.STC_CSS_EXTENDED_IDENTIFIER, 'default_style'))
     SYNTAX_ITEMS.append((stc.STC_CSS_EXTENDED_PSEUDOCLASS, 'default_style'))
     SYNTAX_ITEMS.append((stc.STC_CSS_EXTENDED_PSEUDOELEMENT, 'default_style'))
-    SYNTAX_ITEMS.append((stc.STC_CSS_IDENTIFIER3, 'default_style'))
+    SYNTAX_ITEMS.append((stc.STC_CSS_IDENTIFIER3, 'keyword2_style'))
     SYNTAX_ITEMS.append((stc.STC_CSS_PSEUDOELEMENT, 'default_style'))
 
 #---- Extra Properties ----#
@@ -126,7 +129,15 @@ class SyntaxData(syndata.SyntaxDataBase):
 
     def GetKeywords(self):
         """Returns Specified Keywords List """
-        return [CSS1_KEYWORDS , CSS_PSUEDO_CLASS, CSS2_KEYWORDS]
+        kwlist = [CSS1_KEYWORDS , CSS_PSUEDO_CLASS]
+        # 2.9 supports CSS3 so for 2.8 just add CSS3 keywords to the css2 list 
+        if wx.VERSION < (2, 9, 0, 0, ''):
+            css2_kw = (CSS2_KEYWORDS[0], " ".join((CSS2_KEYWORDS[1], CSS3_KEYWORDS[1])))
+            kwlist.append(css2_kw)
+        else:
+            kwlist.append(CSS2_KEYWORDS)
+            kwlist.append(CSS3_KEYWORDS)
+        return kwlist
 
     def GetSyntaxSpec(self):
         """Syntax Specifications """

@@ -229,6 +229,9 @@ class Doxypy(object):
                 output = output.replace("@summary", "@brief")
                 output = output.replace("@postcondition", "@post")
                 output = output.replace("@precondition", "@pre")
+                output = output.replace("#"*79, "")
+
+
                 for p in (self.markup_re, self.param_re):
                     output = self.postFilter(output, p)
                 epre = re.compile("[RL]\{(.+)\}")

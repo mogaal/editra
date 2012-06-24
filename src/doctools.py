@@ -12,8 +12,8 @@ Provides helper functions and classes for managing documents and their services.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: doctools.py 66159 2010-11-15 02:24:06Z CJP $"
-__revision__ = "$Revision: 66159 $"
+__svnid__ = "$Id: doctools.py 70230 2012-01-01 01:47:42Z CJP $"
+__revision__ = "$Revision: 70230 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -74,8 +74,7 @@ class DocPositionMgr(object):
     def AddRecord(self, vals):
         """Adds a record to the dictionary from a list of the
         filename vals[0] and the position value vals[1].
-        @param vals: file path, cursor position
-        @type vals: tuple (str, int)
+        @param vals: (file path, cursor position)
 
         """
         if len(vals) == 2:
@@ -87,6 +86,7 @@ class DocPositionMgr(object):
     @classmethod
     def CanNavigateNext(cls):
         """Are there more cached navigation positions?
+        @param cls: Class
         @return: bool
 
         """
@@ -95,6 +95,7 @@ class DocPositionMgr(object):
     @classmethod
     def CanNavigatePrev(cls):
         """Are there previous cached navigation positions?
+        @param cls: Class
         @return: bool
 
         """
@@ -121,6 +122,7 @@ class DocPositionMgr(object):
         """Get the next stored navigation position
         The optional fname parameter will get the next found position for
         the given file.
+        @param cls: Class
         @param fname: filename (note currently not supported)
         @return: int or None
         @note: fname is currently not used
@@ -134,6 +136,7 @@ class DocPositionMgr(object):
         """Get the last stored navigation position
         The optional fname parameter will get the last found position for
         the given file.
+        @param cls: Class
         @param fname: filename (note currently not supported)
         @return: int or None
         @note: fname is currently not used
@@ -145,6 +148,7 @@ class DocPositionMgr(object):
     def GetPos(self, name):
         """Get the position record for a given filename
         returns 0 if record is not found.
+        @param name: file name
         @return: position value for the given filename
 
         """
@@ -161,8 +165,8 @@ class DocPositionMgr(object):
         """Loads a set of records from an on disk dictionary
         the entries are formated as key=value with one entry
         per line in the file.
+        @param book: path to saved file
         @return: whether book was loaded or not
-        @rtype: boolean
 
         """
         # If file does not exist create it and return
@@ -208,7 +212,8 @@ class DocPositionMgr(object):
     @classmethod
     def PeekNavi(cls, pre=False):
         """Peek into the navigation cache
-        @param pre: bool
+        @param cls: Class
+        @keyword pre: bool
 
         """
         if pre:

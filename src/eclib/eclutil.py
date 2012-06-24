@@ -14,8 +14,8 @@ Miscellaneous utility functions and gui helpers
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: eclutil.py 69246 2011-09-30 17:52:47Z CJP $"
-__revision__ = "$Revision: 69246 $"
+__svnid__ = "$Id: eclutil.py 71178 2012-04-11 22:42:28Z CJP $"
+__revision__ = "$Revision: 71178 $"
 
 __all__ = ['AdjustAlpha', 'AdjustColour', 'BestLabelColour', 'HexToRGB',
            'GetHighlightColour', 'EmptyBitmapRGBA', 'Freezer',
@@ -63,9 +63,7 @@ def AdjustColour(color, percent, alpha=wx.ALPHA_OPAQUE):
     """ Brighten/Darken input colour by percent and adjust alpha
     channel if needed. Returns the modified color.
     @param color: color object to adjust
-    @type color: wx.Colour
     @param percent: percent to adjust +(brighten) or -(darken)
-    @type percent: int
     @keyword alpha: amount to adjust alpha channel
 
     """
@@ -89,14 +87,10 @@ def BestLabelColour(color):
 
     """
     avg = sum(color.Get()) // 3
-    if avg > 192:
+    if avg > 128:
         txt_color = wx.BLACK
-    elif avg > 128:
-        txt_color = AdjustColour(color, -95)
-    elif avg < 64:
-        txt_color = wx.WHITE
     else:
-        txt_color = AdjustColour(color, 95)
+        txt_color = wx.WHITE
     return txt_color
 
 def GetHighlightColour():
@@ -158,10 +152,12 @@ class Freezer(object):
         self.window = window
 
     def __enter__(self):
-        self.window.Freeze()
+        if self.window:
+            self.window.Freeze()
 
     def __exit__( self, type, value, tb):
-        self.window.Thaw()
+        if self.window:
+            self.window.Thaw()
 
 #-----------------------------------------------------------------------------#
 # Drawing helpers

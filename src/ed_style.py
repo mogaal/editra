@@ -20,8 +20,8 @@ U{http://editra.org/editra_style_sheets}.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_style.py 68615 2011-08-09 19:01:24Z CJP $"
-__revision__ = "$Revision: 68615 $"
+__svnid__ = "$Id: ed_style.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -34,6 +34,7 @@ import ed_glob
 import util
 from profiler import Profile_Get, Profile_Set
 import eclib
+import ebmlib
 
 # Globals
 STY_ATTRIBUTES     = (u"face", u"fore", u"back", u"size", u"modifiers")
@@ -83,9 +84,8 @@ class StyleItem(object):
 
     def __eq__(self, other):
         """Defines the == operator for the StyleItem Class
-        @param si2: style item to compare to
+        @param other: style item to compare to
         @return: whether the two items are equal
-        @rtype: bool
 
         """
         return unicode(self) == unicode(other)
@@ -229,7 +229,6 @@ class StyleItem(object):
         overwrites values does not zero out previously set values.
         Returning True if value(s) are set or false otherwise.
         @param style_str: style information string (i.e fore:#888444)
-        @type style_str: string
 
         """
         self.null = False
@@ -291,7 +290,6 @@ class StyleItem(object):
     def SetSize(self, size, ex=wx.EmptyString):
         """Sets the Font Size Value
         @param size: font point size, or None to clear attribute
-        @type size: string or int
         @keyword ex: extra attribute (i.e bold, italic, underline)
 
         """
@@ -308,7 +306,6 @@ class StyleItem(object):
         add value is set to False the attribute will be removed from
         the StyleItem.
         @param ex_attr: extra style attribute (bold, eol, italic, underline)
-        @type ex_attr: string
         @keyword add: Add a style (True) or remove a style (False)
 
         """
@@ -414,7 +411,6 @@ class StyleMgr(object):
         ten point fonts as the standard size.
         @keyword default: return the default dictionary of fonts, else return
                           the current running dictionary of fonts if it exists.
-        @type default: bool
         @return: font dictionary (primary, secondary) + (size, size2)
 
         """
@@ -448,8 +444,7 @@ class StyleMgr(object):
     def GetDefaultFont(self):
         """Constructs and returns a wxFont object from the settings
         of the default_style object.
-        @return: font object of default style
-        @rtype: wx.Font
+        @return: wx.Font object of default style
 
         """
         if self.HasNamedStyle('default_style'):
@@ -470,9 +465,7 @@ class StyleMgr(object):
         a Colour object. Otherwise returns Black if the default
         style is not found.
         @keyword as_hex: return a hex string or colour object
-        @type as_hex: bool
         @return: wx.Colour of default style foreground or hex value
-        @rtype: wx.Colour or string
 
         """
         fore = self.GetItemByName('default_style').GetFore()
@@ -495,10 +488,8 @@ class StyleMgr(object):
         """Gets the background color of the default style and returns
         a Colour object. Otherwise returns white if the default
         style is not found.
-        @keyword hex: return a hex string or colour object
-        @type hex: bool
+        @keyword as_hex: return a hex string or colour object
         @return: wx.Colour of default style background or hex value
-        @rtype: wx.Colour or string
 
         """
         back = self.GetItemByName('default_style').GetBack()
@@ -514,7 +505,6 @@ class StyleMgr(object):
         """Gets and returns a style item using its name for the search
         @param name: tag name of style item to get
         @return: style item (may be empty/null style item)
-        @rtype: L{StyleItem}
 
         """
         scheme = self.GetStyleSet()
@@ -549,9 +539,7 @@ class StyleMgr(object):
     def GetStyleByName(self, name):
         """Gets and returns a style string using its name for the search
         @param name: tag name of style to get
-        @type name: string
         @return: style item in string form
-        @rtype: string
 
         """
         if self.HasNamedStyle(name):
@@ -564,7 +552,6 @@ class StyleMgr(object):
         """Returns the current set of styles or the default set if
         there is no current set.
         @return: current style set dictionary
-        @rtype: dict
 
         """
         return StyleMgr.STYLES.get(self.style_set, DEF_STYLE_DICT)
@@ -581,16 +568,14 @@ class StyleMgr(object):
         """
         if sheet_name:
             style = sheet_name
-            if sheet_name.split(u'.')[-1] != u"ess":
-                style += u".ess"
-        elif Profile_Get('SYNTHEME', 'str').split(u'.')[-1] != u"ess":
-            style = (Profile_Get('SYNTHEME', 'str') + u".ess").lower()
         else:
-            style = Profile_Get('SYNTHEME', 'str').lower()
+            style = Profile_Get('SYNTHEME', 'str')
+        style = ebmlib.AddFileExtension(style, u'.ess').lower()
 
         # Get Correct Filename if it exists
-        for sheet in util.GetResourceFiles(u'styles', False, True, title=False):
-            if sheet.lower() == style.lower():
+        for sheet in util.GetResourceFiles(u'styles', trim=False, 
+                                           get_all=True, title=False):
+            if sheet.lower() == style:
                 style = sheet
                 break
 
@@ -624,7 +609,6 @@ class StyleMgr(object):
         @keyword force: Force re-parse of style sheet, default is to use cached
                         data when available
         @return: whether style sheet was loaded or not
-        @rtype: bool
 
         """
         if isinstance(style_sheet, basestring) and \
@@ -692,9 +676,7 @@ class StyleMgr(object):
     def ParseStyleData(self, style_data):
         """Parses a string style definitions read from an Editra Style Sheet.
         @param style_data: style sheet data string
-        @type style_data: string
-        @return: dictionary of StyleItems constructed from the style sheet
-                 data.
+        @return: dictionary of StyleItems constructed from the style sheet data.
 
         """
         # Remove all comments
@@ -841,7 +823,7 @@ class StyleMgr(object):
             return False
 
     def SetStyleFont(self, wx_font, primary=True):
-        """Sets the\primary or secondary font and their respective
+        """Sets the primary or secondary font and their respective
         size values.
         @param wx_font: font object to set styles font info from
         @keyword primary: Set primary(default) or secondary font
@@ -874,7 +856,6 @@ class StyleMgr(object):
         @param style_dict: dictionary of style items to use as managers style
                            set.
         @keyword nomerge: merge against default set or not
-        @type nomerge: bool
 
         """
         if nomerge:
@@ -994,7 +975,7 @@ class StyleMgr(object):
         if sum(sback.Get()) < 384:
             self.SetSelForeground(True, wx.WHITE)
         else:
-            self.SetSelForeground(False, wx.BLACK)
+            self.SetSelForeground(True, wx.BLACK)
         self.SetSelBackground(True, sback)
 
         # Causes issues with selecting text when view whitespace is on

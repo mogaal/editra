@@ -20,8 +20,8 @@ happen during run time.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: profiler.py 67855 2011-06-04 20:11:21Z CJP $"
-__revision__ = "$Revision: 67855 $"
+__svnid__ = "$Id: profiler.py 70747 2012-02-29 01:33:35Z CJP $"
+__revision__ = "$Revision: 70747 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -45,6 +45,7 @@ _DEFAULTS = {
            'APPSPLASH'  : True,             # Show splash at startup
            'AUTOBACKUP' : False,            # Automatically backup files
            'AUTOBACKUP_PATH' : '',          # Backup path
+           'AUTOBACKUP_SUFFIX' : '.edbkup', # Backup suffix (e.g. .edbkup, ~)
            'AUTO_COMP'  : True,             # Use Auto-comp if available
            'AUTO_COMP_EX' : False,          # Use extended autocompletion
            'AUTO_INDENT': True,             # Use Auto Indent
@@ -52,10 +53,11 @@ _DEFAULTS = {
            'AUTO_RELOAD' : False,           # Automatically reload files?
            'BRACKETHL'  : True,             # Use bracket highlighting
            'BSUNINDENT' : True,             # Backspace Unindents
-           'CTRLBAR'    : dict(),           # ControlBar layouts
+           'CARETWIDTH' : 1,                # Preferred cursor width
            'CHECKMOD'   : True,             # Auto check file for file mod
            'CHECKUPDATE': True,             # Check for updates on start
            'CODE_FOLD'  : True,             # Use code folding
+           'CTRLBAR'    : dict(),           # ControlBar layouts
            'DEFAULT_LEX': 'Plain Text',     # Default lexer for new documents
            'DEFAULT'    : False,            # No longer used I believe
            'DEFAULT_VIEW' : 'Automatic',    # Default Perspective
@@ -150,9 +152,7 @@ class Profile(dict):
     #---- Begin Public Members ----#
     def DeleteItem(self, item):
         """Removes an entry from the profile
-
         @param item: items name
-        @type item: string
 
         """
         if item in self:
@@ -288,8 +288,7 @@ Profile_Set = TheProfile.Set
 def _FromObject(val, fmt):
     """Convert the given value to a to a profile compatible value
     @param val: value to convert
-    @param fmt: Format to convert to
-    @type fmt: string
+    @param fmt: Format to convert to (string)
 
     """
     if fmt == u'font' and isinstance(val, wx.Font):
@@ -302,7 +301,6 @@ def _ToObject(index, val, fmt):
     @param index: fallback to retrieve item from defaults
     @param val: value to convert
     @param fmt: Format to convert to
-    @type fmt: string
     @todo: exception handling,
 
     """

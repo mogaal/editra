@@ -13,8 +13,8 @@ perspectives in the MainWindow.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: perspective.py 68263 2011-07-14 03:00:36Z CJP $"
-__revision__ = "$Revision: 68263 $"
+__cvsid__ = "$Id: perspective.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -345,11 +345,9 @@ class PerspectiveManager(object):
         self.UpdateAutoPerspective()
 
     def SavePerspectives(self):
-        """Writes the perspectives out to disk. Returns
-        True if all data was written and False if there
-        was an error.
+        """Writes the perspectives out to disk. Returns True if all data was 
+        written and False if there was an error.
         @return: whether save was successful
-        @rtype: bool
 
         """
         writer = util.GetFileWriter(self._base)
@@ -373,7 +371,6 @@ class PerspectiveManager(object):
         True on success and False on failure.
         @param name: name of perspective to set
         @return: whether perspective was set or not
-        @rtype: bool
 
         """
         if name in self._viewset:
@@ -392,7 +389,6 @@ class PerspectiveManager(object):
         """Sets the perspective using the given control id
         @param per_id: id of requested perspective
         @return: whether perspective was set or not
-        @rtype: bool
 
         """
         name = None

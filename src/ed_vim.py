@@ -13,8 +13,8 @@ text buffer.
 """
 
 __author__ = "Hasan Aljudy"
-__cvsid__ = "$Id: ed_vim.py 66867 2011-02-08 23:52:17Z CJP $"
-__revision__ = "$Revision: 66867 $"
+__cvsid__ = "$Id: ed_vim.py 71184 2012-04-11 23:17:52Z CJP $"
+__revision__ = "$Revision: 71184 $"
 
 # ---------------------------------------------------------------------------- #
 # Imports
@@ -467,10 +467,9 @@ class EditraCommander(object):
         self._Scroll(amt)
 
     def _Scroll(self, amt):
-        """Scroll to the current line
+        """Scroll to the current line. For example _Scroll(0.5) scrolls the 
+        current line to the middle of the screen
         @param amt: number between 0 and 1 signifying percentage
-        @example: _Scroll(0.5) scrolls the current line to the middle
-                 of the screen
 
         """
         lines = self.stc.LinesOnScreen() - 1
@@ -599,14 +598,14 @@ class EditraCommander(object):
 
     def GetSelectedText(self):
         """Get the selected text
-        @rtype: string
+        @return: Unicode
 
         """
         return self.stc.GetSelectedText()
 
     def HasSelection(self):
         """Detects if there's anything selected
-        @rtype: bool
+        @return: bool
 
         """
         return len(self.GetSelectedText()) > 0
@@ -1052,7 +1051,7 @@ def Words(editor,repeat, cmd):
             u'[': editor.BackWordPart,
             u']': editor.WordPartEnd,
           }
-    cmd_map[cmd](repeat)
+    cmd_map.get(cmd, lambda x: None)(repeat)
 
 @vim_parser(u'$^0', is_motion=True)
 def Line(editor, repeat, cmd):
@@ -1061,10 +1060,10 @@ def Line(editor, repeat, cmd):
 
     """
     cmd_map = { u'0': editor.GotoLineStart,
-            u'^': editor.GotoIndentStart,
-            u'$': editor.GotoLineEnd,
-            }
-    cmd_map[cmd]()
+                u'^': editor.GotoIndentStart,
+                u'$': editor.GotoLineEnd,
+              }
+    cmd_map.get(cmd, lambda:None)()
 
 @vim_parser(u'{}', is_motion=True)
 def Para(editor, repeat, cmd):
@@ -1075,7 +1074,7 @@ def Para(editor, repeat, cmd):
     cmd_map = { u'{': editor.ParaUp,
             u'}': editor.ParaDown,
           }
-    cmd_map[cmd](repeat)
+    cmd_map.get(cmd, lambda x: None)(repeat)
 
 @vim_parser(u'uU')
 def Undo(editor, repeat, cmd):
@@ -1100,9 +1099,9 @@ def FindIdent(editor, repeat, cmd):
 
     """
     cmd_map = { u'#': editor.PrevIdent,
-            u'*': editor.NextIdent,
-          }
-    cmd_map[cmd](repeat)
+                u'*': editor.NextIdent,
+              }
+    cmd_map.get(cmd, lambda x: None)(repeat)
 
 @vim_parser(u'~')
 def Tilde(editor, repeat, cmd):
@@ -1135,7 +1134,8 @@ def Delete(editor, repeat, cmd):
         u's': u'cl', u'S': u'cc',
         u'C': u'c$', u'D': u'd$', u'Y': u'y$',
         }
-    Change(editor, repeat, cmd_map[cmd])
+    if cmd in cmd_map:
+        Change(editor, repeat, cmd_map[cmd])
 
 @vim_parser(u'cdy<>')
 def Change(editor, repeat, cmd):
@@ -1296,8 +1296,9 @@ def FindChar(editor, repeat, cmd):
             u't' : editor.FindTillNextChar,
             u'T' : editor.FindTillPrevChar,
           }
-    cmd_map[cmd](char, repeat)
-    editor.SetFindCharCmd(cmd, char)
+    if cmd in cmd_map:
+        cmd_map[cmd](char, repeat)
+        editor.SetFindCharCmd(cmd, char)
 
 @vim_parser(u',;', is_motion=True)
 def RepeatFindChar(editor, repeat, cmd):

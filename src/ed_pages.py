@@ -13,8 +13,8 @@ This class implements Editra's main notebook control.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_pages.py 69269 2011-10-01 20:14:43Z CJP $"
-__revision__ = "$Revision: 69269 $"
+__svnid__ = "$Id: ed_pages.py 71182 2012-04-11 23:02:40Z CJP $"
+__revision__ = "$Revision: 71182 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -56,7 +56,6 @@ class EdPages(ed_book.EdBaseBook):
     def __init__(self, parent):
         """Initialize a notebook with a blank text control in it
         @param parent: parent window of the notebook
-        @param id_num: this notebooks id
 
         """
         style = aui.AUI_NB_DEFAULT_STYLE | \
@@ -363,8 +362,9 @@ class EdPages(ed_book.EdBaseBook):
             flist = mgr.LoadSession(session)
         except Exception, msg:
             self._ses_load = False
+            errdict = dict(sessionname=session, error=msg)
             return (_("Session Load Error"),
-                    _("Failed to load the session: %s\n\nError: %s") % (session, msg))
+                    _("Failed to load the session: %(sessionname)s\n\nError: %(error)s") % errdict)
 
         if not len(flist):
             self._ses_load = False
@@ -482,20 +482,21 @@ class EdPages(ed_book.EdBaseBook):
         @param evt: aui.EVT_AUINOTEBOOK_TAB_MIDDLE_DOWN
 
         """
-        self.mdown = evt.GetSelection()
-        self.SetSelection(self.mdown)
-        self.LOG("[ed_pages][evt] OnMClickDown: %d" % self.mdown)
+        self.mdown = evt.Page
+        idx = self.GetPageIndex(self.mdown)
+        self.SetSelection(idx)
+        self.LOG("[ed_pages][evt] OnMClickDown: %d" % idx)
 
     def OnMClickUp(self, evt):
         """Handle tab middle click event
         @param evt: aui.EVT_AUINOTEBOOK_TAB_MIDDLE_UP
 
         """
-        sel = evt.GetSelection()
+        sel = self.GetPageIndex(evt.Page)
         self.LOG("[ed_pages][evt] OnMClickUp: %d" % sel)
-        if sel == self.mdown:
+        if evt.Page is self.mdown:
             self.ClosePage()
-        self.mdown = -1
+        self.mdown = None
 
     def OnNavigateToPos(self, evt):
         """Handle buffer position history navigation events"""
@@ -870,7 +871,7 @@ class EdPages(ed_book.EdBaseBook):
         # TODO: may not be necessary anymore
         try:
             txt = super(EdPages, self).GetPageText(pg_num)
-        except IndexError:
+        except Exception:
             txt = ''
 
         if not txt or txt[0] != u"*":
@@ -885,7 +886,7 @@ class EdPages(ed_book.EdBaseBook):
         """
         try:
             txt = super(EdPages, self).GetPageText(pg_num)
-        except IndexError:
+        except Exception:
             txt = ''
         return txt
 
@@ -1009,8 +1010,7 @@ class EdPages(ed_book.EdBaseBook):
 
     def OnIdle(self, evt):
         """Update tabs and check if files have been modified
-        @param evt: Event that called this handler
-        @type evt: wx.TimerEvent
+        @param evt: wx.TimerEvent
 
         """
         if wx.GetApp().IsActive():
@@ -1021,8 +1021,7 @@ class EdPages(ed_book.EdBaseBook):
 
     def OnPageChanging(self, evt):
         """Page changing event handler.
-        @param evt: event that called this handler
-        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CHANGING
+        @param evt: aui.EVT_AUINOTEBOOK_PAGE_CHANGING
 
         """
         evt.Skip()
@@ -1068,8 +1067,7 @@ class EdPages(ed_book.EdBaseBook):
 
     def OnPageChanged(self, evt):
         """Actions to do after a page change
-        @param evt: event that called this handler
-        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CHANGED
+        @param evt: aui.EVT_AUINOTEBOOK_PAGE_CHANGED
 
         """
         cpage = evt.GetSelection()
@@ -1084,8 +1082,7 @@ class EdPages(ed_book.EdBaseBook):
 
     def OnPageClosing(self, evt):
         """Checks page status to flag warnings before closing
-        @param evt: event that called this handler
-        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSE
+        @param evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSE
 
         """
         page = self.GetPage(evt.GetSelection())
@@ -1105,8 +1102,7 @@ class EdPages(ed_book.EdBaseBook):
 
     def OnPageClosed(self, evt):
         """Handles Paged Closed Event
-        @param evt: event that called this handler
-        @type evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSED
+        @param evt: aui.EVT_AUINOTEBOOK_PAGE_CLOSED
 
         """
         frame = self.TopLevelParent
@@ -1235,8 +1231,7 @@ class EdPages(ed_book.EdBaseBook):
 
     def OnUpdatePageText(self, evt):
         """Update the title text of the current page
-        @param evt: event that called this handler
-        @type evt: stc.EVT_STC_MODIFY (unused)
+        @param evt: stc.EVT_STC_MODIFY (unused)
         @note: this method must complete its work very fast it gets
                called every time a character is entered or removed from
                the document.

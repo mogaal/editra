@@ -14,8 +14,8 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 69269 2011-10-01 20:14:43Z CJP $"
-__revision__ = "$Revision: 69269 $"
+__svnid__ = "$Id: ed_shelf.py 71185 2012-04-11 23:26:45Z CJP $"
+__revision__ = "$Revision: 71185 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -556,7 +556,15 @@ class EdShelfDelegate(object):
             return
         else:
             self.EnsureShelfVisible()
-            window = item.CreateItem(self._shelf)
+            # Guard against crashes in creating plugin derived objects
+            # log error to log and continue running.
+            window = None
+            try:
+                window = item.CreateItem(self._shelf)
+            except Exception, msg:
+                self._log("[shelf][err] CreateItem failed: %s" % msg)
+                return
+
             bmp = wx.NullBitmap
             if hasattr(item, 'GetBitmap'):
                 self._shelf.BitmapCallbacks[repr(window.__class__)] = item.GetBitmap
@@ -608,7 +616,6 @@ class EdShelfDelegate(object):
     def StockShelf(self, i_list):
         """Fill the shelf by opening an ordered list of items
         @param i_list: List of named L{ShelfI} instances
-        @type i_list: list of strings
         @return: bool (True if all loaded / False otherwise)
 
         """

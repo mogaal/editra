@@ -15,8 +15,8 @@ main text editting buffer.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_keyh.py 66736 2011-01-23 18:26:50Z CJP $"
-__revision__ = "$Revision: 66736 $"
+__svnid__ = "$Id: ed_keyh.py 70747 2012-02-29 01:33:35Z CJP $"
+__revision__ = "$Revision: 70747 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -44,12 +44,17 @@ class KeyHandler(object):
 
         # Attributes
         self.stc = stc
+        self._blockmode = False
+
+    STC = property(lambda self: self.stc)
+    BlockMode = property(lambda self: self._blockmode,
+                         lambda self,m:setattr(self,'_blockmode', m))
 
     def ClearMode(self):
         """Clear any key input modes to normal input mode"""
-        evt = ed_event.StatusEvent(ed_event.edEVT_STATUS, self.stc.GetId(),
+        evt = ed_event.StatusEvent(ed_event.edEVT_STATUS, self.stc.Id,
                                    '', ed_glob.SB_BUFF)
-        wx.PostEvent(self.stc.GetTopLevelParent(), evt)
+        wx.PostEvent(self.stc.TopLevelParent, evt)
 
     def GetHandlerName(self):
         """Get the name of this handler
@@ -109,7 +114,7 @@ class ViKeyHandler(KeyHandler):
         self.commander = ed_vim.EditraCommander(self)
         self.buffer = u''
 
-        # Insert mode by defauly
+        # Insert mode by default
         if use_normal_default:
             self.NormalMode()
         else:
@@ -119,9 +124,10 @@ class ViKeyHandler(KeyHandler):
         """Clear the mode back to default input mode"""
         # TODO:CJP when newer scintilla is available in 2.9 use
         #          blockcaret methods.
-        self.stc.SetCaretWidth(1)
+        self.STC.SetLineCaret()
+        self.BlockMode = False
         self.last = self.cmdcache = u''
-        KeyHandler.ClearMode(self)
+        super(ViKeyHandler, self).ClearMode()
 
     def GetHandlerName(self):
         """Get the name of this handler"""
@@ -143,6 +149,7 @@ class ViKeyHandler(KeyHandler):
         """Change to insert mode"""
         self.stc.SetLineCaret()
         self.stc.SetOvertype(False)
+        self.BlockMode = False
         self._SetMode(ViKeyHandler.INSERT, u"INSERT")
 
     def ReplaceMode(self):
@@ -161,6 +168,7 @@ class ViKeyHandler(KeyHandler):
 
         self.stc.SetOvertype(False)
         self.stc.SetBlockCaret()
+        self.BlockMode = True
         self.commander.Deselect()
         self.commander.InsertRepetition()
         self._SetMode(ViKeyHandler.NORMAL, u'NORMAL')
@@ -168,6 +176,7 @@ class ViKeyHandler(KeyHandler):
     def VisualMode(self):
         """Change to visual (selection) mode"""
         self.stc.SetBlockCaret()
+        self.BlockMode = True
         self.stc.SetOvertype(False)
         self._SetMode(ViKeyHandler.VISUAL, u'VISUAL')
         self.commander.StartSelection()

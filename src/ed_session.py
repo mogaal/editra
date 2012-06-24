@@ -12,8 +12,8 @@ Editra session file manager.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_session.py 69114 2011-09-17 16:50:02Z CJP $"
-__revision__ = "$Revision: 69114 $"
+__svnid__ = "$Id: ed_session.py 70097 2011-12-22 21:36:43Z CJP $"
+__revision__ = "$Revision: 70097 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -123,6 +123,7 @@ class SessionManager(object):
     def SaveSession(self, name, paths):
         """Save the given list of files as a session with the given name
         @param name: session name
+        @param paths: list of file paths
         @return: bool
 
         """

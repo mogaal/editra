@@ -60,8 +60,8 @@ memory is not likely to be very large.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: plugin.py 61940 2009-09-16 01:04:03Z CJP $"
-__revision__ = "$Revision: 61940 $"
+__svnid__ = "$Id: plugin.py 70228 2011-12-31 20:39:16Z CJP $"
+__revision__ = "$Revision: 70228 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -183,7 +183,8 @@ class Plugin(object):
         per manager. If an instance of this plugin has already be
         initialized, that instance will be returned. If not this will
         initialize a new instance of the plugin.
-        @keyword mgr: Plugin Manager instance
+        @param cls: Class object
+        @keyword pluginmgr: Plugin Manager instance
         @return: a new class object or an existing instance if one
                  exists.
 
@@ -277,11 +278,10 @@ class PluginData(object):
         @keyword name: Name of the plugin
         @keyword descript: Short description of plugin
         @keyword author: Who made the plugin
-        @keyword ver: Version of the plugin
-        @type ver: string
+        @keyword ver: Version of the plugin (Unicode)
 
         """
-        object.__init__(self)
+        super(PluginData, self).__init__()
 
         # Attributes
         self._name = name
@@ -395,7 +395,7 @@ class PluginData(object):
 
     def SetDist(self, distro):
         """Set the distribution object
-        @param dist: Distribution
+        @param distro: Distribution
 
         """
         self._distro = distro
@@ -448,8 +448,6 @@ def Implements(*interfaces):
 class PluginManager(object):
     """The PluginManger keeps track of the active plugins. It
     also provides an interface into loading and unloading plugins.
-    @status: Allows for dynamic loading of plugins but most can not
-             be called/used until the editor has been restarted.
     @todo: Allow loaded but inactive plugins to be initiated without 
            needing to restart the editor.
 
@@ -548,18 +546,10 @@ class PluginManager(object):
         else:
             return False
 
-    def CallPluginOnce(self, plugin):
-        """Makes a call to initialize a given plugin
-        @status: currently not implemented
-
-        """
-        pass
-
     def CreateEnvironment(self, path):
         """Creates the environment based on the passed
         in path list
         @param path: path(s) to scan for extension points
-        @type path: list of path strings
         @note: pkgutils does not like Unicode! only send encoded strings
 
         """
@@ -608,10 +598,8 @@ class PluginManager(object):
                 self._enabled[cls] = enable
         
     def GetConfig(self):
-        """Returns a dictionary of plugins and there configuration
-        state.
-        @return: the mapped set of available plugins
-        @rtype: dict
+        """Returns a dictionary of plugins and there configuration state.
+        @return: the mapped set of available plugins (dict)
 
         """
         self.RefreshConfig()
@@ -625,7 +613,7 @@ class PluginManager(object):
         return self._defaults
 
     def GetEnvironment(self):
-        """Returns the evironment that the plugin manager is currently
+        """Returns the environment that the plugin manager is currently
         running with.
         @return: the managers environment
 
@@ -642,8 +630,7 @@ class PluginManager(object):
 
     def GetPlugins(self):
         """Returns a the dictionary of plugins managed by this manager
-        @return: all plugins managed by this manger
-        @rtype: dict
+        @return: all plugins managed by this manger (dict)
 
         """
         plugins = dict()
@@ -693,7 +680,7 @@ class PluginManager(object):
                 self.LOG("[pluginmgr][info] %s is already loaded" % name)
                 continue
 
-            egg = pkg_env[name][0]  # egg is of type Distrobution
+            egg = pkg_env[name][0]  # egg is of type Distribution
             egg.activate()
             editra_version = CalcVersionValue(ed_glob.VERSION)
             for name in egg.get_entry_map(ENTRYPOINT):
@@ -751,7 +738,7 @@ class PluginManager(object):
 
     def LoadPluginByName(self, name):
         """Loads a named plugin.
-        @status: currently not implemented
+        @todo: Implement this method
 
         """
         raise NotImplementedError
@@ -850,7 +837,7 @@ class PluginManager(object):
 
     def UnloadPluginByName(self, name):
         """Unloads a named plugin.
-        @status: currently not implemented
+        @todo: implement this method
 
         """
         raise NotImplementedError

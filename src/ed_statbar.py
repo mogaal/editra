@@ -15,8 +15,8 @@ messages from ed_msg to display progress of different actions.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_statbar.py 69063 2011-09-11 18:19:32Z CJP $"
-__revision__ = "$Revision: 69063 $"
+__svnid__ = "$Id: ed_statbar.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -164,8 +164,7 @@ class EdStatBar(ProgressStatusBar):
 
     def OnLeftDClick(self, evt):
         """Handlers mouse left double click on status bar
-        @param evt: Event fired that called this handler
-        @type evt: 
+        @param evt: wx.MouseEvent
         @note: Assumes parent is MainWindow instance
 
         """

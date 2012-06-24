@@ -91,7 +91,7 @@ import wx
 #
 
 __author__ = "Pierre Rouleau"
-__version__ = "$Revision: 57267 $"
+__version__ = "$Revision: 70029 $"
 
 # -----------------------------------------------------------------------------
 
@@ -152,7 +152,7 @@ def makePO(app_dir,  app_domain=None, verbose=0) :
     #   --files-from=app.fil : The list of files is taken from the file: app.fil
     #   --output= : specifies the name of the output file 
     #               (using a .pot extension)
-    cmd = 'xgettext -s --from-code=utf-8 --no-wrap --files-from=app.fil --output=messages.pot'
+    cmd = 'xgettext -s --from-code=utf-8 --no-wrap --files-from=app.fil --output=Editra.pot'
     if verbose: 
         print cmd
     os.system(cmd)                                                
@@ -164,7 +164,7 @@ def makePO(app_dir,  app_domain=None, verbose=0) :
         else:
             lang_po_filename = "%s_%s.po" % (app_name, lang_code)
             if os.path.exists(lang_po_filename):
-                cmd = 'msgmerge -s --no-wrap "%s" messages.pot > "%s.new"' % \
+                cmd = 'msgmerge -s --no-wrap "%s" Editra.pot > "%s.new"' % \
                       (lang_po_filename, lang_po_filename)
                 if verbose: 
                     print cmd

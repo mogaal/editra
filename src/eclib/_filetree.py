@@ -14,8 +14,8 @@ Base class control for displaying a file system in a hierarchical manor.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _filetree.py 68686 2011-08-13 19:07:25Z CJP $"
-__revision__ = "$Revision: 68686 $"
+__svnid__ = "$Id: _filetree.py 70230 2012-01-01 01:47:42Z CJP $"
+__revision__ = "$Revision: 70230 $"
 
 __all__ = ['FileTree',]
 
@@ -37,20 +37,16 @@ class FileTree(wx.TreeCtrl):
                                              wx.TR_FULL_ROW_HIGHLIGHT|
                                              wx.TR_LINES_AT_ROOT|
                                              wx.TR_HAS_BUTTONS|
-                                             wx.TR_MULTIPLE)
+                                             wx.TR_MULTIPLE|
+                                             wx.TR_EDIT_LABELS)
 
         # Attributes
         self._watch = list() # Root directories to watch
-        self._il = wx.ImageList(16, 16)
-        
+        self._il = None
+        self._editlabels = True
+
         # Setup
-        bmp = wx.ArtProvider.GetBitmap(wx.ART_FOLDER, wx.ART_MENU, (16,16))
-        self._il.Add(bmp)
-        bmp = wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE, wx.ART_MENU, (16,16))
-        self._il.Add(bmp)
-        bmp = wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_MENU, (16,16))
-        self._il.Add(bmp)
-        self.SetImageList(self._il)
+        self.SetupImageList()
         self.AddRoot('root')
         self.SetPyData(self.RootItem, "root")
 
@@ -60,31 +56,75 @@ class FileTree(wx.TreeCtrl):
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self._OnItemCollapsed)
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self._OnItemExpanding)
         self.Bind(wx.EVT_TREE_ITEM_MENU, self._OnMenu)
+        self.Bind(wx.EVT_TREE_BEGIN_LABEL_EDIT, self._OnBeginEdit)
+        self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self._OnEndEdit)
+
+    def _OnBeginEdit(self, evt):
+        if not self._editlabels:
+            evt.Veto()
+        else:
+            item = evt.GetItem()
+            if self.DoBeginEdit(item):
+                evt.Skip()
+            else:
+                evt.Veto()
+
+    def _OnEndEdit(self, evt):
+        if self._editlabels:
+            item = evt.GetItem()
+            newlabel = evt.GetLabel()
+            if self.DoEndEdit(item, newlabel):
+                evt.Skip()
+                return
+        evt.Veto()
 
     def _OnGetToolTip(self, evt):
         item = evt.GetItem()
         tt = self.DoGetToolTip(item)
         if tt:
             evt.ToolTip = tt
-        evt.Skip()
+        else:
+            evt.Skip()
 
     def _OnItemActivated(self, evt):
         item = evt.GetItem()
         self.DoItemActivated(item)
+        evt.Skip()
 
     def _OnItemCollapsed(self, evt):
         item = evt.GetItem()
         self.DoItemCollapsed(item)
+        evt.Skip()
 
     def _OnItemExpanding(self, evt):
         item = evt.GetItem()
         self.DoItemExpanding(item)
+        evt.Skip()
 
     def _OnMenu(self, evt):
         item = evt.GetItem()
         self.DoShowMenu(item)
 
     #---- Overridable methods ----#
+
+    def DoBeginEdit(self, item):
+        """Overridable method that will be called when
+        a user has started to edit an item.
+        @param item: TreeItem
+        return: bool (True == Allow Edit)
+
+        """
+        return False
+
+    def DoEndEdit(self, item, newlabel):
+        """Overridable method that will be called when
+        a user has finished editing an item.
+        @param item: TreeItem
+        @param newlabel: unicode (newly entered value)
+        return: bool (True == Change Accepted)
+
+        """
+        return False
 
     def DoGetToolTip(self, item):
         """Get the tooltip to show for an item
@@ -121,12 +161,25 @@ class FileTree(wx.TreeCtrl):
 
     def DoShowMenu(self, item):
         """Context menu has been requested for the given item.
-        @parm item: TreeItem
+        @param item: wx.TreeItem
 
         """
         pass
 
-    def GetFileImage(self, path):
+    def DoSetupImageList(self):
+        """Add the images to the control's ImageList. It is gauranteed
+        that self.ImageList is valid and empty when this is called.
+
+        """
+        bmp = wx.ArtProvider.GetBitmap(wx.ART_FOLDER, wx.ART_MENU, (16,16))
+        self.ImageList.Add(bmp)
+        bmp = wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE, wx.ART_MENU, (16,16))
+        self.ImageList.Add(bmp)
+        bmp = wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_MENU, (16,16))
+        self.ImageList.Add(bmp)
+
+
+    def DoGetFileImage(self, path):
         """Get the index of the image from the image list to use
         for the file.
         @param path: Absolute path of file
@@ -154,19 +207,21 @@ class FileTree(wx.TreeCtrl):
     def AddWatchDirectory(self, dname):
         """Add a directory to the controls top level view
         @param dname: directory path
+        @return: TreeItem or None
+        @todo: add additional api for getting already existing nodes based
+               on path.
 
         """
         assert os.path.exists(dname)
         if dname not in self._watch:
             self._watch.append(dname)
-            self.AppendFileNode(self.RootItem, dname)
+            return self.AppendFileNode(self.RootItem, dname)
 
     def RemoveWatchDirectory(self, dname):
         """Remove a directory from the watch list
         @param dname: directory path
 
         """
-        assert os.path.exists(dname)
         if dname in self._watch:
             self._watch.remove(dname)
             nodes = self.GetChildNodes(self.RootItem)
@@ -176,6 +231,18 @@ class FileTree(wx.TreeCtrl):
                     self.Delete(node)
                     break
 
+    def SetupImageList(self):
+        """Setup/Refresh the control's ImageList.
+        Override DoSetupImageList to customize the behavior of this method.
+
+        """
+        if self._il:
+            self._il.Destroy()
+            self._il = None
+        self._il = wx.ImageList(16, 16)
+        self.SetImageList(self._il)
+        self.DoSetupImageList()
+
     def AppendFileNode(self, item, path):
         """Append a child node to the tree
         @param item: TreeItem parent node
@@ -183,7 +250,7 @@ class FileTree(wx.TreeCtrl):
         @return: new node
 
         """
-        img = self.GetFileImage(path)
+        img = self.DoGetFileImage(path)
         name = os.path.basename(path)
         child = self.AppendItem(item, name, img)
         self.SetPyData(child, path)
@@ -210,6 +277,30 @@ class FileTree(wx.TreeCtrl):
             rlist.append(child)
         return rlist
 
+    def GetExpandedNodes(self):
+        """Get all nodes that are currently expanded in the view
+        this logically corresponds to all parent directory nodes which
+        are expanded.
+        @return: list of TreeItems
+
+        """
+
+        def NodeWalker(parent, rlist):
+            """Recursively find expanded nodes
+            @param parent: parent node
+            @param rlist: list (outparam)
+
+            """
+            children = self.GetChildNodes(parent)
+            for node in children:
+                if self.IsExpanded(node):
+                    rlist.append(node)
+                    NodeWalker(node, rlist)
+
+        nodes = list()
+        NodeWalker(self.RootItem, nodes)
+        return nodes
+
     def GetSelectedFiles(self):
         """Get a list of the selected files
         @return: list of strings
@@ -219,9 +310,17 @@ class FileTree(wx.TreeCtrl):
         files = [ self.GetPyData(node) for node in nodes ]
         return files
 
+    def EnableLabelEditing(self, enable=True):
+        """Enable/Disable label editing. This functionality is
+        enabled by default.
+        @keyword enable: bool
+
+        """
+        self._editlabels = enable
+
     def SelectFile(self, filename):
         """Select the given path
-        @param path: full path to select
+        @param filename: full path to select
         @return: bool
 
         """

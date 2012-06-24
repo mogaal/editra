@@ -16,8 +16,8 @@ A generic choice dialog that uses a wx.Choice control to display its choices.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: choicedlg.py 65202 2010-08-06 15:49:23Z CJP $"
-__revision__ = "$Revision: 65202 $"
+__svnid__ = "$Id: choicedlg.py 70230 2012-01-01 01:47:42Z CJP $"
+__revision__ = "$Revision: 70230 $"
 
 __all__ = ['ChoiceDialog',]
 
@@ -43,10 +43,16 @@ class ChoiceDialog(ecbasewin.ECBaseDlg):
                  style=0,
                  name=ChoiceDialogNameStr):
         """Create the choice dialog
+        @param parent: Parent Window
+        @keyword id: Dialog ID
         @keyword msg: Dialog Message
         @keyword title: Dialog Title
         @keyword choices: list of strings
         @keyword default: Default selection
+        @keyword pos: Dialog Position
+        @keyword size: Dialog Size
+        @keyword style: Dialog Style bitmask
+        @keyword name: Dialog Name
 
         """
         super(ChoiceDialog, self).__init__(parent, id, title,
@@ -68,10 +74,11 @@ class ChoicePanel(wx.Panel):
     def __init__(self, parent, msg=u'', choices=list(),
                  default=u'', style=wx.OK|wx.CANCEL):
         """Create the panel
+        @param parent: Parent Window
         @keyword msg: Display message
         @keyword choices: list of strings
         @keyword default: default selection
-        @keyword style: dialog style
+        @keyword style: panel style
 
         """
         super(ChoicePanel, self).__init__(parent)
@@ -185,7 +192,6 @@ class ChoicePanel(wx.Panel):
     def OnButton(self, evt):
         """Handle button events
         @param evt: wx.EVT_BUTTON
-        @type evt: wx.CommandEvent
 
         """
         self.GetParent().EndModal(evt.GetId())
@@ -193,7 +199,6 @@ class ChoicePanel(wx.Panel):
     def OnChoice(self, evt):
         """Update the selection
         @param evt: wx.EVT_CHOICE
-        @type evt: wx.CommandEvent
 
         """
         if evt.GetEventObject() == self._choices:
