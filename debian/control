@@ -2,11 +2,14 @@ Source: editra
 Section: editors
 Priority: extra
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
-Build-Depends: debhelper (>= 7.0.50), python-all, python (>= 2.5), 
+Build-Depends: debhelper (>= 7.0.50), python-all, python (>= 2.6), 
                python-setuptools, python-wxgtk2.8
-Standards-Version: 3.9.2
-X-Python-Version: >= 2.5
+Standards-Version: 3.9.3
+X-Python-Version: >= 2.6
 Homepage: http://editra.org
+Vcs-Git: git://github.com/mogaal/editra
+Vcs-Browser: https://github.com/mogaal/editra
+
 
 Package: editra
 Architecture: all

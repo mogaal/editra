@@ -1,3 +1,14 @@
+editra (0.7.01-2) UNRELEASED; urgency=low
+
+  * New upstream release (Closes: #585204)
+  * d/control: 
+      - Change X-Python-Version to >= 2.6.
+      - Update Standards-Version field.
+      - Add Vcs-Git and Vcs-Browser fields
+  * Update d/copyright to copyright-format 1.0
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 24 Jun 2012 02:15:28 -0430
+
 editra (0.6.77-1) unstable; urgency=low
 
   * New upstream release

@@ -1,11 +1,10 @@
-Format:
-   http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=202
-Upstream-Name: editra
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: Cody Precord <cprecord@editra.org>
 Source: http://editra.org
+Upstream-Name: editra
 
 Files: *
-Copyright: 2007, Cody Precord <cprecord@editra.org>
+Copyright: 2007-2012, Cody Precord <cprecord@editra.org>
 License: wxwindows 
 
 Files: src/extern/pubsub.py
