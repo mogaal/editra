@@ -10,12 +10,13 @@
 """Unittests for Editra's text SearchEngine"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testSearchEngine.py 68615 2011-08-09 19:01:24Z CJP $"
-__revision__ = "$Revision: 68615 $"
+__svnid__ = "$Id: testSearchEngine.py 70128 2011-12-27 16:30:42Z CJP $"
+__revision__ = "$Revision: 70128 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
 import unittest
+import unicodedata
 
 # Module to test
 import ebmlib
@@ -200,9 +201,19 @@ class SearchEngineTest(unittest.TestCase):
 
     def testNormalizedFind(self):
         """Test searching for normalized Unicode data"""
-        pool = unichr(0x00E9)
-        search = ebmlib.SearchEngine(u'e' + u'\u0301')
+        pool = unicodedata.normalize('NFC', u"école")
+        query = unicodedata.normalize('NFD', u"école")
+        self.assertTrue(pool != query)
+        search = ebmlib.SearchEngine(query)
         search.SetSearchPool(pool)
+        val = search.Find()
+        self.assertTrue(val is not None)
+
+        pool = unichr(0x00E9)
+        query = u'e' + u'\u0301'
+        self.assertTrue(pool != query)
+        search = ebmlib.SearchEngine(query)
+        search.SetSearchPool(u"foobar " + pool)
         val = search.Find()
         self.assertTrue(val is not None)
 

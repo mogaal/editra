@@ -6,7 +6,8 @@
 # License: wxWindows License                                                  #
 ###############################################################################
 
-"""
+"""@package Editra.src.ed_search
+
 Provides text searching services, utilities, and ui components for searching
 text documents and files.
 
@@ -15,14 +16,15 @@ text documents and files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_search.py 69067 2011-09-11 23:28:42Z CJP $"
-__revision__ = "$Revision: 69067 $"
+__svnid__ = "$Id: ed_search.py 71181 2012-04-11 22:56:36Z CJP $"
+__revision__ = "$Revision: 71181 $"
 
 #--------------------------------------------------------------------------#
 # Imports
 import os
 import sys
 import re
+import unicodedata
 import wx
 
 # Local imports
@@ -82,10 +84,17 @@ class EdSearchEngine(ebmlib.SearchEngine):
 
     def SetQuery(self, query):
         """Set the query string"""
-        if ebmlib.IsUnicode(query):
-            # Encode to UTF-8 as used internally by the stc
-            query = query.encode('utf-8')
+        if not ebmlib.IsUnicode(query):
+            query = query.decode('utf-8')
+        query = unicodedata.normalize('NFC', query)
         super(EdSearchEngine, self).SetQuery(query)
+
+    def SetSearchPool(self, pool):
+        """Set the search pool"""
+        if not ebmlib.IsUnicode(pool):
+            pool = pool.decode('utf-8')
+        pool = unicodedata.normalize('NFC', pool)
+        super(EdSearchEngine, self).SetSearchPool(pool)
 
 #--------------------------------------------------------------------------#
 
@@ -179,7 +188,7 @@ class SearchController(object):
 
         """
         data = msg.GetData()
-        if data.get('mainw', None) == self._parent.GetTopLevelParent():
+        if data.get('mainw', None) == self._parent.TopLevelParent:
 
             if 'findtxt' in data:
                 self.SetQueryString(data.get('findtxt'))
@@ -304,7 +313,6 @@ class SearchController(object):
         if the last search resulted in nothing being found then the
         return value will -1.
         @return: position of last search operation
-        @rtype: int
 
         """
         return self._posinfo['found']
@@ -330,9 +338,9 @@ class SearchController(object):
                                      True, evt.IsMatchCase(), evt.IsWholeWord())
 
         if mode == eclib.LOCATION_CURRENT_DOC:
-            engine.SetSearchPool(stc.GetTextRaw())
+            engine.SetSearchPool(stc.GetText())
         elif mode == eclib.LOCATION_IN_SELECTION:
-            engine.SetSearchPool(stc.GetSelectedTextRaw())
+            engine.SetSearchPool(stc.GetSelectedText())
         else:
             # TODO: report that this is not supported yet
             #       this case should not happen as the count button is currently
@@ -354,6 +362,7 @@ class SearchController(object):
         """Do an incremental search in the currently buffer
         @param evt: EVT_FIND, EVT_FIND_NEXT
         @keyword findnext: force a find next action
+        @keyword incremental: perform an incremental search
 
         """
         data = self.GetData()
@@ -394,7 +403,7 @@ class SearchController(object):
 
         # XXX: may be inefficient to copy whole buffer each time for files
         #      that are large.
-        self._engine.SetSearchPool(stc.GetTextRaw())
+        self._engine.SetSearchPool(stc.GetText())
 
         # Get the search start position
         if evt.GetEventType() == eclib.edEVT_FIND:
@@ -419,7 +428,6 @@ class SearchController(object):
         match = self._engine.Find(spos)
         if match is not None:
             start, end = match
-
             if isdown:
                 start = start + spos
                 end = end + spos
@@ -450,9 +458,7 @@ class SearchController(object):
 
             if match is not None:
                 start, end = match
-
                 self._posinfo['found'] = start
-
                 stc.SetSelection(start, end)
                 
                 # Ensure caret and the line its in is exposed
@@ -490,7 +496,7 @@ class SearchController(object):
                 ed_msg.PostMessage(ed_msg.EDMSG_START_SEARCH,
                                    (engine.SearchInFile, [fname,], dict()))
             else:
-                engine.SetSearchPool(stc.GetTextRaw())
+                engine.SetSearchPool(stc.GetText())
                 ed_msg.PostMessage(ed_msg.EDMSG_START_SEARCH,
                                    (engine.FindAllLines,))
         if smode == eclib.LOCATION_IN_SELECTION:
@@ -498,7 +504,7 @@ class SearchController(object):
             sel_s = min(stc.GetSelection())
             offset = stc.LineFromPosition(sel_s)
             engine.SetOffset(offset)
-            engine.SetSearchPool(stc.GetSelectedTextRaw())
+            engine.SetSearchPool(stc.GetSelectedText())
             ed_msg.PostMessage(ed_msg.EDMSG_START_SEARCH,
                                (engine.FindAllLines,))
         elif smode == eclib.LOCATION_OPEN_DOCS:
@@ -623,14 +629,14 @@ class SearchController(object):
         results = 0
         if smode == eclib.LOCATION_CURRENT_DOC:
             stc = self._stc()
-            engine.SetSearchPool(stc.GetTextRaw())
+            engine.SetSearchPool(stc.GetText())
             matches = engine.FindAll()
             if matches is not None:
                 self.ReplaceInStc(stc, matches, rstring, evt.IsRegEx())
                 results = len(matches)
         elif smode == eclib.LOCATION_IN_SELECTION:
             stc = self._stc()
-            engine.SetSearchPool(stc.GetSelectedTextRaw())
+            engine.SetSearchPool(stc.GetSelectedText())
             matches = engine.FindAll()
             if matches is not None:
                 self.ReplaceInStcSelection(stc, matches, rstring, evt.IsRegEx())
@@ -650,7 +656,7 @@ class SearchController(object):
                 pass # TODO: notify of no matches?
         elif smode == eclib.LOCATION_OPEN_DOCS:
             for ctrl in self._parent.GetTextControls():
-                engine.SetSearchPool(ctrl.GetTextRaw())
+                engine.SetSearchPool(ctrl.GetText())
                 matches = engine.FindAll()
                 if matches is not None:
                     self.ReplaceInStc(ctrl, matches, rstring, evt.IsRegEx())
@@ -737,44 +743,52 @@ class SearchController(object):
         @param stc: StyledTextCtrl
         @param matches: list of match objects
         @param rstring: Replace string
+        @keyword isregex: Is it a regular expression operation (bool)
 
         """
-        stc.BeginUndoAction()
-        for match in reversed(matches):
-            start, end = match.span()
+        if not len(matches):
+            return
+        def GetSub(match):
+            """replace substitution callable for re.sub"""
+            value = rstring
             if isregex:
                 try:
-                    value = match.expand(rstring.encode('utf-8')).decode('utf-8')
-                except re.error, err:
-                    msg = _("Error in regular expression expansion."
-                            "The replace action cannot be completed.\n\n"
-                            "Error Message: %s") % err.message
-                    wx.MessageBox(msg, _("Replace Error"), wx.OK|wx.ICON_ERROR)
-                    break
-            else:
-                value = rstring
-            stc.SetTargetStart(start)
-            stc.SetTargetEnd(end)
-            stc.ReplaceTarget(value)
-        stc.EndUndoAction()
+                    value = match.expand(rstring)
+                except:
+                    pass
+            return value
+        text = re.sub(matches[0].re, GetSub, stc.GetText())
+        # Update the view
+        with eclib.Freezer(stc) as _tmp:
+            stc.BeginUndoAction()
+            cpos = stc.CurrentPos
+            stc.ClearAll()
+            stc.SetText(text)
+            stc.GotoPos(cpos)
+            stc.EndUndoAction()
 
     @staticmethod
     def ReplaceInStcSelection(stc, matches, rstring, isregex=True):
         """Replace all the matches in the selection"""
-        sel_s = min(stc.GetSelection())
-        stc.BeginUndoAction()
-        for match in reversed(matches):
-            start, end = match.span()
-            start += sel_s
-            end += sel_s
+        if not len(matches):
+            return
+        def GetSub(match):
+            """replace substitution callable for re.sub"""
+            value = rstring
             if isregex:
-                value = match.expand(rstring.encode('utf-8')).decode('utf-8')
-            else:
-                value = rstring
-            stc.SetTargetStart(start)
-            stc.SetTargetEnd(end)
-            stc.ReplaceTarget(value)
-        stc.EndUndoAction()
+                try:
+                    value = match.expand(rstring)
+                except:
+                    pass
+            return value
+        text = re.sub(matches[0].re, GetSub, stc.GetSelectedText())
+        # Update the view
+        with eclib.Freezer(stc) as _tmp:
+            stc.BeginUndoAction()
+            start, end = stc.GetSelection()
+            stc.ReplaceSelection(text)
+            stc.SetSelection(start, start+len(text))
+            stc.EndUndoAction()
 
     def SetFileFilters(self, filters):
         """Set the file filter to use
@@ -827,7 +841,13 @@ class EdSearchCtrl(wx.SearchCtrl):
                  pos=wx.DefaultPosition, size=wx.DefaultSize, \
                  style=wx.TE_RICH2|wx.TE_PROCESS_ENTER):
         """Initializes the Search Control
-        @param menulen: max length of history menu
+        @param parent: parent window
+        @param id_: control id
+        @keyword value: default value
+        @keyword menulen: max length of history menu
+        @keyword pos: control position (tuple)
+        @keyword size: control size (tuple)
+        @keyword style: control style bitmask
 
         """
         super(EdSearchCtrl, self).__init__(parent, id_, value, pos, size, style)
@@ -836,7 +856,6 @@ class EdSearchCtrl(wx.SearchCtrl):
         self._parent     = parent
         # TEMP HACK
         self.FindService = self.GetTopLevelParent().GetNotebook()._searchctrl
-        self._flags      = 0
         self._recent     = list()        # The History List
         self._last       = None
         self.rmenu       = wx.Menu()
@@ -863,6 +882,20 @@ class EdSearchCtrl(wx.SearchCtrl):
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.OnCancel)
         self.Bind(wx.EVT_MENU, self.OnHistMenu)
 
+    #---- Properties ----#
+    def __GetFlags(self):
+        flags = 0
+        data = self.GetSearchData()
+        if data:
+            flags = data.GetFlags()
+        return flags
+    def __SetFlags(self, flags):
+        data = self.GetSearchData()
+        if data:
+            data.SetFlags(flags)
+    SearchFlags = property(lambda self: self.__GetFlags(),
+                           lambda self, flags: self.__SetFlags(flags))
+
     #---- Functions ----#
     def AutoSetQuery(self, multiline=False):
         """Autoload a selected string from the controls client buffer"""
@@ -880,13 +913,12 @@ class EdSearchCtrl(wx.SearchCtrl):
         if data is not None:
             c_flags = data.GetFlags()
             c_flags ^= flag
-            self._flags = c_flags
-            data.SetFlags(self._flags)
+            self.SearchFlags = c_flags
             self.FindService.RefreshControls()
 
     def FindAll(self):
         """Fire off a FindAll job in the current buffer"""
-        evt = eclib.FindEvent(eclib.edEVT_FIND_ALL, flags=self._flags)
+        evt = eclib.FindEvent(eclib.edEVT_FIND_ALL, flags=self.SearchFlags)
         evt.SetFindString(self.GetValue())
         self.FindService.OnFindAll(evt)
 
@@ -900,13 +932,13 @@ class EdSearchCtrl(wx.SearchCtrl):
         if not next:
             self.SetSearchFlag(eclib.AFR_UP)
         else:
-            if eclib.AFR_UP & self._flags:
+            if eclib.AFR_UP & self.SearchFlags:
                 self.ClearSearchFlag(eclib.AFR_UP)
 
         if self.GetValue() == self._last:
             s_cmd = eclib.edEVT_FIND_NEXT
 
-        evt = eclib.FindEvent(s_cmd, flags=self._flags)
+        evt = eclib.FindEvent(s_cmd, flags=self.SearchFlags)
         self._last = self.GetValue()
         evt.SetFindString(self.GetValue())
         self.FindService.OnFind(evt, incremental=incremental)
@@ -938,8 +970,7 @@ class EdSearchCtrl(wx.SearchCtrl):
 
     def GetSearchData(self):
         """Gets the find data from the controls FindService
-        @return: search data
-        @rtype: wx.FindReplaceData
+        @return: wx.FindReplaceData
 
         """
         if hasattr(self.FindService, "GetData"):
@@ -990,7 +1021,6 @@ class EdSearchCtrl(wx.SearchCtrl):
         """Returns True if the search control is set to search
         in Match Case mode.
         @return: whether search is using match case or not
-        @rtype: boolean
 
         """
         data = self.GetSearchData()
@@ -1002,7 +1032,6 @@ class EdSearchCtrl(wx.SearchCtrl):
         """Returns True if the search control is set to search
         in regular expression mode.
         @return: whether search is using regular expressions or not
-        @rtype: boolean
 
         """
         data = self.GetSearchData()
@@ -1013,8 +1042,7 @@ class EdSearchCtrl(wx.SearchCtrl):
     def IsSearchPrevious(self):
         """Returns True if the search control is set to search
         in Previous mode.
-        @return: whether search is searchin up or not
-        @rtype: boolean
+        @return: whether search is searching up or not
 
         """
         data = self.GetSearchData()
@@ -1026,7 +1054,6 @@ class EdSearchCtrl(wx.SearchCtrl):
         """Returns True if the search control is set to search
         in Whole Word mode.
         @return: whether search is using match whole word or not
-        @rtype: boolean
 
         """
         data = self.GetSearchData()
@@ -1059,8 +1086,7 @@ class EdSearchCtrl(wx.SearchCtrl):
         if data is not None:
             c_flags = data.GetFlags()
             c_flags |= flags
-            self._flags = c_flags
-            data.SetFlags(self._flags)
+            self.SearchFlags = c_flags
             self.FindService.RefreshControls()
 
     #---- End Functions ----#
@@ -1124,7 +1150,7 @@ class EdSearchCtrl(wx.SearchCtrl):
 
     def OnCancel(self, evt):
         """Cancels the Search Query
-        @param evt: the event that called this handler
+        @param evt: SearchCtrl event
 
         """
         self.SetValue(u"")
@@ -1133,8 +1159,7 @@ class EdSearchCtrl(wx.SearchCtrl):
 
     def OnHistMenu(self, evt):
         """Sets the search controls value to the selected menu item
-        @param evt: the event that called this handler
-        @type evt: wx.MenuEvent
+        @param evt: wx.MenuEvent
 
         """
         item_id = evt.GetId()
@@ -1369,6 +1394,8 @@ class SearchResultScreen(ed_basewin.EdBaseCtrlBox):
     def StartSearch(self, searchmeth, *args, **kwargs):
         """Start a search with the given method and display the results
         @param searchmeth: callable
+        @param *args: positional arguments to pass to searchmeth
+        @param **kwargs: keyword arguments to pass to searchmeth
 
         """
         self._meth = searchmeth

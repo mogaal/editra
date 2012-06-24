@@ -19,8 +19,8 @@ column of the control.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: elistctrl.py 67330 2011-03-29 02:48:06Z CJP $"
-__revision__ = "$Revision: 67330 $"
+__svnid__ = "$Id: elistctrl.py 70230 2012-01-01 01:47:42Z CJP $"
+__revision__ = "$Revision: 70230 $"
 
 __all__ = ["EBaseListCtrl", "ECheckListCtrl", "EEditListCtrl", 
            "EToggleEditListCtrl"]
@@ -51,6 +51,7 @@ class EBaseListCtrl(elistmix.ListRowHighlighter,
     def EnableRow(self, idx, enable=True):
         """Enable/Disable a row in the ListCtrl
         @param idx: row index
+        @keyword enable: bool
 
         """
         state = 0

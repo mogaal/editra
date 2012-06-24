@@ -16,8 +16,8 @@ and setting of the program by setting values in the Profile.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: prefdlg.py 69268 2011-10-01 19:50:54Z CJP $"
-__revision__ = "$Revision: 69268 $"
+__svnid__ = "$Id: prefdlg.py 70747 2012-02-29 01:33:35Z CJP $"
+__revision__ = "$Revision: 70747 $"
 
 #----------------------------------------------------------------------------#
 # Dependencies
@@ -50,6 +50,7 @@ ID_DOWNLOAD     = wx.NewId()
 ID_UPDATE_MSG   = wx.NewId()
 
 ID_PREF_BKUP_PATH = wx.NewId()
+ID_PREF_BKUP_SUFFIX = wx.NewId()
 ID_PREF_BKUP_LBL = wx.NewId()
 ID_PREF_AUTO_SPELL = wx.NewId()
 ID_PREF_SPELL_DICT = wx.NewId()
@@ -101,7 +102,8 @@ class PreferencesDialog(wx.Frame):
                  style=wx.DEFAULT_DIALOG_STYLE | wx.TAB_TRAVERSAL):
         """Initializes the preference dialog
         @param parent: The parent window of this window
-        @param id_: The id of this window
+        @keyword id_: The id of this window
+        @keyword style: Window Style bitmask
 
         """
         super(PreferencesDialog, self).__init__(parent, id_,
@@ -271,6 +273,7 @@ class GeneralPanel(wx.Panel, PreferencesPanelBase):
     def __init__(self, parent, style=wx.BORDER_SUNKEN):
         """Create the panel
         @param parent: Parent window of this panel
+        @keyword style: Window Style bitmask
 
         """
         wx.Panel.__init__(self, parent, style=style)
@@ -450,6 +453,8 @@ class GeneralFilePanel(wx.Panel):
         super(GeneralFilePanel, self).__init__(parent)
 
         # Attributes
+        self.bsuffix = None
+        self.bsuffix_lbl = None
         
         # Setup
         self._DoLayout()
@@ -467,6 +472,7 @@ class GeneralFilePanel(wx.Panel):
         self.Bind(wx.EVT_FILEPICKER_CHANGED,
                   self.OnFileChange,
                   id=ID_PREF_ENCHANT_PATH)
+        self.bsuffix.Bind(wx.EVT_KILL_FOCUS, self.OnBackupSuffixLoseFocus)
 
     def _DoLayout(self):
         """Layout the panel"""
@@ -494,30 +500,9 @@ class GeneralFilePanel(wx.Panel):
                           default=d_encoding)
         enc_ch.SetToolTipString(_("Encoding to try when auto detection fails"))
         enc_sz = wx.BoxSizer(wx.HORIZONTAL)
-        enc_sz.AddMany([(wx.StaticText(self, label=_("Prefered Encoding") + u":"),
+        enc_sz.AddMany([(wx.StaticText(self, label=_("Preferred Encoding") + u":"),
                         0, wx.ALIGN_CENTER_VERTICAL), ((5, 5),), (enc_ch, 1)])
 
-        autobk_cb = wx.CheckBox(self, ed_glob.ID_PREF_AUTOBKUP,
-                             _("Automatically Backup Files"))
-        bAutoBkup = Profile_Get('AUTOBACKUP', default=False)
-        autobk_cb.SetValue(bAutoBkup)
-        autobk_cb.SetToolTipString(_("Backup buffer to file periodically"))
-        bdir = Profile_Get('AUTOBACKUP_PATH', default="")
-        bkup_path_lbl = wx.CheckBox(self, ID_PREF_BKUP_LBL,
-                                    label=_("Backup Path:"))
-        bkup_path_lbl.SetValue(bool(bdir))
-        bkup_path = wx.DirPickerCtrl(self, ID_PREF_BKUP_PATH,
-                                     path=bdir,
-                                     style=wx.DIRP_CHANGE_DIR|wx.DIRP_USE_TEXTCTRL)
-        bkup_path.SetToolTipString(_("Used to set a custom backup path. "
-                                     "If not specified the backup will be "
-                                     "put in the same directory as the file."))
-        bkup_path_lbl.Enable(bAutoBkup)
-        bkup_path.Enable(bAutoBkup)
-        bkup_p_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        bkup_p_sizer.AddMany([(bkup_path_lbl, 0, wx.ALIGN_CENTER_VERTICAL),
-                              ((5, 5), 0),
-                              (bkup_path, 1, wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)])
         win_cb = wx.CheckBox(self, ed_glob.ID_NEW_WINDOW,
                              _("Open files in new windows by default"))
         win_cb.SetValue(Profile_Get('OPEN_NW'))
@@ -539,19 +524,56 @@ class GeneralFilePanel(wx.Panel):
         eolwarn_cb.SetValue(Profile_Get('WARN_EOL', default=True))
 
         # Layout items
-        sizer = wx.FlexGridSizer(11, 2, 5, 5)
+        sizer = wx.FlexGridSizer(9, 2, 5, 5)
         sizer.AddMany([((10, 10), 0), ((10, 10), 0),
                        (wx.StaticText(self, label=_("File Settings") + u": "),
                         0, wx.ALIGN_CENTER_VERTICAL), (enc_sz, 0),
                        ((5, 5),), (fhsizer, 0),
-                       ((5, 5),), (autobk_cb, 0),
-                       ((5, 5),), (bkup_p_sizer, 1, wx.EXPAND),
                        ((5, 5),), (win_cb, 0),
                        ((5, 5),), (pos_cb, 0),
                        ((5, 5),), (chkmod_cb, 0),
                        ((5, 5),), (autorl_cb, 0),
                        ((5, 5),), (eolwarn_cb, 0),
-                       ((10, 10), 0)])
+                       ((5, 5), 0)])
+
+        # Auto Backup
+        bksbox = wx.StaticBox(self, label=_("File Backups"))
+        bksboxsz = wx.StaticBoxSizer(bksbox, wx.VERTICAL)
+        autobk_cb = wx.CheckBox(self, ed_glob.ID_PREF_AUTOBKUP,
+                             _("Automatically Backup Files"))
+        bAutoBkup = Profile_Get('AUTOBACKUP', default=False)
+        autobk_cb.SetValue(bAutoBkup)
+        autobk_cb.SetToolTipString(_("Backup buffer to file periodically"))
+        bdir = Profile_Get('AUTOBACKUP_PATH', default="")
+        bkup_path_lbl = wx.CheckBox(self, ID_PREF_BKUP_LBL,
+                                    label=_("Backup Path:"))
+        bkup_path_lbl.SetValue(bool(bdir))
+        bkup_path = wx.DirPickerCtrl(self, ID_PREF_BKUP_PATH,
+                                     path=bdir,
+                                     style=wx.DIRP_CHANGE_DIR|wx.DIRP_USE_TEXTCTRL)
+        bkup_path.SetToolTipString(_("Used to set a custom backup path. "
+                                     "If not specified the backup will be "
+                                     "put in the same directory as the file."))
+        bkup_path_lbl.Enable(bAutoBkup)
+        bkup_path.Enable(bAutoBkup)
+        bkup_p_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        bkup_p_sizer.AddMany([(bkup_path_lbl, 0, wx.ALIGN_CENTER_VERTICAL),
+                              ((5, 5), 0),
+                              (bkup_path, 1, wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)])
+        suffix = Profile_Get('AUTOBACKUP_SUFFIX', default=".edbkup")
+        self.bsuffix = wx.TextCtrl(self, ID_PREF_BKUP_SUFFIX, suffix)
+        self.bsuffix.SetToolTipString(_("Suffix for backup file names"))
+        self.bsuffix_lbl = wx.StaticText(self, label=_("Backup file suffix:"))
+        self.bsuffix_lbl.Enable(bAutoBkup)
+        self.bsuffix.Enable(bAutoBkup)
+        bkup_s_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        bkup_s_sizer.AddMany([(self.bsuffix_lbl, 0, wx.ALIGN_CENTER_VERTICAL),
+                              ((5, 5), 0),
+                              (self.bsuffix, 1, wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)])
+        bksboxsz.AddMany([(autobk_cb, 0), 
+                          ((5, 5), 0), (bkup_p_sizer, 0, wx.EXPAND),
+                          ((5, 5), 0), (bkup_s_sizer, 0, wx.EXPAND)])
+        # End Auto-Backup
 
         # Spellchecking settings
         spell_dicts = stcspellcheck.STCSpellCheck.getAvailableLanguages()
@@ -566,7 +588,7 @@ class GeneralFilePanel(wx.Panel):
         if sdict in spell_dicts:
             dict_ch.SetStringSelection(sdict)
         sdh_sz = wx.BoxSizer(wx.HORIZONTAL)
-        dlbl = wx.StaticText(self, label=_("Dictionary") + u":")
+        dlbl = wx.StaticText(self, label=_("Dictionary:"))
         sdh_sz.AddMany([(dlbl, 0, wx.ALIGN_CENTER_VERTICAL),
                          ((5, 5), 0),
                          (dict_ch, 1, wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)])
@@ -576,7 +598,7 @@ class GeneralFilePanel(wx.Panel):
             for ctrl in (auto_cb, dict_ch, dlbl):
                 ctrl.Enable(False)
 
-        liblbl = wx.StaticText(self, label=_("Enchant Path") + u":")
+        liblbl = wx.StaticText(self, label=_("Enchant Path:"))
         libpath = os.environ.get('PYENCHANT_LIBRARY_PATH', '')
         prefpath = sprefs.get('epath', libpath)
         if not prefpath:
@@ -593,6 +615,7 @@ class GeneralFilePanel(wx.Panel):
 
         vsizer = wx.BoxSizer(wx.VERTICAL)
         vsizer.AddMany([(sizer, 1, wx.EXPAND),
+                        ((5, 5), 0), (bksboxsz, 0, wx.EXPAND),
                         ((5, 5), 0), (sboxsz, 0, wx.EXPAND),
                         ((10, 10), 0)])
 
@@ -605,17 +628,17 @@ class GeneralFilePanel(wx.Panel):
         The profile is updated by L{GeneralPanel} so the event must be skipped
 
         """
+        e_obj = evt.GetEventObject()
         blbl = self.FindWindowById(ID_PREF_BKUP_LBL)
-        if blbl:
-            e_obj = evt.GetEventObject()
-            val = e_obj.GetValue()
-            blbl.Enable(val)
+        blbl.Enable(e_obj.Value)
+        dpick = self.FindWindowById(ID_PREF_BKUP_PATH)
+        bpath = Profile_Get('AUTOBACKUP_PATH', default="")
+        dpick.SetPath(bpath)
+        if not e_obj.Value:
             dpick = self.FindWindowById(ID_PREF_BKUP_PATH)
-            bpath = Profile_Get('AUTOBACKUP_PATH', default="")
-            dpick.SetPath(bpath)
-            if not val:
-                dpick = self.FindWindowById(ID_PREF_BKUP_PATH)
-                dpick.Enable(False)
+            dpick.Enable(False)
+        self.bsuffix.Enable(e_obj.Value)
+        self.bsuffix_lbl.Enable(e_obj.Value)
         evt.Skip()
 
     def OnCustomBackupPath(self, evt):
@@ -655,6 +678,13 @@ class GeneralFilePanel(wx.Panel):
                               _("Library Error"),
                               wx.OK|wx.ICON_ERROR)
 
+    def OnBackupSuffixLoseFocus(self, evt):
+        """Update the backup file name suffix"""
+        suffix = self.bsuffix.GetValue().strip()
+        old_suffix = Profile_Get('AUTOBACKUP_SUFFIX', default='')
+        if suffix != old_suffix:
+            Profile_Set('AUTOBACKUP_SUFFIX', suffix)
+
 #-----------------------------------------------------------------------------#
 
 class DocumentPanel(wx.Panel, PreferencesPanelBase):
@@ -667,6 +697,7 @@ class DocumentPanel(wx.Panel, PreferencesPanelBase):
     def __init__(self, parent, style=wx.BORDER_SUNKEN):
         """Create the panel
         @param parent: Parent window of this panel
+        @keyword style: Window Style bitmask
 
         """
         wx.Panel.__init__(self, parent, style=style)
@@ -782,6 +813,13 @@ class DocGenPanel(wx.Panel):
                             _("View Virtual Space After Last Line"))
         vs_cb.SetValue(Profile_Get('VIEWVERTSPACE', default=False))
         vs_cb.SetToolTipString(_("Adds extra scrolling room after last line"))
+        cursw_sz = wx.BoxSizer(wx.HORIZONTAL)
+        curlbl = wx.StaticText(self, label=_("Caret Width:"))
+        curw_ch = ExChoice(self, ed_glob.ID_PREF_CARET_WIDTH,
+                           choices=['1','2','3','4'],
+                           default=Profile_Get('CARETWIDTH', default=1)-1)
+        cursw_sz.AddMany([(curlbl, 0, wx.ALIGN_CENTER_VERTICAL),
+                          (curw_ch, 0, wx.LEFT, 5)])
 
         # Font Options
         fnt = Profile_Get('FONT1', 'font', wx.Font(10, wx.FONTFAMILY_MODERN,
@@ -797,7 +835,7 @@ class DocGenPanel(wx.Panel):
                                   "regions when syntax highlighting is in use"))
 
         # Layout
-        sizer = wx.FlexGridSizer(20, 2, 5, 5)
+        sizer = wx.FlexGridSizer(21, 2, 5, 5)
         sizer.AddGrowableCol(1, 1)
         sizer.AddMany([((10, 10), 0), ((10, 10), 0),
                        (wx.StaticText(self, label=_("Format") + u": "),
@@ -815,6 +853,7 @@ class DocGenPanel(wx.Panel):
                        ((5, 5), 0), (sws_cb, 0),
                        ((5, 5), 0), (ww_cb, 0),
                        ((5, 5), 0), (vs_cb, 0),
+                       ((5, 5), 0), (cursw_sz, 0),
                        ((10, 10), 0), ((10, 10), 0),
                        (wx.StaticText(self, label=_("Primary Font") + u": "),
                         0, wx.ALIGN_CENTER_VERTICAL),
@@ -865,17 +904,22 @@ class DocGenPanel(wx.Panel):
             import ed_glob
 
         e_id = evt.Id
-        if e_id in [ed_glob.ID_PREF_TABS, ed_glob.ID_PREF_TABW,
+        if e_id in (ed_glob.ID_PREF_TABS, ed_glob.ID_PREF_TABW,
                     ed_glob.ID_PREF_UNINDENT, ed_glob.ID_EOL_MODE,
                     ed_glob.ID_PREF_AALIAS, ed_glob.ID_SHOW_EOL,
                     ed_glob.ID_SHOW_LN, ed_glob.ID_SHOW_WS,
                     ed_glob.ID_WORD_WRAP, ed_glob.ID_PREF_AALIAS,
                     ed_glob.ID_PREF_INDENTW, ed_glob.ID_PREF_AUTOTRIM,
-                    ed_glob.ID_PREF_VIRT_SPACE ]:
+                    ed_glob.ID_PREF_VIRT_SPACE, ed_glob.ID_PREF_CARET_WIDTH):
 
             e_value = evt.EventObject.GetValue()
             if e_id == ed_glob.ID_EOL_MODE:
                 e_value = evt.EventObject.GetSelection()
+            elif e_id == ed_glob.ID_PREF_CARET_WIDTH:
+                if e_value:
+                    e_value = int(e_value)
+                else:
+                    e_value = 1
 
             Profile_Set(ed_glob.ID_2_PROF[e_id], e_value)
         else:
@@ -1080,7 +1124,7 @@ class DocSyntaxPanel(wx.Panel):
         # Syntax Settings
         syn_cb = wx.CheckBox(self, ed_glob.ID_SYNTAX, _("Syntax Highlighting"))
         syn_cb.SetValue(Profile_Get('SYNTAX'))
-        ss_lst = util.GetResourceFiles(u'styles', get_all=True)
+        ss_lst = util.GetResourceFiles(u'styles', get_all=True, title=False)
         ss_lst = [sheet for sheet in ss_lst if not sheet.startswith('.')]
         syntheme = ExChoice(self, ed_glob.ID_PREF_SYNTHEME,
                             choices=sorted(ss_lst),
@@ -1152,6 +1196,7 @@ class AppearancePanel(wx.Panel, PreferencesPanelBase):
     def __init__(self, parent, style=wx.BORDER_SUNKEN):
         """Create the panel
         @param parent: Parent window of this panel
+        @keyword style: Window Style bitmask
 
         """
         wx.Panel.__init__(self, parent, style=style)
@@ -1607,6 +1652,7 @@ class AdvancedPanel(wx.Panel):
     def __init__(self, parent, style=wx.BORDER_SUNKEN):
         """Create the panel
         @param parent: Parent window of this panel
+        @keyword style: Window Style bitmask
 
         """
         super(AdvancedPanel, self).__init__(parent, style=style)
@@ -2116,7 +2162,7 @@ class ExtListCtrl(wx.ListCtrl,
         @see: L{syntax.syntax.ExtensionRegister}
 
         """
-        for row in xrange(self.GetItemCount()):
+        for row in range(self.GetItemCount()):
             ftype = self.GetItem(row, ExtListCtrl.FILE_COL).GetText()
             self.SetStringItem(row, ExtListCtrl.EXT_COL, \
                                u'  ' + u' '.join(self._extreg[ftype]))

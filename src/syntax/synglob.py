@@ -18,8 +18,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: synglob.py 66605 2011-01-06 00:55:52Z CJP $"
-__revision__ = "$Revision: 66605 $"
+__svnid__ = "$Id: synglob.py 69887 2011-12-01 19:54:13Z CJP $"
+__revision__ = "$Revision: 69887 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -70,6 +70,7 @@ LANG_MAP = {LANG_4GL    : (ID_LANG_4GL,       '_progress'),
             LANG_FERITE : (ID_LANG_FERITE, '_ferite'),
             LANG_FLAGSHIP: (ID_LANG_FLAGSHIP, '_flagship'),
             LANG_FORTH  : (ID_LANG_FORTH, '_forth'),
+            LANG_GLSL   : (ID_LANG_GLSL, '_glsl'),
             LANG_GUI4CLI : (ID_LANG_GUI4CLI,  '_gui4cli'),
             LANG_HASKELL : (ID_LANG_HASKELL,  '_haskell'),
             LANG_HAXE   : (ID_LANG_HAXE,      '_haxe'),
@@ -153,7 +154,7 @@ def GetDescriptionFromId(lang_id):
 def GetIdFromDescription(desc):
     """Get the language identifier for the given file type string. The search
     is case insensitive.
-    @param desc: string (i.e "Python")
+    @param desc: unicode (i.e u"Python")
     @note: if lookup fails ID_LANG_TXT is returned
 
     """
@@ -162,8 +163,8 @@ def GetIdFromDescription(desc):
     # Guard against async code that may be modifying globals
     globs = dict(globals())
     for key, val in globs.iteritems():
-        if isinstance(val, basestring) and \
-           val.lower() == desc and key.startswith('LANG_'):
-            rval = globs.get(u"ID_" + key, ID_LANG_TXT)
-            break
+        if isinstance(val, unicode):
+            if val.lower() == desc and key.startswith('LANG_'):
+                rval = globs.get("ID_" + key, ID_LANG_TXT)
+                break
     return rval

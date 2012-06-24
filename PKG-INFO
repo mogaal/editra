@@ -1,12 +1,12 @@
 Metadata-Version: 1.0
 Name: Editra
-Version: 0.6.77
+Version: 0.7.01
 Summary: Developer's Text Editor
 Home-page: http://editra.org
 Author: Cody Precord
 Author-email: staff@editra.org
 License: wxWindows
-Download-URL: http://editra.org/?page=download
+Download-URL: http://editra.org/download
 Description: 
         ========
         Overview
@@ -19,11 +19,11 @@ Description:
         <http://www.editra.org/>`_.
         
         ============
-        Dependancies
+        Dependencies
         ============
-        * Python 2.4+
-        * wxPython 2.8.3+ (Unicode build suggested)
-        * setuptools 0.6+
+          * Python 2.6+
+          * wxPython 2.8.3+ (Unicode build suggested)
+          * setuptools 0.6+
         
         
 Platform: Many

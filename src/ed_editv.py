@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 69268 2011-10-01 19:50:54Z CJP $"
-__revision__ = "$Revision: 69268 $"
+__svnid__ = "$Id: ed_editv.py 70747 2012-02-29 01:33:35Z CJP $"
+__revision__ = "$Revision: 70747 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -66,6 +66,9 @@ def modalcheck(func):
 class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
     """Tab editor view for main notebook control."""
     ID_NO_SUGGEST = wx.NewId()
+    ID_ADD_TO_DICT = wx.NewId()
+    ID_IGNORE = wx.NewId()
+    ID_SPELLING_MENU = wx.NewId()
     ID_CLOSE_TAB = wx.NewId()
     ID_CLOSE_ALL_TABS = wx.NewId()
     DOCMGR = DocPositionMgr()
@@ -149,13 +152,10 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         cfocus = self.FindFocus()
         if not self._focused and cfocus is self:
             # Focus has just returned to the window
-            self.SetCaretWidth(self._caret_w)
+            self.RestoreCaret()
             self._focused = True
         elif self._focused and cfocus is not self:
-            cwidth = self.GetCaretWidth()
-            if cwidth > 0:
-                self._caret_w = cwidth
-            self.SetCaretWidth(0) # Hide the caret when not active
+            self.HideCaret() # Hide the caret when not active
             self._focused = False
             self.CallTipCancel()
 
@@ -320,17 +320,37 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         @param evt: MenuEvent
 
         """
-        e_id = evt.GetId()
-        replace = None
-        for choice in self._spell_data['choices']:
-            if e_id == choice[0]:
-                replace = choice[1]
-                break
+        e_id = evt.Id
+        spelld = self._spell.getSpellingDictionary()
+        if e_id == EdEditorView.ID_ADD_TO_DICT:
+            # Permanently add to users spelling dictionary
+            if spelld:
+                spelld.add(self._spell_data['word'][0])
+                self.RefreshSpellcheck()
+        elif e_id == EdEditorView.ID_IGNORE:
+            # Ignore spelling for this session
+            if spelld:
+                spelld.add_to_session(self._spell_data['word'][0])
+                self.RefreshSpellcheck()
+        else:
+            replace = None
+            for choice in self._spell_data['choices']:
+                if e_id == choice[0]:
+                    replace = choice[1]
+                    break
 
-        if replace is not None:
-            buff.SetTargetStart(self._spell_data['word'][1])
-            buff.SetTargetEnd(self._spell_data['word'][2])
-            buff.ReplaceTarget(replace)
+            if replace is not None:
+                buff.SetTargetStart(self._spell_data['word'][1])
+                buff.SetTargetEnd(self._spell_data['word'][2])
+                buff.ReplaceTarget(replace)
+
+    def RefreshSpellcheck(self):
+        """Refresh the visible text area for spellchecking"""
+        fline = self.GetFirstVisibleLine()
+        first = self.GetLineStartPosition(fline)
+        lline = self.GetLastVisibleLine()
+        last = self.GetLineEndPosition(lline)
+        self._spell.addDirtyRange(first, last, 0, False)
 
     def OnTabMenu(self, evt):
         """Tab menu event handler"""
@@ -365,14 +385,6 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
 
     #---- End EdTab Methods ----#
 
-    def IsNonCode(self, pos):
-        """Is the passed in position in a non code region
-        @param pos: buffer position
-        @return: bool
-
-        """
-        return self.IsComment(pos) or self.IsString(pos)
-
     def OnConfigMsg(self, msg):
         """Update config based on profile changes"""
         mtype = msg.GetType()[-1]
@@ -385,6 +397,10 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
             return
         elif mtype == 'AUTO_COMP_EX':
             self.ConfigureAutoComp()
+            return
+        elif mtype == 'CARETWIDTH':
+            if self.GetCaretWidth(): # check that it is not hidden
+                self.RestoreCaret()
             return
         elif mtype in ('VI_EMU', 'VI_NORMAL_DEFAULT'):
             self.SetViEmulationMode(Profile_Get('VI_EMU'),
@@ -412,7 +428,8 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
                    'SHOW_EOL'   : self.SetViewEOL,
                    'SHOW_LN'    : self.ToggleLineNumbers,
                    'SHOW_WS'    : self.SetViewWhiteSpace,
-                   'WRAP'       : self.SetWrapMode                   }
+                   'WRAP'       : self.SetWrapMode }
+
         if mtype in cfgmap:
             cfgmap[mtype](Profile_Get(mtype))
             return
@@ -448,7 +465,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_CONTEXT_MENU,
                            self._menu, self.GetId())
 
-        # Spell checking
+        #### Spell checking ####
         # TODO: de-couple to the forthcoming buffer service interface
         menu.InsertSeparator(0)
         words = self.GetWordFromPosition(bpos)
@@ -467,11 +484,24 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
             ids = (ID_SPELL_1, ID_SPELL_2, ID_SPELL_3)
             del self._spell_data['choices']
             self._spell_data['choices'] = list()
+            pos = 0
             for idx, sug in enumerate(sugg):
                 id_ = ids[idx] 
                 self._menu.AddHandler(id_, self.OnSpelling)
                 self._spell_data['choices'].append((id_, sug))
                 menu.Insert(0, id_, sug)
+                pos += 1
+            # Add spelling settings menu
+            smenu = wx.Menu()
+            smenu.Append(EdEditorView.ID_IGNORE, _("Ignore"))
+            self._menu.AddHandler(EdEditorView.ID_IGNORE, self.OnSpelling)
+            smenu.Append(EdEditorView.ID_ADD_TO_DICT,
+                         _("Add '%s' to dictionary") % self._spell_data['word'][0])
+            self._menu.AddHandler(EdEditorView.ID_ADD_TO_DICT, self.OnSpelling)
+            menu.InsertSeparator(pos)
+            menu.InsertMenu(pos+1, EdEditorView.ID_SPELLING_MENU,
+                            _("Spelling"), smenu)
+        #### End Spell Checking ####
 
         self.PopupMenu(self._menu.Menu)
         evt.Skip()

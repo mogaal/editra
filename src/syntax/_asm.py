@@ -15,8 +15,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _asm.py 68798 2011-08-20 17:17:05Z CJP $"
-__revision__ = "$Revision: 68798 $"
+__svnid__ = "$Id: _asm.py 70228 2011-12-31 20:39:16Z CJP $"
+__revision__ = "$Revision: 70228 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -69,10 +69,7 @@ class SyntaxData(syndata.SyntaxDataBase):
         self.SetLexer(stc.STC_LEX_ASM)
 
     def GetKeywords(self):
-        """Returns List of Keyword Specifications
-        @param lang_id: used to select specific subset of keywords
-
-        """
+        """Returns List of Keyword Specifications """
         return [ASM_CPU_INST, ASM_DIRECTIVES]
 
     def GetSyntaxSpec(self):

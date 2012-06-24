@@ -14,8 +14,8 @@ AUTHOR: Cody Precord
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _javascript.py 68798 2011-08-20 17:17:05Z CJP $"
-__revision__ = "$Revision: 68798 $"
+__svnid__ = "$Id: _javascript.py 70228 2011-12-31 20:39:16Z CJP $"
+__revision__ = "$Revision: 70228 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -84,10 +84,7 @@ class SyntaxData(syndata.SyntaxDataBase):
         return [JS_KEYWORDS,]
 
     def GetSyntaxSpec(self):
-        """Syntax Specifications
-        @param lang_id: used for selecting a specific subset of syntax specs
-
-        """
+        """Syntax Specifications """
         if self.LangId == synglob.ID_LANG_HTML:
             return SYNTAX_ITEMS
         else:
@@ -104,7 +101,7 @@ class SyntaxData(syndata.SyntaxDataBase):
 #---- Syntax Modules Internal Functions ----#
 def KeywordString(option=0):
     """Returns the specified Keyword String
-    @param option: specific subset of keywords to get
+    @keyword option: specific subset of keywords to get
 
     """
     return JS_KEYWORDS[1]

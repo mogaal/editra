@@ -3416,7 +3416,7 @@ class AuiToolBar(wx.PyControl):
         dropdown_size = self._art.GetElementSize(AUI_TBART_OVERFLOW_SIZE)
 
         # paint the gripper
-        if gripper_size > 0 and self._gripper_sizer_item:
+        if self._agwStyle & AUI_TB_GRIPPER and gripper_size > 0 and self._gripper_sizer_item:
             gripper_rect = wx.Rect(*self._gripper_sizer_item.GetRect())
             if horizontal:
                 gripper_rect.width = gripper_size

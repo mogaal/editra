@@ -9,8 +9,8 @@
 """Unittest cases for testing the fileutil functions"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileUtil.py 69212 2011-09-28 18:47:44Z CJP $"
-__revision__ = "$Revision: 69212 $"
+__svnid__ = "$Id: testFileUtil.py 69750 2011-11-13 23:00:05Z CJP $"
+__revision__ = "$Revision: 69750 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -42,6 +42,15 @@ class FileUtilTest(unittest.TestCase):
         common.CleanTempDir()
 
     #---- Tests ----#
+
+    def testAddFileExtension(self):
+        """Test adding file extension to a filename"""
+        name = ebmlib.AddFileExtension('foo', 'py')
+        self.assertEquals('foo.py', name)
+        name = ebmlib.AddFileExtension('bar', '.py')
+        self.assertEquals('bar.py', name)
+        name = ebmlib.AddFileExtension('foobar.py', 'py')
+        self.assertEquals('foobar.py', name)
 
     def testComparePaths(self):
         """Test functionality of ComparePaths function"""

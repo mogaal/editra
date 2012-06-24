@@ -1,10 +1,10 @@
 ###############################################################################
 # Name: nonmem.py                                                             #
 # Purpose: Define NONMEM syntax for highlighting and other features           #
-# Author: Robert McLeay <robert@fearthecow.net>                               #
-# Copyright: (c) 2008 Cody Precord <staff>                                    #
-#            (c) 2008 Torsten Mohr <none_yet>                                 #
-#            (c) 2010 Robert McLeay <robert@fearthecow.net>                   #
+# Author: Robert McLeay <robert\@fearthecow.net>                              #
+# Copyright: (c) 2008 Cody Precord (staff\@editra.org)                        #
+#            (c) 2008 Torsten Mohr (none_yet)                                 #
+#            (c) 2010 Robert McLeay (robert\@fearthecow.net)                  #
 # License: wxWindows License                                                  #
 ###############################################################################
 
@@ -16,8 +16,8 @@ AUTHOR: Cody Precord, Torsten Mohr, Robert McLeay
 """
 
 __author__ = "Cody Precord <cprecord>, Torsten Mohr <none_yet>"
-__svnid__ = "$Id: _nonmem.py 68798 2011-08-20 17:17:05Z CJP $"
-__revision__ = "$Revision: 68798 $"
+__svnid__ = "$Id: _nonmem.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -87,8 +87,8 @@ NONMEM_PARAMS = "DADT ERR EPS ETA THETA"
 
 class SyntaxData(syndata.SyntaxDataBase):
     """SyntaxData object for IssueLists
-    This class is primarly intended as an example to creating a custom
-    lexer
+    This class is primarily intended as an example to creating a custom
+    lexer.
 
     """ 
     def __init__(self, langid):
@@ -104,22 +104,22 @@ class SyntaxData(syndata.SyntaxDataBase):
 
 #---- End Required Module Functions ----#
 
-def StyleText(stc, start, end):
+def StyleText(_stc, start, end):
     """Style the text
-    @param stc: Styled text control instance
+    @param _stc: Styled text control instance
     @param start: Start position
     @param end: end position
 
     """
-    for index, token, txt in lexer.get_tokens_unprocessed(stc.GetTextRange(0, end)):
+    for index, token, txt in lexer.get_tokens_unprocessed(_stc.GetTextRange(0, end)):
 #        print index, token, txt
         style = TOKEN_MAP.get(token, STC_NONMEM_DEFAULT)
 
 #        print "Text=%s, len=%s" % (txt, len(txt))
-        stc.StartStyling(index, 0x1f)
+        _stc.StartStyling(index, 0x1f)
         tlen = len(txt)
         if tlen:
-            stc.SetStyling(len(txt), style)
+            _stc.SetStyling(len(txt), style)
 
 TOKEN_MAP = { Token.String : STC_NONMEM_STRING,
               Token.Comment.Multiline : STC_NONMEM_COMMENT,
@@ -155,7 +155,7 @@ class NONMEMLexer(RegexLexer):
     def AltWords(words):
         """Makes lexer rule for alternative words from the given words list.
         @param words: string consisting of space separated words
-        @return: string in the form \bword1\b|\bword2\b|\bword3\b...
+        @return: string in the form \\bword1\\b|\\bword2\\b|\\bword3\\b...
         """
         return "|".join([ "\\b%s\\b" % w for w in words.split()])
 

@@ -1,0 +1,3122 @@
+# Uyghur translation for editra
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the editra package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: editra\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2011-12-17 13:29-0600\n"
+"PO-Revision-Date: 2012-04-21 09:19+0000\n"
+"Last-Translator: yasenghupur <yasenghupur@sina.com>\n"
+"Language-Team: Uyghur <ug@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-04-22 23:33+0000\n"
+"X-Generator: Launchpad (build 15120)\n"
+
+#: ../../src/ed_search.py:467
+#, python-format
+msgid "\"%s\" was not found"
+msgstr "\"%s\"نى تاپالمىدىم"
+
+#: ../../src/ed_search.py:681
+#, python-format
+msgid "%d matches were replaced."
+msgstr "%dماس كەلگەننى ئالماشتۇرۇش"
+
+#: ../../src/util.py:373
+#, python-format
+msgid "%s Source File"
+msgstr "%sئەسلى ھۈججەت"
+
+#: ../../src/ed_main.py:586
+#, python-format
+msgid ""
+"%s could not be found.\n"
+"Perhaps it's been moved or deleted."
+msgstr "%sتاپالمىدىم"
+
+#: ../../src/ed_stc.py:1858
+#, python-format
+msgid "%s does not exist"
+msgstr "%sمەۋجەت ئەمەس"
+
+#: ../../src/ed_editv.py:549
+#, python-format
+msgid ""
+"%s has been deleted since its last save point.\n"
+"\n"
+"Would you like to save it again?"
+msgstr ""
+"%sئاخىرقى ساقلاشتىن كېيىن ئۆچۈرۈلدى\n"
+"قايتىدىن ساقلامسىز؟"
+
+#: ../../src/ed_editv.py:569
+#, python-format
+msgid ""
+"%s has been modified by another application.\n"
+"\n"
+"Would you like to reload it?"
+msgstr ""
+"%sباشقا پروگراممىدا ئۆزگەرتىلگەن\n"
+"قايتىدىن يۈكلەمسىز؟"
+
+#: ../../src/ed_menu.py:882
+msgid "&About..."
+msgstr "&ھەققىدە"
+
+#: ../../src/ed_menu.py:566
+msgid "&Close Tab"
+msgstr "خەتكۈشنى يېپىش (&C)"
+
+#: ../../src/ed_menu.py:626
+msgid "&Copy"
+msgstr "(&C)كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:696
+msgid "&Edit"
+msgstr "تەھرىرلەش(&E)"
+
+#: ../../src/ed_menu.py:612
+msgid "&File"
+msgstr "&ھۆججەت"
+
+#: ../../src/ed_menu.py:680
+msgid "&Find"
+msgstr "ئىزدەش(&F)"
+
+#: ../../src/ed_menu.py:770
+msgid "&Font"
+msgstr "خەت نۇسخىسى (فونت )(&F)"
+
+#: ../../src/ed_menu.py:740
+msgid "&Goto Line"
+msgstr "&قۇرغا بېرىش"
+
+#: ../../src/ed_main.py:132 ../../src/ed_menu.py:896
+msgid "&Help"
+msgstr "(&H)ياردەم"
+
+#: ../../src/ed_menu.py:556
+msgid "&New Tab"
+msgstr "يېڭى بەتكۈش&"
+
+#: ../../src/ed_menu.py:561
+msgid "&Open"
+msgstr "(&O)ئېچىش"
+
+#: ../../src/ed_menu.py:628
+msgid "&Paste"
+msgstr "چاپلاش(&P)"
+
+#: ../../src/ed_menu.py:607
+msgid "&Print"
+msgstr "&بېسىش"
+
+#: ../../src/ed_menu.py:683
+msgid "&Quick Find"
+msgstr "&تېز ئىزدەش"
+
+#: ../../src/ed_menu.py:573
+msgid "&Save"
+msgstr "ساقلاش(&S)"
+
+#: ../../src/ed_menu.py:844
+msgid "&Settings"
+msgstr "تەڭشەك(&S)"
+
+#: ../../src/ed_menu.py:757
+msgid "&Toolbar"
+msgstr "قورال ستونى(&T)"
+
+#: ../../src/ed_menu.py:873
+msgid "&Tools"
+msgstr "قوراللار (&T)"
+
+#: ../../src/ed_menu.py:621
+msgid "&Undo"
+msgstr "يېنىۋال(&U)"
+
+#: ../../src/ed_menu.py:761
+msgid "&View"
+msgstr "كۆرۈنۈش(&V)"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:273
+msgid "**Alias**"
+msgstr "**ئۆزگەنامى**"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:273
+msgid "**New Commandline**"
+msgstr "**يېڭى بۇيرۇق قۇرى**"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:405
+msgid "0-50000 (0 unlimited)"
+msgstr "0-50000(0 چەكسىز)"
+
+#: ../../src/eclib/filterdlg.py:76
+msgid "<< Remove"
+msgstr "››چىقىرىۋېتىش"
+
+#: ../../src/eclib/errdlg.py:313 ../../plugins/Launch/launch/launch.py:537
+msgid "Abort"
+msgstr "توختىتىش"
+
+#: ../../src/ed_menu.py:883
+msgid "About"
+msgstr "ھەققىدە"
+
+#: ../../src/ed_cmdbar.py:801
+#, python-format
+msgid "Access Denied: %s"
+msgstr "كىرىش چەكلەندى:%s"
+
+#: ../../src/ed_editv.py:505
+#, python-format
+msgid "Add '%s' to dictionary"
+msgstr "%sنى مۇندەرىجىگە قوشۇش"
+
+#: ../../src/eclib/filterdlg.py:75
+msgid "Add >>"
+msgstr "قوشۇش››"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:203
+msgid "Add a new executable"
+msgstr "يېڭى ئىجرا ھۈججىتى قوشۇش"
+
+#: ../../src/ed_menu.py:642
+msgid "Add a new line after the current line"
+msgstr "ھازىرقى قۇرنىڭ ئاخىرىغا يېڭى قۇر قوشۇش"
+
+#: ../../src/ed_menu.py:644
+msgid "Add a new line before the current line"
+msgstr "ھازىرقى قۇرنىڭ بېشىغا يېڭى قۇر قوشۇش"
+
+#: ../../src/ed_menu.py:672
+msgid "Add and remove bookmarks"
+msgstr "بەتكۈش قوشۇش\\چىقىرىۋېتىش"
+
+#: ../../src/prefdlg.py:784
+msgid "Adds extra scrolling room after last line"
+msgstr "ئاخىرقى قۇرنىڭ كەينىگە دومىلىغۇچ قوشۇش"
+
+#: ../../src/prefdlg.py:191
+msgid "Advanced"
+msgstr "ئالىي دەرىجىلىك"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:583
+msgid "Alias"
+msgstr "تەخەللۇس"
+
+#: ../../src/ed_log.py:165 ../../src/ed_log.py:244
+msgid "All"
+msgstr "ھەممىسى"
+
+#: ../../plugins/codebrowser/codebrowser/cbconfig.py:42
+msgid "Alphabetically"
+msgstr "ئېلىپبە تەرتىپى بويىچە"
+
+#: ../../src/Editra.py:627
+#, python-format
+msgid ""
+"An updated version of Editra is available\n"
+"Would you like to download Editra %s now?"
+msgstr "ئېدىترانىڭ يېڭى نەشرى تەمىنلەندى،ئېدىترا %sنى چۈشۈرەمسىز؟"
+
+#: ../../src/prefdlg.py:770
+msgid "AntiAliasing"
+msgstr "ھەرەچىشسىزلاش"
+
+#: ../../src/prefdlg.py:185
+msgid "Appearance"
+msgstr "قىياپىتى"
+
+#: ../../src/prefdlg.py:1774
+msgid "Apply"
+msgstr "قوللىنىش"
+
+#: ../../src/eclib/filemgrdlg.py:167
+#, python-format
+msgid "Are you sure want to delete %s?"
+msgstr "راستىنلا%sنى  ئۆچۈرەمسىز؟"
+
+#: ../../src/plugdlg.py:1058
+#, python-format
+msgid ""
+"Are you sure you want to uninstall %s?\n"
+"This cannot be undone."
+msgstr "راستىنلا %sنى ئۆچۈرۋېتەمسىز؟ يېنىۋالالمايسىز."
+
+#: ../../plugins/Launch/launch/launch.py:172
+msgid "Arguments"
+msgstr "ئۆزگەرگۈچىلەر"
+
+#: ../../src/style_editor.py:763
+msgid "Attributes"
+msgstr "خاسلىق"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:396
+msgid "Audible feedback when errors are detected"
+msgstr "خاتالىق ئۆچۈرۈلگەندە ئاۋازلىق ئەسكەرتىش"
+
+#: ../../src/ed_main.py:1259
+msgid "Aui Pane Navigator"
+msgstr "Auiبۆلەكلىك يولباشلىغۇچ"
+
+#: ../../src/plugdlg.py:944 ../../src/plugdlg.py:1128
+#, python-format
+msgid "Author: %s"
+msgstr "ئاپتورى:%s"
+
+#: ../../src/ed_menu.py:829 ../../src/prefdlg.py:947
+msgid "Auto-Completion"
+msgstr "ئاپتوماتىك تاماملاش"
+
+#: ../../src/ed_menu.py:831 ../../src/prefdlg.py:957
+msgid "Auto-Indent"
+msgstr "ئاپتوماتىك ئابزاسبېشى"
+
+#: ../../src/perspective.py:86
+msgid "Automatic"
+msgstr "ئاپتوماتىك"
+
+#: ../../src/prefdlg.py:501
+msgid "Automatically Backup Files"
+msgstr "ھۈججەتنى ئاپتوماتىك زاپاسلاش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:393
+msgid "Automatically clear output buffer between runs"
+msgstr "ئىجرا ئارىسىدىكى چىقىرىش باففېرىنى ئاپتوماتىك تازىلاش"
+
+#: ../../src/prefdlg.py:533
+msgid "Automatically reload files when changes are detected on disk"
+msgstr "ئۆزگەرتىش بايقالغاندا ئاپتوماتىك يۈكلەش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:544
+msgid "Automatically save all open files before running"
+msgstr "ئىجرا قىلىشتىن بۇرۇن بارلىق ھۈججەتلەرنى ساقلاش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:541
+msgid "Automatically save current file before running"
+msgstr "ئىجرا قىلىشتىن بۇرۇن ھۈججەتنى ساقلاش"
+
+#: ../../src/perspective.py:87
+msgid "Automatically save/use window state from last session"
+msgstr ""
+"ئالدىنقى سۆھبەتتىن كېيىنكى كۆزنەك ھالىتىنى ئاپتوماتىك سالاش\\ئىشلىتىش"
+
+#: ../../src/prefdlg.py:747
+msgid "Automatically trim whitespace on save"
+msgstr "بوشلۇقنى ئاپتوماتىك ئۆچۈرۈپ ساقلاش"
+
+#: ../../src/style_editor.py:752 ../../plugins/Launch/launch/cfgdlg.py:424
+msgid "Background"
+msgstr "تەگلىك"
+
+#: ../../src/prefdlg.py:753
+msgid "Backspace Unindents"
+msgstr "قايىتبوشلۇقتا ئابزاسبېشى قالدۇرۇش"
+
+#: ../../src/prefdlg.py:507
+msgid "Backup Path:"
+msgstr "ھۈججەت يولىنى زاپاسلاش"
+
+#: ../../src/prefdlg.py:504
+msgid "Backup buffer to file periodically"
+msgstr "ھۈججەتنى دەۋرەي زاپاسلاش"
+
+#: ../../src/prefdlg.py:1748
+msgid "Binding"
+msgstr "باغلاش"
+
+#: ../../src/prefdlg.py:2168
+msgid "Black/White"
+msgstr "قارا خەت ئاق تەگلىك"
+
+#: ../../src/ed_bookmark.py:273
+msgid "Bookmark"
+msgstr "بەتكۈش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:414
+msgid "Bookmark Selected Path(s)"
+msgstr "بەتكۈش  تاللاندى يولى"
+
+#: ../../src/ed_bookmark.py:291
+#, python-format
+msgid "Bookmark%d"
+msgstr "%dبەتكۈشلەندى"
+
+#: ../../src/ed_bookmark.py:79 ../../src/ed_menu.py:671
+msgid "Bookmarks"
+msgstr "بەتكۈش"
+
+#: ../../src/ed_menu.py:834 ../../src/prefdlg.py:927
+msgid "Bracket Highlighting"
+msgstr "بەلگىلەرنى چاقنىتىش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:600
+msgid "Browse..."
+msgstr "كۆرۈش"
+
+#: ../../src/ed_menu.py:891
+msgid "Bug Tracker..."
+msgstr "يوچۇق تاپقۇچ"
+
+#: ../../src/ed_cmdbar.py:599
+#, python-format
+msgid "Can't change directory to: %s"
+msgstr "مۇندەرىجىنى  :%s گە ئۆزگەرتەلمىدىم"
+
+#: ../../src/ed_search.py:1302 ../../src/style_editor.py:86
+#: ../../src/updater.py:582
+msgid "Cancel"
+msgstr "قالدۇرۇش"
+
+#: ../../src/updater.py:662
+msgid "Canceled"
+msgstr "قالدۇرۇلدى"
+
+#: ../../src/ed_statbar.py:194
+msgid "Change Encoding"
+msgstr "كودلاشنى ئۆزگەرتىش"
+
+#: ../../src/ed_menu.py:771
+msgid "Change Font Settings"
+msgstr "فونت تەڭشىكىنى ئۆزگەرتىش"
+
+#: ../../src/ed_statbar.py:62 ../../src/ed_statbar.py:65
+#: ../../src/ed_statbar.py:68
+#, python-format
+msgid "Change line endings to %s"
+msgstr "قۇر ئاخىرىنى %sكە ئۆزگەرتىش"
+
+#: ../../src/ed_statbar.py:193
+msgid "Change the encoding of the current document."
+msgstr "ھازىرقى ھۈججەتنى كودلاشنى ئۆزگەرتىش"
+
+#: ../../src/perspective.py:146
+#, python-format
+msgid "Change view to \"%s\""
+msgstr "كۆرۈنۈشنى %sكە ئۆزگەرتىش"
+
+#: ../../src/prefdlg.py:280
+msgid ""
+"Changes made in this dialog are saved in your current profile. Some Items "
+"such as Language require the program to be restarted before taking effect."
+msgstr ""
+"بۇ دىئالوگدىكى ئۆزگەرتىش ھازىرقى ئارخىۋىڭىزغا ساقلاندى.بەزى "
+"تاللاشلار،مەسىلەن تىل دىگەنلەر،پروگراممىنى قايتا ئاچسىڭىز ئۆزگىرەيدۇ."
+
+#: ../../src/plugdlg.py:237
+msgid "Changes will take affect once the program has been restarted"
+msgstr "پروگرامما قوزغالغان ھامان ئۆزگەرتىشنى قوللىنىش"
+
+#: ../../src/prefdlg.py:1531
+msgid "Check"
+msgstr "تەكشۈرۈش"
+
+#: ../../src/prefdlg.py:411
+msgid "Check for updates on startup"
+msgstr "قوزغالغاندا يېڭىلىنىشنى تەكشۈرۈش"
+
+#: ../../src/prefdlg.py:528
+msgid "Check if on disk file has been modified by others"
+msgstr "ھۈججەت ئۆزگەرتىلگەنمۇ تەكشۈرۈش"
+
+#: ../../src/prefdlg.py:562
+msgid "Check spelling while typing"
+msgstr "كىرگۈزگەندە ئىملا تەكشۈرۈش"
+
+#: ../../src/prefdlg.py:1557
+msgid "Checking..."
+msgstr "تەكشۈرۈۋاتىدۇ…"
+
+#: ../../src/eclib/finddlg.py:798
+msgid "Choose Folder"
+msgstr "قىسقۇچ تاللاش"
+
+#: ../../src/eclib/finddlg.py:1129
+msgid "Choose Search Folder"
+msgstr "قىسقۇچ ئىزدەشنى تاللاش"
+
+#: ../../src/ed_main.py:684
+msgid "Choose a Save Location"
+msgstr "ساقلاش ئورنىنى تاللاش"
+
+#: ../../src/ed_pages.py:171
+msgid "Choose an Encoding"
+msgstr "كودلاشنى تاللاش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:609
+msgid "Choose and executable"
+msgstr "تاللاش ۋە ئىجراچان"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+msgid "Class Definitions"
+msgstr "كلاس ئېنىقلىمىسى"
+
+#: ../../src/ed_log.py:139 ../../src/ed_search.py:1306
+#: ../../plugins/Launch/launch/launch.py:181
+#: ../../plugins/PyShell/PyShell/__init__.py:112
+msgid "Clear"
+msgstr "تازىلاش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:580
+msgid "Click on an item to edit"
+msgstr "تاللىغۇچنى چېكىپ تەھرىرلەش"
+
+#: ../../src/ed_editv.py:269
+#, python-format
+msgid "Close \"%s\""
+msgstr "\"%s\"نى يېپىش"
+
+#: ../../src/ed_editv.py:271
+msgid "Close All"
+msgstr "ھەممىنى يېپىش"
+
+#: ../../src/ed_shelf.py:172
+#, python-format
+msgid "Close All '%s'"
+msgstr "\"%s\"نىڭ ھەممىسىنى يېپىش"
+
+#: ../../src/ed_menu.py:570
+msgid "Close All Tabs"
+msgstr "ھەممە خەتكۈشنى يېپىش"
+
+#: ../../src/ed_menu.py:567
+msgid "Close Current Tab"
+msgstr "نۆۋەتتىكى بەتكۈشنى يېپىش"
+
+#: ../../src/ed_editv.py:270
+msgid "Close Other Tabs"
+msgstr "باشقا بەتكۈشلەرنى يېپىش"
+
+#: ../../src/ed_menu.py:569
+msgid "Close Window"
+msgstr "كۆزنەكنى يېپىش"
+
+#: ../../src/ed_menu.py:571
+msgid "Close all open tabs"
+msgstr "ئېچىلغان خەتكۈشلەرنى يېپىش"
+
+#: ../../src/ed_menu.py:569
+msgid "Close the current window"
+msgstr "نۆۋەتتىكى كۆزنەكنى يېپىش"
+
+#: ../../src/prefdlg.py:683
+msgid "Code"
+msgstr "كودى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:92
+msgid "Code Browser"
+msgstr "كود كۆرگۈچ"
+
+#: ../../src/ed_menu.py:731 ../../src/ed_menu.py:836 ../../src/prefdlg.py:929
+msgid "Code Folding"
+msgstr "كود دەستىلەش"
+
+#: ../../src/ed_menu.py:732
+msgid "Code folding toggle actions"
+msgstr "كود قاتلاشنى ئالماشتۇرۇش مەشغۇلاتى"
+
+#: ../../plugins/codebrowser/codebrowser/__init__.py:48
+#: ../../plugins/codebrowser/codebrowser/__init__.py:95
+msgid "CodeBrowser"
+msgstr "كودكۆرگۈچ"
+
+#: ../../src/style_editor.py:735
+msgid "Color"
+msgstr "رەڭ"
+
+#: ../../src/ed_menu.py:839
+msgid "Color Highlight Code Syntax"
+msgstr "كود گراماتكىسىنى رەڭلىك چاقنىتىش"
+
+#: ../../src/prefdlg.py:1097
+msgid "Color Scheme"
+msgstr "رەڭ لايىھىسى"
+
+#: ../../plugins/PyShell/PyShell/__init__.py:108
+msgid "Color Scheme:"
+msgstr "رەڭ لايىھىسى:"
+
+#: ../../src/prefdlg.py:2170
+msgid "Colour/Default"
+msgstr "رەڭ \\كۆڭۈلدىكى"
+
+#: ../../src/prefdlg.py:2169
+msgid "Colour/White"
+msgstr "رەڭ\\ئاق"
+
+#: ../../src/ed_menu.py:637
+msgid "Column Edit"
+msgstr "ستون تەھرىرلەش"
+
+#: ../../src/ed_cmdbar.py:438
+msgid "Command"
+msgstr "بۇيرۇق"
+
+#: ../../src/ed_menu.py:665
+msgid "Commands that affect an entire line"
+msgstr "پۇتۇن قۇر بۇيرۇقى"
+
+#: ../../src/prefdlg.py:1341
+msgid "Configuration"
+msgstr "سەپلەش"
+
+#: ../../src/plugdlg.py:197
+msgid "Configuration Changes Made"
+msgstr "سەپلەش ئۆزگەلتىلدى"
+
+#: ../../src/plugdlg.py:120 ../../src/plugdlg.py:953
+msgid "Configure"
+msgstr "سەپلەش"
+
+#: ../../src/ed_menu.py:604
+msgid "Configure Printer"
+msgstr "پرىنتېر سەپلەش"
+
+#: ../../src/ed_menu.py:785
+msgid "Convert selected text to all lowercase letters"
+msgstr "تاللانغان تېكىسنى كىچىك ھەرىپكە ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:783
+msgid "Convert selected text to all uppercase letters"
+msgstr "تاللانغان تېكىسنى چوڭ ھەرىپكە ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:797
+msgid "Convert spaces to tabs in selected/all text"
+msgstr "تاللانغان تېكىستىكى tabsنى بوشلۇققا  ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:799
+msgid "Convert tabs to spaces in selected/all text"
+msgstr "تاللانغان تېكىستىكى بوشلۇقنى tabsكە ئالماشتۇرۇش"
+
+#: ../../src/ed_editv.py:457 ../../src/ed_toolbar.py:88
+msgid "Copy"
+msgstr "كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:651
+msgid "Copy Current Line"
+msgstr "ھازىرقى قۇرنى كۆچۈرۈش"
+
+#: ../../src/ed_editv.py:273
+msgid "Copy Filename"
+msgstr "ھۈججەت نامىنى كۆچۈرۈش"
+
+#: ../../src/ed_editv.py:274
+msgid "Copy Full Path"
+msgstr "ھۈججەت يولىنى كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:650
+msgid "Copy Line"
+msgstr "قۇرنى كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:627 ../../src/ed_toolbar.py:89
+msgid "Copy Selected Text to Clipboard"
+msgstr "تاللانغان تېكىسنى تاختىغا كۆچۈرۈش"
+
+#: ../../src/ed_main.py:1580
+msgid "Copyright"
+msgstr "نەشر ھوقۇقى"
+
+#: ../../src/eclib/finddlg.py:853
+msgid "Count"
+msgstr "ساناش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:426
+#: ../../plugins/filebrowser/filebrowser/browser.py:545
+#, python-format
+msgid "Create Archive of \"%s\""
+msgstr "\"%s\"نىڭ ئارخىپىنى قۇرۇش"
+
+#: ../../src/style_editor.py:207
+msgid "Create a new style theme"
+msgstr "يېڭى ئۇسلۇب تېمىسى قۇرۇش"
+
+#: ../../src/eclib/infodlg.py:193
+msgid "Created"
+msgstr "قۇرۇلدى"
+
+#: ../../src/ed_menu.py:624
+msgid "Cu&t"
+msgstr "كېسىش&"
+
+#: ../../src/eclib/finddlg.py:721
+msgid "Current Directory"
+msgstr "ھازىرقى مۇندەرىجە"
+
+#: ../../src/eclib/finddlg.py:720
+msgid "Current Document"
+msgstr "ھازىرقى ھۈججەت"
+
+#: ../../src/ed_cmdbar.py:128
+msgid "Customize"
+msgstr "ئۆزلەشتۈرۈش"
+
+#: ../../src/ed_main.py:1457
+msgid "Customize Menu"
+msgstr "ئۆزلەشتۈرگەن تىزىملىك"
+
+#: ../../src/ed_menu.py:508
+msgid "Customize the items shown in this menu."
+msgstr "تىزىملىكتىكى تاللىغۇچنى ئۆزلەشتۈرۈش"
+
+#: ../../src/ed_menu.py:507
+msgid "Customize..."
+msgstr "ئۆزلەشتۈرۈش…"
+
+#: ../../src/ed_editv.py:456 ../../src/ed_toolbar.py:86
+msgid "Cut"
+msgstr "كېسىش"
+
+#: ../../src/ed_menu.py:647
+msgid "Cut Current Line"
+msgstr "ھازىرقى قۇرنى كېسىش"
+
+#: ../../src/ed_menu.py:646
+msgid "Cut Line"
+msgstr "قۇرنى كېسىش"
+
+#: ../../src/ed_menu.py:625 ../../src/ed_toolbar.py:87
+msgid "Cut Selected Text from File"
+msgstr "ھۈججەتتىن تاللانغان تېكىسنى كېسىش"
+
+#: ../../src/ed_menu.py:632
+msgid "Cycle Clipboard"
+msgstr "تاختىنى تەۋىرلەش"
+
+#: ../../src/ed_menu.py:633
+msgid "Cycle through recent clipboard text"
+msgstr "تاختىدىكى يېقىنقى تېكىستنى دەۋرىيلەش"
+
+#: ../../src/ed_search.py:64 ../../src/ed_search.py:68
+msgid "DECODING ERROR"
+msgstr "كود يېشىش خاتا"
+
+#: ../../src/ed_main.py:802 ../../src/ed_main.py:804 ../../src/ed_main.py:821
+#: ../../src/ed_main.py:833 ../../src/ed_session.py:276
+#: ../../plugins/Launch/launch/cfgdlg.py:191
+msgid "Default"
+msgstr "كۆڭۈلدىكى"
+
+#: ../../src/prefdlg.py:765
+msgid "Default EOL Mode"
+msgstr "كۆڭۈلدىكى EOL  شەكلى"
+
+#: ../../src/prefdlg.py:920
+msgid "Default Lexer"
+msgstr "كۆڭۈلدىكى لېكسېر"
+
+#: ../../src/prefdlg.py:1199
+msgid "Default Perspective"
+msgstr "كۆڭۈلدىكى كۆرۈنۈش"
+
+#: ../../src/prefdlg.py:918
+msgid "Default highlighing for new documents"
+msgstr "يېڭى ھۈججەتكە كۆڭۈلدىكى چاقنىتىش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+msgid "Defines"
+msgstr "ئېنىقلىما"
+
+#: ../../src/ed_bookmark.py:142 ../../src/ed_session.py:185
+#: ../../src/prefdlg.py:1717
+msgid "Delete"
+msgstr "ئۆچۈرۈش"
+
+#: ../../src/ed_bookmark.py:145
+msgid "Delete All"
+msgstr "ھەممىنى ئۆچۈرۈش"
+
+#: ../../src/ed_bookmark.py:144
+msgid "Delete Bookmark"
+msgstr "بەتكۈش  ئۆچۈرۈش"
+
+#: ../../src/eclib/filemgrdlg.py:175
+msgid "Delete Error"
+msgstr "خاتالىقنى ئۆچۈرۈش"
+
+#: ../../src/eclib/filemgrdlg.py:168
+msgid "Delete File?"
+msgstr "ھۆججەتنى ئۆچۈرسۇنمۇ؟"
+
+#: ../../src/ed_menu.py:648
+msgid "Delete Line"
+msgstr "قۇر ئۆچۈرۈش"
+
+#: ../../src/perspective.py:294
+msgid "Delete Perspective"
+msgstr "كۆرۈنۈش ئۆچۈرۈش"
+
+#: ../../src/perspective.py:84
+msgid "Delete Saved View"
+msgstr "ساقلانغان كۆرۈنۈشنى ئۆچۈرۈش"
+
+#: ../../src/ed_bookmark.py:148
+msgid "Delete all bookmarks"
+msgstr "ھەممە بەتكۈشنى ئۆچۈرۈش"
+
+#: ../../src/ed_menu.py:649
+msgid "Delete the selected line(s)"
+msgstr "تاللانغان قۇرنى ئۆچۈرۈش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:485
+#: ../../plugins/filebrowser/filebrowser/browser.py:654
+msgid "Desktop"
+msgstr "ئۈستەل يۈزى"
+
+#: ../../src/prefdlg.py:569
+msgid "Dictionary"
+msgstr "لۇغەت"
+
+#: ../../src/eclib/finddlg.py:810
+msgid "Direction"
+msgstr "يۆنىلىش"
+
+#: ../../src/prefdlg.py:398
+msgid "Disable Error Reporter"
+msgstr "خاتالىق ئۇچۇرچىسىنى قوزغاتماسلىق"
+
+#: ../../src/prefdlg.py:1241
+msgid "Display Font"
+msgstr "فونتنى كۆرسىتىش"
+
+#: ../../src/plugdlg.py:184
+msgid "Do you wish to exit?"
+msgstr "چېكىنەمسىز؟"
+
+#: ../../src/ed_pages.py:983
+#, python-format
+msgid ""
+"Do you wish to open all %d files in this directory?\n"
+"\n"
+"Warning: opening many files at once may cause the editor to temporarily  "
+"freeze."
+msgstr "بۇ مۇندەرىجىدە بارلىق%d ھۈججەتلەرنى ئاچامسىز؟"
+
+#: ../../src/prefdlg.py:187
+msgid "Document"
+msgstr "ھۈججەت"
+
+#: ../../src/eclib/finddlg.py:814
+msgid "Down"
+msgstr "تۆۋەنگە"
+
+#: ../../src/plugdlg.py:121 ../../src/plugdlg.py:456 ../../src/plugdlg.py:1106
+#: ../../src/prefdlg.py:1526
+msgid "Download"
+msgstr "چۈشۈرۈش"
+
+#: ../../src/plugdlg.py:479
+msgid "Downloaded"
+msgstr "چۈشۈرۈلدى"
+
+#: ../../src/plugdlg.py:597 ../../src/updater.py:618
+msgid "Downloading"
+msgstr "چۈشۈرۈۋاتىدۇ"
+
+#: ../../src/updater.py:581
+#, python-format
+msgid "Downloading To: %s"
+msgstr "%sنى چۈشۈرۈۋاتىدۇ"
+
+#: ../../src/Editra.py:633 ../../src/prefdlg.py:1568
+msgid "Downloading Update"
+msgstr "يېڭىلىنىشنى چۈشۈرۈۋاتىدۇ"
+
+#: ../../src/updater.py:579
+#, python-format
+msgid "Downloading: %s"
+msgstr "%sچۈشۈرۈۋاتىدۇ"
+
+#: ../../src/plugdlg.py:183
+msgid "Downloads are incomplete"
+msgstr "چۈشۈرۈش تاماملانمىدى"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:425
+msgid "Duplicate"
+msgstr "كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:652
+msgid "Duplicate Line"
+msgstr "قۇر كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:653
+msgid "Duplicate the current line"
+msgstr "ھازىرقى قۇرنى كۆچۈرۈش"
+
+#: ../../src/ed_menu.py:609
+msgid "E&xit"
+msgstr "&xچېكىنىش"
+
+#: ../../src/ed_menu.py:816
+msgid "EOL Mode"
+msgstr "EOLشەكلى"
+
+#: ../../src/ed_main.py:632
+#, python-format
+msgid "ERROR: %s"
+msgstr ": %sخاتالىقى"
+
+#: ../../src/ed_main.py:700
+#, python-format
+msgid "ERROR: Failed to save %s"
+msgstr "خاتالىق:%sھۈججىتى ساقلانمىدى"
+
+#: ../../src/prefdlg.py:931
+msgid "Edge Guide"
+msgstr "بەتيېنى يولباشچىسى"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:410
+msgid "Edit"
+msgstr "تەھرىرلەش"
+
+#: ../../src/ed_menu.py:693
+msgid "Edit Preferences / Settings"
+msgstr "تاللاشلار\\تەڭشەك نى تەھرىرلەش"
+
+#: ../../src/ed_menu.py:862
+msgid "Edit the way syntax is highlighted"
+msgstr "سىنتاكىسنى چاقنىتىش ئۇسۇلىنى تەھرىرلەش"
+
+#: ../../src/ed_menu.py:724
+msgid "Editor"
+msgstr "تەھرىرلىگۈچ"
+
+#: ../../src/ed_menu.py:855
+msgid "Editor Command"
+msgstr "تەھرىرلىگۈچ بۇيرۇقلىرى"
+
+#: ../../src/prefdlg.py:382
+msgid "Editor Mode"
+msgstr "تەھرىرلىگۈچ ھالىتى"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:539
+msgid "Editor Options"
+msgstr "تەھرىرلىگۈچ تاللاشلىرى"
+
+#: ../../src/ed_log.py:80
+msgid "Editra Log"
+msgstr "تەھرىرلىگۈچ Log"
+
+#: ../../src/ed_mdlg.py:85
+#, python-format
+msgid ""
+"Editra could not open %(filename)s\n"
+"\n"
+"Error:\n"
+"%(errormsg)s"
+msgstr ""
+"ئېدىترا ئاچالمىدى %(filename)s\n"
+" خاتالىق:\n"
+"%(errormsg)s"
+
+#: ../../src/ed_main.py:1570
+msgid "Editra is a programmers text editor."
+msgstr "ئېدىترا پروگراممېرلارنىت تېكىس تەھرىرلىگۈچى"
+
+#: ../../src/ed_menu.py:890
+msgid "Editra translations project"
+msgstr "ئېدىترا تەرجىمە ئىشتۈرى"
+
+#: ../../src/ed_main.py:432
+msgid "Editra: Open"
+msgstr "ئېدىترا: ئېچىش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:59
+msgid "Elements"
+msgstr "ئېلېمېنتلار"
+
+#: ../../src/ed_pages.py:372
+msgid "Empty File"
+msgstr "قۇرۇق ھۈججەت"
+
+#: ../../src/plugdlg.py:945
+msgid "Enable"
+msgstr "قوزغىتىش"
+
+#: ../../src/prefdlg.py:959
+msgid "Enable Vi Emulation"
+msgstr "Viتەقلىدىنى قوزغىتىش"
+
+#: ../../src/ed_menu.py:638
+msgid "Enable column edit mode."
+msgstr "ستون تەھرىرلەش شەكلىنى قوزغىتىش"
+
+#: ../../src/prefdlg.py:579
+msgid "Enchant Path"
+msgstr "يول ئالماشتۇرۇش"
+
+#: ../../src/prefdlg.py:495
+msgid "Encoding to try when auto detection fails"
+msgstr "خاتالىق بايقالغاندا كودلاشنى قايتا سىناش"
+
+#: ../../src/ed_menu.py:817
+msgid "End of line character formatting"
+msgstr "قۇر ئاخىرى كاراكتېر فورماتى"
+
+#: ../../src/eclib/colorsetter.py:82
+msgid "Enter a hex color value"
+msgstr "ئونئالتىلىك سېستىمىدىكى رەڭ قىممىتىنى كىرگۈزۈش"
+
+#: ../../src/style_editor.py:362
+msgid "Enter style sheet name"
+msgstr "ئۇسلۇب جەدۋىلى نامىنى كىرگۈزۈش"
+
+#: ../../src/prefdlg.py:1916
+msgid "Enter the name of the new key profile"
+msgstr "يېڭى ئاچقۇچ ئارخىپنىڭ نامىنى كىرگۈزۈش"
+
+#: ../../src/ed_editv.py:212 ../../src/plugdlg.py:834
+msgid "Error"
+msgstr "خاتالىق"
+
+#: ../../src/ed_mdlg.py:87
+msgid "Error Opening File"
+msgstr "ھۆججەت ئېچىشتا خاتالىق كۆرۈلدى"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:434
+msgid "Error Text"
+msgstr "خاتالىق تېكىستى"
+
+#: ../../src/eclib/errdlg.py:309
+msgid "Error Traceback:"
+msgstr "خاتالىق ئىنكاسى قايتۇرۇش:"
+
+#: ../../src/ed_search.py:587 ../../src/ed_search.py:750
+#, python-format
+msgid ""
+"Error in regular expression expansion.The replace action cannot be "
+"completed.\n"
+"\n"
+"Error Message: %s"
+msgstr ""
+"مۇنتىزىم ئىپادە كېڭەيتىلمىسىدە خاتالىق.ئالماشتۇرۇش مەشغۇلاتى تاماملانمىدى.\n"
+"خاتالىق ئۇچۇرى:%s"
+
+#: ../../src/dev_tool.py:260
+msgid ""
+"Error: Something unexpected happend\n"
+"Help improve Editra by clicking on Report Error\n"
+"to send the Error Traceback shown below."
+msgstr ""
+"خاتالىق:كۈتۈلمىگەن ھادىسە يۈز بەردى\n"
+"خاتالىق ئۇچۇرىنى ئەۋەتىڭ"
+
+#: ../../src/ed_main.py:1509
+#, python-format
+msgid "Error: Unable to open %s"
+msgstr "خاتالىق:%sنى ئاچالمىدىم"
+
+#: ../../src/plugdlg.py:130
+msgid "Errors"
+msgstr "خاتالىق"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:584
+msgid "Executable Commands"
+msgstr "ئىجراچان بۇيرۇقلار"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:176
+msgid "Executables"
+msgstr "ئىجراچان"
+
+#: ../../plugins/Launch/launch/launch.py:703
+msgid "Exit Code"
+msgstr "چېكىنىش كودى"
+
+#: ../../src/ed_menu.py:609
+msgid "Exit the Program"
+msgstr "پروگراممىدىن چېكىنىش"
+
+#: ../../src/eclib/errdlg.py:314
+msgid "Exit the application"
+msgstr "قوللىنىش پروگراممىسىدىن چىقىش"
+
+#: ../../src/prefdlg.py:950
+msgid "Extended Auto-Comp"
+msgstr "كېڭەيتىلگەن ئاپتوماتىك تاماملاش"
+
+#: ../../src/prefdlg.py:2057
+msgid "Extensions (space separated, no dots)"
+msgstr "كېڭەيتىش"
+
+#: ../../src/ed_menu.py:820
+msgid "F&ormat"
+msgstr "فورماتى"
+
+#: ../../src/updater.py:700
+msgid "Failed"
+msgstr "مەغلۇپ بولدى"
+
+#: ../../src/ed_print.py:120
+msgid "Failed to create print preview"
+msgstr "بېسىشنى كۆرسىتىش مەغلۇپ بولدى"
+
+#: ../../src/style_editor.py:379
+#, python-format
+msgid ""
+"Failed to delete style sheet:\n"
+"Error:\n"
+"%s"
+msgstr ""
+"ئۇسلۇب جەدۋىلىنى ئۆچۈرەلمىدى.\n"
+"خاتالىق:\n"
+"%s"
+
+#: ../../src/plugdlg.py:836
+#, python-format
+msgid "Failed to install %d plugins"
+msgstr "قېتىلما%dنى قاچىلاش مەغلۇپ بولدى"
+
+#: ../../src/prefdlg.py:654
+msgid "Failed to load Enchant"
+msgstr "Enchantنى يۈكلىيەلمىدى"
+
+#: ../../src/ed_pages.py:368
+#, python-format
+msgid ""
+"Failed to load the session: %(sessionname)s\n"
+"\n"
+"Error: %(error)s"
+msgstr ""
+"سۆھبەتنى يۈكلىيەلمىدى: %(sessionname)s\n"
+"خاتالىق:\n"
+"%(error)s"
+
+#: ../../src/ed_editv.py:210
+#, python-format
+msgid ""
+"Failed to reload %(filename)s:\n"
+"Error: %(errmsg)s"
+msgstr ""
+"ھۈججەتنى قاچىليالمىدى:%(filename)s\n"
+"خاتالىق:%(errmsg)s"
+
+#: ../../src/ed_main.py:1239
+#, python-format
+msgid "Failed to reload the file with: %(encoding)s"
+msgstr "ھۈججەتنى %(encoding)sبىلەن يۈكلىيەلمىدى"
+
+#: ../../src/ed_stc.py:1840
+#, python-format
+msgid "Failed to reload: %s"
+msgstr "%sنى يۈكلىيەلمىدى"
+
+#: ../../src/ed_mdlg.py:104
+#, python-format
+msgid ""
+"Failed to save file: %(filename)s\n"
+"\n"
+"Error:\n"
+"%(errormsg)s"
+msgstr ""
+"ھۈججەتنى ساقلىيالمىدى:%(filename)s\n"
+"خاتالىق:\n"
+"%(errormsg)s"
+
+#: ../../src/ed_menu.py:892
+msgid "Feedback"
+msgstr "ئىنكاس"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:229
+msgid "File Browser"
+msgstr "ھۆججەت كۆرگۈچ"
+
+#: ../../src/eclib/finddlg.py:724
+msgid "File Filters:"
+msgstr "ھۈججەت سۈزگۈچ"
+
+#: ../../src/prefdlg.py:476
+msgid "File History Length"
+msgstr "ھۈججەت تارىخى ئۇزۇنلۇقى"
+
+#: ../../src/ed_bookmark.py:274
+msgid "File Location"
+msgstr "ھۆججەت ئورنى"
+
+#: ../../src/ed_main.py:588
+msgid "File Not Found"
+msgstr "ھۆججەت تېپېلمىدى"
+
+#: ../../src/prefdlg.py:544
+msgid "File Settings"
+msgstr "ھۈججەت تەڭشىكى"
+
+#: ../../src/eclib/infodlg.py:115
+msgid "File Stat Failed"
+msgstr "ھۈججەت ھالىتى مەغلۇپ بولدى"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:171
+msgid "File Type"
+msgstr "ھۆججەت تىپى"
+
+#: ../../src/ed_stc.py:618
+#, python-format
+msgid "File backup performed: %s"
+msgstr "ھۈججەت زاپاسلاندى:%s"
+
+#: ../../src/ed_stc.py:1903
+msgid "File is Read Only and cannot be saved"
+msgstr "ھۈججەت پەقەت-ئوقۇش تىپلىق ساقلانمىدى"
+
+#: ../../src/ed_pages.py:210
+msgid ""
+"File is already open in an existing page.\n"
+"Do you wish to open it again?"
+msgstr ""
+"ھۈججەت ئېچىقلىق.\n"
+"قايتىدىن ئاچامسىز؟"
+
+#: ../../src/prefdlg.py:303 ../../src/eclib/filemgrdlg.py:218
+msgid "Files"
+msgstr "ھۆججەتلەر"
+
+#: ../../src/ed_search.py:1347
+#, python-format
+msgid "Files Searched: %d"
+msgstr "ئىزدەلگەن ھۈججەتلەر:%d"
+
+#: ../../src/prefdlg.py:1091
+msgid "Filetype Associations"
+msgstr "ھۈججەت تىپى قۇرۇلمىسى"
+
+#: ../../src/ed_cmdbar.py:293 ../../src/ed_search.py:149
+#: ../../src/ed_search.py:153 ../../src/ed_toolbar.py:93
+#: ../../src/eclib/finddlg.py:640 ../../src/eclib/finddlg.py:775
+#: ../../src/eclib/finddlg.py:851
+msgid "Find"
+msgstr "ئىزدەش"
+
+#: ../../src/ed_cmdbar.py:309 ../../src/eclib/finddlg.py:854
+msgid "Find All"
+msgstr "ھەممىنى ئىزدەش"
+
+#: ../../src/ed_search.py:350
+msgid "Find Count"
+msgstr "ئىزدەشنى ساناش"
+
+#: ../../src/ed_menu.py:687
+msgid "Find Next"
+msgstr "كېيىنكىسىنى ئىزدەش"
+
+#: ../../src/eclib/finddlg.py:820
+msgid "Find Options"
+msgstr "ئىزدەش تاللانمىلىرى"
+
+#: ../../src/ed_menu.py:685
+msgid "Find Previous"
+msgstr "ئالدىنقىسىنى ئىزدە"
+
+#: ../../src/ed_menu.py:689
+msgid "Find Selected"
+msgstr "تاللانغاندىن ئىزدەش"
+
+#: ../../src/ed_menu.py:680 ../../src/ed_toolbar.py:93
+msgid "Find Text"
+msgstr "تېكىست ئىزدەش"
+
+#: ../../src/ed_menu.py:682 ../../src/ed_toolbar.py:95
+msgid "Find and Replace Text"
+msgstr "تېكىسنى ئىزدەش ۋە ئالماشتۇرۇش"
+
+#: ../../src/eclib/finddlg.py:773
+msgid "Find what"
+msgstr "نىمىنى تاپماقچى"
+
+#: ../../src/ed_menu.py:681
+msgid "Find/R&eplace"
+msgstr "ئىزدەش\\ئالماشتۇرۇش"
+
+#: ../../src/ed_search.py:149 ../../src/ed_search.py:153
+#: ../../src/ed_toolbar.py:94
+msgid "Find/Replace"
+msgstr "ئىزدەش\\ئالماشتۇرۇش"
+
+#: ../../src/updater.py:697
+msgid "Finished"
+msgstr "تاماملاندى"
+
+#: ../../src/plugdlg.py:482
+msgid "Finshed downloading plugins"
+msgstr "قېتىلمىنى چۈشۈرۈش تاماملاندى"
+
+#: ../../src/util.py:361 ../../src/eclib/infodlg.py:292
+msgid "Folder"
+msgstr "قىسقۇچ"
+
+#: ../../src/style_editor.py:784
+msgid "Font"
+msgstr "فونت (خەت نۇسخىسى)"
+
+#: ../../src/style_editor.py:779
+msgid "Font Settings"
+msgstr "فونت تەڭشىكى"
+
+#: ../../src/style_editor.py:740 ../../plugins/Launch/launch/cfgdlg.py:421
+msgid "Foreground"
+msgstr "ئالدى يۈزى"
+
+#: ../../src/prefdlg.py:803
+msgid "Format"
+msgstr "فورمات"
+
+#: ../../src/ed_stc.py:1215
+msgid "Format EOL?"
+msgstr "EOLفورماتىمۇ؟"
+
+#: ../../src/ed_menu.py:808 ../../src/ed_menu.py:811 ../../src/ed_menu.py:814
+#, python-format
+msgid "Format all EOL characters to %s Mode"
+msgstr "ھەممە EOL ھەرپ-بەلگىلىرىنى %sشەكلىدە فورماتلاش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:52
+msgid "Function Definitions"
+msgstr "فۇنكسىيە ئېنىقلىمىسى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:58
+msgid "Functions"
+msgstr "فۇنكسىيە"
+
+#: ../../src/prefdlg.py:183 ../../src/prefdlg.py:682 ../../src/prefdlg.py:971
+#: ../../plugins/Launch/launch/cfgdlg.py:131
+msgid "General"
+msgstr "ئومۇمىي"
+
+#: ../../src/generator.py:289 ../../src/generator.py:676
+#: ../../src/generator.py:879
+#, python-format
+msgid "Generate %s"
+msgstr "%sيارىتىش"
+
+#: ../../src/generator.py:116
+msgid "Generate Code and Documents"
+msgstr "كود ۋە ھۈججەت يارىتىش"
+
+#: ../../src/generator.py:290 ../../src/generator.py:880
+#, python-format
+msgid "Generate a %s version of the current document"
+msgstr "ھازىرقى ھۈججەتنىڭ %sنۇسخىسىنى ياساش"
+
+#: ../../src/generator.py:677
+#, python-format
+msgid "Generate an %s version of the current document"
+msgstr "ھازىرقى ھۈججەتنىڭ %sنۇسخىسىنى ياساش"
+
+#: ../../src/generator.py:115
+msgid "Generator"
+msgstr "ھاسىللىغۇچ"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:419
+msgid "Get Info"
+msgstr "ئۇچۇرغا ئېرىشىش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Global Variables"
+msgstr "ئومۇمىيەت ئۆزگەرگۈچى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:390
+#, python-format
+msgid "Goto \"%s\""
+msgstr "\"%s\"غا بېرىش"
+
+#: ../../src/ed_cmdbar.py:471
+msgid "Goto Line"
+msgstr "قۇرغا بېرىش"
+
+#: ../../src/ed_menu.py:741
+msgid "Goto Line Number"
+msgstr "قۇر نومۇرىغا بېرىش"
+
+#: ../../src/ed_menu.py:742
+msgid "Goto Matching Brace"
+msgstr "ماس بەلگىگە بېرىش"
+
+#: ../../src/ed_menu.py:856
+msgid "Goto command buffer"
+msgstr "بۇيرۇق باففېرىغا بېرىش"
+
+#: ../../src/ed_menu.py:746
+msgid "Goto next position in history."
+msgstr "تارىختىكى كېيىنكى ئورنىغا بېرىش"
+
+#: ../../src/ed_menu.py:686
+msgid "Goto previous match"
+msgstr "ئالدىنقى ماسئورۇنغا بېرىش"
+
+#: ../../src/ed_menu.py:748
+msgid "Goto previous position in history."
+msgstr "تارىختىكى ئالدىنقى ئورنىغا بېرىش"
+
+#: ../../src/ed_menu.py:688
+msgid "Goto the next match"
+msgstr "كېيىنكى ماس كەلگەنگە بېرىش"
+
+#: ../../src/prefdlg.py:935
+msgid "Guide Column"
+msgstr "يولباشلاش ستونى"
+
+#: ../../src/ed_menu.py:835
+msgid "Highlight Brackets/Braces"
+msgstr "بەلگىلەرنى چاقنىتىش"
+
+#: ../../src/ed_menu.py:711 ../../src/prefdlg.py:940
+msgid "Highlight Caret Line"
+msgstr "قۇرنى چاقنىتىش"
+
+#: ../../src/ed_menu.py:712
+msgid "Highlight the background of the current line"
+msgstr "ھازىرقى قۇرنىڭ تەگلىكىنى چاقنىتىش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:483
+msgid "Home directory"
+msgstr "باش مۇندەرىجە"
+
+#: ../../src/ed_main.py:1572
+msgid "Homepage"
+msgstr "باش بەت"
+
+#: ../../src/prefdlg.py:1177
+msgid "Icon Theme"
+msgstr "سىنبەلگە تېمىسى"
+
+#: ../../src/prefdlg.py:1222
+msgid "Icons"
+msgstr "سىنبەلگەلەر"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Identities"
+msgstr "كىملىك"
+
+#: ../../src/ed_editv.py:502
+msgid "Ignore"
+msgstr "پەرۋا قىلماسلىق"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:59
+msgid "Imports"
+msgstr "كىرگۈزۈش"
+
+#: ../../src/ed_menu.py:777
+msgid "Indent Lines"
+msgstr "ئابزاسبېشى"
+
+#: ../../src/prefdlg.py:739
+msgid "Indent Width"
+msgstr "ئابزاسبېشى كەڭلىكى"
+
+#: ../../src/ed_menu.py:778
+msgid "Indent the selected lines"
+msgstr "تاللانغان قۇرلارنى ئابزاسبېشىلاش"
+
+#: ../../src/ed_menu.py:714 ../../src/prefdlg.py:943
+msgid "Indentation Guides"
+msgstr "باش قۇرلاش يېتەكچىسى"
+
+#: ../../src/eclib/infodlg.py:58
+msgid "Info"
+msgstr "ئۇچۇرى"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:441
+msgid "Info Text"
+msgstr "ئۇچۇر تېكىستى"
+
+#: ../../src/prefdlg.py:980
+msgid "Input Helpers"
+msgstr "ياردەمچى كىرگۈزۈش"
+
+#: ../../src/ed_menu.py:788
+msgid "Insert spaces instead of tab characters with tab key"
+msgstr "tab ھەرىپ-بەلگىسى بىلەن بوشلۇق قىستۇرۇش"
+
+#: ../../src/plugdlg.py:122 ../../src/plugdlg.py:759
+msgid "Install"
+msgstr "قاچىلاش"
+
+#: ../../src/plugdlg.py:766
+msgid ""
+"Install the plugins for all users\n"
+" **requires administrative privileges**"
+msgstr "ھەممە ئىشلەتكۈچىگە قېتىلمىنى قاچىلاش"
+
+#: ../../src/plugdlg.py:763
+msgid "Install the plugins only for the current user"
+msgstr "ھازىرقى ئىشلەتكۈچىگىلا قېتىلما قاچىلاش"
+
+#: ../../src/plugdlg.py:838
+msgid "Installation Error"
+msgstr "قاچىلاش خاتالىقى"
+
+#: ../../src/prefdlg.py:1507
+msgid "Installed Version"
+msgstr "قاچىلانغان نەشرى"
+
+#: ../../src/ed_cmdbar.py:816
+msgid "Invalid Path"
+msgstr "ئىناۋەتسىز يول"
+
+#: ../../src/ed_search.py:390
+#, python-format
+msgid "Invalid expression \"%s\""
+msgstr "ئىناۋەتسىز ئىپادىلەشلەر\"%s\""
+
+#: ../../src/ed_pages.py:967
+#, python-format
+msgid "Invalid file: %s"
+msgstr "ئىناۋەتسىز ھۈججەت:%s"
+
+#: ../../src/prefdlg.py:2171
+msgid "Inverse"
+msgstr "ئەكسى"
+
+#: ../../src/ed_menu.py:655
+msgid "Join Lines"
+msgstr "قۇرلارنى بىرىكتۈرۈش"
+
+#: ../../src/ed_menu.py:656
+msgid "Join the Selected Lines"
+msgstr "تاللانغان قۇرلارنى بىرىكتۈرۈش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:98
+msgid "Jump to Saved Path"
+msgstr "ساقلانغان يولغا تاقلاش"
+
+#: ../../src/prefdlg.py:1744
+msgid "Key"
+msgstr "ئاچقۇچ"
+
+#: ../../src/prefdlg.py:1713
+msgid "Key Profile"
+msgstr "ئاچقۇچ ئارخىپ"
+
+#: ../../src/prefdlg.py:1624
+msgid "Keybindings"
+msgstr "كۇنۇپكا باغلاش"
+
+#: ../../src/eclib/infodlg.py:182
+msgid "Kind"
+msgstr "تۈر"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Labels"
+msgstr "بەلگىلەر"
+
+#: ../../src/prefdlg.py:416
+msgid "Language"
+msgstr "تىل"
+
+#: ../../src/prefdlg.py:1513
+msgid "Latest Version"
+msgstr "ئەڭ يېڭى نەشرى"
+
+#: ../../plugins/Launch/launch/__init__.py:142
+msgid "Launch"
+msgstr "باشلاتماق"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:99
+msgid "Launch Configuration"
+msgstr "باشلاتماق تەڭشەش"
+
+#: ../../src/prefdlg.py:1227
+msgid "Layout"
+msgstr "ئورۇنلاشتۇرۇش"
+
+#: ../../src/prefdlg.py:2055
+msgid "Lexer"
+msgstr "لېكسىكىچى"
+
+#: ../../src/ed_menu.py:511
+msgid "Lexers"
+msgstr "لېكسىكىچىلار"
+
+#: ../../src/prefdlg.py:655
+msgid "Library Error"
+msgstr "ئامبار خاتالىقى"
+
+#: ../../src/ed_main.py:1574
+msgid "License: wxWindows (see COPYING.txt for full license)"
+msgstr "ئىجازەتنامە:wxWindows ( COPYING.txt دىن تولۇق ئىجازەتنامىنى كۆرۈڭ)"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:402
+msgid "Line Buffering:"
+msgstr "قۇر باففېرلاش:"
+
+#: ../../src/ed_menu.py:664
+msgid "Line Edit"
+msgstr "قۇر تەھرىرلەش"
+
+#: ../../src/ed_bookmark.py:275
+#: ../../plugins/codebrowser/codebrowser/cbconfig.py:44
+msgid "Line Number"
+msgstr "قۇر نومۇرى"
+
+#: ../../src/ed_stc.py:761
+#, python-format
+msgid "Line: %(lnum)d  Column: %(cnum)d"
+msgstr "قۇر: %(lnum)d ستون: %(cnum)d"
+
+#: ../../src/prefdlg.py:400
+msgid "Load Last Session"
+msgstr "ئاخىرقى سۆھبەتنى يۈكلەش"
+
+#: ../../src/ed_menu.py:588
+msgid "Load Profile"
+msgstr "ئارخىپ يۈكلەش"
+
+#: ../../src/ed_main.py:807 ../../src/ed_menu.py:597
+msgid "Load Session"
+msgstr "سۆھبەتنى يۈكلەش"
+
+#: ../../src/ed_main.py:740 ../../src/ed_menu.py:589
+msgid "Load a Custom Profile"
+msgstr "ئىختىيارى ئارخىپ يۈكلەش"
+
+#: ../../src/ed_menu.py:598
+msgid "Load a saved session."
+msgstr "ساقلانغان سۆھبەتنى يۈكلەش"
+
+#: ../../src/ed_menu.py:591
+msgid "Load and save custom Profiles"
+msgstr "ئىختىيارى ئارخىپ يۈكلەش ۋە ساقلاش"
+
+#: ../../src/ed_menu.py:600
+msgid "Load and save custom sessions."
+msgstr "ئىختىيارى سۆھبەت يۈكلەش ۋە ساقلاش"
+
+#: ../../src/prefdlg.py:402
+msgid "Load files from last session on startup"
+msgstr "ئاخىرقى سۆھبەتتىن باشلاشقا ھۈججەت يۈكلەش"
+
+#: ../../src/ed_main.py:746
+#, python-format
+msgid "Loaded Profile: %s"
+msgstr "قاچىلانغان ئارخىپ:%s"
+
+#: ../../src/ed_main.py:834
+#, python-format
+msgid "Loaded Session: %s"
+msgstr "قاچىلانغان سۆزبەت:%s"
+
+#: ../../src/prefdlg.py:437
+msgid "Locale Settings"
+msgstr "يەرلىك تەڭشەك"
+
+#: ../../plugins/Launch/launch/launch.py:162
+msgid "Lock File"
+msgstr "ھۈججەت قۇلۇپلاش"
+
+#: ../../src/eclib/finddlg.py:801
+msgid "Look in"
+msgstr "قاراش"
+
+#: ../../src/ed_menu.py:784
+msgid "Lowercase"
+msgstr "كىچىك يېزىلىش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+msgid "Macro Definitions"
+msgstr "ماكرو ئېنىقلاش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:53
+msgid "Macros"
+msgstr "ماكرولار"
+
+#: ../../src/prefdlg.py:1217
+msgid "Main display font for various UI components"
+msgstr "UIبۆلەكلىرىگە  كۆرسىتىش فونتى"
+
+#: ../../src/ed_menu.py:860
+msgid "Manage, Download, and Install plugins"
+msgstr "قېتىلما باشقۇرۇش،چۈشۈرۈش ۋە قاچىلاش"
+
+#: ../../src/ed_menu.py:513
+msgid "Manually Set a Lexer/Syntax"
+msgstr "لېكسىكىچى\\سىنتاكىسچى نى قولدا تەڭشەش"
+
+#: ../../src/ed_cmdbar.py:315
+msgid "Match Case"
+msgstr "چوڭ يېزىلىشى ماس كەلگەن"
+
+#: ../../src/eclib/finddlg.py:822
+msgid "Match case"
+msgstr "چوڭ يېزىلىشى ماس كەلگەن"
+
+#: ../../src/ed_main.py:1435 ../../src/ed_menu.py:737
+msgid "Maximize Editor"
+msgstr "تەھرىرلىگۈچنى چوڭايتىش"
+
+#: ../../src/prefdlg.py:1726
+msgid "Menu"
+msgstr "تىزىملىك"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:133
+msgid "Misc"
+msgstr "ئارىلاش"
+
+#: ../../src/ed_pages.py:391
+msgid "Missing session files"
+msgstr "يوقالغان سۆھبەت ھۈججىتى"
+
+#: ../../src/ed_stc.py:1212
+msgid ""
+"Mixed EOL characters detected.\n"
+"\n"
+"Would you like to format them to all be the same?"
+msgstr "ئەبجەش EOL ھەرپ-بەلگىلىرى بايقالدى"
+
+#: ../../src/eclib/infodlg.py:163 ../../src/eclib/infodlg.py:195
+msgid "Modified"
+msgstr "ئۆزگەرتىلگەن"
+
+#: ../../src/prefdlg.py:1736
+msgid "Modifier 1"
+msgstr "ئۆزگەرتكۈچ1"
+
+#: ../../src/prefdlg.py:1740
+msgid "Modifier 2"
+msgstr "ئۆزگەرتكۈچ2"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:58
+msgid "Modules"
+msgstr "بۆلەكلەر"
+
+#: ../../src/ed_menu.py:662
+msgid "Move Current Line Down"
+msgstr "ھازىرقى قۇرنى تۆۋەنگە يۆتكەش"
+
+#: ../../src/ed_menu.py:659
+msgid "Move Current Line Up"
+msgstr "ھازىرقى قۇرنى يۇقۇرىغا يۆتكەش"
+
+#: ../../src/ed_editv.py:266
+msgid "Move Tab to New Window"
+msgstr "بەتكۈشنى يېڭى كۆزنەككە يۆتكەش"
+
+#: ../../src/ed_menu.py:743
+msgid "Move caret matching brace"
+msgstr "قىستۇرۇش بەلگىسىنى ماس كەلگەن بەلگىگە يۆتكەش"
+
+#: ../../src/ed_menu.py:663
+msgid "Move the current line down"
+msgstr "ھازىرقى قۇرنى تۆۋەنگە يۆتكەش"
+
+#: ../../src/ed_menu.py:660
+msgid "Move the current line up"
+msgstr "ھازىرقى قۇرنى يۇقۇرىغا يۆتكەش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:59
+msgid "Move to Recycle Bin"
+msgstr "ئەخلەتخانىغا يۆتكەش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:61
+msgid "Move to Trash"
+msgstr "ئەخلەتخانىغا يۆتكەش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+msgid "Namespaces"
+msgstr "ئات بوشلۇقى"
+
+#: ../../src/prefdlg.py:189
+msgid "Network"
+msgstr "تور"
+
+#: ../../src/ed_toolbar.py:77 ../../src/prefdlg.py:1716
+#: ../../src/style_editor.py:193
+msgid "New"
+msgstr "يېڭى"
+
+#: ../../src/ed_menu.py:558
+msgid "New &Window"
+msgstr "يېڭى كۆزنەك &"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:423
+msgid "New File"
+msgstr "يېڭى ھۆججەت"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:422
+msgid "New Folder"
+msgstr "يېڭى قىسقۇچ"
+
+#: ../../src/ed_menu.py:641
+msgid "New Line After"
+msgstr "ئاخىرىغا يېڭى قۇر"
+
+#: ../../src/ed_menu.py:643
+msgid "New Line Before"
+msgstr "ئالدىغا يېڭى قۇر"
+
+#: ../../src/prefdlg.py:1915
+msgid "New Profile"
+msgstr "يېڭى ئارخىپ"
+
+#: ../../src/style_editor.py:363
+msgid "New Style Sheet"
+msgstr "يېڭى ئۇسلۇب جەدۋىلى"
+
+#: ../../src/ed_editv.py:265
+msgid "New Tab"
+msgstr "يېڭى بەتكۈچ"
+
+#: ../../src/ed_cmdbar.py:295
+msgid "Next"
+msgstr "كېيىنكى"
+
+#: ../../src/ed_menu.py:750
+msgid "Next Bookmark"
+msgstr "كېيىنكى بەتكۈش"
+
+#: ../../src/ed_menu.py:745
+msgid "Next Position"
+msgstr "كېيىنكى ئورنى"
+
+#: ../../src/plugdlg.py:370 ../../src/plugin.py:721
+msgid "No Description Available"
+msgstr "چۈشەندۈرۈش بېرىلمىگەن"
+
+#: ../../src/ed_editv.py:486
+msgid "No Suggestions"
+msgstr "تەكلىپ يوق"
+
+#: ../../src/ed_pages.py:977
+msgid "No Valid Files to Open"
+msgstr "ئىناۋەتلىك ھۈججەت يوق"
+
+#: ../../src/prefdlg.py:1809
+msgid "None"
+msgstr "يوق"
+
+#: ../../src/prefdlg.py:2172
+msgid "Normal"
+msgstr "نورمال"
+
+#: ../../src/ed_search.py:661
+msgid "Not implemented"
+msgstr "ئەمەلىيلەشتۈرۈلمىگەن"
+
+#: ../../src/style_editor.py:84
+msgid "Ok"
+msgstr "جەزملەش"
+
+#: ../../src/ed_glob.py:394 ../../src/ed_mdlg.py:137
+msgid "Old Machintosh (\\r)"
+msgstr "كونا مايكىنتاش"
+
+#: ../../src/ed_menu.py:807 ../../src/ed_menu.py:809 ../../src/prefdlg.py:760
+msgid "Old Macintosh (\\r)"
+msgstr "كونا مايكىنتاش"
+
+#: ../../src/ed_menu.py:887
+msgid "Online Documentation..."
+msgstr "توردىكى ھۈججەتلەر..."
+
+#: ../../src/ed_menu.py:888
+msgid "Online project documentation and help guides"
+msgstr "توردىكى ئىشتۈرى ھۈججىتى ۋە ياردەم يېتەكچىسى"
+
+#: ../../src/ed_menu.py:561 ../../src/ed_shelf.py:178
+#: ../../src/ed_toolbar.py:78
+msgid "Open"
+msgstr "ئېچىش"
+
+#: ../../src/ed_menu.py:563
+msgid "Open &Recent"
+msgstr "يېقىنقىنى ئېچىش&"
+
+#: ../../plugins/PyShell/PyShell/__init__.py:67
+msgid "Open A Python Shell"
+msgstr "پىتون شېل نى ئېچىش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:93
+msgid "Open Code Browser Sidepanel"
+msgstr "كود كۆرگۈچ يانتاختىسىنى ئېچىش"
+
+#: ../../src/ed_pages.py:988
+msgid "Open Directory?"
+msgstr "مۇندەرىجىنى ئاچامسىز؟"
+
+#: ../../src/eclib/finddlg.py:721
+msgid "Open Documents"
+msgstr "ھۆججەت ئېچىش"
+
+#: ../../src/ed_pages.py:212
+msgid "Open File"
+msgstr "ھۆججەت ئېچىش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:230
+msgid "Open File Browser Sidepanel"
+msgstr "ھۆججەت كۆرگۈچ يانتاختىسىنى ئېچىش"
+
+#: ../../src/prefdlg.py:522
+msgid "Open files in new windows by default"
+msgstr "ھۈججەتنى يېڭى كۆزنەكتە كۆڭۈلدىكى بويىنچە ئېچىش"
+
+#: ../../src/ed_menu.py:684
+msgid "Open the Quick Find Bar"
+msgstr "تېز ئىزدەش ستونى ئېچىش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:411
+msgid "Open with "
+msgstr "بىلەن ئېچىش "
+
+#: ../../src/ed_pages.py:1008
+#, python-format
+msgid "Opened file: %s"
+msgstr "ئېچىلغان ھۈججەتلەر:%s"
+
+#: ../../src/ed_main.py:1506
+#, python-format
+msgid "Opening %s"
+msgstr "%s نى ئېچىۋاتىدۇ"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:132
+msgid "Output"
+msgstr "چىقىرىش"
+
+#: ../../src/ed_menu.py:630
+msgid "P&aste After"
+msgstr "كەينىگە چاپلاش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:54
+msgid "Packages"
+msgstr "بوغچىلار"
+
+#: ../../src/ed_menu.py:603
+msgid "Page Set&up"
+msgstr "بەت لاھىيىلەش"
+
+#: ../../src/ed_menu.py:735
+msgid "Pane Navigator"
+msgstr "پېين يولباشلىغۇچ"
+
+#: ../../src/prefdlg.py:1407
+msgid "Password"
+msgstr "پارول"
+
+#: ../../src/ed_editv.py:458 ../../src/ed_toolbar.py:90
+msgid "Paste"
+msgstr "چاپلاش"
+
+#: ../../src/ed_menu.py:629 ../../src/ed_toolbar.py:91
+msgid "Paste Text from Clipboard to File"
+msgstr "تېكىستنى تاختىدىن ھۈججەتكە چاپلاش"
+
+#: ../../src/ed_menu.py:631
+msgid "Paste Text from Clipboard to File after the cursor"
+msgstr "ھۈججەتىكى نۇربەلگىنىڭ ئارقىغا تاختىدىن چاپلاش"
+
+#: ../../src/prefdlg.py:586 ../../src/prefdlg.py:587
+msgid "Path to libenchant"
+msgstr "libenchantنىڭ يولى"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:106
+msgid "Pathmarks"
+msgstr "يولبەلگىسى"
+
+#: ../../src/eclib/infodlg.py:197
+msgid "Permissions"
+msgstr "ئىجازەتلەر"
+
+#: ../../src/perspective.py:276
+msgid "Perspective Name"
+msgstr "كۆرۈنۈش نامى"
+
+#: ../../src/perspective.py:293
+msgid "Perspective to Delete"
+msgstr "كۆرۈنۈشنى ئۆچۈرۈش"
+
+#: ../../src/ed_main.py:123
+msgid "Perspectives"
+msgstr "كۆرۈنۈشلەر"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:427
+msgid "Plain Text"
+msgstr "ساپ تېكىست"
+
+#: ../../src/ed_main.py:1573
+msgid "Platform Info"
+msgstr "مەشغۇلات سۇپىسى نامى"
+
+#: ../../src/Editra.py:938
+msgid "Please check the preferences dialog to check your preferences"
+msgstr "تاللىشىڭىزنى تەكشۈرۈش ئۈچۈن تاللاشلار دىئالوگىنى تەكشۇرۇڭ"
+
+#: ../../src/Editra.py:1147
+msgid "Please check the preferences dialog to verify your preferences"
+msgstr "تاللىشىڭىزنى جەزىملەش ئۈچۈن تاللاشلار دىئالوگىنى تەكشۇرۇڭ"
+
+#: ../../src/ed_main.py:1086 ../../src/ed_menu.py:859
+msgid "Plugin Manager"
+msgstr "قېتىلما باشقۇرغۇچ"
+
+#: ../../src/prefdlg.py:1392
+msgid "Port Number"
+msgstr "پورت نومۇرى"
+
+#: ../../src/ed_menu.py:692
+msgid "Pr&eferences"
+msgstr "تاللاشلار"
+
+#: ../../src/prefdlg.py:497
+msgid "Prefered Encoding"
+msgstr "ياقتۇرغىنىچە كودلاش"
+
+#: ../../src/prefdlg.py:108
+msgid "Preferences - Editra"
+msgstr "تاللاشلار-ئېدىترا"
+
+#: ../../src/style_editor.py:850
+msgid "Preview File"
+msgstr "ھۈججەتنى ئالدىن كۆرۈش"
+
+#: ../../src/ed_menu.py:606
+msgid "Preview Printout"
+msgstr "بېسىپ چىقىرىشنى ئالدىن كۆرۈش"
+
+#: ../../src/ed_cmdbar.py:303
+msgid "Previous"
+msgstr "ئالدىنقىسى"
+
+#: ../../src/ed_menu.py:752
+msgid "Previous Bookmark"
+msgstr "ئالدىنقى بەتكۈش"
+
+#: ../../src/ed_menu.py:747
+msgid "Previous Position"
+msgstr "ئورۇننى ئالدىن كۆرۈش"
+
+#: ../../src/prefdlg.py:819
+msgid "Primary Font"
+msgstr "بىرىنجى فونت"
+
+#: ../../src/ed_toolbar.py:80
+msgid "Print"
+msgstr "بېسىش"
+
+#: ../../src/ed_menu.py:607 ../../src/ed_toolbar.py:81
+msgid "Print Current File"
+msgstr "ھازىرقى ھۈججەتنى بېسىش"
+
+#: ../../src/ed_print.py:121
+msgid "Print Error"
+msgstr "‏‏بېسىش خاتالىقى"
+
+#: ../../src/ed_menu.py:605
+msgid "Print Pre&view"
+msgstr "بېسىشنى ئالدىن كۆرۈش"
+
+#: ../../src/ed_print.py:113
+msgid "Print Preview"
+msgstr "بېسىشنى ئالدىن كۆرۈش"
+
+#: ../../src/ed_print.py:139
+msgid "Printer Error"
+msgstr "پرىنتېر خاتالىقى"
+
+#: ../../src/prefdlg.py:390
+msgid "Printer Mode"
+msgstr "پىرىنتېر شەكلى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+msgid "Procedure Definitions"
+msgstr "جەريان ئېنىقلىمىسى"
+
+#: ../../src/ed_main.py:721 ../../src/ed_main.py:742 ../../src/ed_menu.py:590
+msgid "Profile"
+msgstr "ئارخىپ"
+
+#: ../../src/ed_main.py:726
+#, python-format
+msgid "Profile Saved as: %s"
+msgstr "ئارخىپنى پەرىقلىق ساقلاش:%s"
+
+#: ../../src/Editra.py:940 ../../src/Editra.py:1149
+msgid "Profile Updated"
+msgstr "ئارخىپنى يېڭىلاش"
+
+#: ../../plugins/Launch/launch/launch.py:156
+msgid "Program Executable Command"
+msgstr "پروگرامما ئىجراچان بۇيرۇقى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+msgid "Programs"
+msgstr "پروگراممىلار"
+
+#: ../../src/ed_menu.py:884
+msgid "Project Homepage..."
+msgstr "ئىشتۈرى باشبېتى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:55
+msgid "Protocols"
+msgstr "كېلىشىم"
+
+#: ../../src/prefdlg.py:1378
+msgid "Proxy Settings"
+msgstr "ۋاكالەتچى تەڭشىكى"
+
+#: ../../src/prefdlg.py:1388
+msgid "Proxy URL"
+msgstr "ۋاكالەتچى URL"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:58
+msgid "Public Functions"
+msgstr "ئومۇمىي فونكىسىيە"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:59
+msgid "Public Subroutines"
+msgstr "ئومۇنىي قىسمى فونكىتسىيە"
+
+#: ../../src/ed_shelf.py:99
+msgid "Put an item on the Shelf"
+msgstr "تۈرلەرنى تەكچەكە قويۇش"
+
+#: ../../src/updater.py:690
+#, python-format
+msgid "Rate: %.2f Kb/s"
+msgstr "سۈرئىتى:%.2f Kb/s"
+
+#: ../../plugins/Launch/launch/__init__.py:100
+msgid "Re-run the last run program"
+msgstr "ئاخىرقى پروگراممىنى قايتا باشلاش"
+
+#: ../../src/ed_stc.py:1904
+msgid "Read Only"
+msgstr "پەقەت-ئوقۇش خاسلىقى"
+
+#: ../../src/ed_search.py:848
+msgid "Recent Searches"
+msgstr "يېقىنقى ئىزدەشلەر"
+
+#: ../../src/ed_menu.py:564
+msgid "Recently Opened Files"
+msgstr "يېقىنقى ئېچىلغان ھۈججەتلەر"
+
+#: ../../src/ed_stc.py:1509
+msgid "Recording Finished"
+msgstr "خاتىرىلەش تاماملاندى"
+
+#: ../../src/ed_stc.py:1496
+msgid "Recording Macro"
+msgstr "ماكرو خاتىرىلەش"
+
+#: ../../src/ed_editv.py:454 ../../src/ed_menu.py:622
+#: ../../src/ed_toolbar.py:84
+msgid "Redo"
+msgstr "قايتىلاش"
+
+#: ../../src/ed_menu.py:622 ../../src/ed_toolbar.py:84
+msgid "Redo Last Undo"
+msgstr "ئاخىرقى يېنىۋېلىشنى قايتىلاش"
+
+#: ../../src/ed_search.py:391
+msgid "Regex Compile Error"
+msgstr "Regex Compileخاتالىقى"
+
+#: ../../src/ed_cmdbar.py:326
+msgid "Regular Expression"
+msgstr "مۇنتىزىم ئىپادە"
+
+#: ../../src/eclib/finddlg.py:824
+msgid "Regular expression"
+msgstr "مۇنتىزىم ئىپادە"
+
+#: ../../src/ed_editv.py:572
+msgid "Reload File?"
+msgstr "ھۈججەت يۈكلەمسىز؟"
+
+#: ../../src/ed_menu.py:581
+msgid "Reload the file with a specified encoding"
+msgstr "ھۈججەتنى ئالاھىدە كودلاش بويىنچە يۈكلەش"
+
+#: ../../src/ed_main.py:1227
+msgid "Reload with Encoding"
+msgstr "كودلاپ يۈكلەش"
+
+#: ../../src/ed_menu.py:580
+msgid "Reload with Encoding..."
+msgstr "كودلاپ يۈكلەش...."
+
+#: ../../src/prefdlg.py:525
+msgid "Remember File Position"
+msgstr "ھۈججەت ئورنىنى ئەستە تۇتۇش"
+
+#: ../../src/prefdlg.py:1207
+msgid "Remember Window Position on Exit"
+msgstr "چىققاندا كۆزنەك ئورنىنى ئەستە تۇتۇش"
+
+#: ../../src/prefdlg.py:1204
+msgid "Remember Window Size on Exit"
+msgstr "چىققاندا كۆزنەك چوڭلىقىنى ئەستە تۇتۇش"
+
+#: ../../src/style_editor.py:198
+msgid "Remove"
+msgstr "چىقىرىۋىتىش"
+
+#: ../../src/ed_menu.py:669
+msgid "Remove All Bookmarks"
+msgstr "بەتكۈشلەرنى ئۆچۈرۈش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:100
+msgid "Remove Saved Path"
+msgstr "ساقلانغان يولنى ئۆچۈرۈش"
+
+#: ../../src/style_editor.py:209
+msgid "Remove Style"
+msgstr "ئۇسلۇب ئۆچۈرۈش"
+
+#: ../../src/ed_menu.py:670
+msgid "Remove all bookmarks from the current document"
+msgstr "ھازىرقى ھۈججەتتىن بەتكۈشلەرنى ئۆچۈرۈش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:206
+msgid "Remove selection from list"
+msgstr "تاللانمىنى تىزىملىكتىن ئۆچۈرۈش"
+
+#: ../../src/ed_menu.py:801
+msgid "Remove trailing whitespace"
+msgstr "ئاخىرقى بوشلۇقنى ئۆۈرۈش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:420
+msgid "Rename"
+msgstr "نامىنى ئۆزگەرتىش"
+
+#: ../../src/eclib/finddlg.py:643 ../../src/eclib/finddlg.py:852
+msgid "Replace"
+msgstr "ئالماشتۇرۇش"
+
+#: ../../src/eclib/finddlg.py:855
+msgid "Replace All"
+msgstr "ھەممىنى ئالماشتۇرۇش"
+
+#: ../../src/ed_search.py:590 ../../src/ed_search.py:753
+msgid "Replace Error"
+msgstr "خاتالىقنى ئالماشتۇرۇش"
+
+#: ../../src/eclib/finddlg.py:786
+msgid "Replace with"
+msgstr "ئالماشتۇرۇش"
+
+#: ../../src/eclib/errdlg.py:315
+msgid "Report Error"
+msgstr "خاتالىقنى مەلۇم قىلىش"
+
+#: ../../src/ed_editv.py:552
+msgid "Resave File?"
+msgstr "ھۈججەتنى ساقلامسىز؟"
+
+#: ../../src/ed_main.py:1437
+msgid "Restore Editor"
+msgstr "تەھرىرلىگۈچنى ئەسلىگە كەلتۈرۈش"
+
+#: ../../src/plugdlg.py:671
+msgid "Retrieving Plugin List"
+msgstr "قېتىلما تىزىملىكى ئىزدەش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:412
+msgid "Reveal in "
+msgstr "چۈشەنچە "
+
+#: ../../src/ed_menu.py:579
+msgid "Revert file to last save point"
+msgstr "ئاخىرقى ساقلىغان نۇقتىدىن ھۈججەتنى ئەسلىگە قايتۇرۈش"
+
+#: ../../src/prefdlg.py:1108 ../../src/prefdlg.py:1772
+msgid "Revert to Default"
+msgstr "كۆڭۈلدىكىگە ئۆزگەرتىش"
+
+#: ../../src/ed_menu.py:578
+msgid "Revert to Saved"
+msgstr "سالاندىغا  ئۆزگەرتىش"
+
+#: ../../plugins/Launch/launch/__init__.py:93
+#: ../../plugins/Launch/launch/launch.py:179
+#: ../../plugins/Launch/launch/launch.py:543
+msgid "Run"
+msgstr "ئىجرا قىلىش"
+
+#: ../../plugins/Launch/launch/__init__.py:98
+msgid "Run last executed"
+msgstr "ئاخىرقى ئىجراچاننى ئىجرا قىلىش"
+
+#: ../../plugins/Launch/launch/__init__.py:74
+msgid "Run script from current buffer"
+msgstr "ھازىرقى باففېردىن ئىجرا قىلىش"
+
+#: ../../plugins/Launch/launch/__init__.py:95
+msgid "Run the file associated with the current buffer in Launch"
+msgstr "باشلاشتىكى ھازىرقى باففېردىكى ھۈججەت باغلانمىسىنى ئىجرا قىلىش"
+
+#: ../../src/ed_session.py:181 ../../src/ed_toolbar.py:79
+#: ../../src/style_editor.py:88
+msgid "Save"
+msgstr "ساقلاش&"
+
+#: ../../src/ed_editv.py:268
+#, python-format
+msgid "Save \"%s\""
+msgstr "\"%s\"ساقلاش"
+
+#: ../../src/ed_menu.py:574
+msgid "Save &As"
+msgstr "پەرىقلىق ساقلاش"
+
+#: ../../src/ed_menu.py:575
+msgid "Save All"
+msgstr "ھەممىنى ساقلاش"
+
+#: ../../src/ed_menu.py:574 ../../src/ed_session.py:183
+#: ../../src/eclib/filemgrdlg.py:121
+msgid "Save As"
+msgstr "پەرىقلىق ساقلاش"
+
+#: ../../src/ed_editv.py:608
+msgid "Save Changes?"
+msgstr "ئۆزگەرتكەننى ساقلامسىز؟"
+
+#: ../../src/ed_menu.py:573 ../../src/ed_toolbar.py:79
+msgid "Save Current File"
+msgstr "ھازىرقى ھۈججەتنى ساقلاش"
+
+#: ../../src/ed_menu.py:587
+msgid "Save Current Settings to a New Profile"
+msgstr "يېڭى ئارخىپقا ھازىرقى تەڭشەكنى ساقلاش"
+
+#: ../../src/perspective.py:82
+msgid "Save Current View"
+msgstr "نۆۋەتتىكى كۆرۈنۈشنى ساقلاش"
+
+#: ../../src/ed_mdlg.py:106
+msgid "Save Error"
+msgstr "ساقلاش خاتالىقى"
+
+#: ../../src/perspective.py:277
+msgid "Save Perspective"
+msgstr "كۆرۈنۈشنى ساقلاش"
+
+#: ../../src/ed_menu.py:586
+msgid "Save Profile"
+msgstr "ئارخىپنى ساقلاش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:97
+msgid "Save Selected Paths"
+msgstr "تاللانغان يولنى ساقلاش"
+
+#: ../../src/ed_main.py:775 ../../src/ed_menu.py:595
+msgid "Save Session"
+msgstr "سۆھبەتنى ساقلاش"
+
+#: ../../src/style_editor.py:147 ../../src/style_editor.py:406
+msgid "Save Styles"
+msgstr "ئۇسلۇبنى ساقلاش"
+
+#: ../../src/ed_menu.py:576
+msgid "Save all open pages"
+msgstr "ئېچىقلىق بەتلەرنى ساقلاش"
+
+#: ../../src/ed_menu.py:596
+msgid "Save the current session."
+msgstr "ھازىرقى سۆزبەتنى ساقلاش"
+
+#: ../../src/perspective.py:83
+msgid "Save the current window layout"
+msgstr "ھازىرقى ھۈججەت ئورۇنلاشتۇرۇشىنى ساقلاش"
+
+#: ../../src/ed_main.py:703
+#, python-format
+msgid "Saved File As: %s"
+msgstr "ھۈججەتنى پەرىقلىق ساقلاش:%s"
+
+#: ../../src/ed_main.py:629
+#, python-format
+msgid "Saved File: %s"
+msgstr "سالانغان ھۈججەت:%s"
+
+#: ../../src/ed_search.py:1346
+#, python-format
+msgid "Search Complete: %d matching lines where found."
+msgstr "ئىزدەش تاماملاندى:%dماس كەلگەن قۇر بايقالدى"
+
+#: ../../src/eclib/finddlg.py:825
+msgid "Search Recursively"
+msgstr "قەدەملەپ ئىزدەش"
+
+#: ../../src/ed_search.py:1320
+msgid "Search Started"
+msgstr "ئىزدەش باشلاندى"
+
+#: ../../src/ed_search.py:1339
+msgid "Search complete"
+msgstr "ئىزدەش تاماملاندى"
+
+#: ../../src/ed_menu.py:690
+msgid "Search for the currently selected phrase"
+msgstr "ھازىرقى تاللانغان ئابزاستىن ئىزدەش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:417
+msgid "Search in directory"
+msgstr "مۇندەرىجىدىن ئىزدەش"
+
+#: ../../src/ed_search.py:449
+msgid "Search wrapped to bottom"
+msgstr "تۆۋەنكى بۆلەككىچە ئىزدەش"
+
+#: ../../src/ed_search.py:444
+msgid "Search wrapped to top"
+msgstr "يۇقارقى بۆلەككىچە ئىزدەش"
+
+#: ../../src/ed_search.py:1430
+#, python-format
+msgid "Searching in: %s"
+msgstr "%s:دىن ئىزدەش"
+
+#: ../../src/prefdlg.py:822
+msgid "Secondary Font"
+msgstr "ئىككىلەمچى فونت"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
+msgid "Sections"
+msgstr "دائىرىلەر"
+
+#: ../../src/ed_menu.py:635
+msgid "Select &All"
+msgstr "ھەممىنى تاللاش&"
+
+#: ../../src/ed_editv.py:463
+msgid "Select All"
+msgstr "ھەممىنى تاللاش"
+
+#: ../../src/ed_menu.py:636
+msgid "Select All Text in Document"
+msgstr "ھۈججەتتىكى ھەممە تېكىستنى تاللاش"
+
+#: ../../src/ed_main.py:1226
+msgid "Select an encoding to reload the file with"
+msgstr "ھۈججەتنى قاچىلايدىغان كودلاشنى تاللاش"
+
+#: ../../src/plugdlg.py:497
+msgid "Select plugins to download"
+msgstr "چۈشۈرۈدىغان قېتىلمىنى تاللاش"
+
+#: ../../src/eclib/finddlg.py:720
+msgid "Selected Text"
+msgstr "تاللانغان تېكسىت"
+
+#: ../../src/ed_menu.py:893
+msgid "Send bug reports and suggestions"
+msgstr "يوچۇق ئۇچۇرى ۋە تەكلىپ ئەۋەتىش"
+
+#: ../../src/ed_pages.py:367
+msgid "Session Load Error"
+msgstr "سۆھبەت قاچىليالمىدى"
+
+#: ../../src/ed_menu.py:857
+msgid "Session Manager"
+msgstr "سۆھبەت باشقۇرۇش"
+
+#: ../../src/ed_main.py:775
+msgid "Session Name"
+msgstr "سۆھبەت نامى"
+
+#: ../../src/ed_main.py:784
+#, python-format
+msgid "Session Saved as: %s"
+msgstr "سۆھبەتنى پەرىقلىق ساقلاش:%s"
+
+#: ../../src/ed_pages.py:372
+msgid "Session file is empty."
+msgstr "سۆھبەت ھۈججىتى قۇرۇق"
+
+#: ../../src/ed_main.py:806
+#, python-format
+msgid ""
+"Session to Load:\n"
+"Current Session: '%s'"
+msgstr ""
+"سۆزبەت يۈكلەش:\n"
+"ھازىرقى سۆھبەت:'%s'"
+
+#: ../../src/ed_session.py:202
+msgid "Session:"
+msgstr "سۆھبەت"
+
+#: ../../src/ed_menu.py:599
+msgid "Sessions"
+msgstr "سۆھبەتلەر"
+
+#: ../../src/eclib/ecpickers.py:80
+msgid "Set Font"
+msgstr "فونت تەڭشەش"
+
+#: ../../src/style_editor.py:853
+msgid "Set the preview file type"
+msgstr "ئالدىن كۆرۈش ھۈججەت تىپىنى تەڭشەش"
+
+#: ../../src/prefdlg.py:796
+msgid ""
+"Sets a secondary font used for special regions when syntax highlighting is "
+"in use"
+msgstr "سىنتاكىس چاقنىتىلغان بۆلەككە ئىككىلەمچى فونت تەڭشەش"
+
+#: ../../src/prefdlg.py:791
+msgid "Sets the main/default font of the document"
+msgstr "ھۈججەتنىڭ باش\\كۆڭۈلدىكى فونتىنى تەڭشەش"
+
+#: ../../plugins/Launch/launch/launch.py:150
+msgid "Settings"
+msgstr "تەڭشەك"
+
+#: ../../src/ed_shelf.py:78 ../../src/ed_shelf.py:98
+msgid "Shelf"
+msgstr "كىتاب تەكچىسى"
+
+#: ../../src/ed_menu.py:677
+msgid "Show Calltip"
+msgstr "كولتىپنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:718 ../../src/ed_menu.py:719 ../../src/prefdlg.py:772
+msgid "Show EOL Markers"
+msgstr "EOLبەلگىسىنى كۆرسىتىش"
+
+#: ../../src/ed_menu.py:716
+msgid "Show Edge Guide"
+msgstr "بەتيېنى يېتەكچىسىنى كۆرسۈتۈش"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:215
+msgid "Show Hidden Files"
+msgstr "يوشۇرۇن ھۆججەتلەرنى كۆرسۈتۈش"
+
+#: ../../src/prefdlg.py:1188
+msgid "Show Icons on Tabs"
+msgstr "سىنبەلگە ۋە خەتكۈشلەرنى كۆرسىتىش"
+
+#: ../../src/ed_menu.py:715
+msgid "Show Indentation Guides"
+msgstr "ئابزاسبېشىنى كۆرسىتىش"
+
+#: ../../src/ed_menu.py:721
+msgid "Show Line Number Margin"
+msgstr "قۇر نومۇرى مارگىنىنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:720 ../../src/prefdlg.py:774
+msgid "Show Line Numbers"
+msgstr "قۇر نومۇرىنى كۆرسىتىش"
+
+#: ../../src/ed_shelf.py:484
+msgid "Show Shelf"
+msgstr "تەكچە نى كۆرسىتىش"
+
+#: ../../src/prefdlg.py:404
+msgid "Show Splash Screen"
+msgstr "ئېچىلىش ئېكرانىنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:756 ../../src/prefdlg.py:1209
+msgid "Show Status Bar"
+msgstr "ھالەت سىتونىنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:758 ../../src/prefdlg.py:1211
+msgid "Show Toolbar"
+msgstr "قورال ستونىنى كۆرسىتىش"
+
+#: ../../src/ed_menu.py:722 ../../src/prefdlg.py:776
+msgid "Show Whitespace"
+msgstr "بوشلۇقنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:723
+msgid "Show Whitespace Markers"
+msgstr "بوشلۇق بەلگىسىنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:678
+msgid "Show a calltip for the current word."
+msgstr "ھازىرقى سۆزنىڭ كولتىپىنى كۆرسىتىش"
+
+#: ../../src/ed_menu.py:676
+msgid "Show autocompletion hints."
+msgstr "ئاپتوماتىك تاماملاش ئەسكەرتمىسىنى كۆرسۈتۈش"
+
+#: ../../src/ed_log.py:134
+msgid "Show output from"
+msgstr "چىقىرىشنى كۆرسۈتۈش"
+
+#: ../../src/ed_shelf.py:486
+msgid "Show the Shelf"
+msgstr "تەكچەنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:717
+msgid "Show the edge column guide"
+msgstr "بەتيېنى سىتون يېتەكچىسىنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:858
+msgid "Show the session manager bar"
+msgstr "سۆزبەت باشقۇرۇش سىتونىنى كۆرسۈتۈش"
+
+#: ../../src/style_editor.py:800 ../../src/eclib/infodlg.py:189
+msgid "Size"
+msgstr "چوڭلۇقى"
+
+#: ../../src/ed_pages.py:392
+msgid "Some files in saved session could not be found on disk:\n"
+msgstr "دېسكىدا ساقلانغان سۆھبەتتىكى بەزى ھۈججەتلەرنى تاپالمىدىم:\n"
+
+#: ../../src/style_editor.py:141
+msgid "Some styles have been changed would you like to save before exiting?"
+msgstr "بەزى ئۇسلۇبلار ئۆزگەلتىلدى،چىقىشتىن بۇرۇن ساقلامسىز؟"
+
+#: ../../src/ed_search.py:660
+msgid "Sorry will be ready for future version"
+msgstr "كەچۈرۈڭ كېيىنكى نەشرىدە تەييارلايمىز"
+
+#: ../../plugins/codebrowser/codebrowser/cbconfig.py:40
+msgid "Sorting"
+msgstr "تەرتىپلەش"
+
+#: ../../src/ed_menu.py:796
+msgid "Spaces to Tabs"
+msgstr "بوشلۇقنى Tabكە"
+
+#: ../../src/prefdlg.py:558
+msgid "Spell Checking"
+msgstr "ئىملا تەكشۈرۈش"
+
+#: ../../src/ed_editv.py:509
+msgid "Spelling"
+msgstr "ئىملا"
+
+#: ../../src/ed_toolbar.py:77
+msgid "Start a New File"
+msgstr "يېڭى ھۈججەتنى باشلاش"
+
+#: ../../src/ed_menu.py:557
+msgid "Start a new file in a new tab"
+msgstr "يېڭى ھۈججەتنى يېڭى بەتكۈشتە باشلاش"
+
+#: ../../src/ed_menu.py:559
+msgid "Start a new file in a new window"
+msgstr "يېڭى ھۈججەتنى يېڭى كۆزنەكتە باشلاش"
+
+#: ../../src/prefdlg.py:962
+msgid "Start in Normal Mode"
+msgstr "نورمال شەكلىدە باشلاش"
+
+#: ../../src/prefdlg.py:302
+msgid "Startup"
+msgstr "باشلاش&"
+
+#: ../../src/prefdlg.py:426
+msgid "Startup Settings"
+msgstr "تەڭشەكنى باشلاش"
+
+#: ../../src/prefdlg.py:1516 ../../src/updater.py:291
+msgid "Status Unknown"
+msgstr "ھالىتى ئېنىقسىز"
+
+#: ../../src/ed_menu.py:861 ../../src/style_editor.py:70
+msgid "Style Editor"
+msgstr "ئۇسلۇب تەھرىرلىگۈچ"
+
+#: ../../src/style_editor.py:721
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
+msgid "Style Tags"
+msgstr "ئۇسلۇب بەلگىسى"
+
+#: ../../src/style_editor.py:202
+msgid "Style Theme"
+msgstr "ئۇسلۇب تېنىسى"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:57
+msgid "Subroutine Declarations"
+msgstr "تارماق فونكىتسىيە بېكىتىش"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:56
+msgid "Subroutines"
+msgstr "تارماق فۇنكسىيىلەر"
+
+#: ../../src/plugdlg.py:827
+msgid "Successfully Installed Plugins"
+msgstr "قېتىلما مۇۋەپپەقىيەتلىق قاچىلاندى"
+
+#: ../../src/ed_menu.py:526 ../../src/syntax/syntax.py:315
+#, python-format
+msgid "Switch Lexer to %s"
+msgstr "لېكسىكاچىنى %sغا ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:838 ../../src/prefdlg.py:684 ../../src/prefdlg.py:1081
+msgid "Syntax Highlighting"
+msgstr "سىنتاكىسلىق چاقنىتىش"
+
+#: ../../src/plugdlg.py:765
+msgid "System Directory"
+msgstr "سىستېما  مۇندەرىجىسى"
+
+#: ../../src/prefdlg.py:731
+msgid "Tab Width"
+msgstr "بەتكۈچ كەڭلىكى"
+
+#: ../../src/ed_menu.py:798
+msgid "Tabs to Spaces"
+msgstr "Tabs نى بوشلۇققا"
+
+#: ../../plugins/codebrowser/codebrowser/cbrowser.py:57
+msgid "Task Definitions"
+msgstr "ۋەزىپە ئېنىقلىمىسى"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:385
+msgid "Text Colors"
+msgstr "تېكىست رەڭگى"
+
+#: ../../src/util.py:365
+msgid "Text Document"
+msgstr "تېكسىت ھۈججىتى"
+
+#: ../../src/ed_pages.py:161
+#, python-format
+msgid ""
+"The correct encoding of '%s' could not be determined.\n"
+"\n"
+"Choose an encoding and select Ok to open the file with the chosen encoding.\n"
+"Click Cancel to abort opening the file"
+msgstr ""
+"'%s'نىڭ توغرا كودلىنىشى جەزىملەشمىدى\n"
+"مۇۋاپىق كودلاشنى تاللاپ،جەزىملەشنى تاللاپ،تاللانغان كودلاشتا ھۈججەتنى "
+"ئېچىڭ.\n"
+"قالدۇرۇش نى بېسىپ،ھۈججەت ئېچىشنى توختىتىڭ."
+
+#: ../../src/ed_editv.py:605
+#, python-format
+msgid ""
+"The file: \"%s\" has been modified since the last save point.\n"
+"\n"
+"Would you like to save the changes?"
+msgstr ""
+"\"%s\"ھۈججىتى ئالدىنقى ساقلاشتىن كېيىن ئۆزگەرتىلگەن.\n"
+"ئۆزگەرتىشنى ساقلامسىز؟"
+
+#: ../../src/style_editor.py:144
+#, python-format
+msgid ""
+"The new style sheet '%s' has not been saved would you like to save before "
+"exiting?"
+msgstr "'%s'يېڭى ئۇسلۇب جەدۋىلى ساقلانمىغان،چىقىشتىن بۇرۇن ساقلامسىز؟"
+
+#: ../../src/style_editor.py:401
+#, python-format
+msgid ""
+"The new style theme '%s' has not been saved.\n"
+"\n"
+"Would you like to save it before changing themes?"
+msgstr ""
+"'%s'يېڭى ئۇسلۇب تېمىسى ساقلانمىغان.\n"
+"تېمىنى ئۆزگەرتىشتىن بۇرۇن،ساقلامسىز؟"
+
+#: ../../plugins/Launch/launch/launch.py:680
+msgid "The requested command could not be executed."
+msgstr "بۇ بۇيرۇق ئىجرا بولمايدۇ"
+
+#: ../../src/ed_search.py:349
+#, python-format
+msgid "The search term '%(term)s' was found %(count)d times."
+msgstr "'%(term)s'ئاتالغۇسى  %(count)d بايقالدى."
+
+#: ../../src/style_editor.py:369
+#, python-format
+msgid "The style %s already exists. Please choose a different name."
+msgstr "ئۇسلۇب %sمەۋجۇت، باشقا نامنى تاللاڭ."
+
+#: ../../src/ed_pages.py:975
+#, python-format
+msgid "There are no files that Editra can open in %s"
+msgstr "%sدا ئېدىترا ئاچالايدىغان ھۈججەت يوق."
+
+#: ../../src/ed_print.py:137
+msgid ""
+"There was an error when printing.\n"
+"Check that your printer is properly connected."
+msgstr ""
+"باسقانسا خاتالىق بايقالدى.\n"
+"پرىتېرىڭىز توغرا ئۇلاندىمۇ تەكشۈرۈپ بېقىڭ."
+
+#: ../../src/plugdlg.py:407
+msgid "This plugin requires a newer version of Editra."
+msgstr "ئېدىترا بۇ قېتىلمىنىڭ يېڭى نەشرىنى قوللايدۇ"
+
+#: ../../src/plugdlg.py:1064
+msgid "This plugin will be uninstalled on next program launch."
+msgstr "پروگرامما قوزغىتىلغاندا بۇ قېتىلما ئۆچۈرۈلۈدۇ."
+
+#: ../../src/ed_editv.py:461
+msgid "To Lowercase"
+msgstr "كىچىك يېزىلىشىغا"
+
+#: ../../src/ed_editv.py:460
+msgid "To Uppercase"
+msgstr "چوڭ يېزىلىشىغا"
+
+#: ../../src/plugdlg.py:750
+msgid ""
+"To add a new item drag and drop the plugin file into the list.\n"
+"\n"
+"To remove an item select it and hit Delete or Backspace."
+msgstr ""
+"يېڭى تاللاش تۈرى قوشۇش ئۈچۈن قېتىلما ھۈججىتىىڭزنى تىزىملىك تۈرىگە سۆرەپ "
+"ئەكىرىڭ.\n"
+"تاللانغان تاللاش تۈرىنى ئۆچۈرۈش ئۈچۈن Delete ياكى Backspace. نى بېسىڭ."
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:90
+#, python-format
+msgid ""
+"To open multiple files at once %s+Click to select the desired files/folders "
+"then hit Enter to open them all at once"
+msgstr ""
+"كۆپ ھۈججەتنى ئېچىش ئۈچۈن،  %s+بېسىپ ،ئاچىدىغان ھۈججەتلەر\\ قىسقۇچلارنى "
+"تاللاپ،Enterنى بېسىپ ئۇلارنى دەرھال ئېچىڭ."
+
+#: ../../src/ed_menu.py:832
+msgid "Toggle Auto-Indentation functionality"
+msgstr "ئاپتوماتىك ئابزاسبېشى ئىقتىدارىغا ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:667
+msgid "Toggle Bookmark"
+msgstr "بەتكۈش  ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:837
+msgid "Toggle Code Folding"
+msgstr "كود قاتلاشنى ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:773
+msgid "Toggle Comment"
+msgstr "ئىزاھات ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:738
+msgid "Toggle Editor Maximization"
+msgstr "تەھرىرلىگۈچ چوڭايتىشنى ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:725
+msgid "Toggle Editor View Options"
+msgstr "تەھرىرلىگۈچ كۆرۈش تاللىشىنى ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:729 ../../src/ed_menu.py:730
+msgid "Toggle all folds"
+msgstr "قاتلانغالارنى ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:668
+msgid "Toggle bookmark of the current line"
+msgstr "ھازىرقى قۇرنىڭ بەتكۈشنى ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:774
+msgid "Toggle comment on the selected line(s)"
+msgstr "تاللانغان قۇرنىڭ ئىزاھاتىنى ئالماشتۇش"
+
+#: ../../src/ed_menu.py:728
+msgid "Toggle current fold"
+msgstr "ھازىرقى قاتلاشنى ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:727
+msgid "Toggle fold"
+msgstr "قاتلاشنى ئالماشتۇرۇش"
+
+#: ../../src/prefdlg.py:1182
+msgid "Toolbar Icon Size"
+msgstr "قورال سىتونى سىنبەلگە چوڭلۇقى"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:208
+msgid "Transient XML Handler"
+msgstr "ۋاقىتلىق XML بېجىرگۈچ"
+
+#: ../../src/ed_menu.py:889
+msgid "Translate Editra..."
+msgstr "ئېدىترانى تەرجىمە قىلىش"
+
+#: ../../src/prefdlg.py:1235
+msgid "Transparency"
+msgstr "سۈزۈكلۈك"
+
+#: ../../src/ed_menu.py:657
+msgid "Transpose Line"
+msgstr "قۇرلارنى ئۆزئارا ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:658
+msgid "Transpose the current line with the previous one"
+msgstr "ھازىرقى قۇر بىلەن ئالدىنقى قۇرنى ئۆزئارا ئالماشتۇرۇش"
+
+#: ../../src/ed_menu.py:800
+msgid "Trim Trailing Whitespace"
+msgstr "قۇرئايىقى بوشلۇقىنى رەتلەش"
+
+#: ../../src/prefdlg.py:780
+msgid "Turn off for better performance"
+msgstr "تېخىمۇ ياخشى ئىشلىشى ئۈچۈن ئۆچۈرۈش"
+
+#: ../../src/util.py:188
+msgid "Unable to accept dropped file or text"
+msgstr "ئۆچۈرگىلى بولمايدىغان ھۈججەت ياكى تېكسىت"
+
+#: ../../src/eclib/filemgrdlg.py:174
+#, python-format
+msgid "Unable to delete %s"
+msgstr "%sئۆچۈرۈلمىدى"
+
+#: ../../src/plugdlg.py:502
+msgid "Unable to retrieve plugin list"
+msgstr "قېتىلما تىزىملىكىگە قايتالمىدى"
+
+#: ../../src/ed_editv.py:453 ../../src/ed_toolbar.py:83
+msgid "Undo"
+msgstr "يېنىۋېلىش"
+
+#: ../../src/ed_menu.py:621 ../../src/ed_toolbar.py:83
+msgid "Undo Last Action"
+msgstr "ئاخىرقى مەشغۇلاتتىن يېنىۋېلىش"
+
+#: ../../src/ed_menu.py:779
+msgid "Unindent Lines"
+msgstr "ئابزاسبېشىنى قالدۇرۇش"
+
+#: ../../src/ed_menu.py:780
+msgid "Unindent the selected lines"
+msgstr "تاللانغان قۇرنىڭ ئابزاسبېشىنى قالدۇرۇش"
+
+#: ../../src/plugdlg.py:948
+msgid "Uninstall"
+msgstr "ئۆچۈرۈش"
+
+#: ../../src/plugdlg.py:1060
+msgid "Uninstall Plugin"
+msgstr "قېتىلما ئۆچۈرۈش"
+
+#: ../../src/ed_glob.py:395 ../../src/ed_mdlg.py:137 ../../src/ed_menu.py:810
+#: ../../src/ed_menu.py:812 ../../src/prefdlg.py:760
+msgid "Unix (\\n)"
+msgstr "Unix (\\n)"
+
+#: ../../src/plugdlg.py:364 ../../src/plugdlg.py:372 ../../src/plugdlg.py:418
+#: ../../src/plugdlg.py:422 ../../src/plugin.py:722 ../../src/util.py:371
+#: ../../src/eclib/infodlg.py:298
+msgid "Unknown"
+msgstr "ئېنىقسىز"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:593
+msgid "Untitled_File"
+msgstr "نامسىز ھۈججەت"
+
+#: ../../plugins/filebrowser/filebrowser/browser.py:591
+msgid "Untitled_Folder"
+msgstr "نامسىز قىسقۇچ"
+
+#: ../../src/eclib/finddlg.py:812
+msgid "Up"
+msgstr "يۇقىرى"
+
+#: ../../src/prefdlg.py:1345
+msgid "Update"
+msgstr "يېڭىلاش"
+
+#: ../../src/Editra.py:629
+msgid "Update Available"
+msgstr "يېڭىلاندى"
+
+#: ../../src/ed_menu.py:782
+msgid "Uppercase"
+msgstr "چوڭ يېزىلىش"
+
+#: ../../src/ed_menu.py:830
+msgid "Use Auto Completion when available"
+msgstr "ئاپتوماتىك تاماملاش ئىشلىتىش"
+
+#: ../../src/prefdlg.py:1383
+msgid "Use Proxy"
+msgstr "ۋاكالەتچى ئىشلىتىش"
+
+#: ../../src/ed_menu.py:787
+msgid "Use Soft Tabs"
+msgstr "يۇمشاق خەتكۈش ئىشلىتىش"
+
+#: ../../src/prefdlg.py:750
+msgid "Use Tabs Instead of Spaces"
+msgstr "بوشلۇق ئورنىغا Tabsئىشلىتىش"
+
+#: ../../src/prefdlg.py:512
+msgid ""
+"Used to set a custom backup path. If not specified the backup will be put in "
+"the same directory as the file."
+msgstr ""
+"ئىختىيارى زاپاسلاش يولىنى تاللاش،ناۋادا زاپاسلاش يولى "
+"تاللانمىسا،زاپاسلىنىدىغان ھۈججەتنى ئەسلى ھۈججەت بىلەن بىر مۇندەرىجىگە "
+"ساقلايدۇ."
+
+#: ../../src/plugdlg.py:761
+msgid "User Directory"
+msgstr "ئىشلەتكۈچى مۇندەرىجىسى"
+
+#: ../../src/prefdlg.py:1400
+msgid "Username"
+msgstr "ئىشلەتكۈچى نامى"
+
+#: ../../src/ed_log.py:81
+msgid "View Editra's console log"
+msgstr "ئېدىترانىڭ كونسول لوگىنى كۆرۈش"
+
+#: ../../src/ed_menu.py:751
+msgid "View Line of Next Bookmark"
+msgstr "كېيىنكى بەتكۈشنىڭ قۇرىنى كۆرسۈتۈش"
+
+#: ../../src/ed_menu.py:753
+msgid "View Line of Previous Bookmark"
+msgstr "ئالدىنقى بەتكۈشنىڭ قۇرىنى كۆرسۈتۈش"
+
+#: ../../src/prefdlg.py:811
+msgid "View Options"
+msgstr "كۆرۈنۈش تاللانمىسى"
+
+#: ../../src/prefdlg.py:782
+msgid "View Virtual Space After Last Line"
+msgstr "ئاخىرقى قۇرنىڭ كەينىدىكى بوشلۇقنى كۆرۈش"
+
+#: ../../src/ed_bookmark.py:80
+msgid "View all bookmarks"
+msgstr "بەتكۈشلەرنى كۆرۈش"
+
+#: ../../src/ed_menu.py:736
+msgid "View pane selection list"
+msgstr "بۆلمىدە تاللاش تىزىمىنى كۆرۈش"
+
+#: ../../src/ed_menu.py:885
+#, python-format
+msgid "Visit the project homepage %s"
+msgstr "%sئىشتۈرى باشبېتىنى كۆرۈش"
+
+#: ../../src/prefdlg.py:925
+msgid "Visual Helpers"
+msgstr "سىنلىك ياردەمچى"
+
+#: ../../src/prefdlg.py:538
+msgid "Warn when mixed eol characters are detected"
+msgstr "ئەبجەش eol ھەرپ-بەلگىسى بايقالغاندا ئاگاھلاندۇرۇش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:448
+msgid "Warning Text"
+msgstr "ئاگانلاندۇرۇش تېكىستى"
+
+#: ../../src/prefdlg.py:953
+msgid "Warning suggestions will include context insensitive results"
+msgstr ""
+"ئاگاھلاندۇرۇش،تەكلىۋىڭىز تېكىستتى مۇناسىۋەتسىز نەتىجىنى ئۆزئىچىگە ئالىدۇ"
+
+#: ../../src/eclib/infodlg.py:191
+msgid "Where"
+msgstr "قەيەردە"
+
+#: ../../src/ed_main.py:719
+msgid "Where to Save Profile?"
+msgstr "ئارخىپنى قەيەرگە ساقلايسىز؟"
+
+#: ../../src/ed_menu.py:802
+msgid "Whitespace"
+msgstr "بوشلۇق"
+
+#: ../../src/ed_menu.py:803
+msgid "Whitespace formating commands"
+msgstr "بوشلۇقنى فورماتلاش بۇيرۇقى"
+
+#: ../../src/ed_cmdbar.py:322
+msgid "Whole Word"
+msgstr "پۈتۈن سۆز"
+
+#: ../../src/eclib/finddlg.py:823
+msgid "Whole word"
+msgstr "پۈتۈن سۆز"
+
+#: ../../src/eclib/finddlg.py:831
+msgid "Wildcard shell patterns for matching files (*.txt *.html)."
+msgstr "ئورتاقبەلگە ماس كەلگەن ھۈججەتنىڭ قاپ ئەندىزىسى"
+
+#: ../../src/ed_glob.py:396 ../../src/ed_mdlg.py:138 ../../src/ed_menu.py:813
+#: ../../src/ed_menu.py:815 ../../src/prefdlg.py:761
+msgid "Windows (\\r\\n)"
+msgstr "Windows (\\r\\n)"
+
+#: ../../src/ed_menu.py:675
+msgid "Word Completion"
+msgstr "سۆز تاماملاش"
+
+#: ../../src/ed_menu.py:790 ../../src/prefdlg.py:778
+msgid "Word Wrap"
+msgstr "ئاپتوماتىك قۇر ئالماشتۇر"
+
+#: ../../src/style_editor.py:396
+#, python-format
+msgid ""
+"Would you like to save the changes to '%s' before changing themes?\n"
+"\n"
+"Selecting No will result in all changes being lost."
+msgstr ""
+"تېما ئۆزگەرتىشتىن بۇرۇن،'%s' بولغان ئۆزگەرتىشنى ساقلامسىز؟\n"
+"ياق نى تاللىسىڭىز،ئۆ۔گەرتكەنلىرىڭىز يوقاپ كېتىدۇ."
+
+#: ../../src/ed_menu.py:791
+msgid "Wrap Text Horizontally"
+msgstr "تېكىستنى گورزىنتال قۇر ئالماشتۇرۇش"
+
+#: ../../plugins/Launch/launch/cfgdlg.py:399
+msgid "Wrap lines in output buffer"
+msgstr "باففېردىن چىقىپ كەتكەن قۇرلارنى ئالماشتۇرۇش"
+
+#: ../../src/ed_main.py:1571
+#, python-format
+msgid "Written in 100%% Python."
+msgstr "100%%پىتوندا يېزىلغان"
+
+#: ../../src/plugdlg.py:195
+msgid "You must restart Editra before your changes will take full affect."
+msgstr "ئۆزگەرتىش ئۈنۈمىنى كۆرۈش ئۈچۈن ،ئېدىترانىڭ قايتا قوزغىتىڭ"
+
+#: ../../src/Editra.py:936 ../../src/Editra.py:1145
+msgid "Your profile has been updated to the latest version"
+msgstr "يېڭى نەشرىدە ،سىزنىڭ ئارخىپىتىڭىز يېڭىلاندى"
+
+#: ../../src/ed_menu.py:707 ../../src/ed_menu.py:708
+msgid "Zoom Default"
+msgstr "كۆڭۈلدىكى نىسبەت"
+
+#: ../../src/ed_menu.py:706
+msgid "Zoom In"
+msgstr "چوڭايتىش"
+
+#: ../../src/ed_menu.py:705
+msgid "Zoom Out"
+msgstr "كىچىكلىتىش"
+
+#: ../../plugins/Launch/launch/launch.py:169
+msgid "args"
+msgstr "ئارگومېنىت"
+
+#: ../../src/style_editor.py:767
+msgid "bold"
+msgstr "توم"
+
+#: ../../src/ed_cmdbar.py:911
+msgid "cwd: "
+msgstr "cwd: "
+
+#: ../../src/style_editor.py:768
+msgid "eol"
+msgstr "قۇر ئايىقى( eol)"
+
+#: ../../plugins/Launch/launch/launch.py:153
+msgid "exec"
+msgstr "exec"
+
+#: ../../src/style_editor.py:769
+msgid "italic"
+msgstr "يانتۇ"
+
+#: ../../src/style_editor.py:770
+msgid "underline"
+msgstr "ئاستى سىزىق"
+
+#: ../../src/ed_pages.py:234
+msgid "untitled"
+msgstr "نامسىز"
+
+#: ../../src/ed_pages.py:232
+#, python-format
+msgid "untitled %d"
+msgstr "%dنامسىز"

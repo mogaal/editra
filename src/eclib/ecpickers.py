@@ -19,8 +19,8 @@ Custom font picker control
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ecpickers.py 67672 2011-05-02 00:01:44Z CJP $"
-__revision__ = "$Revision: 67672 $"
+__svnid__ = "$Id: ecpickers.py 70230 2012-01-01 01:47:42Z CJP $"
+__revision__ = "$Revision: 70230 $"
 
 __all__ = ['PyFontPicker', 'FontChangeEvent',
            'EVT_FONT_CHANGED', 'edEVT_FONT_CHANGED']
@@ -62,7 +62,9 @@ class PyFontPicker(wx.Panel):
     """
     def __init__(self, parent, id_=wx.ID_ANY, default=wx.NullFont):
         """Initializes the PyFontPicker
-        @param default: The font to initialize as selected in the control
+        @param parent: Parent Window
+        @keyword id_: Control ID
+        @keyword default: The font to initialize as selected in the control
 
         """
         super(PyFontPicker, self).__init__(parent, id_, style=wx.NO_BORDER)

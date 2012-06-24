@@ -9,8 +9,8 @@
 """Unittests for ebmlib.FileObjectImpl class"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFileImpl.py 65714 2010-10-01 19:15:39Z CJP $"
-__revision__ = "$Revision: 65714 $"
+__svnid__ = "$Id: testFileImpl.py 70309 2012-01-10 00:09:26Z CJP $"
+__revision__ = "$Revision: 70309 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -40,9 +40,9 @@ class FileImplTest(unittest.TestCase):
     def testClone(self):
         """Test cloning the file object"""
         fobj = self.file.Clone()
-        self.assertTrue(fobj.GetPath() == self.file.GetPath())
-        self.assertTrue(fobj.GetModtime() == self.file.GetModtime())
-        self.assertTrue(fobj.IsReadOnly() == self.file.IsReadOnly())
+        self.assertTrue(fobj.Path == self.file.Path)
+        self.assertTrue(fobj.ModTime == self.file.ModTime)
+        self.assertTrue(fobj.ReadOnly == self.file.ReadOnly)
 
     def testRead(self):
         """Test reading from the file and getting the text"""
@@ -79,10 +79,10 @@ class FileImplTest(unittest.TestCase):
 
     def testGetModTime(self):
         """Test getting the files last modification time"""
-        self.file.SetModTime(self.mtime)
-        mtime = self.file.GetModtime()
+        self.file.ModTime = self.mtime
+        mtime = self.file.ModTime
         self.assertTrue(mtime == self.mtime, "Modtime was: " + str(mtime))
-        self.assertTrue(mtime == self.file.Modtime)
+        self.assertTrue(mtime == self.file.ModTime)
 
     def testIsOpen(self):
         """Test checking the state of the file"""

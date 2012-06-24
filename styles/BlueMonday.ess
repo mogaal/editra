@@ -116,7 +116,6 @@ keyword8_style {
 line_num {
            fore:#000000;
            back:#C0C0C0;
-           size:8;
 }
 
 margin_style {

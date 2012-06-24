@@ -16,8 +16,8 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 69061 2011-09-11 17:04:41Z CJP $"
-__revision__ = "$Revision: 69061 $"
+__svnid__ = "$Id: Editra.py 71266 2012-04-23 13:54:29Z CJP $"
+__revision__ = "$Revision: 71266 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -94,6 +94,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         self._log = dev_tool.DEBUGP
         self._lock = False
         self._windows = dict()
+        self._isexiting = False
 
         # Disable debug popups
         wx.Log.EnableLogging(False)
@@ -109,7 +110,8 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         if ed_glob.SINGLE:
             # Setup the instance checker
             instance_name = u"%s-%s" % (self.GetAppName(), wx.GetUserId())
-            self._instance = wx.SingleInstanceChecker(instance_name)
+            lockpath = wx.StandardPaths.Get().GetTempDir()
+            self._instance = wx.SingleInstanceChecker(instance_name, path=lockpath)
             if self._instance.IsAnotherRunning():
                 try:
                     opts, args = ProcessCommandLine()
@@ -212,12 +214,19 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
         # Setup Locale
         locale.setlocale(locale.LC_ALL, '')
-        self.locale = wx.Locale(ed_i18n.GetLangId(profiler.Profile_Get('LANG')))
-        if self.locale.GetCanonicalName() in ed_i18n.GetAvailLocales():
-            self.locale.AddCatalogLookupPathPrefix(ed_glob.CONFIG['LANG_DIR'])
-            self.locale.AddCatalog(ed_glob.PROG_NAME)
+        langId = ed_i18n.GetLangId(profiler.Profile_Get('LANG'))
+        if wx.Locale.IsAvailable(langId):
+            self.locale = wx.Locale(langId)
+            if self.locale.GetCanonicalName() in ed_i18n.GetAvailLocales():
+                self._log("[app][info] Loaded Locale '%s'" % self.locale.CanonicalName)
+                self.locale.AddCatalogLookupPathPrefix(ed_glob.CONFIG['LANG_DIR'])
+                self.locale.AddCatalog(ed_glob.PROG_NAME)
+            else:
+                self._log("[app][err] Unknown Locale '%s'" % self.locale.CanonicalName)
+                del self.locale
+                self.locale = None
         else:
-            del self.locale
+            self._log("[app][err] The locale %s is not available!" %  profiler.Profile_Get('LANG'))
             self.locale = None
 
         # Check and set encoding if necessary
@@ -278,6 +287,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         @postcondition: Program may remain open if an open window is locking.
 
         """
+        self._isexiting = True
         self._pluginmgr.WritePluginConfig()
         profiler.TheProfile.Write(profiler.Profile_Get('MYPROFILE'))
         if not self._lock or force:
@@ -491,8 +501,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
     def OnActivate(self, evt):
         """Activation Event Handler
-        @param evt: event that called this handler
-        @type evt: wx.ActivateEvent
+        @param evt: wx.ActivateEvent
 
         """
         if evt.GetActive():
@@ -511,7 +520,8 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
     def OnExit(self, evt=None, force=False):
         """Handle application exit request
-        @param evt: event that called this handler
+        @keyword evt: event that called this handler
+        @keyword force: Force an exit
 
         """
         e_id = -1
@@ -519,18 +529,21 @@ class Editra(wx.App, events.AppEventHandlerMixin):
             e_id = evt.GetId()
 
         if e_id == ed_glob.ID_EXIT:
+            self._isexiting = True
             # First loop is to ensure current top window is
             # closed first
             for win in self.GetMainWindows():
                 if win.IsActive():
                     result = win.Close()
                     if result:
+                        self._isexiting = False
                         break
                     return
             for win in self.GetMainWindows():
                 win.Raise()
                 result = win.Close()
                 if not result:
+                    self._isexiting = False
                     break
             self.Exit(force)
         else:
@@ -553,6 +566,11 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         @todo: move command processing into own module
 
         """
+        # Guard against events that come in after shutdown
+        # from server thread.
+        if not self or self._isexiting or not self.IsMainLoopRunning():
+            return
+
         self._log("[app][info] IN OnCommandReceived")
         cmds = evt.GetCommands()
         if isinstance(cmds, ed_ipc.IPCCommand):
@@ -592,6 +610,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
     def OpenNewWindow(self, fname=u'', caller=None):
         """Open a new window
         @keyword fname: Open a file in the new window
+        @keyword caller: MainWindow that called to open this one
         @return: the new window
 
         """
@@ -819,7 +838,7 @@ def InitConfig():
                 profiler.Profile_Set('LAST_SESSION', smgr.DefaultSession)
             else:
                 # After 0.6.58 session is reduced to a name instead of path
-                if os.path.sep in sess:
+                if sess and os.path.sep in sess:
                     name = smgr.SessionNameFromPath(sess)
                     profiler.Profile_Set('LAST_SESSION', name)
 
@@ -952,7 +971,7 @@ def PrintHelp(err=None):
         sys.stderr.write(err + os.linesep)
 
     print(("Editra - %s - Developers Text Editor\n"
-       "Cody Precord (2005-2010)\n\n"
+       "Cody Precord (2005-2012)\n\n"
        "usage: Editra [arguments] [files... ]\n\n"
        "Short Arguments:\n"
        "  -c    Set custom configuration directory at runtime\n"

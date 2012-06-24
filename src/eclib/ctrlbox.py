@@ -45,8 +45,8 @@ that require a sandwich like layout.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ctrlbox.py 67325 2011-03-27 20:24:20Z CJP $"
-__revision__ = "$Revision: 67325 $"
+__svnid__ = "$Id: ctrlbox.py 71187 2012-04-11 23:38:30Z CJP $"
+__revision__ = "$Revision: 71187 $"
 
 __all__ = ["ControlBox", "CTRLBOX_NAME_STR",
 
@@ -150,7 +150,7 @@ class SegmentBarEvent(wx.PyCommandEvent):
     def SetSelections(self, previous=-1, current=-1):
         """Set the events selection
         @keyword previous: previously selected button index (int)
-        @keyword previous: currently selected button index (int)
+        @keyword current: currently selected button index (int)
 
         """
         self._pre = previous
@@ -229,12 +229,10 @@ class ControlBox(wx.PyPanel):
         """
         cbar = self.GetControlBar(pos)
         if cbar is None:
-            dsize = (-1, 24)
             style=CTRLBAR_STYLE_GRADIENT
             if pos in (wx.LEFT, wx.RIGHT):
-                dsize = (24, -1)
                 style |= CTRLBAR_STYLE_VERTICAL
-            cbar = ControlBar(self, size=dsize, style=style)
+            cbar = ControlBar(self, style=style)
             self.SetControlBar(cbar, pos)
         return cbar
 
@@ -522,6 +520,9 @@ class ControlBar(wx.PyPanel):
             else:
                 gc = wx.GraphicsContext.Create(dc)
 
+            if gc is None:
+                return
+
             if not self.IsVerticalMode():
                 grad = gc.CreateLinearGradientBrush(rect.x, rect.y, rect.x,
                                                     rect.x+rect.height,
@@ -723,7 +724,7 @@ class SegmentBar(ControlBar):
     def DoDrawButton(self, dc, pos, bidx, selected=False, draw_label=False):
         """Draw a button
         @param dc: DC to draw on
-        @param xpos: X coordinate (horizontal mode) / Y coordinate (vertical mode)
+        @param pos: X coordinate (horizontal mode) / Y coordinate (vertical mode)
         @param bidx: button dict
         @keyword selected: is this the selected button (bool)
         @keyword draw_label: draw the label (bool)

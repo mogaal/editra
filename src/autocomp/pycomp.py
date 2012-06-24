@@ -16,8 +16,8 @@ deduct the requested information.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: pycomp.py 67703 2011-05-05 14:47:55Z CJP $"
-__revision__ = "$Revision: 67703 $"
+__cvsid__ = "$Id: pycomp.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -84,6 +84,7 @@ class Completer(completer.BaseCompleter):
             if fname:
                 fpath = os.path.dirname(fname)
                 sys.path.insert(0, fpath)
+            snapshot = list(sys.modules.keys())
 
             t1 = time.time()
             cmpl.evalsource(self._buffer.GetText(),
@@ -92,6 +93,13 @@ class Completer(completer.BaseCompleter):
 
             if fname:
                 sys.path.pop(0)
+
+            # Dump any other modules that got brought in during eval
+            # so that they get properly updated on next pass through.
+            nsnapshot = sys.modules.keys()
+            nimport = list(set(nsnapshot).difference(set(snapshot)))
+            for k in nimport:
+                del sys.modules[k]
 
             if calltip:
                 return cmpl.get_completions(command + u'(', u'', calltip)
@@ -120,18 +128,14 @@ class Completer(completer.BaseCompleter):
                 return list()
         
     def GetAutoCompList(self, command):
-        """Returns the list of possible completions for a 
-        command string. If namespace is not specified the lookup
-        is based on the locals namespace
-        @param command: commadn lookup is done on
-        @keyword namespace: namespace to do lookup in
+        """Returns the list of possible completions for a command string.
+        @param command: command lookup is done on
 
         """
         return self._GetCompletionInfo(command)
 
     def GetCallTip(self, command):
         """Returns the formatted calltip string for the command.
-        If the namespace command is unset the locals namespace is used.
         @param command: command to get calltip for
 
         """
@@ -195,6 +199,8 @@ class PyCompleter(object):
 #        f = open('pycompout.py', 'w')
 #        f.write(src)
 #        f.close()
+        # NOTE: keep commented out in production code can cause slow down
+        #       when running in editra with DEBUG output.
 #        dbg("[pycomp][info] Generated source: %s" % src)
         try: 
             exec src in self.compldict
@@ -651,6 +657,8 @@ class PyParser(object):
         name = list()
         if pre is None:
             tokentype, token = self.next()[:2]
+            if token == '(':
+                self._parenparse()
             if tokentype != NAME and token != '*':
                 return ('', token)
         else:
@@ -659,6 +667,11 @@ class PyParser(object):
         name.append(token)
         while True:
             tokentype, token = self.next()[:2]
+            if token == '(':
+                # Handle 'self.foo(a,b,c)'
+                self._parenparse()
+                break
+
             if token != '.':
                 break
 
@@ -893,16 +906,16 @@ class PyParser(object):
                     ind = params.find('=')
                     if ind != -1:
                         params = params[:ind]
-                    newscope.local('%s = %s' % (scp.params[0], scp.parent.name))
+                    newscope.local('%s = %s' % (_sanitizeParam(scp.params[0]), scp.parent.name))
 
                 for param in scp.params[cut:]:
                     ind = param.find('=')
                     if len(param) == 0:
                         continue
                     if ind == -1:
-                        newscope.local('%s = _PyCmplNoType()' % param)
+                        newscope.local('%s = _PyCmplNoType()' % _sanitizeParam(param))
                     else:
-                        newscope.local('%s = %s' % (param[:ind], 
+                        newscope.local('%s = %s' % (_sanitizeParam(param[:ind]), 
                                                     _sanitize(param[ind+1:])))
 
             decls = scp.subscopes + scp.locals
@@ -931,7 +944,6 @@ class PyParser(object):
             freshscope = True
             while True:
                 tokentype, token, indent = self.next()
-
                 if tokentype == DEDENT or token == "pass":
                     self.scope = self.scope.pop(indent)
                 elif token == 'def':
@@ -1012,3 +1024,16 @@ def _sanitize(cstr):
         elif level == 0:
             val += char
     return val
+
+def _sanitizeParam(param):
+    """Cleanup a value string
+    value = foo
+    to ensure that 'value' is syntactically correct.
+
+    """
+    for i, c in enumerate(param):
+        if c.isalpha() or c == '_':
+            return param[i:]
+    else:
+        return param # something is wrong so let it bomb
+

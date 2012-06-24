@@ -12,8 +12,8 @@ This file contains various helper functions and utilities that the program uses.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: util.py 67367 2011-03-31 19:27:05Z CJP $"
-__revision__ = "$Revision: 67367 $"
+__svnid__ = "$Id: util.py 70467 2012-01-27 14:41:29Z CJP $"
+__revision__ = "$Revision: 70467 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -40,12 +40,14 @@ _ = wx.GetTranslation
 class DropTargetFT(wx.PyDropTarget):
     """Drop target capable of accepting dropped files and text
     @todo: has some issues with the clipboard on windows under certain
-           conditions. They arent fatal but need fixing.
+           conditions. They are not fatal but need fixing.
 
     """
     def __init__(self, window, textcallback=None, filecallback=None):
         """Initializes the Drop target
-        @param window: window to recieve drop objects
+        @param window: window to receive drop objects
+        @keyword textcallback: Callback for when text is dropped
+        @keyword filecallback: Callback for when file(s) are dropped
 
         """
         super(DropTargetFT, self).__init__()
@@ -66,7 +68,7 @@ class DropTargetFT(wx.PyDropTarget):
         @todo: generalize this to be usable by other widgets besides stc
 
         """
-        if not issubclass(self.window.__class__, wx.stc.StyledTextCtrl):
+        if not isinstance(self.window, wx.stc.StyledTextCtrl):
             return
 
         stc = self.window
@@ -77,7 +79,7 @@ class DropTargetFT(wx.PyDropTarget):
             if ext[0] > longest[0]:
                 longest = ext
 
-        cords = [ (0, x * longest[1]) for x in xrange(len(txt)) ]
+        cords = [ (0, x * longest[1]) for x in range(len(txt)) ]
         try:
             mdc = wx.MemoryDC(wx.EmptyBitmap(longest[0] + 5,
                                              longest[1] * len(txt), 32))
@@ -103,8 +105,9 @@ class DropTargetFT(wx.PyDropTarget):
 
     def OnEnter(self, x_cord, y_cord, drag_result):
         """Called when a drag starts
-        @keyword x_cord: x cord of enter point
-        @keyword y_cord: y cord of enter point
+        @param x_cord: x cord of enter point
+        @param y_cord: y cord of enter point
+        @param drag_result: wxDrag value
         @return: result of drop object entering window
 
         """
@@ -141,8 +144,9 @@ class DropTargetFT(wx.PyDropTarget):
 
     def OnDragOver(self, x_cord, y_cord, drag_result):
         """Called when the cursor is moved during a drag action
-        @keyword x_cord: x cord of mouse
-        @keyword y_cord: y cord of mouse
+        @param x_cord: x cord of mouse
+        @param y_cord: y cord of mouse
+        @param drag_result: Drag result value
         @return: result of drag over
         @todo: For some reason the caret position changes which can be seen
                by the brackets getting highlighted. However the actual caret
@@ -173,6 +177,9 @@ class DropTargetFT(wx.PyDropTarget):
 
     def OnData(self, x_cord, y_cord, drag_result):
         """Gets and processes the dropped data
+        @param x_cord: x coordinate 
+        @param y_cord: y coordinate
+        @param drag_result: wx Drag result value
         @postcondition: dropped data is processed
 
         """
@@ -225,20 +232,23 @@ class DropTargetFT(wx.PyDropTarget):
         @param stc: StyledTextCtrl
         @param x_cord: int (x position)
         @param y_cord: int (y position)
-        @note: currenly does not work on wxMac
+        @note: currently does not work on wxMac
 
         """
-        cline = stc.PositionFromPoint(wx.Point(x_cord, y_cord))
-        if cline != wx.stc.STC_INVALID_POSITION:
-            cline = stc.LineFromPosition(cline)
-            fline = stc.GetFirstVisibleLine()
-            lline = stc.GetLastVisibleLine()
-            if (cline - fline) < 2:
-                stc.ScrollLines(-1)
-            elif lline - cline < 2:
-                stc.ScrollLines(1)
-            else:
-                pass
+        try:
+            cline = stc.PositionFromPoint(wx.Point(x_cord, y_cord))
+            if cline != wx.stc.STC_INVALID_POSITION:
+                cline = stc.LineFromPosition(cline)
+                fline = stc.GetFirstVisibleLine()
+                lline = stc.GetLastVisibleLine()
+                if (cline - fline) < 2:
+                    stc.ScrollLines(-1)
+                elif lline - cline < 2:
+                    stc.ScrollLines(1)
+                else:
+                    pass
+        except wx.PyAssertionError, msg:
+            Log("[droptargetft][err] ScrollBuffer: %s" % msg)
 
 #---- End FileDropTarget ----#
 
@@ -273,7 +283,10 @@ class EdClipboard(ebmlib.CycleCache):
             return False
 
     def Put(self, txt):
-        """Put some text in the clipboard"""
+        """Put some text in the clipboard
+        @param txt: Text to put in the system clipboard
+
+        """
         pre = self.PeekPrev()
         next = self.PeekNext()
         if len(txt) and txt not in (pre, next):
@@ -420,26 +433,8 @@ def GetFileWriter(file_name, enc='utf-8'):
         writer = file_h
     return writer
 
-def GetFileManagerCmd():
-    """Get the file manager open command for the current os. Under linux
-    it will check for xdg-open, nautilus, konqueror, and Thunar, it will then
-    return which one it finds first or 'nautilus' it finds nothing.
-    @return: string
-
-    """
-    if wx.Platform == '__WXMAC__':
-        return 'open'
-    elif wx.Platform == '__WXMSW__':
-        return 'explorer'
-    else:
-        # Check for common linux filemanagers returning first one found
-        #          Gnome/ubuntu KDE/kubuntu  xubuntu
-        for cmd in ('xdg-open', 'nautilus', 'konqueror', 'Thunar'):
-            result = os.system("which %s > /dev/null" % cmd)
-            if result == 0:
-                return cmd
-        else:
-            return 'nautilus'
+# TODO: DEPRECATED - remove once callers migrate to ebmlib
+GetFileManagerCmd = ebmlib.GetFileManagerCmd
 
 def GetUserConfigBase():
     """Get the base user configuration directory path"""
@@ -554,6 +549,8 @@ def ResolvConfigDir(config_dir, sys_only=False):
     # running as as a built package.
     if not hasattr(sys, 'frozen'):
         path = __file__
+        if not ebmlib.IsUnicode(path):
+            path = path.decode(sys.getfilesystemencoding())
         path = os.sep.join(path.split(os.sep)[:-2])
         path =  path + os.sep + config_dir + os.sep
         if os.path.exists(path):
@@ -561,7 +558,7 @@ def ResolvConfigDir(config_dir, sys_only=False):
                 path = unicode(path, sys.getfilesystemencoding())
             return path
 
-    # If we get here we need to do some platform dependant lookup
+    # If we get here we need to do some platform dependent lookup
     # to find everything.
     path = sys.argv[0]
     if not ebmlib.IsUnicode(path):
@@ -746,15 +743,15 @@ class IntValidator(wx.PyValidator):
     """A Generic integer validator"""
     def __init__(self, min_=0, max_=0):
         """Initialize the validator
-        @keyword min: min value to accept
-        @keyword max: max value to accept
+        @keyword min_: min value to accept
+        @keyword max_: max value to accept
 
         """
         wx.PyValidator.__init__(self)
         self._min = min_
         self._max = max_
 
-        # Event managment
+        # Event management
         self.Bind(wx.EVT_CHAR, self.OnChar)
 
     def Clone(self):

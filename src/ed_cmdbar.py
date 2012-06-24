@@ -18,8 +18,8 @@ a gradient using system defined colors.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_cmdbar.py 69245 2011-09-30 17:52:23Z CJP $"
-__revision__ = "$Revision: 69245 $"
+__svnid__ = "$Id: ed_cmdbar.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -287,7 +287,7 @@ class SearchBar(CommandBarBase):
         # Attributes
         self.SetControl(ed_search.EdSearchCtrl(self, wx.ID_ANY,
                                                menulen=5, size=(180, -1)))
-        self._sctrl = self.ctrl.GetSearchController()
+        self._sctrl = self.MainControl.GetSearchController()
 
         # Setup
         f_lbl = wx.StaticText(self, label=_("Find") + u": ")
@@ -773,6 +773,7 @@ class CommandExecuter(eclib.CommandEntryBase):
     def GetPaths(self, path, files=False):
         """Get a list of paths that are part of the given path by
         default it will only return directories.
+        @param path: Path to enumerate
         @keyword files: Get list of files too
 
         """
@@ -993,8 +994,11 @@ class LineCtrl(eclib.CommandEntryBase):
     """
     def __init__(self, parent, id_, get_doc, size=wx.DefaultSize):
         """Initializes the LineCtrl control and its attributes.
+        @param parent: Parent Window
+        @param id_: Control ID
         @param get_doc: callback method for retrieving a reference to the
                         current document.
+        @keyword size: Control Size (tuple)
 
         """
         super(LineCtrl, self).__init__(parent, id_, u"", size=size,
@@ -1007,8 +1011,7 @@ class LineCtrl(eclib.CommandEntryBase):
 
     def OnEnter(self, evt):
         """Processes the entered line number
-        @param evt: Event that called this handler
-        @type evt: wx.EVT_TEXT_ENTER
+        @param evt: wx.EVT_TEXT_ENTER
 
         """
         val = self.GetValue()
@@ -1047,7 +1050,6 @@ class PopupListBase(object):
     def AdvanceSelection(self, next=True):
         """Advance the list selection
         @keyword next: goto the next or previous selection
-        @type next: bool
 
         """
         sel = self._list.GetSelection()

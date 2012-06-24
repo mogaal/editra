@@ -40,6 +40,8 @@ def InstallTermHandler(callback, *args, **kwargs):
     """Install exit app handler for sigterm (unix/linux)
     and uses SetConsoleCtrlHandler on Windows.
     @param callback: callable(*args, **kwargs)
+    @param args: positional arguments to pass to callback
+    @param kwargs: keyword arguments to pass to callback
     @return: bool (installed or not)
 
     """

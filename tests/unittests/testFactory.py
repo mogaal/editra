@@ -9,8 +9,8 @@
 """Unittest cases for testing ebmlib.FactoryMixin"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testFactory.py 69023 2011-09-07 22:06:04Z CJP $"
-__revision__ = "$Revision: 69023 $"
+__svnid__ = "$Id: testFactory.py 69448 2011-10-18 14:17:53Z CJP $"
+__revision__ = "$Revision: 69448 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -37,7 +37,7 @@ class FactoryTest(unittest.TestCase):
         self.assertTrue(isinstance(obj, BarWidget))
         self.assertTrue(obj.meta.data == 'NULL')
         obj = BaseWidget.FactoryCreate('junk')
-        self.assertTrue(obj is None)
+        self.assertTrue(type(obj) is BaseWidget)
 
 #-----------------------------------------------------------------------------#
 

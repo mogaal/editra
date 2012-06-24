@@ -72,6 +72,7 @@ class EdXml(dexml.Model):
     @classmethod
     def Load(cls, path):
         """Load this object from a file
+        @param path: path to xml file
         @return: instance
 
         """
@@ -83,4 +84,14 @@ class EdXml(dexml.Model):
             instance = cls.parse(xmlstr)
         except (IOError, OSError):
             instance = None
+        return instance
+
+    @classmethod
+    def LoadString(cls, xmlstr):
+        """Load an object from an XML string
+        @param cls: Class object
+        @param xmlstr: string
+
+        """
+        instance = cls.parse(xmlstr)
         return instance

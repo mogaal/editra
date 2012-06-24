@@ -34,8 +34,8 @@ objects such as the Extension Register.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: syntax.py 63846 2010-04-03 22:57:21Z CJP $"
-__revision__ = "$Revision: 63846 $"
+__svnid__ = "$Id: syntax.py 70228 2011-12-31 20:39:16Z CJP $"
+__revision__ = "$Revision: 70228 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -299,8 +299,7 @@ class SynExtensionDelegate(syndata.SyntaxDataBase):
 
 def GenLexerMenu():
     """Generates a menu of available syntax configurations
-    @return: alphabetically ordered menu of of all lexer settings
-    @rtype: wx.Menu
+    @return: wx.Menu
 
     """
     lex_menu = wx.Menu()
@@ -389,7 +388,6 @@ def GetExtFromId(ext_id):
     """Takes a language ID and fetches an appropriate file extension string
     @param ext_id: language id to get extension for
     @return: file extension
-    @rtype: string
 
     """
     extreg = ExtensionRegister()

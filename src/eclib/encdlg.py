@@ -18,8 +18,8 @@ list all encodings found on the system using their normalized names.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: encdlg.py 65202 2010-08-06 15:49:23Z CJP $"
-__revision__ = "$Revision: 65202 $"
+__svnid__ = "$Id: encdlg.py 70230 2012-01-01 01:47:42Z CJP $"
+__revision__ = "$Revision: 70230 $"
 
 __all__ = ['EncodingDialog', 'GetAllEncodings']
 
@@ -49,10 +49,16 @@ class EncodingDialog(choicedlg.ChoiceDialog):
                   size=wx.DefaultSize,
                   name=EncodingDialogNameStr):
         """Create the encoding dialog
+        @param parent: Parent Window
+        @keyword id: Dialog ID
         @keyword msg: Dialog Message
         @keyword title: Dialog Title
-        @keyword encodings: list of encodings to use or None to use all
+        @keyword elist: list of encodings to use or None to use all
         @keyword default: Default selected encoding
+        @keyword style: Dialog Style bitmask
+        @keyword pos: Dialog Postion
+        @keyword size: Dialog Size
+        @keyword name: Dialog Name
 
         """
         if not len(elist):

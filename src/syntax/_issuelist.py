@@ -1,9 +1,9 @@
 ###############################################################################
 # Name: issuelist.py                                                          #
 # Purpose: Define IssueList syntax for highlighting and other features        #
-# Author: Torsten Mohr <none_yet>                                             #
-# Copyright: (c) 2008 Cody Precord <staff>                                    #
-#            (c) 2008 Torsten Mohr <none_yet>                                 #
+# Author: Torsten Mohr                                                        #
+# Copyright: (c) 2008 Cody Precord                                            #
+#            (c) 2008 Torsten Mohr                                            #
 # License: wxWindows License                                                  #
 ###############################################################################
 
@@ -15,8 +15,8 @@ AUTHOR: Cody Precord, Torsten Mohr
 """
 
 __author__ = "Cody Precord <cprecord>, Torsten Mohr <none_yet>"
-__svnid__ = "$Id: _issuelist.py 68798 2011-08-20 17:17:05Z CJP $"
-__revision__ = "$Revision: 68798 $"
+__svnid__ = "$Id: _issuelist.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #-----------------------------------------------------------------------------#
 # Imports

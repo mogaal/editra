@@ -20,8 +20,8 @@ Intefaces:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: iface.py 63069 2010-01-05 01:24:16Z CJP $"
-__revision__ = "$Revision: 63069 $"
+__svnid__ = "$Id: iface.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -38,7 +38,7 @@ class AutoCompI(plugin.Interface):
     """
     def GetCompleter(self, buff):
         """Get the completer object implemented by this plugin
-        @param: buff EditraStc instance
+        @param buff: EditraStc instance
         @return: instance of autocomp.BaseCompleter
 
         """
@@ -65,7 +65,6 @@ class MainWindowI(plugin.Interface):
         """This method is called once and only once per window when it is 
         created. It should typically be used to register menu entries, 
         bind event handlers and other similar actions.
-
         @param window: The parent window of the plugin
         @postcondition: The plugins controls are installed in the L{MainWindow}
 
@@ -77,8 +76,6 @@ class MainWindowI(plugin.Interface):
         list of tuples containing menu ids and their handlers. The handlers
         should be not be a member of this class but a member of the ui component
         that they handler acts upon.
-        
-        
         @return: list [(ID_FOO, foo.OnFoo), (ID_BAR, bar.OnBar)]
 
         """
@@ -89,8 +86,6 @@ class MainWindowI(plugin.Interface):
         list of tuples containing object ids and their handlers. The handlers
         should be not be a member of this class but a member of the ui component
         that they handler acts upon.
-        
-        
         @return: list [(ID_FOO, foo.OnFoo), (ID_BAR, bar.OnBar)]
 
         """
@@ -107,7 +102,6 @@ class ShelfI(plugin.Interface):
         """This method is used to check if multiple instances of this
         item are allowed to be open at one time.
         @return: True/False
-        @rtype: boolean
 
         """
         return True
@@ -132,7 +126,6 @@ class ShelfI(plugin.Interface):
     def GetId(self):
         """Return the id that identifies this item (same as the menuid)
         @return: Item ID
-        @rtype: int
 
         """
         raise NotImplementedError
@@ -149,7 +142,6 @@ class ShelfI(plugin.Interface):
         """Return the name of this shelf item. This should be the
         same as the MenuEntry's label.
         @return: name of item
-        @rtype: string
 
         """
         raise NotImplementedError
@@ -158,7 +150,7 @@ class ShelfI(plugin.Interface):
         """Called by the Shelf when the plugin is created to allow it
         to install any extra components that it may have that fall outside
         the normal interface. This method is optional and does not need
-        to be implimented if it is not needed.
+        to be implemented if it is not needed.
         @param mainw: MainWindow Instance
 
         """
@@ -170,6 +162,7 @@ class ShelfI(plugin.Interface):
         reloads the pages the next time the program starts. If this
         item can be reloaded between sessions return True otherwise return
         False.
+        @return: bool
 
         """
         return True

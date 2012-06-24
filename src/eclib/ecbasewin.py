@@ -13,8 +13,8 @@ Editra Control Library: Base Window Classes
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ecbasewin.py 66817 2011-01-29 21:32:20Z CJP $"
-__revision__ = "$Revision: 66817 $"
+__svnid__ = "$Id: ecbasewin.py 69410 2011-10-13 14:20:12Z CJP $"
+__revision__ = "$Revision: 69410 $"
 
 __all__ = ["ECBaseDlg", "expose"]
 
@@ -58,13 +58,12 @@ class ECBaseDlg(wx.Dialog):
 
         # Attributes
         self._panel = None
-        self._sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Setup
-        self.SetSizer(self._sizer)
+        self.SetSizer(wx.BoxSizer(wx.VERTICAL))
 
-    Panel = property(lambda self: self._panel,
-                     lambda self, val: setattr(self, '_panel', val))
+    Panel = property(lambda self: self.GetPanel(),
+                     lambda self, val: self.SetPanel(val))
 
     def GetPanel(self):
         """Get the dialogs main panel"""
@@ -76,4 +75,4 @@ class ECBaseDlg(wx.Dialog):
         if self._panel is not None:
             self._panel.Destroy()
         self._panel = panel
-        self._sizer.Add(self._panel, 1, wx.EXPAND)
+        self.Sizer.Add(self._panel, 1, wx.EXPAND)

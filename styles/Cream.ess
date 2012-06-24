@@ -41,7 +41,6 @@ ctrl_char {
 line_num { 
         back: #C0C0C0; 
         face: %(secondary)s; 
-        size: %(size3)d;
 }
 
 array_style { 

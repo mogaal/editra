@@ -29,8 +29,8 @@ class MetaData:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: _efactory.py 69023 2011-09-07 22:06:04Z CJP $"
-__revision__ = "$Revision: 69023 $"
+__cvsid__ = "$Id: _efactory.py 70229 2012-01-01 01:27:10Z CJP $"
+__revision__ = "$Revision: 70229 $"
 
 __all__ = [ 'FactoryMixin', 'MetaData' ]
 
@@ -90,7 +90,7 @@ class FactoryMixin:
     override GetMetaDefaults and return a dictionary object as follows.
     
     Example:
-        @classmethod
+        \@classmethod
         def GetMetaDefaults(cls):
             return dict(id=None, size=0)
 
@@ -111,6 +111,8 @@ class FactoryMixin:
             if scls.meta.id == identifier:
                 obj = scls(*args, **kwargs)
                 break
+        else:
+            obj = cls(*args, **kwargs) # Return base class
         return obj
 
     @classmethod
