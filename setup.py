@@ -386,8 +386,7 @@ def BuildOSXApp():
                        argv_emulation = True,
                        optimize = True,
                        includes = INCLUDES,
-                       plist = PLIST,
-                       strip = True)
+                       plist = PLIST)
 
     # Add extra mac specific files
     DATA_FILES = GenerateBinPackageFiles()

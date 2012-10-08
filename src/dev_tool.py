@@ -12,8 +12,8 @@ Tools and Utilities for debugging and helping with development of Editra.
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: dev_tool.py 67571 2011-04-22 01:10:57Z CJP $"
-__revision__ = "$Revision: 67571 $"
+__svnid__ = "$Id: dev_tool.py 72223 2012-07-28 17:35:57Z CJP $"
+__revision__ = "$Revision: 72223 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -89,12 +89,13 @@ def DEBUGP(statement):
     # Cant print to stdio if using pythonw
     msg_type = msg.Type
     if ed_glob.DEBUG:
-        logfile = EdLogFile()
         mstr = unicode(msg)
         mstr = mstr.encode('utf-8', 'replace')
         if not PYTHONW:
             print(mstr)
+
         # Write to log file
+        logfile = EdLogFile()
         logfile.WriteMessage(mstr)
 
         # Check for trapped exceptions to print
@@ -128,17 +129,23 @@ class LogMsg(object):
     being expired.
 
     """
-    def __init__(self, msg, msrc='unknown', level="info"):
+    def __init__(self, msg, msrc=u"unknown", level=u"info"):
         """Create a LogMsg object
         @param msg: the log message string
         @keyword msrc: Source of message
         @keyword level: Priority of the message
 
         """
+        assert isinstance(msg, basestring)
+        assert isinstance(msrc, basestring)
+        assert isinstance(level, basestring)
         super(LogMsg, self).__init__()
 
         # Attributes
-        self._msg = dict(mstr=msg, msrc=msrc, lvl=level, tstamp=time.time())
+        self._msg = dict(mstr=DecodeString(msg),
+                         msrc=DecodeString(msrc),
+                         lvl=DecodeString(level),
+                         tstamp=time.time())
         self._ok = True
 
     def __eq__(self, other):
@@ -167,17 +174,31 @@ class LogMsg(object):
 
     def __str__(self):
         """Returns a nice formatted string version of the message"""
-        statement = DecodeString(self._msg['mstr'])
-        s_lst = [u"[%s][%s][%s]%s" % (self.ClockTime, self._msg['msrc'],
-                                      self._msg['lvl'], msg.rstrip()) 
-                 for msg in statement.split(u"\n")
+        s_lst = [u"[%s][%s][%s]%s" % (self.ClockTime, self.Origin,
+                                      self.Type, msg.rstrip()) 
+                 for msg in self.Value.split(u"\n")
                  if len(msg.strip())]
-        out = os.linesep.join(s_lst)
+        try:
+            sys_enc = sys.getfilesystemencoding()
+            out = os.linesep.join([val.encode(sys_enc, 'replace') 
+                                   for val in s_lst])
+        except UnicodeEncodeError:
+            out = repr(self)
 
         # Mark Message as have being fetched (expired)
         self._ok = False
 
         return out
+
+    def __unicode__(self):
+        """Convert to unicode"""
+        rval = u""
+        try:
+            sval = str(self)
+            rval = sval.decode(sys.getfilesystemencoding(), 'replace')
+        except UnicodeDecodeError, msg:
+            pass
+        return rval
 
     @property
     def ClockTime(self):
@@ -245,7 +266,7 @@ def DecodeString(string, encoding=None):
             rtxt = string
         return rtxt
     else:
-        # The string is already unicode so just return it
+        # The string is already Unicode so just return it
         return string
 
 #-----------------------------------------------------------------------------#
@@ -257,7 +278,7 @@ class EdErrorDialog(eclib.ErrorDialog):
                                             message=msg)
 
         # Setup
-        self.SetDescriptionLabel(_("Error: Something unexpected happend\n"
+        self.SetDescriptionLabel(_("Error: Something unexpected hapend\n"
                                    "Help improve Editra by clicking on "
                                    "Report Error\nto send the Error "
                                    "Traceback shown below."))

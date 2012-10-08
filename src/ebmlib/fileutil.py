@@ -14,19 +14,20 @@ Utility functions for managing and working with files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: fileutil.py 70034 2011-12-17 20:11:27Z CJP $"
-__revision__ = "$Revision: 70034 $"
+__svnid__ = "$Id: fileutil.py 71689 2012-06-07 18:55:45Z CJP $"
+__revision__ = "$Revision: 71689 $"
 
 __all__ = [ 'GetAbsPath', 'GetFileExtension', 'GetFileModTime', 'GetFileName',
             'GetFileSize', 'GetPathName', 'GetPathFromURI', 'GetUniqueName', 
             'IsLink', 'MakeNewFile', 'MakeNewFolder', 'PathExists',
             'ResolveRealPath', 'IsExecutable', 'Which', 'ComparePaths',
             'AddFileExtension', 'GetDirectoryObject', 'File', 'Directory',
-            'GetFileManagerCmd', 'OpenWithFileManager']
+            'GetFileManagerCmd', 'OpenWithFileManager', 'IsHidden', 'IsSubPath' ]
 
 #-----------------------------------------------------------------------------#
 # Imports
 import wx
+import ctypes
 import os
 import platform
 import urllib2
@@ -34,7 +35,7 @@ import stat
 import subprocess
 
 UNIX = WIN = False
-if platform.system().lower() in ['windows', 'microsoft']:
+if wx.Platform == '__WXMSW__':
     WIN = True
     try:
         # Check for if win32 extensions are available
@@ -200,6 +201,40 @@ def IsLink(path):
     else:
         return os.path.islink(path)
 
+def IsSubPath(path1, path2):
+    """Is path1 a subpath of path2
+    i.e) /usr/bin/foo is a subpath of /usr/bin
+    @return: bool
+
+    """
+    if WIN:
+        path1 = path1.lower()
+        path2 = path2.lower()
+    path1 = GetAbsPath(path1)
+    path2 = GetAbsPath(path2)
+    return path1.startswith(path2)
+
+@uri2path
+def IsHidden(path):
+    """Is the path a hidden path
+    @param path: path to check
+    @return: bool
+
+    """
+    bHidden = False
+    if PathExists(path):
+        if WIN:
+            try:
+                attrs = ctypes.windll.kernel32.GetFileAttributesW(path)
+                assert attrs != -1
+                bHidden = bool(attrs & 2)
+            except (AttributeError, AssertionError):
+                bHidden = False
+        else:
+            dname = GetFileName(path)
+            bHidden = dname.startswith('.')
+    return bHidden
+
 @uri2path
 def PathExists(path):
     """Does the path exist.
@@ -291,19 +326,22 @@ def GetDirectoryObject(path, recurse=True, includedot=False):
 
     """
     assert os.path.isdir(path)
-    pjoin = os.path.join
     def _BuildDir(thedir):
+        dirAddFile = thedir.Files.append
+        isdir = os.path.isdir
+        pjoin = os.path.join
         for fname in os.listdir(thedir.Path):
             if not includedot and fname.startswith('.'):
                 continue
             fpath = pjoin(thedir.Path, fname)
-            if os.path.isdir(fpath):
+            if isdir(fpath):
                 newobj = Directory(fpath)
                 if recurse:
                     _BuildDir(newobj)
             else:
                 newobj = File(fpath)
-            thedir.Files.append(newobj)
+            dirAddFile(newobj)
+
     dobj = Directory(path)
     _BuildDir(dobj)
     return dobj

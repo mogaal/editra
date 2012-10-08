@@ -37,7 +37,7 @@ AUI adheres to the following principles:
 Usage
 =====
 
-The following example shows a simple implementation that uses L{AuiManager} to manage
+The following example shows a simple implementation that uses :class:`framemanager.AuiManager` to manage
 three text controls in a frame window::
 
     import wx
@@ -90,7 +90,7 @@ three text controls in a frame window::
 
     # our normal wxApp-derived class, as usual
 
-    app = wx.PySimpleApp()
+    app = wx.App(0)
 
     frame = MyFrame(None)
     app.SetTopWindow(frame)
@@ -102,7 +102,7 @@ three text controls in a frame window::
 What's New
 ==========
 
-Current wxAUI Version Tracked: wxWidgets 2.9.2 (SVN HEAD)
+Current wxAUI Version Tracked: wxWidgets 2.9.4 (SVN HEAD)
 
 The wxPython AUI version fixes the following bugs or implement the following
 missing features (the list is not exhaustive):
@@ -173,20 +173,21 @@ Plus the following features:
       ``AUI_MGR_PREVIEW_MINIMIZED_PANES`` and by hovering with the mouse on the minimized pane toolbar tool;
   (u) New Whidbey-style docking guides: you can enable them by using the `AuiManager` style ``AUI_MGR_WHIDBEY_DOCKING_GUIDES``;
   (v) Native of custom-drawn mini frames can be used as floating panes, depending on the ``AUI_MGR_USE_NATIVE_MINIFRAMES`` style;
-  (w) A "smooth docking effect" can be obtained by using the ``AUI_MGR_SMOOTH_DOCKING`` style (similar to PyQT docking style).
+  (w) A "smooth docking effect" can be obtained by using the ``AUI_MGR_SMOOTH_DOCKING`` style (similar to PyQT docking style);
+  (x) Implementation of "Movable" panes, i.e. a pane that is set as `Movable()` but not `Floatable()` can be dragged and docked
+      into a new location but will not form a floating window in between.
   
-|
 
 - AuiNotebook:
 
-  (a) Implementation of the style ``AUI_NB_HIDE_ON_SINGLE_TAB``, a la `wx.lib.agw.flatnotebook`;
-  (b) Implementation of the style ``AUI_NB_SMART_TABS``, a la `wx.lib.agw.flatnotebook`;
+  (a) Implementation of the style ``AUI_NB_HIDE_ON_SINGLE_TAB``, a la :mod:`lib.agw.flatnotebook`;
+  (b) Implementation of the style ``AUI_NB_SMART_TABS``, a la :mod:`lib.agw.flatnotebook`;
   (c) Implementation of the style ``AUI_NB_USE_IMAGES_DROPDOWN``, which allows to show tab images
-      on the tab dropdown menu instead of bare check menu items (a la `wx.lib.agw.flatnotebook`);
+      on the tab dropdown menu instead of bare check menu items (a la :mod:`lib.agw.flatnotebook`);
   (d) 6 different tab arts are available, namely:
   
-      (1) Default "glossy" theme (as in `wx.aui.AuiNotebook`)
-      (2) Simple theme (as in `wx.aui.AuiNotebook`)
+      (1) Default "glossy" theme (as in :class:`~auibook.AuiNotebook`)
+      (2) Simple theme (as in :class:`~auibook.AuiNotebook`)
       (3) Firefox 2 theme
       (4) Visual Studio 2003 theme (VC71)
       (5) Visual Studio 2005 theme (VC81)
@@ -224,9 +225,9 @@ Plus the following features:
 
   (a) ``AUI_TB_PLAIN_BACKGROUND`` style that allows to easy setup a plain background to the AUI toolbar,
       without the need to override drawing methods. This style contrasts with the default behaviour
-      of the `wx.aui.AuiToolBar` that draws a background gradient and this break the window design when
+      of the :class:`~auibar.AuiToolBar` that draws a background gradient and this break the window design when
       putting it within a control that has margin between the borders and the toolbar (example: put
-      `wx.aui.AuiToolBar` within a `wx.StaticBoxSizer` that has a plain background);
+      :class:`~auibar.AuiToolBar` within a :class:`StaticBoxSizer` that has a plain background);
   (b) `AuiToolBar` allow item alignment: http://trac.wxwidgets.org/ticket/10174;
   (c) `AUIToolBar` `DrawButton()` improvement: http://trac.wxwidgets.org/ticket/10303;
   (d) `AuiToolBar` automatically assign new id for tools: http://trac.wxwidgets.org/ticket/10173;
@@ -262,9 +263,9 @@ TODOs
 - Extend `tabart.py` with more aui tab arts;
 - Implement ``AUI_NB_LEFT`` and ``AUI_NB_RIGHT`` tab locations in `AuiNotebook`;
 - Move `AuiDefaultToolBarArt` into a separate module (as with `tabart.py` and `dockart.py`) and
-  provide more arts for toolbars (maybe from `wx.lib.agw.flatmenu`?)
+  provide more arts for toolbars (maybe from :mod:`lib.agw.flatmenu`?)
 - Support multiple-rows/multiple columns toolbars;
-- Integrate as much as possible with `wx.lib.agw.flatmenu`, from dropdown menus in `AuiNotebook` to
+- Integrate as much as possible with :mod:`lib.agw.flatmenu`, from dropdown menus in `AuiNotebook` to
   toolbars and menu positioning;
 - Possibly handle minimization of panes in a different way (or provide an option to switch to
   another way of minimizing panes);
@@ -277,7 +278,7 @@ License And Version
 
 AUI library is distributed under the wxPython license. 
 
-Latest Revision: Andrea Gavana @ 29 Sep 2011, 21.00 GMT
+Latest Revision: Andrea Gavana @ 25 Apr 2012, 21.00 GMT
 
 Version 1.3. 
 

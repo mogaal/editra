@@ -14,14 +14,16 @@ Base class control for displaying a file system in a hierarchical manor.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _filetree.py 70230 2012-01-01 01:47:42Z CJP $"
-__revision__ = "$Revision: 70230 $"
+__svnid__ = "$Id: _filetree.py 71698 2012-06-08 15:51:35Z CJP $"
+__revision__ = "$Revision: 71698 $"
 
 __all__ = ['FileTree',]
 
 #-----------------------------------------------------------------------------#
 # Imports
+import sys
 import os
+import types
 import wx
 
 #-----------------------------------------------------------------------------#
@@ -105,6 +107,10 @@ class FileTree(wx.TreeCtrl):
         item = evt.GetItem()
         self.DoShowMenu(item)
 
+    #---- Properties ----#
+
+    SelectedFiles = property(lambda self: self.GetSelectedFiles())
+
     #---- Overridable methods ----#
 
     def DoBeginEdit(self, item):
@@ -167,7 +173,7 @@ class FileTree(wx.TreeCtrl):
         pass
 
     def DoSetupImageList(self):
-        """Add the images to the control's ImageList. It is gauranteed
+        """Add the images to the control's ImageList. It is guaranteed
         that self.ImageList is valid and empty when this is called.
 
         """
@@ -177,7 +183,6 @@ class FileTree(wx.TreeCtrl):
         self.ImageList.Add(bmp)
         bmp = wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_MENU, (16,16))
         self.ImageList.Add(bmp)
-
 
     def DoGetFileImage(self, path):
         """Get the index of the image from the image list to use
@@ -212,7 +217,7 @@ class FileTree(wx.TreeCtrl):
                on path.
 
         """
-        assert os.path.exists(dname)
+        assert os.path.exists(dname), "Path(%s) doesn't exist!" % dname
         if dname not in self._watch:
             self._watch.append(dname)
             return self.AppendFileNode(self.RootItem, dname)
@@ -252,11 +257,37 @@ class FileTree(wx.TreeCtrl):
         """
         img = self.DoGetFileImage(path)
         name = os.path.basename(path)
+        if not name:
+            name = path
         child = self.AppendItem(item, name, img)
         self.SetPyData(child, path)
         if os.path.isdir(path):
             self.SetItemHasChildren(child, True)
         return child
+
+    def AppendFileNodes(self, item, paths):
+        """Append a list of child node to the tree. This
+        method can be used instead of looping on AppendFileNode
+        to get slightly better performance for large sets.
+        @param item: TreeItem parent node
+        @param paths: list of file paths
+        @return: None
+
+        """
+        getBaseName = os.path.basename
+        isDir = os.path.isdir
+        getImg = self.DoGetFileImage
+        appendNode = self.AppendItem
+        setData = self.SetPyData
+        for path in paths:
+            img = getImg(path)
+            name = getBaseName(path)
+            if not name:
+                name = path
+            child = appendNode(item, name, img)
+            setData(child, path)
+            if isDir(path):
+                self.SetItemHasChildren(child, True)
 
     def GetChildNodes(self, parent):
         """Get all the TreeItemIds under the given parent
@@ -362,8 +393,14 @@ class FileTree(wx.TreeCtrl):
         assert os.path.isdir(directory)
         files = list()
         try:
+            joinPath = os.path.join
+            fappend = files.append
+            fs_encoding = sys.getfilesystemencoding()
             for p in os.listdir(directory):
-                files.append(os.path.join(directory, p))
+                fullpath = joinPath(directory, p)
+                if type(fullpath) != types.UnicodeType:
+                    fullpath = fullpath.decode(fs_encoding)
+                fappend(fullpath)
         except OSError:
             pass
         return files

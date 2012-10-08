@@ -18,8 +18,8 @@ specific options such as commenting code.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_stc.py 71263 2012-04-23 00:42:30Z CJP $"
-__revision__ = "$Revision: 71263 $"
+__svnid__ = "$Id: ed_stc.py 72215 2012-07-27 15:02:08Z CJP $"
+__revision__ = "$Revision: 72215 $"
 
 #-------------------------------------------------------------------------#
 # Imports
@@ -63,19 +63,22 @@ def jumpaction(func):
     """Decorator method to notify clients about jump actions"""
     def WrapJump(*args, **kwargs):
         """Wrapper for capturing before/after pos of a jump action"""
-        stc = args[0]
-        pos = stc.GetCurrentPos()
-        line = stc.GetCurrentLine()
-        func(*args, **kwargs)
-        cpos = stc.GetCurrentPos()
-        cline = stc.GetCurrentLine()
-        fname = stc.GetFileName()
+        try:
+            stc = args[0]
+            pos = stc.GetCurrentPos()
+            line = stc.GetCurrentLine()
+            func(*args, **kwargs)
+            cpos = stc.GetCurrentPos()
+            cline = stc.GetCurrentLine()
+            fname = stc.GetFileName()
 
-        mdata = dict(fname=fname,
-                     prepos=pos, preline=line,
-                     lnum=cline, pos=cpos)
-        tlw = stc.TopLevelParent
-        ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_POS_JUMPED, mdata, tlw.Id) 
+            mdata = dict(fname=fname,
+                         prepos=pos, preline=line,
+                         lnum=cline, pos=cpos)
+            tlw = stc.TopLevelParent
+            ed_msg.PostMessage(ed_msg.EDMSG_UI_STC_POS_JUMPED, mdata, tlw.Id) 
+        except wx.PyDeadObjectError:
+            pass
 
     WrapJump.__name__ = func.__name__
     WrapJump.__doc__ = func.__doc__

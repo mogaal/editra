@@ -60,8 +60,8 @@ memory is not likely to be very large.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: plugin.py 70228 2011-12-31 20:39:16Z CJP $"
-__revision__ = "$Revision: 70228 $"
+__svnid__ = "$Id: plugin.py 71475 2012-05-18 04:22:28Z CJP $"
+__revision__ = "$Revision: 71475 $"
 
 #--------------------------------------------------------------------------#
 # Dependancies
@@ -669,7 +669,7 @@ class PluginManager(object):
         @postcondition: all plugins in the environment are initialized
 
         """
-        if pkg_resources == None:
+        if pkg_resources is None:
             return
 
         pkg_env = env

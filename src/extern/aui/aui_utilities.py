@@ -1,7 +1,7 @@
 """
-This module contains some common functions used by wxPython-AUI to
-manipulate colours, bitmaps, text, gradient shadings and custom
-dragging images for AuiNotebook tabs.
+This module contains some common functions used by :mod:`lib.agw.aui` to
+manipulate colours, bitmaps, text, gradient shadings and custom dragging images
+for :class:`~lib.agw.aui.auibook.AuiNotebook` tabs.
 """
 
 __author__ = "Andrea Gavana <andrea.gavana@gmail.com>"
@@ -22,9 +22,9 @@ def BlendColour(fg, bg, alpha):
     Blends the two colour component `fg` and `bg` into one colour component, adding
     an optional alpha channel.
 
-    :param `fg`: the first colour component;
-    :param `bg`: the second colour component;
-    :param `alpha`: an optional transparency value.
+    :param Colour `fg`: the first colour component;
+    :param Colour `bg`: the second colour component;
+    :param integer `alpha`: an optional transparency value.
     """
     
     result = bg + (alpha*(fg - bg))
@@ -41,8 +41,8 @@ def StepColour(c, ialpha):
     """
     Darken/lighten the input colour `c`.
 
-    :param `c`: a colour to darken/lighten;
-    :param `ialpha`: a transparency value.
+    :param Colour `c`: a colour to darken/lighten;
+    :param integer `ialpha`: a transparency value.
     """
     
     if ialpha == 100:
@@ -80,7 +80,7 @@ def LightContrastColour(c):
     """
     Creates a new, lighter colour based on the input colour `c`.
 
-    :param `c`: the input colour to analyze.
+    :param Colour `c`: the input colour to analyze.
     """
 
     amount = 120
@@ -98,9 +98,9 @@ def ChopText(dc, text, max_size):
     Chops the input `text` if its size does not fit in `max_size`, by cutting the
     text and adding ellipsis at the end.
 
-    :param `dc`: a `wx.DC` device context;
-    :param `text`: the text to chop;
-    :param `max_size`: the maximum size in which the text should fit.
+    :param `dc`: a :class:`DC` device context;
+    :param string `text`: the text to chop;
+    :param integer `max_size`: the maximum size in which the text should fit.
     """
     
     # first check if the text fits with no problems
@@ -128,13 +128,12 @@ def ChopText(dc, text, max_size):
 
 def BitmapFromBits(bits, w, h, colour):
     """
-    BitmapFromBits() is a utility function that creates a
-    masked bitmap from raw bits (XBM format).
+    A utility function that creates a masked bitmap from raw bits (XBM format).
 
-    :param `bits`: a string containing the raw bits of the bitmap;
-    :param `w`: the bitmap width;
-    :param `h`: the bitmap height;
-    :param `colour`: the colour which will replace all white pixels in the
+    :param string `bits`: the raw bits of the bitmap;
+    :param integer `w`: the bitmap width;
+    :param integer `h`: the bitmap height;
+    :param Colour `colour`: the colour which will replace all white pixels in the
      raw bitmap.
     """
 
@@ -149,8 +148,8 @@ def IndentPressedBitmap(rect, button_state):
     """
     Indents the input rectangle `rect` based on the value of `button_state`.
 
-    :param `rect`: an instance of `wx.Rect`;
-    :param `button_state`: an L{AuiNotebook} button state.
+    :param Rect `rect`: the button bitmap rectangle;
+    :param integer `button_state`: the button state.
     """
 
     if button_state == AUI_BUTTON_STATE_PRESSED:
@@ -162,8 +161,8 @@ def IndentPressedBitmap(rect, button_state):
 
 def GetBaseColour():
     """
-    Returns the face shading colour on push buttons/backgrounds, mimicking as closely
-    as possible the platform UI colours.
+    Returns the face shading colour on push buttons/backgrounds,
+    mimicking as closely as possible the platform UI colours.
     """
 
     if wx.Platform == "__WXMAC__":
@@ -192,10 +191,9 @@ def GetBaseColour():
 
 def MakeDisabledBitmap(bitmap):
     """
-    Convert the given image (in place) to a grayed-out version,
-    appropriate for a 'disabled' appearance.
+    Convert the given image (in place) to a grayed-out version, appropriate for a 'disabled' appearance.
 
-    :param `bitmap`: the bitmap to gray-out.
+    :param Bitmap `bitmap`: the bitmap to gray-out.
     """
 
     anImage = bitmap.ConvertToImage()    
@@ -223,12 +221,13 @@ def MakeDisabledBitmap(bitmap):
 
 def MakeGray(rgbTuple, factor, maskColour):
     """
-    Make a pixel grayed-out. If the pixel matches the `maskColour`, it won't be
-    changed.
+    Make a pixel grayed-out.
 
-    :param `rgbTuple`: a tuple representing a pixel colour;
-    :param `factor`: a graying-out factor;
-    :param `maskColour`: a colour mask.
+    If the pixel matches the `maskColour`, it won't be changed.
+
+    :param tuple `rgbTuple`: a tuple representing a pixel colour;
+    :param integer `factor`: a graying-out factor;
+    :param Colour `maskColour`: a colour mask.
     """
 
     if rgbTuple != maskColour:
@@ -254,8 +253,8 @@ def LightColour(colour, percent):
     """
     Brighten input `colour` by `percent`.
 
-    :param `colour`: the colour to be brightened;
-    :param `percent`: brightening percentage.
+    :param Colour `colour`: the colour to be brightened;
+    :param integer `percent`: brightening percentage.
     """
     
     end_colour = wx.WHITE
@@ -276,7 +275,8 @@ def LightColour(colour, percent):
 
 def PaneCreateStippleBitmap():
     """
-    Creates a stipple bitmap to be used in a `wx.Brush`.
+    Creates a stipple bitmap to be used in a :class:`Brush`.
+    
     This is used to draw sash resize hints.
     """
 
@@ -294,10 +294,10 @@ def PaneCreateStippleBitmap():
 
 def DrawMACCloseButton(colour, backColour=None):
     """
-    Draws the wxMAC tab close button using `wx.GraphicsContext`.
+    Draws the wxMAC tab close button using :class:`GraphicsContext`.
 
-    :param `colour`: the colour to use to draw the circle;
-    :param `backColour`: the optional background colour for the circle.
+    :param Colour `colour`: the colour to use to draw the circle;
+    :param Colour `backColour`: the optional background colour for the circle.
     """
 
     bmp = wx.EmptyBitmapRGBA(16, 16)
@@ -335,9 +335,9 @@ def DarkenBitmap(bmp, caption_colour, new_colour):
     """
     Darkens the input bitmap on wxMAC using the input colour.
     
-    :param `bmp`: the bitmap to be manipulated;
-    :param `caption_colour`: the colour of the pane caption;
-    :param `new_colour`: the colour used to darken the bitmap.
+    :param Bitmap `bmp`: the bitmap to be manipulated;
+    :param Colour `caption_colour`: the colour of the pane caption;
+    :param Colour `new_colour`: the colour used to darken the bitmap.
     """
 
     image = bmp.ConvertToImage()
@@ -352,11 +352,11 @@ def DrawGradientRectangle(dc, rect, start_colour, end_colour, direction, offset=
     """
     Draws a gradient-shaded rectangle.
 
-    :param `dc`: a `wx.DC` device context;
-    :param `rect`: the rectangle in which to draw the gradient;
-    :param `start_colour`: the first colour of the gradient;
-    :param `end_colour`: the second colour of the gradient;
-    :param `direction`: the gradient direction (horizontal or vertical).
+    :param `dc`: a :class:`DC` device context;
+    :param Rect `rect`: the rectangle in which to draw the gradient;
+    :param Colour `start_colour`: the first colour of the gradient;
+    :param Colour `end_colour`: the second colour of the gradient;
+    :param integer `direction`: the gradient direction (horizontal or vertical).
     """
     
     if direction == AUI_GRADIENT_VERTICAL:
@@ -370,7 +370,7 @@ def FindFocusDescendant(ancestor):
     Find a window with the focus, that is also a descendant of the given window.
     This is used to determine the window to initially send commands to.
 
-    :param `ancestor`: the window to check for ancestry.    
+    :param Window `ancestor`: the window to check for ancestry.    
     """
 
     # Process events starting with the window with the focus, if any.
@@ -393,10 +393,10 @@ def FindFocusDescendant(ancestor):
 
 def GetLabelSize(dc, label, vertical):
     """
-    Returns the L{AuiToolBar} item label size.
+    Returns the :class:`~lib.agw.aui.auibar.AuiToolBar` item label size.
 
-    :param `label`: the toolbar tool label;
-    :param `vertical`: whether the toolbar tool orientation is vertical or not.
+    :param string `label`: the toolbar tool label;
+    :param bool `vertical`: whether the toolbar tool orientation is vertical or not.
     """
 
     text_width = text_height = 0
@@ -423,8 +423,7 @@ def GetLabelSize(dc, label, vertical):
 
 class TabDragImage(wx.DragImage):
     """
-    This class handles the creation of a custom image in case of drag and
-    drop of a notebook tab.
+    This class handles the creation of a custom image in case of drag and drop of a notebook tab.
     """
 
     def __init__(self, notebook, page, button_state, tabArt):
@@ -433,10 +432,10 @@ class TabDragImage(wx.DragImage):
         
         For internal use: do not call it in your code!
 
-        :param `notebook`: an instance of L{AuiNotebook};
-        :param `page`: the dragged L{AuiNotebook} page;
-        :param `button_state`: the state of the close button on the tab;
-        :param `tabArt`: an instance of L{AuiDefaultTabArt} or one of its derivations.
+        :param `notebook`: an instance of :class:`~lib.agw.aui.auibook.AuiNotebook`;
+        :param `page`: the dragged :class:`~lib.agw.aui.auibook.AuiNotebookPage` page;
+        :param integer `button_state`: the state of the close button on the tab;
+        :param `tabArt`: an instance of :class:`~lib.agw.aui.tabart.AuiDefaultTabArt` or one of its derivations.
         """
 
         self._backgroundColour = wx.NamedColour("pink")        
@@ -448,10 +447,10 @@ class TabDragImage(wx.DragImage):
         """
         Actually creates the drag and drop bitmap.
 
-        :param `notebook`: an instance of L{AuiNotebook};
-        :param `page`: the dragged L{AuiNotebook} page;
-        :param `button_state`: the state of the close button on the tab;
-        :param `tabArt`: an instance of L{AuiDefaultTabArt} or one of its derivations.
+        :param `notebook`: an instance of :class:`~lib.agw.aui.auibook.AuiNotebook`;
+        :param `page`: the dragged :class:`~lib.agw.aui.auibook.AuiNotebookPage` page;
+        :param integer `button_state`: the state of the close button on the tab;
+        :param `tabArt`: an instance of :class:`~lib.agw.aui.tabart.AuiDefaultTabArt` or one of its derivations.
         """
 
         control = page.control
@@ -505,9 +504,9 @@ def GetDockingImage(direction, useAero, center):
     """
     Returns the correct name of the docking bitmap depending on the input parameters.
 
-    :param `useAero`: whether L{AuiManager} is using Aero-style or Whidbey-style docking
-     images or not;
-    :param `center`: whether we are looking for the center diamond-shaped bitmap or not. 
+    :param bool `useAero`: whether :class:`~lib.agw.aui.framemanager.AuiManager` is using
+     Aero-style or Whidbey-style docking images or not;
+    :param bool `center`: whether we are looking for the center diamond-shaped bitmap or not. 
     """
 
     suffix = (center and [""] or ["_single"])[0]
@@ -540,9 +539,9 @@ def GetDockingImage(direction, useAero, center):
 
 def TakeScreenShot(rect):
     """
-    Takes a screenshot of the screen at given position and size (rect).
+    Takes a screenshot of the screen at given position and size (`rect`).
 
-    :param `rect`: the screen rectangle for which we want to take a screenshot.
+    :param Rect `rect`: the screen rectangle for which we want to take a screenshot.
     """
 
     # Create a DC for the whole screen area
@@ -580,10 +579,10 @@ def TakeScreenShot(rect):
 
 def RescaleScreenShot(bmp, thumbnail_size=200):
     """
-    Rescales a bitmap to be 300 pixels wide (or tall) at maximum.
+    Rescales a bitmap to be `thumbnail_size` pixels wide (or tall) at maximum.
 
-    :param `bmp`: the bitmap to rescale;
-    :param `thumbnail_size`: the maximum size of every page thumbnail.
+    :param Bitmap `bmp`: the bitmap to rescale;
+    :param integer `thumbnail_size`: the maximum size of every page thumbnail.
     """
 
     bmpW, bmpH = bmp.GetWidth(), bmp.GetHeight()
@@ -632,9 +631,9 @@ def GetSlidingPoints(rect, size, direction):
     """
     Returns the point at which the sliding in and out of a minimized pane begins.
 
-    :param `rect`: the L{AuiToolBar} tool screen rectangle;
-    :param `size`: the pane window size;
-    :param `direction`: the pane docking direction.
+    :param Rect `rect`: the :class:`~lib.agw.aui.auibar.AuiToolBar` tool screen rectangle;
+    :param Size `size`: the pane window size;
+    :param integer `direction`: the pane docking direction.
     """
 
     if direction == AUI_DOCK_LEFT:
@@ -662,8 +661,8 @@ def CopyAttributes(newArt, oldArt):
     """
     Copies pens, brushes, colours and fonts from the old tab art to the new one.
 
-    :param `newArt`: the new instance of L{AuiDefaultTabArt};
-    :param `oldArt`: the old instance of L{AuiDefaultTabArt}.
+    :param `newArt`: the new instance of :class:`~lib.agw.aui.tabart.AuiDefaultTabArt`;
+    :param `oldArt`: the old instance of :class:`~lib.agw.aui.tabart.AuiDefaultTabArt`.
     """    
     
     attrs = dir(oldArt)

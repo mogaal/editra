@@ -15,8 +15,8 @@ syntax highlighting of all supported filetypes.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basestc.py 71267 2012-04-23 13:55:05Z CJP $"
-__revision__ = "$Revision: 71267 $"
+__svnid__ = "$Id: ed_basestc.py 72105 2012-07-15 15:12:05Z CJP $"
+__revision__ = "$Revision: 72105 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -101,6 +101,10 @@ class EditraBaseStc(wx.stc.StyledTextCtrl, ed_style.StyleMgr):
         if wx.Platform == '__WXMAC__':
             for keys in _GetMacKeyBindings():
                 self.CmdKeyAssign(*keys)
+
+        # Set default EOL format
+        if wx.Platform != '__WXMSW__':
+            self.SetEOLMode(wx.stc.STC_EOL_LF)
 
         # Setup Auto-comp images
         # TODO: should be called on theme change messages

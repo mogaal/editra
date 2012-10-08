@@ -16,8 +16,8 @@ can be installed as single file instead of dozens of individual image files.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_theme.py 69346 2011-10-09 17:22:09Z CJP $"
-__revision__ = "$Revision: 69346 $"
+__svnid__ = "$Id: ed_theme.py 72247 2012-07-28 22:32:37Z CJP $"
+__revision__ = "$Revision: 72247 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -327,7 +327,7 @@ class TangoTheme(plugin.Plugin):
 
         if mime:
             path = os.path.join(ed_glob.CONFIG['THEME_DIR'],
-                                Profile_Get('ICONS'), u'mime')
+                                self.GetName(), u'mime')
         else:
             path = os.path.join(ed_glob.CONFIG['THEME_DIR'],
                                 self.GetName(),

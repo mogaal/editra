@@ -13,8 +13,8 @@ Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_basewin.py 69753 2011-11-13 23:26:20Z CJP $"
-__revision__ = "$Revision: 69753 $"
+__svnid__ = "$Id: ed_basewin.py 71697 2012-06-08 15:20:22Z CJP $"
+__revision__ = "$Revision: 71697 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -48,6 +48,48 @@ def FindMainWindow(window):
                 return tlw
 
         return None
+
+#--------------------------------------------------------------------------#
+
+class EDBaseFileTree(eclib.FileTree):
+    """Base file view control. Contains some common functionality
+    that should not be included in the low level control.
+
+    """
+    def __init__(self, parent):
+        super(EDBaseFileTree, self).__init__(parent)
+
+        # Message Handlers
+        ed_msg.Subscribe(self.OnActivateMsg, ed_msg.EDMSG_UI_MW_ACTIVATE)
+
+        # Events
+        self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy)
+
+    def OnDestroy(self, event):
+        """Cleanup message handlers"""
+        if self:
+            ed_msg.Unsubscribe(self.OnActivateMsg)
+            self.DoOnDestroy()
+        event.Skip()
+
+    def OnActivateMsg(self, msg):
+        """Handle activation messages"""
+        mw = FindMainWindow(self)
+        if mw and msg.Context == mw.Id:
+            self.DoOnActivate(msg.Data['active'])
+
+    #---- Interface ----#
+
+    def DoOnActivate(self, active):
+        """Handle activation event
+        @param active: bool - window active or inactive
+
+        """
+        pass
+
+    def DoOnDestroy(self):
+        """Handle window destruction"""
+        pass
 
 #--------------------------------------------------------------------------#
 

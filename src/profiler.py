@@ -20,8 +20,8 @@ happen during run time.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: profiler.py 70747 2012-02-29 01:33:35Z CJP $"
-__revision__ = "$Revision: 70747 $"
+__svnid__ = "$Id: profiler.py 71278 2012-04-25 15:47:19Z CJP $"
+__revision__ = "$Revision: 71278 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -381,7 +381,7 @@ def GetProfileStr():
         return CONFIG['PROFILE_DIR'] + u"default.ppb"
 
     profile = reader.readline()
-    profile = profile.split("\n")[0] # strip newline from end
+    profile = profile.strip()
     reader.close()
     if not os.path.isabs(profile):
         profile = CONFIG['PROFILE_DIR'] + profile

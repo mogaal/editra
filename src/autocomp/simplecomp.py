@@ -12,8 +12,8 @@ Simple Generic autocompleter for completing words found in the current buffer.
 """
 
 __author__ = "Giuseppe \"Cowo\" Corbelli"
-__cvsid__ = "$Id: simplecomp.py 70229 2012-01-01 01:27:10Z CJP $"
-__revision__ = "$Revision: 70229 $"
+__cvsid__ = "$Id: simplecomp.py 72222 2012-07-28 15:43:38Z CJP $"
+__revision__ = "$Revision: 72222 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -35,7 +35,7 @@ class Completer(completer.BaseCompleter):
         # Setup
         self.SetAutoCompKeys([])
         self.SetAutoCompStops(' \'"\\`):')
-        self.SetAutoCompFillups('.,:;([]){}<>%^&+-=*/|$')
+        self.SetAutoCompFillups('.,:;([]){}<>%^&+-=*/|$@')
         self.SetCallTipKeys([])
         self.SetCallTipCancel([])
         self.SetCaseSensitive(False)

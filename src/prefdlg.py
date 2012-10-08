@@ -16,8 +16,8 @@ and setting of the program by setting values in the Profile.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: prefdlg.py 70747 2012-02-29 01:33:35Z CJP $"
-__revision__ = "$Revision: 70747 $"
+__svnid__ = "$Id: prefdlg.py 72221 2012-07-28 15:28:31Z CJP $"
+__revision__ = "$Revision: 72221 $"
 
 #----------------------------------------------------------------------------#
 # Dependencies
@@ -401,7 +401,7 @@ class GeneralStartupPanel(wx.Panel):
                                   _("Disable Error Reporter"))
         reporter_cb.SetValue(not Profile_Get('REPORTER'))
         sess_cb = wx.CheckBox(self, ed_glob.ID_SESSION, _("Load Last Session"))
-        sess_cb.SetValue(Profile_Get('SAVE_SESSION'))
+        sess_cb.SetValue(Profile_Get('SAVE_SESSION', default=False))
         sess_cb.SetToolTipString(_("Load files from last session on startup"))
         splash_cb = wx.CheckBox(self, ed_glob.ID_APP_SPLASH,
                                 _("Show Splash Screen"))
@@ -2072,10 +2072,7 @@ class KeyBindingPanel(wx.Panel):
 
 #----------------------------------------------------------------------------#
 
-class ExtListCtrl(wx.ListCtrl,
-                  listmix.ListCtrlAutoWidthMixin,
-                  listmix.TextEditMixin,
-                  eclib.ListRowHighlighter):
+class ExtListCtrl(eclib.EEditListCtrl):
     """Class to manage the file extension associations
     @summary: Creates a list control for showing file type to file extension
               associations as well as providing an interface to editing these
@@ -2089,13 +2086,10 @@ class ExtListCtrl(wx.ListCtrl,
         @param parent: The parent window of this control
 
         """
-        wx.ListCtrl.__init__(self, parent, wx.ID_ANY,
-                             wx.DefaultPosition, wx.DefaultSize,
-                             style=wx.LC_REPORT | wx.LC_SORT_ASCENDING | \
-                                   wx.LC_VRULES | wx.BORDER)
+        super(ExtListCtrl, self).__init__(parent)
 
-        listmix.ListCtrlAutoWidthMixin.__init__(self)
-        eclib.ListRowHighlighter.__init__(self)
+#        listmix.ListCtrlAutoWidthMixin.__init__(self)
+#        eclib.ListRowHighlighter.__init__(self)
 
         # Setup
         self.InsertColumn(ExtListCtrl.FILE_COL, _("Lexer"))
@@ -2104,7 +2098,7 @@ class ExtListCtrl(wx.ListCtrl,
         self._extreg = syntax.ExtensionRegister()
         self._editing = None
         self.LoadList()
-        listmix.TextEditMixin.__init__(self)
+#        listmix.TextEditMixin.__init__(self)
 
     def CloseEditor(self, evt=None):
         """Update list and extension register after edit window
@@ -2112,7 +2106,7 @@ class ExtListCtrl(wx.ListCtrl,
         @keyword evt: Action that triggered this function
 
         """
-        listmix.TextEditMixin.CloseEditor(self, evt)
+        super(ExtListCtrl, self).CloseEditor(evt)
         def UpdateRegister(itempos):
             """Update the ExtensionRegister
             @param itempos: position of the item to base updates on
@@ -2152,7 +2146,7 @@ class ExtListCtrl(wx.ListCtrl,
         """
         if col != self.FILE_COL:
             self._editing = (col, row)
-            listmix.TextEditMixin.OpenEditor(self, col, row)
+            super(ExtListCtrl, self).OpenEditor(col, row)
 
     def UpdateExtensions(self):
         """Updates the values in the EXT_COL to reflect changes

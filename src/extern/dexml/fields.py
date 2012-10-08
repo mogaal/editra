@@ -127,7 +127,6 @@ class Field(object):
                 return False
         return True
 
-
 class Value(Field):
     """Field subclass that holds a simple scalar value.
 
@@ -227,7 +226,7 @@ class Value(Field):
         return PARSE_DONE
 
     def render_attributes(self,obj,val,nsmap):
-        if val is not None and val is not self.default and self.attrname:
+        if val is not None and val and self.attrname:
             qaval = quoteattr(self.render_value(val))
             if isinstance(self.attrname,basestring):
                 yield '%s=%s' % (self.attrname,qaval,)

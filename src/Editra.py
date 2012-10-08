@@ -16,8 +16,8 @@ running Editra.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: Editra.py 71266 2012-04-23 13:54:29Z CJP $"
-__revision__ = "$Revision: 71266 $"
+__svnid__ = "$Id: Editra.py 71718 2012-06-12 13:25:48Z CJP $"
+__revision__ = "$Revision: 71718 $"
 
 #--------------------------------------------------------------------------#
 # Dependencies
@@ -142,7 +142,10 @@ class Editra(wx.App, events.AppEventHandlerMixin):
 
                 # TODO: need to process other command line options as well i.e) -g
                 self._log("[app][info] Sending: %s" % exml.Xml)
-                rval = ed_ipc.SendCommands(exml, profiler.Profile_Get('SESSION_KEY'))
+                key = profiler.Profile_Get('SESSION_KEY')
+                if ebmlib.IsUnicode(key):
+                    key = key.encode(sys.getfilesystemencoding(), 'replace')
+                rval = ed_ipc.SendCommands(exml, key)
                 # If sending the command failed then let the editor startup
                 # a new instance
                 if not rval:
@@ -151,14 +154,17 @@ class Editra(wx.App, events.AppEventHandlerMixin):
                 self._log("[app][info] Starting Ipc server...")
                 # Set the session key and save it to the users profile so
                 # that other instances can access the server
-                key = unicode(base64.b64encode(os.urandom(8), 'zZ'))
-                key = wx.GetUserName() + key
+                key = base64.b64encode(os.urandom(8), 'zZ')
+                uname = wx.GetUserName()
+                if ebmlib.IsUnicode(uname):
+                    uname = uname.encode(sys.getfilesystemencoding(), 'replace')
+                key = uname + key
                 profiler.Profile_Set('SESSION_KEY', key)
                 profiler.Profile_Set('ISBINARY', hasattr(sys, 'frozen'))
                 path = profiler.Profile_Get('MYPROFILE')
                 profiler.TheProfile.Write(path)
                 try:
-                    self._server = ed_ipc.EdIpcServer(self, profiler.Profile_Get('SESSION_KEY'))
+                    self._server = ed_ipc.EdIpcServer(self, key)
                     self._server.start()
                 except Exception, msg:
                     self._log("[app][err] Failed to start ipc server")
@@ -326,10 +332,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         """
         self._log("[app][warn] Editra::GetMainWindow is deprecated")
         for window in self._windows:
-            if not hasattr(self._windows[window][0], '__name__'):
-                continue
-
-            if self._windows[window][0].__name__ == "MainWindow":
+            if isinstance(self._windows[window][0], ed_main.MainWindow):
                 return self._windows[window][0]
         return None
 
@@ -378,7 +381,7 @@ class Editra(wx.App, events.AppEventHandlerMixin):
         mainw = list()
         for window in self._windows:
             try:
-                if self._windows[window][0].__name__ == "MainWindow":
+                if isinstance(self._windows[window][0], ed_main.MainWindow):
                     mainw.append(self._windows[window][0])
             except AttributeError:
                 continue
@@ -782,6 +785,7 @@ def InitConfig():
             if ed_glob.CONFIG['ISLOCAL']:
                 pstr = os.path.join(ed_glob.CONFIG['PROFILE_DIR'], pstr)
             pstr = util.RepairConfigState(pstr)
+            dev_tool.DEBUGP("[InitConfig][info] Loading profile: %s" % repr(pstr))
             profiler.TheProfile.Load(pstr)
         else:
             dev_tool.DEBUGP("[InitConfig][info] Updating Profile to current version")
@@ -834,7 +838,7 @@ def InitConfig():
             ed_glob.CONFIG['SESSION_DIR'] = util.ResolvConfigDir(u"sessions")
             smgr = ed_session.EdSessionMgr()
             sess = profiler.Profile_Get('LAST_SESSION')
-            if isinstance(sess, list):
+            if isinstance(sess, list) or not sess:
                 profiler.Profile_Set('LAST_SESSION', smgr.DefaultSession)
             else:
                 # After 0.6.58 session is reduced to a name instead of path
@@ -1121,12 +1125,13 @@ def _Main(opts, args):
     # Load Session Data
     # But not if there are command line args for files to open
     if profiler.Profile_Get('SAVE_SESSION', 'bool', False) and not len(args):
+        smgr = ed_session.EdSessionMgr()
         session = profiler.Profile_Get('LAST_SESSION', default=u'')
         if isinstance(session, list):
             # Check for format conversion from previous versions
-            profiler.Profile_Set('LAST_SESSION', u'')
-        else:
-            frame.GetNotebook().LoadSessionFile(session)
+            profiler.Profile_Set('LAST_SESSION', smgr.DefaultSession)
+            session = smgr.DefaultSession
+        frame.GetNotebook().LoadSessionFile(session)
         del session
 
     # Unlike wxMac/wxGTK Windows doesn't post an activate event when a window

@@ -14,8 +14,8 @@ Enhanced File History - Provides more consistent behavior than wxFileHistory
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: efilehist.py 67571 2011-04-22 01:10:57Z CJP $"
-__revision__ = "$Revision: 67571 $"
+__svnid__ = "$Id: efilehist.py 71668 2012-06-06 18:32:07Z CJP $"
+__revision__ = "$Revision: 71668 $"
 
 __all__ = ['EFileHistory',]
 
@@ -46,9 +46,23 @@ class EFileHistory(object):
         assert menu is not None
         for item in menu.GetMenuItems():
             menu.RemoveItem(item)
+
+        # Validate and cleanup any bad entries
+        to_remove = list()
+        for item in self.History:
+            if not item:
+                to_remove.append(item)
+            elif not os.path.exists(item):
+                to_remove.append(item)
+        for item in to_remove:
+            self.History.remove(item)
+
         for index, histfile in enumerate(self.History):
             menuid = wx.ID_FILE1 + index
-            menu.Append(menuid, histfile)
+            if menuid <= wx.ID_FILE9:
+                menu.Append(menuid, histfile)
+            else:
+                break
 
     Count = property(lambda self: self.GetCount())
     History = property(lambda self: self._history,
@@ -59,9 +73,11 @@ class EFileHistory(object):
 
     def AddFileToHistory(self, fname):
         """Add a file to the history
-        @param fname: unicode
+        @param fname: Unicode
 
         """
+        if not fname:
+            return
         assert txtutil.IsUnicode(fname)
         assert self.Menu is not None
         # Shuffle to top of history if already in there
@@ -98,7 +114,7 @@ class EFileHistory(object):
 
     def SetHistory(self, hist):
         """Set the file history from a list
-        @param hist: list of unicode
+        @param hist: list of Unicode
 
         """
         # Ensure list is unique
