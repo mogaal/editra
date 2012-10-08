@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 70747 2012-02-29 01:33:35Z CJP $"
-__revision__ = "$Revision: 70747 $"
+__svnid__ = "$Id: ed_editv.py 71286 2012-04-26 20:59:23Z CJP $"
+__revision__ = "$Revision: 71286 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -199,9 +199,21 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
     @modalcheck
     def DoReloadFile(self):
         """Reload the current file"""
-        ret, rmsg = self.ReloadFile()
+        cfile = self.GetFileName()
+        ret = True
+        rmsg = u""
+        try:
+            ret, rmsg = self.ReloadFile()
+        except Exception, msg:
+            # Unexpected error
+            wx.MessageBox(_("Failed to reload file\n\nError:\n%s") % msg,
+                          _("File read error"), wx.ICON_ERROR|wx.OK|wx.CENTER)
+            # Set modtime to prevent re-prompting of dialog regardless of error cases
+            self.SetModTime(GetFileModTime(cfile))
+            return
+
+        # Check for expected errors
         if not ret:
-            cfile = self.GetFileName()
             errmap = dict(filename=cfile, errmsg=rmsg)
             mdlg = wx.MessageDialog(self,
                                     _("Failed to reload %(filename)s:\n"
@@ -210,6 +222,9 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
                                     wx.OK | wx.ICON_ERROR)
             mdlg.ShowModal()
             mdlg.Destroy()
+
+        # Set modtime to prevent re-prompting of dialog regardless of error cases
+        self.SetModTime(GetFileModTime(cfile))
 
     def DoTabClosing(self):
         """Save the current position in the buffer to reset on next load"""
@@ -571,6 +586,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         if result == wx.ID_YES:
             self.DoReloadFile()
         else:
+            # Set modtime to prevent re-prompting of dialog
             self.SetModTime(GetFileModTime(cfile))
 
     def SetLexer(self, lexer):

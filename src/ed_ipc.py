@@ -44,8 +44,8 @@ between to the app.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_ipc.py 70229 2012-01-01 01:27:10Z CJP $"
-__revision__ = "$Revision: 70229 $"
+__svnid__ = "$Id: ed_ipc.py 71718 2012-06-12 13:25:48Z CJP $"
+__revision__ = "$Revision: 71718 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -167,7 +167,7 @@ class EdIpcServer(threading.Thread):
 
                 # Block for up to 2 seconds while reading
                 start = time.time()
-                recieved = u''
+                recieved = ''
                 while time.time() < start + 2:
                     recieved += client.recv(4096)
                     if recieved.endswith(MSGEND):
@@ -184,7 +184,9 @@ class EdIpcServer(threading.Thread):
                     # Parse the xml
                     exml = IPCCommand()
                     try:
-                        # Well formed xml must be utf-8 string not unicode
+                        # Well formed xml must be utf-8 string not Unicode
+                        if not ebmlib.IsUnicode(xmlstr):
+                            xmlstr = unicode(xmlstr, sys.getfilesystemencoding())
                         xmlstr = xmlstr.encode('utf-8')
                         exml = IPCCommand.parse(xmlstr)
                     except Exception, msg:
@@ -225,7 +227,6 @@ def SendCommands(xmlobj, key):
     cmds.insert(0, key)
     cmds.append(xmlobj.GetXml())
     cmds.append(MSGEND)
-
     try:
         # Setup the client socket
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -237,6 +238,7 @@ def SendCommands(xmlobj, key):
         client.shutdown(socket.SHUT_RDWR)
         client.close()
     except Exception, msg:
+        util.Log("[ed_ipc][err] Failed in SendCommands: %s" % msg)
         return False
     else:
         return True

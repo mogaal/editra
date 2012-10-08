@@ -19,8 +19,8 @@ column of the control.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: elistctrl.py 70230 2012-01-01 01:47:42Z CJP $"
-__revision__ = "$Revision: 70230 $"
+__svnid__ = "$Id: elistctrl.py 72221 2012-07-28 15:28:31Z CJP $"
+__revision__ = "$Revision: 72221 $"
 
 __all__ = ["EBaseListCtrl", "ECheckListCtrl", "EEditListCtrl", 
            "EToggleEditListCtrl"]
@@ -102,6 +102,64 @@ class EEditListCtrl(listmix.TextEditMixin,
     def __init__(self, *args, **kwargs):
         EBaseListCtrl.__init__(self, *args, **kwargs)
         listmix.TextEditMixin.__init__(self)
+
+    def OpenEditor(self, col, row):
+        """Work around limitation of TextEditMixin on Linux
+        where if the horizontal scroll bar is present it is not
+        possible to open the editor.
+        @param col: column to open editor at
+        @param row: row to pen editor at
+
+        """
+        # give the derived class a chance to Allow/Veto this edit.
+        evt = wx.ListEvent(wx.wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, self.Id)
+        evt.m_itemIndex = row
+        evt.m_col = col
+        item = self.GetItem(row, col)
+        evt.m_item.SetId(item.GetId()) 
+        evt.m_item.SetColumn(item.GetColumn()) 
+        evt.m_item.SetData(item.GetData()) 
+        evt.m_item.SetText(item.GetText()) 
+        ret = self.GetEventHandler().ProcessEvent(evt)
+        if ret and not evt.IsAllowed():
+            return   # user code doesn't allow the edit.
+
+        if self.GetColumn(col).m_format != self.col_style:
+            self.make_editor(self.GetColumn(col).m_format)
+    
+        x0 = self.col_locs[col]
+        x1 = self.col_locs[col+1] - x0
+
+        scrolloffset = self.GetScrollPos(wx.HORIZONTAL)
+
+        # scroll forward
+        if wx.Platform == "__WXMSW__" and x0+x1-scrolloffset > self.GetSize()[0]:
+            # don't start scrolling unless we really need to
+            offset = x0+x1-self.GetSize()[0]-scrolloffset
+            # scroll a bit more than what is minimum required
+            # so we don't have to scroll everytime the user presses TAB
+            # which is very tireing to the eye
+            addoffset = self.GetSize()[0]/4
+            # but be careful at the end of the list
+            if addoffset + scrolloffset < self.GetSize()[0]:
+                offset += addoffset
+
+            self.ScrollList(offset, 0)
+            scrolloffset = self.GetScrollPos(wx.HORIZONTAL)
+
+        y0 = self.GetItemRect(row)[1]
+        
+        editor = self.editor
+        editor.SetDimensions(x0-scrolloffset,y0, x1,-1)
+        
+        editor.SetValue(self.GetItem(row, col).GetText()) 
+        editor.Show()
+        editor.Raise()
+        editor.SetSelection(-1,-1)
+        editor.SetFocus()
+    
+        self.curRow = row
+        self.curCol = col
 
 class EToggleEditListCtrl(listmix.CheckListCtrlMixin,
                           listmix.TextEditMixin,

@@ -14,5 +14,4 @@ Core:
 
 Plugin:
 - Terminal, builtin system shell control (partially implemented osx/gtk)
-- Debugger/Build system front end
 

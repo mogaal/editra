@@ -12,8 +12,8 @@ Text/Unicode handling functions and File wrapper class
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_txt.py 70337 2012-01-13 22:16:46Z CJP $"
-__revision__ = "$Revision: 70337 $"
+__svnid__ = "$Id: ed_txt.py 72103 2012-07-15 15:02:42Z CJP $"
+__revision__ = "$Revision: 72103 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -22,6 +22,7 @@ import re
 import time
 import wx
 import codecs
+import encodings as enclib
 import locale
 from StringIO import StringIO
 
@@ -418,9 +419,10 @@ class EdFile(ebmlib.FileObjectImpl):
 
         """
         Log("[ed_txt][info] EdFile.ReadAsync()")
-        pid = control.GetTopLevelParent().GetId()
+        pid = control.GetTopLevelParent().Id
         filesize = ebmlib.GetFileSize(self.GetPath())
         ed_msg.PostMessage(ed_msg.EDMSG_PROGRESS_STATE, (pid, 1, filesize))
+        # Fork off async job to threadpool
         self._job = FileReadJob(control, self.ReadGenerator, 4096)
         ed_thread.EdThreadPool().QueueJob(self._job.run)
 
@@ -764,17 +766,17 @@ def GuessEncoding(fname, sample):
     @return: encoding or None
 
     """
-    with open(fname, 'rb') as handle:
-        for enc in GetEncodings():
-            try:
-                reader = codecs.getreader(enc)(handle)
-                value = reader.read(sample)
-                if str('\0') in value:
-                    continue
-            except Exception, msg:
-                continue
-            else:
-                return enc
+    for enc in GetEncodings():
+        try:
+            with open(fname, 'rb') as handle:
+                with codecs.getreader(enc)(handle) as reader:
+                    value = reader.read(sample)
+                    if str('\0') in value:
+                        continue
+                    else:
+                        return enc
+        except Exception, msg:
+            continue
     return None
 
 def GetEncodings():
@@ -807,18 +809,28 @@ def GetEncodings():
         pass
     encodings.append(sys.getfilesystemencoding())
     encodings.append('utf-16')
+    encodings.append('utf-16-le') # for files without BOM...
     encodings.append('latin-1')
+
+    # Normalize all names
+    normlist = [ enclib.normalize_encoding(enc) for enc in encodings if enc]
 
     # Clean the list for duplicates and None values
     rlist = list()
-    for enc in encodings:
+    codec_list = list()
+    for enc in normlist:
         if enc is not None and len(enc):
             enc = enc.lower()
             if enc not in rlist:
+                # Ascii is useless so ignore it (ascii, us_ascii, ...)
+                if 'ascii' in enc:
+                    continue
+
                 try:
-                    codecs.lookup(enc)
+                    ctmp = codecs.lookup(enc)
+                    if ctmp.name not in codec_list:
+                        codec_list.append(ctmp.name)
+                        rlist.append(enc)
                 except LookupError:
                     pass
-                else:
-                    rlist.append(enc)
     return rlist

@@ -9,8 +9,8 @@
 """Unittests for EdFile"""
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testEdFile.py 70337 2012-01-13 22:16:46Z CJP $"
-__revision__ = "$Revision: 70337 $"
+__svnid__ = "$Id: testEdFile.py 71338 2012-05-01 19:21:05Z CJP $"
+__revision__ = "$Revision: 71338 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -116,7 +116,7 @@ class EdFileTest(unittest.TestCase):
         fobj = ed_txt.EdFile(self.path_utf16)
         txt = fobj.Read()
         self.assertTrue(type(txt) == types.UnicodeType)
-        self.assertTrue(fobj.Encoding in ('utf-16', 'utf_16'))
+        self.assertTrue(fobj.Encoding in ('utf-16-le', 'utf_16_le', 'utf-16', 'utf_16'))
         self.assertFalse(fobj.HasBom()) # test file has no BOM
 
         # Get original raw bytes

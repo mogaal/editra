@@ -12,7 +12,7 @@ dialog, and the user holds down the modifier whilst navigating with
 and activate the selected pane.
 
 The switcher dialog is a multi-column menu with no scrolling, implemented
-by the `MultiColumnListCtrl` class. You can have headings for your items
+by the :class:`MultiColumnListCtrl` class. You can have headings for your items
 for logical grouping, and you can force a column break if you need to.
 
 The modifier used for invoking and dismissing the dialog can be customised,
@@ -29,22 +29,22 @@ Base Functionalities
 To use the dialog, you set up the items in a `SwitcherItems` object,
 before passing this to the `SwitcherDialog` instance.
 
-Call L{SwitcherItems.AddItem} and optionally L{SwitcherItems.AddGroup} to add items and headings. These
-functions take a label (to be displayed to the user), an identifying name,
-an integer id, and a bitmap. The name and id are purely for application-defined
-identification. You may also set a description to be displayed when each
-item is selected; and you can set a window pointer for convenience when
+Call :meth:`SwitcherItems.AddItem` and optionally :meth:`SwitcherItems.AddGroup`
+to add items and headings. These functions take a label (to be displayed to the user),
+an identifying name, an integer id, and a bitmap. The name and id are purely for
+application-defined identification. You may also set a description to be displayed
+when each item is selected; and you can set a window pointer for convenience when
 activating the desired window after the dialog returns.
 
-Have created the dialog, you call `ShowModal()`, and if the return value is
+Have created the dialog, you call :meth:`~Dialog.ShowModal`, and if the return value is
 ``wx.ID_OK``, retrieve the selection from the dialog and activate the pane.
 
 The sample code below shows a generic method of finding panes and notebook
-tabs within the current L{AuiManager}, and using the pane name or notebook
+tabs within the current :class:`~lib.agw.aui.framemanager.AuiManager`, and using the pane name or notebook
 tab position to display the pane.
 
 The only other code to add is a menu item with the desired accelerator,
-whose modifier matches the one you pass to L{SwitcherDialog.SetModifierKey} 
+whose modifier matches the one you pass to :meth:`SwitcherDialog.SetModifierKey` 
 (the default being ``wx.WXK_CONTROL``).
 
 
@@ -180,9 +180,9 @@ class SwitcherItem(object):
 
     def Copy(self, item):
         """
-        Copy operator between 2 L{SwitcherItem} instances.
+        Copy operator between 2 :class:`SwitcherItem` instances.
 
-        :param `item`: another instance of L{SwitcherItem}.
+        :param `item`: another instance of :class:`SwitcherItem`.
         """
 
         self._id = item._id
@@ -372,9 +372,9 @@ class SwitcherItems(object):
 
     def Copy(self, items):
         """
-        Copy operator between 2 L{SwitcherItems}.
+        Copy operator between 2 :class:`SwitcherItems`.
 
-        :param `items`: another instance of L{SwitcherItems}.
+        :param `items`: another instance of :class:`SwitcherItems`.
         """
         
         self.Clear()
@@ -1031,8 +1031,7 @@ class MultiColumnListCtrl(wx.PyControl):
 
     def SetModifierKey(self, modifierKey):
         """
-        Set the modifier used to invoke the dialog, and therefore to test for
-        release.
+        Set the modifier used to invoke the dialog, and therefore to test for release.
         """
 
         self._modifierKey = modifierKey
@@ -1046,8 +1045,8 @@ class MultiColumnListCtrl(wx.PyControl):
 
 class SwitcherDialog(wx.Dialog):
     """
-    SwitcherDialog shows a L{MultiColumnListCtrl} with a list of panes
-    and tabs for the user to choose. ``Ctrl`` + ``Tab`` cycles through them.
+    SwitcherDialog shows a :class:`Dialog` with a list of panes and tabs for the user to choose.
+    ``Ctrl`` + ``Tab`` cycles through them.
     """
 
     def __init__(self, items, parent, aui_manager, id=wx.ID_ANY, title=_("Pane Switcher"), pos=wx.DefaultPosition,
@@ -1159,7 +1158,7 @@ class SwitcherDialog(wx.Dialog):
         self.ShowDescription(event.GetSelection())
 
 
-# Convert a colour to a 6-digit hex string
+    # Convert a colour to a 6-digit hex string
     def ColourToHexString(self, col):
 
         hx = '%02x%02x%02x' % tuple([int(c) for c in col])

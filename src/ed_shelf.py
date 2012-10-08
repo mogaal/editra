@@ -14,8 +14,8 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 71185 2012-04-11 23:26:45Z CJP $"
-__revision__ = "$Revision: 71185 $"
+__svnid__ = "$Id: ed_shelf.py 71672 2012-06-06 19:59:52Z CJP $"
+__revision__ = "$Revision: 71672 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -29,6 +29,7 @@ from profiler import Profile_Get
 import ed_msg
 import plugin
 import iface
+import ed_fmgr
 from extern import aui
 import ed_book
 import ebmlib
@@ -74,7 +75,7 @@ class Shelf(plugin.Plugin):
         wrapper = ShelfWrapper(parent)
         shelf = wrapper.GetShelf()
         mgr.AddPane(wrapper,
-                    wx.aui.AuiPaneInfo().Name(Shelf.SHELF_NAME).\
+                    ed_fmgr.EdPaneInfo().Name(Shelf.SHELF_NAME).\
                             Caption(_("Shelf")).Bottom().Layer(0).\
                             CloseButton(True).MaximizeButton(True).\
                             BestSize(wx.Size(500,250)))

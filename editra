@@ -22,7 +22,7 @@ __svnid__ = "$Id: Exp $"
 __revision__ = "$Revision:  $"
 
 #--------------------------------------------------------------------------#
-# Dependancies
+# Dependencies
 import sys
 import os
 
@@ -51,7 +51,7 @@ def main():
     # Editra is installed so that the src package can be put on the path.
     # If the src module is not on the path the plugins are unable to import
     # things from inside editras namespace properly. It also causes problems
-    # with recongnizing plugins in Extension registry of the Plugins metaclass.
+    # with recognizing plugins in Extension registry of the Plugins metaclass.
     SRC_DIR = os.path.dirname(esrc.__file__)
     if not IS_LOCAL:
         SRC_DIR = os.path.join(SRC_DIR, 'src')

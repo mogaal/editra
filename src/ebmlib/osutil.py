@@ -17,11 +17,15 @@ __author__ = "Cody Precord <cprecord@editra.org>"
 __svnid__ = "$Id: $"
 __revision__ = "$Revision: $"
 
-__all__ = ['InstallTermHandler', ]
+__all__ = ['InstallTermHandler',
+           'GetWindowsDrives', 'GetWindowsDriveType',
+           'GenericDrive', 'FixedDrive', 'CDROMDrive', 'RamDiskDrive', 'RemoteDrive',
+           'RemovableDrive' ]
 
 #-----------------------------------------------------------------------------#
 # Imports
 import wx
+import ctypes
 import signal
 import collections
 
@@ -33,6 +37,69 @@ if wx.Platform == '__WXMSW__':
         HASWIN32 = False
     else:
         HASWIN32 = True
+
+#-----------------------------------------------------------------------------#
+# Windows Drive Utilities
+
+class GenericDrive(object):
+    def __init__(self, name):
+        super(GenericDrive, self).__init__()
+
+        # Attributes
+        self._name = name
+
+    Name = property(lambda self: self._name,
+                    lambda self, v: setattr(self, '_name', v))
+
+class RemovableDrive(GenericDrive):
+    pass
+class FixedDrive(GenericDrive):
+    pass
+class RemoteDrive(GenericDrive):
+    pass
+class CDROMDrive(GenericDrive):
+    pass
+class RamDiskDrive(GenericDrive):
+    pass
+
+def GetWindowsDrives():
+    """Get a list of all available windows drives
+    @return: list of strings
+
+    """
+    assert wx.Platform == '__WXMSW__', "Windows Only API Method"
+    drives = list()
+    try:
+        dletters = list()
+        bmask = ctypes.windll.kernel32.GetLogicalDrives()
+        for dletter in u"ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            if bmask & 1:
+                dletters.append(dletter)
+            bmask >>= 1
+
+        for dletter in dletters:
+            dname = dletter + u":\\"
+            dtype = GetWindowsDriveType(dname)
+            if type(dtype) != GenericDrive:
+                drives.append(dtype)
+    except Exception, err:
+        pass
+    return drives
+
+def GetWindowsDriveType(dname):
+    """Get the drive type for the given letter"""
+    assert wx.Platform == '__WXMSW__', "Windows Only API Method"
+    dtype = GenericDrive(dname)
+    try:
+        dtypes = [None, None, RemovableDrive, FixedDrive, RemoteDrive, CDROMDrive, RamDiskDrive]
+        idx = ctypes.windll.kernel32.GetDriveTypeW(dname)
+        if idx < len(dtypes):
+            drive = dtypes[idx]
+            if drive:
+                dtype = drive(dname)
+    except:
+        pass
+    return dtype
 
 #-----------------------------------------------------------------------------#
 

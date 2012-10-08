@@ -34,8 +34,8 @@ objects such as the Extension Register.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: syntax.py 70228 2011-12-31 20:39:16Z CJP $"
-__revision__ = "$Revision: 70228 $"
+__svnid__ = "$Id: syntax.py 71711 2012-06-09 18:59:03Z CJP $"
+__revision__ = "$Revision: 71711 $"
 
 #-----------------------------------------------------------------------------#
 # Dependencies
@@ -404,11 +404,10 @@ def GetIdFromExt(ext):
 
     """
     ftype = ExtensionRegister().FileTypeFromExt(ext)
-    for val in dir(synglob):
-        if val.startswith('LANG_') and getattr(synglob, val) == ftype:
-            return getattr(synglob, 'ID_' + val, synglob.ID_LANG_TXT)
-
-    return synglob.ID_LANG_TXT
+    if ftype in synglob.LANG_MAP:
+        return synglob.LANG_MAP[ftype][LANG_ID]
+    else:
+        return synglob.ID_LANG_TXT
 
 def GetTypeFromExt(ext):
     """Get the filetype description string from the given extension.

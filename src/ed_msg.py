@@ -24,8 +24,8 @@ which can be used to remove a listener from recieving messages.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_msg.py 70097 2011-12-22 21:36:43Z CJP $"
-__revision__ = "$Revision: 70097 $"
+__svnid__ = "$Id: ed_msg.py 71697 2012-06-08 15:20:22Z CJP $"
+__revision__ = "$Revision: 71697 $"
 
 __all__ = ['PostMessage', 'Subscribe', 'Unsubscribe']
 
@@ -118,8 +118,13 @@ EDMSG_FILE_SAVED = EDMSG_FILE_ALL + ('saved',)
 # Recieve notification of all ui typed messages
 EDMSG_UI_ALL = EDMSG_ALL + ('ui',)
 
-#- Recieve all Main Notebook Messages
+#- Receive all Main Notebook Messages
 EDMSG_UI_NB = EDMSG_UI_ALL + ('mnotebook',)
+
+# MainWindow Activated
+# msgdata == dict(active=bool)
+# context = MainWindow ID
+EDMSG_UI_MW_ACTIVATE = EDMSG_UI_ALL + ('mwactivate',)
 
 # Notebook page changing
 # msgdata == (ref to notebook, 

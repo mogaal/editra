@@ -12,8 +12,8 @@ Unittest for LogMsg class
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: testLogMsg.py 59010 2009-02-19 03:53:56Z CJP $"
-__revision__ = "$Revision: 59010 $"
+__svnid__ = "$Id: testLogMsg.py 72223 2012-07-28 17:35:57Z CJP $"
+__revision__ = "$Revision: 72223 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -21,6 +21,8 @@ import unittest
 
 # Module to test
 import dev_tool
+import ebmlib
+
 #-----------------------------------------------------------------------------#
 
 class LogMsgTest(unittest.TestCase):
@@ -36,6 +38,13 @@ class LogMsgTest(unittest.TestCase):
         pass
 
     #---- Method Tests ----#
+
+    def testErrors(self):
+        """Test error conditions"""
+        self.assertRaises(AssertionError, dev_tool.LogMsg, 3, "foo", "bar")
+        self.assertRaises(AssertionError, dev_tool.LogMsg, "foo", 2, "bar")
+        self.assertRaises(AssertionError, dev_tool.LogMsg, "foo", "bar", 1)
+
     def testExpired(self):
         """Test Expired property"""
         self.assertFalse(self.err.Expired, "Message should not be expired")
@@ -54,6 +63,11 @@ class LogMsgTest(unittest.TestCase):
             self.assertEquals(msg.Origin, "ed_stc", "%s != ed_stc" % msg.Origin)
             self.assertTrue(isinstance(msg.Origin, basestring))
 
+    def testString(self):
+        """Test conversion to bytestring"""
+        msg1 = dev_tool.LogMsg("Error Message", "ed_main", "err")
+        self.assertTrue(not ebmlib.IsUnicode(str(msg1)))
+
     def testType(self):
         """Test Type property"""
         self.assertEquals(self.err.Type, "err", "%s != err" % self.err.Type)
@@ -64,6 +78,22 @@ class LogMsgTest(unittest.TestCase):
 
         self.assertEquals(self.info.Type, "info", "%s != err" % self.info.Type)
         self.assertTrue(isinstance(self.info.Type, basestring))
+
+    def testUnicode(self):
+        """Test that attributes are properly converted to Unicode"""
+        msg1 = dev_tool.LogMsg("Error Message", "ed_main", "err")
+        self.assertTrue(ebmlib.IsUnicode(msg1.Value))
+        self.assertTrue(ebmlib.IsUnicode(msg1.Origin))
+        self.assertTrue(ebmlib.IsUnicode(msg1.Type))
+        self.assertTrue(ebmlib.IsUnicode(msg1.ClockTime))
+        self.assertTrue(ebmlib.IsUnicode(unicode(msg1)))
+
+        # Test with some non ascii values for conversion
+        msg2 = dev_tool.LogMsg('\\u0259','\\u0259','\\u0259')
+        self.assertTrue(ebmlib.IsUnicode(msg2.Value))
+        self.assertTrue(ebmlib.IsUnicode(msg2.Origin))
+        self.assertTrue(ebmlib.IsUnicode(msg2.Type))
+        self.assertTrue(ebmlib.IsUnicode(unicode(msg2)))
 
     def testValue(self):
         """Test the message value property"""
