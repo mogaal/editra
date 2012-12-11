@@ -1,4 +1,4 @@
-editra (0.7.01-2) UNRELEASED; urgency=low
+editra (0.7.12-1) UNRELEASED; urgency=low
 
   * New upstream release (Closes: #585204)
   * d/control: 
@@ -7,15 +7,7 @@ editra (0.7.01-2) UNRELEASED; urgency=low
       - Add Vcs-Git and Vcs-Browser fields
   * Update d/copyright to copyright-format 1.0
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 24 Jun 2012 02:15:28 -0430
-
-editra (0.6.77-1) unstable; urgency=low
-
-  * New upstream release
-  * d/control: Update standards-version field
-  * d/copyright: Adapt fields to 202 revision 
-
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 03 Dec 2011 19:42:32 -0430
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 08 Oct 2012 02:15:28 -0430
 
 editra (0.6.58-1) unstable; urgency=low
 
