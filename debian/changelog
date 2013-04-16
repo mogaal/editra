@@ -1,13 +1,15 @@
-editra (0.7.12-1) UNRELEASED; urgency=low
+editra (0.7.20-1) experimental; urgency=low
 
   * New upstream release (Closes: #585204)
   * d/control: 
       - Change X-Python-Version to >= 2.6.
       - Update Standards-Version field.
       - Add Vcs-Git and Vcs-Browser fields
-  * Update d/copyright to copyright-format 1.0
+  * d/copyright:
+      - Update to copyright-format 1.0.
+      - push copyright dates.
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 08 Oct 2012 02:15:28 -0430
+ -- Alejandro Garrido Mota <alejandro@debian.org>  Sun, 08 Mar 2013 02:15:28 -0430
 
 editra (0.6.58-1) unstable; urgency=low
 

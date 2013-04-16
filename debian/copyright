@@ -4,7 +4,7 @@ Source: http://editra.org
 Upstream-Name: editra
 
 Files: *
-Copyright: 2007-2012, Cody Precord <cprecord@editra.org>
+Copyright: 2007-2013, Cody Precord <cprecord@editra.org>
 License: wxwindows 
 
 Files: src/extern/pubsub.py
@@ -57,7 +57,7 @@ Files: src/extern/pygments/filter.py
        src/extern/pygments/styles/native.py
        src/extern/pygments/formatters/rtf.py
        src/extern/pygments/lexers/_phpbuiltins.py
-Copyright: 2006,2007 Armin Ronacher
+Copyright: 2006-2007, Armin Ronacher
 License: BSD
 
 Files: src/extern/pygments/styles/fruity.py
@@ -111,7 +111,7 @@ Copyright: 2007, Ali Afshar
 License: BSD
 
 Files: src/extern/pygments/formatters/terminal256.py
-Coyright: 2007, Artem Egorkine
+Copyright: 2007, Artem Egorkine
 License: BSD
 
 Files: src/extern/pygments/formatters/svg.py
@@ -176,7 +176,7 @@ Copyright: 2006-2008, Georg Brandl, Armin Ronacher and others
 License: BSD
 
 Files: debian/*
-Copyright: 2009, Alejandro Garrido Mota <garridomota@gmail.com>
+Copyright: 2009-2013, Alejandro Garrido Mota <alejandro@debian.org>
 License: GPL-3+
 
 License: wxwindows
@@ -241,30 +241,30 @@ License: GPL-3+
   Public License version 3 can be found in `/usr/share/common-licenses/GPL-3'.
 
 License: BSD
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are 
-   met:
-   .
-     * Redistributions of source code must retain the above copyright
-       notice, this list of conditions and the following disclaimer.
-   .
-     * Redistributions in binary form must reproduce the above
-       copyright notice, this list of conditions and the following
-       disclaimer in the documentation and/or other materials provided
-       with the distribution.
-   .
-     * The names of the contributors may not be used to endorse or
-       promote products derived from this software without specific
-       prior written permission.
-   .
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
-   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
-   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
-   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
-   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are 
+  met:
+  .
+  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  .
+  * Redistributions in binary form must reproduce the above
+    copyright notice, this list of conditions and the following
+    disclaimer in the documentation and/or other materials provided
+    with the distribution.
+  .
+  * The names of the contributors may not be used to endorse or
+    promote products derived from this software without specific
+    prior written permission.
+  .
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

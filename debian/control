@@ -1,7 +1,7 @@
 Source: editra
 Section: editors
 Priority: extra
-Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
+Maintainer: Alejandro Garrido Mota <alejandro@debian.org>
 Build-Depends: debhelper (>= 7.0.50), python-all, python (>= 2.6), 
                python-setuptools, python-wxgtk2.8
 Standards-Version: 3.9.3
