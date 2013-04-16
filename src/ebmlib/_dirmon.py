@@ -13,8 +13,8 @@ Editra Business Model Library: DirectoryMonitor
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__cvsid__ = "$Id: _dirmon.py 71949 2012-07-03 13:41:15Z CJP $"
-__revision__ = "$Revision: 71949 $"
+__cvsid__ = "$Id: _dirmon.py 73166 2012-12-12 04:31:53Z CJP $"
+__revision__ = "$Revision: 73166 $"
 
 __all__ = ['DirectoryMonitor',]
 
@@ -116,14 +116,15 @@ class DirectoryMonitor(object):
         else:
             self._watcher.Continue()
 
-    def Refresh(self):
+    def Refresh(self, paths=None):
         """Force a recheck of the monitored directories. This method
         is useful for doing manual control of the refresh cycle. It is
         ignored and does nothing when WatcherThread is set up for automatic
         refresh cycles.
+        @keyword paths: specific paths to refresh or None for all.
 
         """
-        self._watcher.Refresh()
+        self._watcher.Refresh(paths)
 
 #-----------------------------------------------------------------------------#
     
@@ -147,6 +148,7 @@ class WatcherThread(threading.Thread):
         assert callable(notifier)
         self._notifier = notifier
         self._dirs = list() # Directories being monitored
+        self._refreshDirs = None
 
         self._freq = checkFreq # Monitoring frequency in milliseconds
         self._continue = True
@@ -175,7 +177,7 @@ class WatcherThread(threading.Thread):
                     self._suspendcond.wait()
 
             with self._lock:
-                for dobj in self._dirs:
+                for dobj in self._PendingRefresh:
                     if not self._continue:
                         return
                     elif self._changePending:
@@ -193,7 +195,7 @@ class WatcherThread(threading.Thread):
                     # Check for deletions
                     dobjFiles = dobj.Files # optimization
                     dobjIndex = dobjFiles.index # optimization
-                    snapFiles = snapshot.Files
+                    snapFiles = snapshot.Files # optimization
                     for tobj in dobjFiles:
                         if not self._continue:
                             return
@@ -232,9 +234,18 @@ class WatcherThread(threading.Thread):
             else:
                 # Manually controlled updates
                 with self._refreshCond:
+                    self._refreshDirs = None
                     self._refreshCond.wait()
 
     #---- Implementation ----#
+
+    @property
+    def _PendingRefresh(self):
+        """Get the list of directories pending refresh"""
+        if self._refreshDirs is None:
+            return self._dirs
+        else:
+            return self._refreshDirs
 
     def AddWatchDirectory(self, dpath):
         """Add a directory to the watch list
@@ -292,12 +303,17 @@ class WatcherThread(threading.Thread):
         """
         self._freq = float(milli)
 
-    def Refresh(self):
+    def Refresh(self, paths=None):
         """Recheck the monitored directories
         only useful when manually controlling refresh cycle of the monitor.
+        @keyword paths: if None refresh all, else list of specific directories
 
         """
         with self._refreshCond:
+            if paths is not None:
+                self._refreshDirs = list()
+                for dobj in paths:
+                    self._refreshDirs.append(dobj)
             self._refreshCond.notify()
 
     def Shutdown(self):

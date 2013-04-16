@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: Editra
-Version: 0.7.12
+Version: 0.7.20
 Summary: Developer's Text Editor
 Home-page: http://editra.org
 Author: Cody Precord
@@ -14,7 +14,7 @@ Description:
         Editra is a multi-platform text editor with an implementation that focuses on
         creating an easy to use interface and features that aid in code development.
         Currently it supports syntax highlighting and variety of other useful features
-        for over 60 programing languages. For a more complete list of features and
+        for over 70 programing languages. For a more complete list of features and
         screenshots visit the projects homepage at `Editra.org
         <http://www.editra.org/>`_.
         

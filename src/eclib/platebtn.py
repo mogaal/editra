@@ -73,8 +73,8 @@ Requirements:
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: platebtn.py 69230 2011-09-29 15:23:52Z CJP $"
-__revision__ = "$Revision: 69230 $"
+__svnid__ = "$Id: platebtn.py 73153 2012-12-08 20:23:44Z CJP $"
+__revision__ = "$Revision: 73153 $"
 
 __all__ = ["PlateButton",
            "PLATE_NORMAL", "PLATE_PRESSED", "PLATE_HIGHLIGHT", 
@@ -254,14 +254,7 @@ class PlateButton(wx.PyControl):
 
     def __DrawButton(self):
         """Draw the button"""
-        # TODO using a buffered paintdc on windows with the nobg style
-        #      causes lots of weird drawing. So currently the use of a
-        #      buffered dc is dissabled for this style.
-        if PB_STYLE_NOBG & self._style:
-            dc = wx.PaintDC(self)
-        else:
-            dc = wx.AutoBufferedPaintDCFactory(self)
-
+        dc = wx.PaintDC(self)
         gc = wx.GCDC(dc)
 
         # Setup
@@ -502,7 +495,8 @@ class PlateButton(wx.PyControl):
         @param evt: wx.EVT_ERASE_BACKGROUND
 
         """
-        pass
+        if not (PB_STYLE_NOBG & self._style):
+            evt.Skip()
 
     def OnFocus(self, evt):
         """Set the visual focus state if need be"""

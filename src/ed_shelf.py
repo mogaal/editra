@@ -14,8 +14,8 @@ Shelf plugin and control implementation
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_shelf.py 71672 2012-06-06 19:59:52Z CJP $"
-__revision__ = "$Revision: 71672 $"
+__svnid__ = "$Id: ed_shelf.py 72821 2012-10-29 22:48:49Z CJP $"
+__revision__ = "$Revision: 72821 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -324,6 +324,9 @@ class EdShelfBook(ed_book.EdBaseBook):
 
     def OnUpdateTabs(self, msg):
         """Update all tab images depending upon current settings"""
+        if not self:
+            return
+        
         if not Profile_Get('TABICONS', default=True):
             for page in range(self.GetPageCount()):
                 self.SetPageBitmap(page, wx.NullBitmap)

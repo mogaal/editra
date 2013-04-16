@@ -20,8 +20,8 @@ U{http://editra.org/editra_style_sheets}.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_style.py 70229 2012-01-01 01:27:10Z CJP $"
-__revision__ = "$Revision: 70229 $"
+__svnid__ = "$Id: ed_style.py 72388 2012-08-28 16:06:31Z CJP $"
+__revision__ = "$Revision: 72388 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -450,7 +450,7 @@ class StyleMgr(object):
         if self.HasNamedStyle('default_style'):
             style_item = self.GetItemByName('default_style')
             face = style_item.GetFace()
-            if face[0] == u"%":
+            if face and face[0] == u"%":
                 face = face % self.fonts
             size = style_item.GetSize()
             if isinstance(size, basestring):

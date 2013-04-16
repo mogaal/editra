@@ -12,8 +12,8 @@ Tools and Utilities for debugging and helping with development of Editra.
 
 """
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: dev_tool.py 72223 2012-07-28 17:35:57Z CJP $"
-__revision__ = "$Revision: 72223 $"
+__svnid__ = "$Id: dev_tool.py 72623 2012-10-06 19:33:06Z CJP $"
+__revision__ = "$Revision: 72623 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -50,7 +50,7 @@ PYTHONW = 'pythonw' in sys.executable.lower()
 
 #-----------------------------------------------------------------------------#
 # General Debugging Helper Functions
-def DEBUGP(statement):
+def DEBUGP(statement, *args):
     """Prints debug messages and broadcasts them on the log message channel.
     Subscribing a listener with any of the EDMSG_LOG_* types will recieve its
     messages from this method.
@@ -75,6 +75,13 @@ def DEBUGP(statement):
                       is used as the secondary means of filtering.
 
     """
+    # Check if formatting should be done here
+    if len(args):
+        try:
+            statement = statement % args
+        except:
+            pass
+
     # Create a LogMsg object from the statement string
     lbls = [lbl.strip() for lbl in RE_LOG_LBL.findall(statement)]
     info = RE_LOG_LBL.sub('', statement, 2).rstrip()
