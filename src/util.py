@@ -12,8 +12,8 @@ This file contains various helper functions and utilities that the program uses.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: util.py 70467 2012-01-27 14:41:29Z CJP $"
-__revision__ = "$Revision: 70467 $"
+__svnid__ = "$Id: util.py 72623 2012-10-06 19:33:06Z CJP $"
+__revision__ = "$Revision: 72623 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -686,12 +686,17 @@ def GetAllEncodings():
     elist = [ enc for enc in elist if not enc.endswith('codec') ]
     return elist
 
-def Log(msg):
+def Log(msg, *args):
     """Push the message to the apps log
     @param msg: message string to log
+    @param args: optional positional arguments to use as a printf formatting
+                 to the message.
 
     """
-    wx.GetApp().GetLog()(msg)
+    try:
+        wx.GetApp().GetLog()(msg, args)
+    except:
+        pass
 
 def GetProxyOpener(proxy_set):
     """Get a urlopener for use with a proxy

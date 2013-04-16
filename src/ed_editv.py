@@ -14,8 +14,8 @@ Text editor buffer view control for the main notebook
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_editv.py 71286 2012-04-26 20:59:23Z CJP $"
-__revision__ = "$Revision: 71286 $"
+__svnid__ = "$Id: ed_editv.py 72901 2012-11-05 15:19:28Z CJP $"
+__revision__ = "$Revision: 72901 $"
 
 #--------------------------------------------------------------------------#
 # Imports
@@ -112,7 +112,7 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
 
         # Hide autocomp/calltips when window looses focus
         # TODO: decide on whether this belongs in base class or not
-        self.Bind(wx.EVT_KILL_FOCUS, lambda evt: self.HidePopups())
+        self.Bind(wx.EVT_KILL_FOCUS, self.OnKillFocus)
         self.Bind(wx.EVT_LEFT_UP, self.OnSetFocus)
         self.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self)
 
@@ -400,6 +400,14 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
 
     #---- End EdTab Methods ----#
 
+    def OnKillFocus(self, evt):
+        """Hide popups when focus is lost
+        @note: call to skip is necessary
+
+        """
+        self.HidePopups()
+        evt.Skip()
+
     def OnConfigMsg(self, msg):
         """Update config based on profile changes"""
         mtype = msg.GetType()[-1]
@@ -574,6 +582,8 @@ class EdEditorView(ed_stc.EditraStc, ed_tab.EdTabBase):
         @param cfile: the file to prompt for a reload of
 
         """
+        if not self:
+            return
         mdlg = wx.MessageDialog(self,
                                 _("%s has been modified by another "
                                   "application.\n\nWould you like "

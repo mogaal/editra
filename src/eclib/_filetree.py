@@ -2,7 +2,7 @@
 # Name: _dirtree.py                                                           #
 # Purpose: Directory Tree                                                     #
 # Author: Cody Precord <cprecord@editra.org>                                  #
-# Copyright: (c) 2011 Cody Precord <staff@editra.org>                         #
+# Copyright: (c) 2011-2013 Cody Precord <staff@editra.org>                    #
 # Licence: wxWindows Licence                                                  #
 ###############################################################################
 
@@ -14,8 +14,8 @@ Base class control for displaying a file system in a hierarchical manor.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: _filetree.py 71698 2012-06-08 15:51:35Z CJP $"
-__revision__ = "$Revision: 71698 $"
+__svnid__ = "$Id: _filetree.py 73347 2013-01-05 19:58:31Z CJP $"
+__revision__ = "$Revision: 73347 $"
 
 __all__ = ['FileTree',]
 
@@ -104,8 +104,11 @@ class FileTree(wx.TreeCtrl):
         evt.Skip()
 
     def _OnMenu(self, evt):
-        item = evt.GetItem()
-        self.DoShowMenu(item)
+        try:
+            item = evt.GetItem()
+            self.DoShowMenu(item)
+        except:
+            pass
 
     #---- Properties ----#
 
@@ -404,6 +407,44 @@ class FileTree(wx.TreeCtrl):
         except OSError:
             pass
         return files
+
+    def GetNodePaths(self, dirNode):
+        """Get a list of paths contained below the given
+        directory node.
+        @param dirNode: wx.TreeItemId
+        @return: list of paths
+
+        """
+        paths = list()
+        if self.ItemHasChildren(dirNode):
+            append = paths.append
+            getData = self.GetPyData
+            for node in self.GetChildNodes(dirNode):
+                try:
+                    append(getData(node))
+                except wx.PyAssertionError:
+                    pass
+        return paths
+
+    def GetPyData(self, item):
+        """Get data from given tree item
+        @param item: TreeItemId
+
+        """
+        data = None
+        # avoid assertions in base class when retrieving data...
+        if item and item.IsOk():
+            try:
+                data = super(FileTree, self).GetPyData(item)
+            except wx.PyAssertionError:
+                pass
+        return data
+
+    def SortParentDirectory(self, item):
+        """Sort the parent directory of the given item"""
+        parent = self.GetItemParent(item)
+        if parent.IsOk():
+            self.SortChildren(parent)
 
 #-----------------------------------------------------------------------------#
 # Test

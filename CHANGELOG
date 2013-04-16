@@ -1,13 +1,37 @@
 # encoding: utf-8
 Editra
 Author: Cody Precord
-Copyright: (c) Cody Precord 2005-2012
+Copyright: (c) Cody Precord 2005-2013
 License: wxWindows
 
 Change Log:
 
 #-----------------------------------------------------------------------------#
 Changes since last release:
+
+
+VERSION 0.7.20
+DATE 01/05/2013
+53rd Alpha Release
+
+NEW: [features/enhancements]
++Extended CSS highlighting support. Near complete support for CSS3.
++Updated FileBrowser plugin to version 2.2 (bug fixes)
+
+BUG FIXES:
++Handle error in style manager when default font face name is unknown.
++Fix unwanted/invalid completion issue in HTML autocompletion for open brackets
+on lines with tabs in them.
++Fix PyDeadObject that could occur during reload file request.
++Fix crash that could occur during formatting of log messages.
++Handle PyDeadObject error that could occur when changing tab icons
++Don't handle Shift+Delete as forward delete on OSX (issue 721)
++Fix caret bouncing in TextCtrls on Windows (issue 664)
++Fix PyDeadObject errors related to notebook in multiple windows.
++Fix assertions caused by right clicks in certain areas of tree controls.
++Fix Line End command not working correctly in some cases on OSX.
+
+#-----------------------------------------------------------------------------#
 
 VERSION 0.7.12
 DATE 08/12/2012

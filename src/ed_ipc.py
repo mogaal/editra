@@ -44,8 +44,8 @@ between to the app.
 """
 
 __author__ = "Cody Precord <cprecord@editra.org>"
-__svnid__ = "$Id: ed_ipc.py 71718 2012-06-12 13:25:48Z CJP $"
-__revision__ = "$Revision: 71718 $"
+__svnid__ = "$Id: ed_ipc.py 72623 2012-10-06 19:33:06Z CJP $"
+__revision__ = "$Revision: 72623 $"
 
 #-----------------------------------------------------------------------------#
 # Imports
@@ -98,7 +98,7 @@ class IpcServerEvent(wx.PyCommandEvent):
 class EdIpcServer(threading.Thread):
     """Create an instance of IPC server for Editra. IPC is handled through
     a socket connection to an instance of this server listening on L{EDPORT}.
-    The server will recieve commands and dispatch them to the app.
+    The server will receive commands and dispatch them to the app.
     Messages sent to the server must be in the following format.
     
       AuthenticationKey;Message Data;MSGEND
