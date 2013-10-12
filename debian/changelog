@@ -1,3 +1,21 @@
+editra (0.7.20-3) unstable; urgency=low
+
+  * Remove src/ebmlib/_winrecycle.py file (Closes: #724465). 
+  * Cosmetic improvements in d/control.
+  * d/rules: Remove the following broken symlink
+     - usr/lib/python2.7/dist-packages/Editra/pixmaps/theme/Tango/COPYING
+     - usr/lib/python2.7/dist-packages/Editra/COPYING
+  * Remove d/editra.pyremove (using d/rules to deleting files).
+  * d/editra.docs: Remove THANKS, TODO and PKG-INFO.
+
+ -- Alejandro Garrido Mota <alejandro@debian.org>  Sun, 13 Oct 2013 08:41:12 -0430
+
+editra (0.7.20-2) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Alejandro Garrido Mota <alejandro@debian.org>  Fri, 10 May 2013 07:47:16 -0430
+
 editra (0.7.20-1) experimental; urgency=low
 
   * New upstream release (Closes: #585204)
