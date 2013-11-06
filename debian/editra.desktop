@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=0.7.20
+Exec=editra
+Name=editra
+GenericName=editra
+Comment=simple multi-platform text editor
+Icon=pyexiftoolgui.png
+Terminal=false
+StartupNotify=true
+Keywords=editor;python;ide

@@ -1,2 +1,3 @@
 version=3
+opts=dversionmangle=s/\.dfsg// \
 http://editra.org/uploads/src/Editra-(.*)\.tar\.gz

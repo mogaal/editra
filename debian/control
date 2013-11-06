@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9),
                python (>= 2.6), 
                python-setuptools,
                python-wxgtk2.8
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 X-Python-Version: >= 2.6
 Homepage: http://editra.org
 Vcs-Git: git://github.com/mogaal/editra
@@ -15,8 +15,7 @@ Vcs-Browser: https://github.com/mogaal/editra
 
 Package: editra
 Architecture: all
-Depends: ${python:Depends},
-         ${misc:Depends}, 
+Depends: ${misc:Depends}, 
          python, 
          python-wxgtk2.8,
 Description: simple multi-platform text editor
