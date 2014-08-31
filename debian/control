@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 9),
                python-all,
                python (>= 2.6), 
                python-setuptools,
-               python-wxgtk2.8
+               python-wxgtk3.0
 Standards-Version: 3.9.5
 X-Python-Version: >= 2.6
 Homepage: http://editra.org
@@ -17,7 +17,7 @@ Package: editra
 Architecture: all
 Depends: ${misc:Depends}, 
          python, 
-         python-wxgtk2.8,
+         python-wxgtk3.0,
 Description: simple multi-platform text editor
  Editra is a multi-platform text editor with an implementation that
  focuses on creating an easy to use interface and features that aid
